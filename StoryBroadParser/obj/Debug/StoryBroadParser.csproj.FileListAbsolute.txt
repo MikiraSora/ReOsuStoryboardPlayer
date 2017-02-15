@@ -1,0 +1,6 @@
+G:\OpenGLF\Other\OsuStoryBroadPlayer\StoryBroadParser\bin\Debug\StoryBroadParser.exe.config
+G:\OpenGLF\Other\OsuStoryBroadPlayer\StoryBroadParser\bin\Debug\StoryBroadParser.exe
+G:\OpenGLF\Other\OsuStoryBroadPlayer\StoryBroadParser\bin\Debug\StoryBroadParser.pdb
+G:\OpenGLF\Other\OsuStoryBroadPlayer\StoryBroadParser\obj\Debug\StoryBroadParser.exe
+G:\OpenGLF\Other\OsuStoryBroadPlayer\StoryBroadParser\obj\Debug\StoryBroadParser.pdb
+G:\OpenGLF\Other\OsuStoryBroadPlayer\StoryBroadParser\obj\Debug\StoryBroadParser.csprojResolveAssemblyReference.cache
