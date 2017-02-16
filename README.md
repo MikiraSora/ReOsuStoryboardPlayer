@@ -1,23 +1,23 @@
-###¶ñË×SB²¥·ÅÆ÷
+###æ¶ä¿—SBæ’­æ”¾å™¨
 ---
-####Ç°ÑÔ:
-±¾Èí¼ş»ùÓÚ±¾ÈËÄ§¸ÄµÄÁíÒ»¸öfork¹ıÀ´µÄ2DäÖÈ¾¿ò¼ÜOpenGLF,ÆÚ³õÊÇÎªÓÃÓÚ²âÊÔ¿ò¼ÜµÄÎï¼ş¶¯×÷¶¯»­ÏµÍ³µÄ²âÊÔÏîÄ¿£¬ÏÖÒÔ¶ÀÁ¢¡£
+####å‰è¨€:
+æœ¬è½¯ä»¶åŸºäºæœ¬äººé­”æ”¹çš„å¦ä¸€ä¸ªforkè¿‡æ¥çš„2Dæ¸²æŸ“æ¡†æ¶OpenGLF,æœŸåˆæ˜¯ä¸ºç”¨äºæµ‹è¯•æ¡†æ¶çš„ç‰©ä»¶åŠ¨ä½œåŠ¨ç”»ç³»ç»Ÿçš„æµ‹è¯•é¡¹ç›®ï¼Œç°ä»¥ç‹¬ç«‹ã€‚
 
-####ÓÃ·¨:
-½«ÆÌÃæÎÄ¼ş¼ĞÍĞ¸ø³ÌĞò¼´¿É,³ÌĞò±ã×Ô¶¯ÔÚÎÄ¼ş¼ĞÀïÃæÕÒ³ömp3ÎÄ¼ş¡¢osbÎÄ¼şÒÔ¼°Ä³¸öosuÎÄ¼şÀ´½âÎö²¢²¥·Å.
+####ç”¨æ³•:
+å°†é“ºé¢æ–‡ä»¶å¤¹æ‰˜ç»™ç¨‹åºå³å¯,ç¨‹åºä¾¿è‡ªåŠ¨åœ¨æ–‡ä»¶å¤¹é‡Œé¢æ‰¾å‡ºmp3æ–‡ä»¶ã€osbæ–‡ä»¶ä»¥åŠæŸä¸ªosuæ–‡ä»¶æ¥è§£æå¹¶æ’­æ”¾.
 
-####ÏîÄ¿½øÕ¹:
-* ÄÜ¹»Ö´ĞĞ´ó²¿·ÖÊØ»ù±¾·¨µÄSB½Å±¾,µ«Õæ¼¸°ÑìÅ¿áÄÇÖÖÉñSBÔİÊ±Ã»ÄÜÍêÈ«Ö§³Ö(
-* Ğ£ÕıSB´úÂë¿ÕÈ±ÖµµÄº¬ÒåºÍ¶ÔÓ¦µÄÖ´ĞĞ.(ÓĞË­ÄÜ¸æËßÎÒÃ»endTimeµ½µ×ÊÇ¼¸¸öÒâË¼)
-* ÕıÔÚÊµÏÖTrigger Command¡¢Loop Command¡¢Paramester Command.(TriggerÄ¬ÈÏĞĞÎª£¬Paramester CommandÒª¹¾¹¾)
-* ÓÅ»¯ÄÚ´æÕ¼ÓÃºÍäÖÈ¾Âß¼­.
+####é¡¹ç›®è¿›å±•:
+* èƒ½å¤Ÿæ‰§è¡Œå¤§éƒ¨åˆ†å®ˆåŸºæœ¬æ³•çš„SBè„šæœ¬,ä½†çœŸå‡ æŠŠç‚«é…·é‚£ç§ç¥SBæš‚æ—¶æ²¡èƒ½å®Œå…¨æ”¯æŒ(
+* æ ¡æ­£SBä»£ç ç©ºç¼ºå€¼çš„å«ä¹‰å’Œå¯¹åº”çš„æ‰§è¡Œ.(æœ‰è°èƒ½å‘Šè¯‰æˆ‘æ²¡endTimeåˆ°åº•æ˜¯å‡ ä¸ªæ„æ€)
+* æ­£åœ¨å®ç°Trigger Commandã€Loop Commandã€Paramester Command.(Triggeré»˜è®¤è¡Œä¸ºï¼ŒParamester Commandè¦å’•å’•)
+* ä¼˜åŒ–å†…å­˜å ç”¨å’Œæ¸²æŸ“é€»è¾‘.
 
-####½ØÍ¼:
-![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/1.jpg)
-![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/2.jpg)
-![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/3.jpg)
-![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/4.jpg)
+####æˆªå›¾:
+![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/1.png)
+![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/2.png)
+![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/3.png)
+![](https://github.com/MikiraSora/OsuStoryBoardPlayer/blob/master/readme_img/4.png)
 
 
 ####Special Thanks
-***Âé»¨***(43size)£¬¶ìÃç£¬Íâ·ş´óÊ¦ £¬Ã«Ã«£¬Á¿×ÓÃµ¹å and all of ¶ñË×ÂéÆÅ2857´µ±È»ÆÍ¼Èº
+***éº»èŠ±***(43size)ï¼Œé¹…è‹—ï¼Œå¤–æœå¤§å¸ˆ ï¼Œæ¯›æ¯›ï¼Œé‡å­ç«ç‘° and all of æ¶ä¿—éº»å©†2857å¹æ¯”é»„å›¾ç¾¤
