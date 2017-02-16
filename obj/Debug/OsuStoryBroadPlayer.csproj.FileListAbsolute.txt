@@ -27,8 +27,6 @@ G:\OsuStoryBroadPlayer\bin\Debug\OpenGLF_EX.dll
 G:\OsuStoryBroadPlayer\bin\Debug\OpenTK.dll
 G:\OsuStoryBroadPlayer\bin\Debug\OpenTK.GLControl.dll
 G:\OsuStoryBroadPlayer\bin\Debug\Physics.dll
-G:\OsuStoryBroadPlayer\bin\Debug\StoryBroadParser.exe
 G:\OsuStoryBroadPlayer\bin\Debug\StoryBroadParser.pdb
-G:\OsuStoryBroadPlayer\bin\Debug\OpenGLF.pdb
-G:\OsuStoryBroadPlayer\bin\Debug\OpenGLF_EX.pdb
 G:\OsuStoryBroadPlayer\bin\Debug\Physics.pdb
+G:\OsuStoryBroadPlayer\bin\Debug\StoryBroadParser.dll

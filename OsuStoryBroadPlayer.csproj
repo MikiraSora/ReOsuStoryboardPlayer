@@ -31,28 +31,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="irrKlang.NET4">
-      <HintPath>C:\Users\MikiraSora\Documents\Visual Studio 2017\Projects\Test2\OpenGLF\Bin\irrKlang.NET4.dll</HintPath>
+    <Reference Include="irrKlang.NET4, Version=1.0.5235.17346, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\irrKlang.NET4.dll</HintPath>
     </Reference>
     <Reference Include="OpenGLF, Version=1.0.2.2, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenGLF\Bin\OpenGLF.dll</HintPath>
+      <HintPath>Dependencies\OpenGLF.dll</HintPath>
     </Reference>
     <Reference Include="OpenGLF_EX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenGLF\Other\OpenGLF_EX\bin\Debug\OpenGLF_EX.dll</HintPath>
+      <HintPath>Dependencies\OpenGLF_EX.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\MikiraSora\Documents\Visual Studio 2017\Projects\Test2\OpenGLF\Bin\OpenTK.dll</HintPath>
+      <HintPath>Dependencies\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\MikiraSora\Documents\Visual Studio 2017\Projects\Test2\OpenGLF\Bin\OpenTK.GLControl.dll</HintPath>
-    </Reference>
-    <Reference Include="Physics, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenGLF\Bin\Physics.dll</HintPath>
+      <HintPath>Dependencies\OpenTK.GLControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -84,5 +81,12 @@
       <Name>StoryBroadParser</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="Dependencies\OpenGLF.dll" />
+    <Analyzer Include="Dependencies\OpenGLF_EX.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)\..\..\Dependencies\Plugins\*.* $(TargetDir)\</PostBuildEvent>
+  </PropertyGroup>
 </Project>
