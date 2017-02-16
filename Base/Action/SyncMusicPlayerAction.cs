@@ -31,6 +31,7 @@ namespace OsuStoryBroadPlayer
             if(_initializer._currentPlayer.PlayPosition>=_trigger)
             {
                 Log.User("PlayBack:{0} sprite {1} appeared! in (gameobject {2} - trigger {3})", _initializer._currentPlayer.PlayPosition,gameobject.name,gameobject._startTime,_trigger);
+                //gameobject.sprite.setColor(1, 1, 1, 1);
                 markDone();
             }
         }

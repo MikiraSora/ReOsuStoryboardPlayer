@@ -34,6 +34,14 @@
     <Reference Include="irrKlang.NET4">
       <HintPath>C:\Users\MikiraSora\Documents\Visual Studio 2017\Projects\Test2\OpenGLF\Bin\irrKlang.NET4.dll</HintPath>
     </Reference>
+    <Reference Include="OpenGLF, Version=1.0.2.2, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OpenGLF\Bin\OpenGLF.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenGLF_EX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OpenGLF\Other\OpenGLF_EX\bin\Debug\OpenGLF_EX.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\MikiraSora\Documents\Visual Studio 2017\Projects\Test2\OpenGLF\Bin\OpenTK.dll</HintPath>
@@ -41,6 +49,10 @@
     <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\MikiraSora\Documents\Visual Studio 2017\Projects\Test2\OpenGLF\Bin\OpenTK.GLControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Physics, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OpenGLF\Bin\Physics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -67,14 +79,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\Framework\Framework.csproj">
-      <Project>{e9b2e136-8fb7-4383-91df-2ce1d68246c5}</Project>
-      <Name>Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenGLF_EX\OpenGLF_EX.csproj">
-      <Project>{21035298-fec5-4fe1-a1b7-3d5e88349a0f}</Project>
-      <Name>OpenGLF_EX</Name>
-    </ProjectReference>
     <ProjectReference Include="StoryBroadParser\StoryBroadParser.csproj">
       <Project>{ef5b4fe1-89e2-4989-810a-374258e26e99}</Project>
       <Name>StoryBroadParser</Name>

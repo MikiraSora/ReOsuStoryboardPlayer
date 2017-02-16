@@ -73,7 +73,7 @@ namespace OsuStoryBroadPlayer
 
                 Engine.scene = new Scene();
 
-                Engine.debugGameObject = true;
+                //Engine.debugGameObject = true;
 
                 var list=initializer.Genarate();
 
@@ -124,7 +124,7 @@ namespace OsuStoryBroadPlayer
         public static void Main(string[] argv)
         {
             //path
-            string oszPath = @"G:\osu!\Songs\315799 Madotsuki@ - Ikanaide" + @"\";
+            string oszPath = (argv.Length==1?argv[0]:@"372552 yuiko - Azuma no Sora kara Hajimaru Sekai (Short)") + @"\";
             string osbFilePath="", osuSufFilePath="", musicFilePath="";
             foreach(string path in Directory.GetFiles(oszPath))
             {

@@ -131,7 +131,7 @@ namespace StoryBroadParser
 
             foreach(var command in commands)
             {
-                if(command._endTime == -1000&&!isFirst[(int)command._event]&&(command._event==Events.Move|| command._event == Events.Fade))
+                if(command._endTime == -1000&&!isFirst[(int)command._event]&&(command._event==Events.Move))
                 {
                     isFirst[(int)command._event] = true;
                     command._startTime = min;
