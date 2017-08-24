@@ -64,6 +64,10 @@
     <Reference Include="OpenTK.GLControl">
       <HintPath>..\Dependencies\OpenTK.GLControl.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleRenderFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SimpleRenderFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -98,12 +102,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\SimpleRenderFramework\SimpleRenderFramework\SimpleRenderFramework.csproj">
-      <Project>{2372090C-BBCC-4BB5-8DC7-532C01356316}</Project>
-      <Name>SimpleRenderFramework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
