@@ -24,6 +24,8 @@ namespace ReOsuStoryBoardPlayer
 
         public uint CurrentPlayback { get => sound.PlayPosition; }
 
+        public float PlaybackSpeed { get => sound.PlaybackSpeed; set => sound.PlaybackSpeed=value; }
+
         public MusicPlayer(string file_path)
         {
             audioFilePath = file_path;

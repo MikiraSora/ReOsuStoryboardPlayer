@@ -95,7 +95,7 @@ namespace ReOsuStoryBoardPlayer
             
             //get objs from osu file
             List<StoryBoardObject> parse_osu_storyboard_objs = StoryBoardFileParser.ParseFromOsuFile(osu_file_path);
-            //temp_objs_list.AddRange(parse_osu_storyboard_objs);
+            temp_objs_list.AddRange(parse_osu_storyboard_objs);
 
             temp_objs_list.Sort((a, b) => Math.Sign(a.FrameStartTime - b.FrameStartTime));
 
