@@ -238,13 +238,12 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-
         public void PostDrawStoryBoardLayout(List<StoryBoardObject> UpdatingStoryboardObjectList)
         {
             bool isEnable = GL.IsEnabled(EnableCap.DepthTest);
 
             GL.Disable(EnableCap.DepthTest);
-            DrawNonTransparentStoryBoardObjects(UpdatingStoryboardObjectList);
+            DrawStoryBoards(UpdatingStoryboardObjectList);
 
             if (isEnable)
             {
@@ -252,15 +251,18 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        private void DrawNonTransparentStoryBoardObjects(List<StoryBoardObject> nonTransparentsList)
+        private void DrawStoryBoards(List<StoryBoardObject> draw_list)
         {
-            if (nonTransparentsList.Count == 0)
+            if (draw_list.Count == 0)
                 return;
 
-            SpriteInstanceGroup group = CacheDrawSpriteInstanceMap[nonTransparentsList[0].ImageFilePath];
+            SpriteInstanceGroup group = CacheDrawSpriteInstanceMap[draw_list[0].ImageFilePath];
 
-            foreach (var obj in nonTransparentsList)
+            foreach (var obj in draw_list)
             {
+                if (obj.Color.w <= 0)
+                    continue;//skip
+
                 if (group.ImagePath!=obj.ImageFilePath)
                 {
                     //draw immediatly and switch to new group
