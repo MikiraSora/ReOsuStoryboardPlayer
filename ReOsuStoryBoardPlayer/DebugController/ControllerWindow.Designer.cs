@@ -40,6 +40,7 @@
             this.button8 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -83,7 +84,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(257, 112);
+            this.button4.Location = new System.Drawing.Point(338, 112);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 5;
@@ -158,6 +159,16 @@
             this.label3.TabIndex = 12;
             this.label3.Text = "label3";
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(257, 112);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 13;
+            this.button9.Text = "JumpTo";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // ControllerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -165,6 +176,7 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(519, 147);
+            this.Controls.Add(this.button9);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button8);
@@ -201,5 +213,6 @@
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button9;
     }
 }

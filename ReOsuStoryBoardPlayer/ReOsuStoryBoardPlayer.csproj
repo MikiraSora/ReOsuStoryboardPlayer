@@ -99,6 +99,12 @@
     <Compile Include="DebugController\CreateBreakpointDialog.Designer.cs">
       <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugController\JumpToWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugController\JumpToWindow.Designer.cs">
+      <DependentUpon>JumpToWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\BatchShader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
     <Compile Include="Graphics\StoryboardRenderSystem.cs" />
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DebugController\CreateBreakpointDialog.resx">
       <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugController\JumpToWindow.resx">
+      <DependentUpon>JumpToWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
