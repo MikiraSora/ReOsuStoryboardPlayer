@@ -157,16 +157,26 @@ namespace ReOsuStoryBoardPlayer
         {
             player.Play();
             CurrentScanNode = StoryboardObjectList.First;
+
             _timer = Task.Run(()=>
             {
                 m_playing_time = player.CurrentPlayback;
 
                 while(!quit)
                 {
-                    m_playing_time += 8;
+                    if (player.IsPlaying)
+                    {
+                        m_playing_time += 8;
+
+                        if (m_playing_time>player.CurrentPlayback)
+                        {
+                            m_playing_time = player.CurrentPlayback;
+                        }
+                    }
                     Thread.Sleep(8);
                 }
             });
+
         }
 
         public void Flush()
@@ -181,20 +191,15 @@ namespace ReOsuStoryBoardPlayer
 
         Task _timer;
 
-        public void Update()
+        public void Update(float delay_time)
         {
             //问题
             uint current_time = player.CurrentPlayback;
 
             while (true)
             {
-                if (CurrentScanNode == null)
+                if (CurrentScanNode == null|| CurrentScanNode.Value.FrameStartTime >= current_time)
                     break;
-
-                if (CurrentScanNode.Value.FrameStartTime>=current_time)
-                {
-                    break;
-                }
 
                 Log.Debug($"[{current_time}]Add storyboard obj \"{CurrentScanNode.Value.ImageFilePath}\"");
 

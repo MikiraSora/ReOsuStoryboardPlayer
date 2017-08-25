@@ -28,7 +28,7 @@ namespace Test
 
             #endregion
 
-            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"E:\osu!\Songs\516995  - Sayonara Heaven");
+            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\413707 Milkychan - Stronger Than You -Chara Response-");
 
             instance.Start();
 

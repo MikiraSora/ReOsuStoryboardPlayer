@@ -30,7 +30,7 @@ namespace ReOsuStoryBoardPlayer
 
         public float PlaybackSpeed { get => sound.PlaybackSpeed; set => sound.PlaybackSpeed=value; }
 
-        public bool IsPlaying { get => sound.Paused; }
+        public bool IsPlaying { get => !sound.Paused; }
 
         public MusicPlayer(string file_path)
         {
