@@ -113,8 +113,8 @@ namespace ReOsuStoryBoardPlayer
         public static void DispatchCommandExecute(StoryBoardObject ref_obj, uint current_playing_time, Command command)
         {
             #region Calculate interpolator value
-            
-            float current_value = command.Easing.calculate(current_playing_time, command.StartTime, command.EndTime);
+
+            float current_value = command.Easing.calculate(current_playing_time- command.StartTime, command.StartTime, command.EndTime);
 
             #endregion
 
