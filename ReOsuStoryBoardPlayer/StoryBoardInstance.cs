@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
+using System.Diagnostics;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -21,11 +22,11 @@ namespace ReOsuStoryBoardPlayer
 
         List<StoryBoardObject> DrawSplitList = new List<StoryBoardObject>();
 
-        public Dictionary<Layout, List<StoryBoardObject>> _UpdatingStoryBoard = new Dictionary<Layout, List<StoryBoardObject>>();  
+        internal Dictionary<Layout, List<StoryBoardObject>> _UpdatingStoryBoard = new Dictionary<Layout, List<StoryBoardObject>>();
 
-        public Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
-        
-        string osb_file_path = string.Empty, osu_file_path = string.Empty, audio_file_path = string.Empty,folder_path=string.Empty;
+        internal Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
+
+        internal string osb_file_path = string.Empty, osu_file_path = string.Empty, audio_file_path = string.Empty,folder_path=string.Empty;
 
         public MusicPlayer player;
 
@@ -116,6 +117,20 @@ namespace ReOsuStoryBoardPlayer
             #endregion
 
             player = new MusicPlayer(audio_file_path);
+
+            player.OnJumpCurrentPlayingTime += Player_OnJumpCurrentPlayingTime;
+
+            #if DEBUG
+
+            InitDebugControllerWindow();
+
+            #endif
+        }
+
+        private void Player_OnJumpCurrentPlayingTime(uint new_time)
+        {
+            //fast seek? tan 90°
+            Flush();
         }
 
         private void BuildCacheDrawSpriteBatch()
@@ -137,6 +152,16 @@ namespace ReOsuStoryBoardPlayer
         public void Start()
         {
             player.Play();
+            CurrentScanNode = StoryboardObjectList.First;
+        }
+
+        public void Flush()
+        {
+            foreach (var pair in _UpdatingStoryBoard)
+            {
+                pair.Value.Clear();
+            }
+
             CurrentScanNode = StoryboardObjectList.First;
         }
 
@@ -184,6 +209,12 @@ namespace ReOsuStoryBoardPlayer
                     return true;
                 });
             }
+            
+            #if DEBUG
+
+            CallUpdateDebugControllerWindowInfo();
+
+            #endif
         }
 
         private void StoryBoardObjectUpdate(StoryBoardObject storyboard_obj,uint time)
@@ -207,6 +238,17 @@ namespace ReOsuStoryBoardPlayer
                     //迟于结束后
                     command = command_list[command_list.Count - 1];
                 }
+
+                #if DEBUG
+
+                if (storyboard_obj.ImageFilePath==debug_break_storyboard_image&&command?.CommandEventType==debug_break_event)
+                {
+                    player.Pause();
+                    Debugger.Break();
+                    player.Play();
+                }
+
+                #endif
 
                 if (command!=null)
                 {
@@ -277,6 +319,53 @@ namespace ReOsuStoryBoardPlayer
                 group.FlushDraw();
             }
         }
+
+        #endregion
+
+        #region Debug Controller
+
+        #if DEBUG
+
+        DebugController.ControllerWindow ControllerWindow;
+
+        string debug_break_storyboard_image;
+
+        Event debug_break_event;
+        
+        public void DumpCurrentStoryboardStatus()
+        {
+            foreach (var layout in _UpdatingStoryBoard)
+            {
+                Log.User($"Dump Layout:{layout.Key.ToString()}");
+                foreach (var obj in layout.Value)
+                {
+                    Log.User($"\"{obj.ImageFilePath}\"\nPosition={obj.Postion} \\ Rotate = {obj.Rotate} \\ Scale = {obj.Scale} \n Color = {obj.Color} \\ Anchor : {obj.Anchor} \n -----------------------");
+                }
+            }
+        }
+
+        public void CreateBreakpointInCommandExecuting(string break_storyboard_image,Event break_event)
+        {
+            this.debug_break_event = break_event;
+            this.debug_break_storyboard_image = break_storyboard_image.Trim().Replace("/","\\");
+            Flush();
+        }
+
+        public void ClearBreakpoint()
+        {
+            this.debug_break_storyboard_image = string.Empty;
+        }
+
+        public void CallUpdateDebugControllerWindowInfo() => ControllerWindow.UpdateInfo();
+
+        public void InitDebugControllerWindow()
+        {
+            ControllerWindow = new DebugController.ControllerWindow(this);
+            ControllerWindow.Show();
+            ControllerWindow.progressBar1.Maximum = (int)player.Length;
+        }
+
+        #endif
 
         #endregion
     }

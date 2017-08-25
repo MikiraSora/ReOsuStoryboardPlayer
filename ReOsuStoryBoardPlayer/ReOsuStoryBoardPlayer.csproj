@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -70,6 +71,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -85,6 +87,18 @@
     <Compile Include="Base\Easing.cs" />
     <Compile Include="Base\Event.cs" />
     <Compile Include="Base\Layout.cs" />
+    <Compile Include="DebugController\ControllerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugController\ControllerWindow.Designer.cs">
+      <DependentUpon>ControllerWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugController\CreateBreakpointDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugController\CreateBreakpointDialog.Designer.cs">
+      <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\BatchShader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
     <Compile Include="Graphics\StoryboardRenderSystem.cs" />
@@ -104,6 +118,14 @@
       <Project>{2372090c-bbcc-4bb5-8dc7-532c01356316}</Project>
       <Name>SimpleRenderFramework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DebugController\ControllerWindow.resx">
+      <DependentUpon>ControllerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugController\CreateBreakpointDialog.resx">
+      <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

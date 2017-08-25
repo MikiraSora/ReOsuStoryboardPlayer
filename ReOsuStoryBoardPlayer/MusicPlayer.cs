@@ -18,9 +18,13 @@ namespace ReOsuStoryBoardPlayer
 
         string audioFilePath;
 
+        public event Action<uint> OnJumpCurrentPlayingTime;
+
         public string AudioFilePath { get => audioFilePath; }
 
         ISound sound;
+
+        public uint Length { get => sound.PlayLength; }
 
         public uint CurrentPlayback { get => sound.PlayPosition; }
 
@@ -37,6 +41,10 @@ namespace ReOsuStoryBoardPlayer
 
         public void Pause() => sound.Paused = true;
 
-        public void Jump(uint pos) => sound.PlayPosition = pos;
+        public void Jump(uint pos)
+        {
+            sound.PlayPosition = pos;
+            OnJumpCurrentPlayingTime?.Invoke(pos);
+        }
     }
 }
