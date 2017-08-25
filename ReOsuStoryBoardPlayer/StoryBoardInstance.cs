@@ -150,33 +150,14 @@ namespace ReOsuStoryBoardPlayer
             });
         }
 
-        uint m_playing_time=0;
-        bool quit = false;
+        internal float update_current_time;
 
         public void Start()
         {
             player.Play();
             CurrentScanNode = StoryboardObjectList.First;
 
-            _timer = Task.Run(()=>
-            {
-                m_playing_time = player.CurrentPlayback;
-
-                while(!quit)
-                {
-                    if (player.IsPlaying)
-                    {
-                        m_playing_time += 8;
-
-                        if (m_playing_time>player.CurrentPlayback)
-                        {
-                            m_playing_time = player.CurrentPlayback;
-                        }
-                    }
-                    Thread.Sleep(8);
-                }
-            });
-
+            update_current_time = 0;
         }
 
         public void Flush()
@@ -188,13 +169,21 @@ namespace ReOsuStoryBoardPlayer
 
             CurrentScanNode = StoryboardObjectList.First;
         }
-
-        Task _timer;
-
+        
         public void Update(float delay_time)
         {
-            //问题
-            uint current_time = player.CurrentPlayback;
+            if (player.IsPlaying)
+            {
+                update_current_time += delay_time;
+
+                if (Math.Abs(update_current_time-player.CurrentPlayback)>22)
+                {
+                    //force
+                    update_current_time = player.CurrentPlayback;
+                }
+            }
+
+            uint current_time = /*player.CurrentPlayback*/(uint)update_current_time;
 
             while (true)
             {
@@ -212,7 +201,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 foreach (var obj in objs)
                 {
-                    StoryBoardObjectUpdate(obj, m_playing_time);
+                    StoryBoardObjectUpdate(obj, current_time);
                 }
             }
 

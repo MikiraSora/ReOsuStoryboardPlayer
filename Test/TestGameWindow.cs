@@ -43,7 +43,7 @@ namespace Test
         {
             base.OnUpdateFrame(e);          
 
-            instance.Update();
+            instance.Update((float)e.Time);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
