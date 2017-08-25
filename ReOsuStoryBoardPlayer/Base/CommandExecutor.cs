@@ -114,7 +114,18 @@ namespace ReOsuStoryBoardPlayer
         {
             #region Calculate interpolator value
 
+            if (ref_obj.ImageFilePath.EndsWith("4.png")&&command.CommandEventType==Event.Color)
+            {
+                Log.Debug("");
+            }
+
             float current_value = command.Easing.calculate(current_playing_time- command.StartTime, command.StartTime, command.EndTime);
+
+            //fix infinity
+            if (float.IsInfinity(current_value))
+            {
+                current_value = 1;
+            }
 
             #endregion
 
