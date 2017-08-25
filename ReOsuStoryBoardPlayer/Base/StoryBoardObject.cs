@@ -19,10 +19,10 @@ namespace ReOsuStoryBoardPlayer
 
         public Layout layout;
 
+        public int Z=-1;
+
         #region Transform
 
-        public float Z;
-        
         public Vector Postion=new Vector(320,240), Scale=new Vector(1,1);
 
         public Vec4 Color=new Vec4(1,1,1,1);
@@ -33,6 +33,6 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion
 
-        public override string ToString() => $"{ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
+        public override string ToString() => $"{Z}: {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
     }
 }

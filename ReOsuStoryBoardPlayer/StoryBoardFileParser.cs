@@ -45,7 +45,7 @@ namespace ReOsuStoryBoardPlayer
             StoryBoardObject current_storyboard_obj = null;
 
             int command_count = 0;
-            int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue;
+            int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue, z_order=0;
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
@@ -86,6 +86,8 @@ namespace ReOsuStoryBoardPlayer
 
                     if (obj != null)
                     {
+                        obj.Z = z_order++;
+
                         if (current_storyboard_obj != null)
                         {
                             current_storyboard_obj.CommandMap = StoryBoardAdjustment.AdujustCommands(current_command);

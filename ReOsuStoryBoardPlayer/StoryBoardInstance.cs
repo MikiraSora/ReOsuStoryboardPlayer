@@ -83,23 +83,17 @@ namespace ReOsuStoryBoardPlayer
 
             #region Load and Parse osb/osu file
 
-            List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>();
+            List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs=new List<StoryBoardObject>();
 
             if ((!string.IsNullOrWhiteSpace(osb_file_path))&&File.Exists(osb_file_path))
             {
-                List<StoryBoardObject> parse_osb_storyboard_objs = StoryBoardFileParser.ParseFromOsbFile(osb_file_path);
-
-                if (parse_osb_storyboard_objs!=null)
-                {
-                    temp_objs_list.AddRange(parse_osb_storyboard_objs);
-                }
+                parse_osb_storyboard_objs = StoryBoardFileParser.ParseFromOsbFile(osb_file_path);
             }
             
             //get objs from osu file
             List<StoryBoardObject> parse_osu_storyboard_objs = StoryBoardFileParser.ParseFromOsuFile(osu_file_path);
-            temp_objs_list.AddRange(parse_osu_storyboard_objs);
 
-            temp_objs_list.Sort((a, b) => Math.Sign(a.FrameStartTime - b.FrameStartTime));
+            temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
 
             foreach (var obj in temp_objs_list)
             {
@@ -128,10 +122,43 @@ namespace ReOsuStoryBoardPlayer
             #endif
         }
 
+        private List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list,List<StoryBoardObject> osu_list)
+        {
+            #region Safe Check
+
+            if (osb_list==null)
+            {
+                osb_list = new List<StoryBoardObject>();
+            }
+
+            if (osu_list==null)
+            {
+                osu_list = new List<StoryBoardObject>();
+            }
+
+            #endregion
+
+            List<StoryBoardObject> result = new List<StoryBoardObject>(osb_list);
+            result.AddRange(osu_list);
+
+            result.Sort((a,b)=> {
+                if (a.FrameStartTime==b.FrameStartTime)
+                {
+                    return a.Z - b.Z;
+                }
+
+                return a.FrameStartTime - b.FrameStartTime;
+            });
+
+            return result;
+        }
+
         private void Player_OnJumpCurrentPlayingTime(uint new_time)
         {
             //fast seek? tan 90°
             Flush();
+            
+            update_current_time = new_time;
         }
 
         private void BuildCacheDrawSpriteBatch()
