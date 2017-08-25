@@ -60,9 +60,26 @@ namespace ReOsuStoryBoardPlayer
         {
             RotateCommandParamesters parameters = (RotateCommandParamesters)command.Parameters;
 
-            float cal_result = current_value >= 1 ? parameters.EndRotate : (current_value <= 0 ? parameters.StartRotate : parameters.StartRotate + parameters.Distance * current_value);
+            float cal_result = 0;
 
-            ref_obj.Rotate = cal_result;
+            int sign = Math.Sign(parameters.Distance);
+
+            if (current_value<=0)
+            {
+                cal_result = Math.Abs(parameters.StartRotate);
+            }
+            else if (current_value>=1)
+            {
+                cal_result = Math.Abs(parameters.EndRotate);
+            }
+            else
+            {
+                cal_result = parameters.StartRotate + sign * parameters.Distance * current_value;
+            }
+
+            cal_result = (float)Mathf.toDegrees(cal_result);
+
+            ref_obj.Rotate =cal_result ;
         }
 
         public static void Fade(StoryBoardObject ref_obj, float current_value, ReOsuStoryBoardPlayer.Command command)

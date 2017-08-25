@@ -255,8 +255,7 @@ namespace ReOsuStoryBoardPlayer
                 if (storyboard_obj.ImageFilePath==debug_break_storyboard_image&&command?.CommandEventType==debug_break_event)
                 {
                     player.Pause();
-                    Debugger.Break();
-                    player.Play();
+                    Debugger.Break();   
                 }
 
                 #endif

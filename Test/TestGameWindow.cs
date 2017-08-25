@@ -28,7 +28,7 @@ namespace Test
 
             #endregion
 
-            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\413707 Milkychan - Stronger Than You -Chara Response-");
+            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\396495 yuiko - GLORIOUS_DAYS(Short)");
 
             instance.Start();
 

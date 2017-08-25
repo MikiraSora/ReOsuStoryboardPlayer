@@ -113,8 +113,8 @@ namespace ReOsuStoryBoardPlayer
         public RotateCommandParamesters(float startRotate, float endRotate)
         {
             StartRotate = startRotate;
-            StartRotate = endRotate;
-            Distance = StartRotate - StartRotate;
+            EndRotate = endRotate;
+            Distance = endRotate - StartRotate;
         }
 
         public readonly float Distance;
