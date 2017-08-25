@@ -274,14 +274,10 @@ namespace ReOsuStoryBoardPlayer
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
             {
-                var ptr = GL.MapBuffer(BufferTarget.ArrayBuffer, BufferAccess.WriteOnly);
+                for (int i = 0; i < _currentPostCount; i++)
                 {
-                    for (int i = 0; i < _currentPostCount; i++)
-                    {
-                        Marshal.Copy(_instanceDataArray[i].data, 0, ptr + i * _calculateCapacitySize(), _instanceDataArray[i].data.Length);
-                    }
-                }
-                GL.UnmapBuffer(BufferTarget.ArrayBuffer);
+                    GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)(i * _calculateCapacitySize()), (IntPtr)_instanceDataArray[i].data.Length, _instanceDataArray[i].data);
+                }  
             }
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 

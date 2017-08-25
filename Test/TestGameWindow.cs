@@ -28,7 +28,7 @@ namespace Test
 
             #endregion
 
-            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\372552 yuiko - Azuma no Sora kara Hajimaru Sekai (Short)");
+            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"E:\osu!\Songs\516995  - Sayonara Heaven");
 
             instance.Start();
 

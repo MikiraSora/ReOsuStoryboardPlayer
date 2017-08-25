@@ -56,7 +56,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="irrKlang.NET4, Version=1.0.5235.17346, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="irrKlang.NET4">
+      <HintPath>..\..\OpenGLF-master\Bin\irrKlang.NET4.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\OpenTK.dll</HintPath>
@@ -65,10 +67,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\OpenTK.GLControl.dll</HintPath>
     </Reference>
-    <Reference Include="Physics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Physics">
+      <HintPath>..\..\OpenGLF-master\Bin\Physics.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleRenderFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\OsuStoryBroadPlayer\Dependencies\SimpleRenderFramework.dll</HintPath>
+      <HintPath>..\..\SimpleRenderFramework\SimpleRenderFramework\bin\Debug\SimpleRenderFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -86,7 +90,7 @@
     <Compile Include="TestGameWindow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OsuStoryBroadPlayer\ReOsuStoryBoardPlayer\ReOsuStoryBoardPlayer.csproj">
+    <ProjectReference Include="..\ReOsuStoryBoardPlayer\ReOsuStoryBoardPlayer.csproj">
       <Project>{5116d93a-a7d9-4312-b052-fbc2fe5d0444}</Project>
       <Name>ReOsuStoryBoardPlayer</Name>
     </ProjectReference>

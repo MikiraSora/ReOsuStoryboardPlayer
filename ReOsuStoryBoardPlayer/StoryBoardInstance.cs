@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 using System.Diagnostics;
+using System.Threading;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -149,10 +150,23 @@ namespace ReOsuStoryBoardPlayer
             });
         }
 
+        uint m_playing_time=0;
+        bool quit = false;
+
         public void Start()
         {
             player.Play();
             CurrentScanNode = StoryboardObjectList.First;
+            _timer = Task.Run(()=>
+            {
+                m_playing_time = player.CurrentPlayback;
+
+                while(!quit)
+                {
+                    m_playing_time += 8;
+                    Thread.Sleep(8);
+                }
+            });
         }
 
         public void Flush()
@@ -165,8 +179,11 @@ namespace ReOsuStoryBoardPlayer
             CurrentScanNode = StoryboardObjectList.First;
         }
 
+        Task _timer;
+
         public void Update()
         {
+            //问题
             uint current_time = player.CurrentPlayback;
 
             while (true)
@@ -190,7 +207,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 foreach (var obj in objs)
                 {
-                    StoryBoardObjectUpdate(obj, current_time);
+                    StoryBoardObjectUpdate(obj, m_playing_time);
                 }
             }
 
