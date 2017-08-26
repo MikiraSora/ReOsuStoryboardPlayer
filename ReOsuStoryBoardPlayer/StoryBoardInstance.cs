@@ -142,11 +142,6 @@ namespace ReOsuStoryBoardPlayer
             result.AddRange(osu_list);
 
             result.Sort((a,b)=> {
-                if (a.FrameStartTime==b.FrameStartTime)
-                {
-                    return a.Z - b.Z;
-                }
-
                 return a.FrameStartTime - b.FrameStartTime;
             });
 
@@ -212,6 +207,8 @@ namespace ReOsuStoryBoardPlayer
 
             uint current_time = /*player.CurrentPlayback*/(uint)update_current_time;
 
+            bool isAdd = false;
+
             while (true)
             {
                 if (CurrentScanNode == null|| CurrentScanNode.Value.FrameStartTime >= current_time)
@@ -221,11 +218,21 @@ namespace ReOsuStoryBoardPlayer
 
                 _UpdatingStoryBoard[CurrentScanNode.Value.layout].Add(CurrentScanNode.Value);
 
+                isAdd = true;
+
                 CurrentScanNode = CurrentScanNode.Next;
             }
-            
+
+
             foreach (var objs in _UpdatingStoryBoard.Values)
             {
+                if (isAdd)
+                {
+                    objs.Sort((a, b) => {
+                        return a.Z - b.Z;
+                    });
+                }
+
                 foreach (var obj in objs)
                 {
                     StoryBoardObjectUpdate(obj, current_time);
@@ -334,7 +341,7 @@ namespace ReOsuStoryBoardPlayer
         {
             if (draw_list.Count == 0)
                 return;
-
+            
             SpriteInstanceGroup group = CacheDrawSpriteInstanceMap[draw_list[0].ImageFilePath];
 
             foreach (var obj in draw_list)
