@@ -109,7 +109,7 @@ namespace ReOsuStoryBoardPlayer
             if (current_storyboard_obj != null)
             {
                 current_storyboard_obj.CommandMap = StoryBoardAdjustment.AdujustCommands(current_command);
-                current_storyboard_obj.FrameStartTime = frame_start_time;
+                current_storyboard_obj.FrameStartTime = frame_start_time==int.MaxValue? int.MinValue : frame_start_time;
                 current_storyboard_obj.FrameEndTime = frame_end_time;
             }
 
@@ -286,13 +286,13 @@ namespace ReOsuStoryBoardPlayer
                     break;
                 case Event.MoveX:
                     {
-                        int start = int.Parse(command_params[4]);
+                        float start = float.Parse(command_params[4]);
 
-                        int end = start;
+                        float end = start;
 
                         if (command_params.Length > 5)
                         {
-                            end = int.Parse(command_params[5]);
+                            end = float.Parse(command_params[5]);
                         }
 
                         cmd.Parameters = new MoveXCommandParameters(start, end);
@@ -301,13 +301,13 @@ namespace ReOsuStoryBoardPlayer
 
                 case Event.MoveY:
                     {
-                        int start = int.Parse(command_params[4]);
+                        float start = float.Parse(command_params[4]);
 
-                        int end = start;
+                        float end = start;
 
                         if (command_params.Length > 5)
                         {
-                            end = int.Parse(command_params[5]);
+                            end = float.Parse(command_params[5]);
                         }
 
                         cmd.Parameters = new MoveYCommandParameters(start, end);
@@ -365,7 +365,7 @@ namespace ReOsuStoryBoardPlayer
 
             #region ImageFilePath
 
-            obj.ImageFilePath = sprite_param[3].Trim(',').Trim('\"',' ').Replace("/","\\");
+            obj.ImageFilePath = sprite_param[3].Trim(',').Trim('\"',' ').Replace("/","\\").ToLower();
 
             #endregion
 

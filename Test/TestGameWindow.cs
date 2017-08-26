@@ -28,7 +28,7 @@ namespace Test
 
             #endregion
 
-            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\396495 yuiko - GLORIOUS_DAYS(Short)");
+            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\346213 Tatsh - reunion");
 
             instance.Start();
 

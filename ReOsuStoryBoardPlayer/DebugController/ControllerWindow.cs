@@ -66,6 +66,7 @@ namespace ReOsuStoryBoardPlayer.DebugController
             progressBar1.Value = (int)CurrentStoryboardIntance.player.CurrentPlayback;
             label1.Text = CurrentStoryboardIntance.player.PlaybackSpeed+"x";
             label3.Text = $"Time:{CurrentStoryboardIntance.player.CurrentPlayback}({CurrentStoryboardIntance.update_current_time})/{CurrentStoryboardIntance.player.Length}";
+            label5.Text = $"{CurrentStoryboardIntance.RenderCastTime + CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.RenderCastTime}";
 
             button1.Enabled = !CurrentStoryboardIntance.player.IsPlaying;
             button2.Enabled = CurrentStoryboardIntance.player.IsPlaying;

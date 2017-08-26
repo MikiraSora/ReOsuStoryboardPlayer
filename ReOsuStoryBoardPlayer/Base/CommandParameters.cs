@@ -12,29 +12,29 @@ namespace ReOsuStoryBoardPlayer
     public class MoveXCommandParameters : CommandParameters
     {
         private MoveXCommandParameters() { }
-        public MoveXCommandParameters(int startX,int endX)
+        public MoveXCommandParameters(float startX, float endX)
         {
             StartX = startX;
             EndX = endX;
             Distance = EndX - StartX;
         }
 
-        public readonly int Distance;
-        public int StartX, EndX;
+        public readonly float Distance;
+        public float StartX, EndX;
     }
 
     public class MoveYCommandParameters : CommandParameters
     {
         private MoveYCommandParameters() { }
-        public MoveYCommandParameters(int startY, int endY)
+        public MoveYCommandParameters(float startY, float endY)
         {
             StartY = startY;
             EndY = endY;
             Distance = EndY - StartY;
         }
 
-        public readonly int Distance;
-        public int StartY, EndY;
+        public readonly float Distance;
+        public float StartY, EndY;
     }
 
     public class ColorCommandParameters : CommandParameters

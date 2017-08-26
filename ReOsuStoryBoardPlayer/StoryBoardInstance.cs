@@ -31,6 +31,14 @@ namespace ReOsuStoryBoardPlayer
 
         public MusicPlayer player;
 
+        internal float update_current_time;
+
+        Stopwatch runTimer = new Stopwatch();
+
+        public long UpdateCastTime { get; private set; }
+
+        public long RenderCastTime { get; private set; }
+
         public StoryBoardInstance(string folder_path)
         {
             if (!folder_path.EndsWith(@"\"))
@@ -43,6 +51,8 @@ namespace ReOsuStoryBoardPlayer
             StoryboardObjectList = new LinkedList<StoryBoardObject>();
 
             CurrentScanNode = StoryboardObjectList.First;
+
+            int audioLeadIn = 0;
 
             #region Get files path
 
@@ -58,7 +68,10 @@ namespace ReOsuStoryBoardPlayer
                     osu_file_path = path;
                     Log.User($"osu file path={path}");
 
-                    var match = Regex.Match(File.ReadAllText(path), @"AudioFilename:\s*(.+)");
+                    string content = File.ReadAllText(path);
+                    var match = Regex.Match(content, @"AudioFilename:\s*(.+)");
+
+                    audioLeadIn = int.Parse(Regex.Match(content, @"AudioLeadIn:\s*(.+)").Groups[1].Value.Replace("\r", string.Empty));
                     if (true)
                     {
                         audio_file_path =folder_path + match.Groups[1].Value.Replace("\r",string.Empty);
@@ -166,13 +179,11 @@ namespace ReOsuStoryBoardPlayer
             {
                 Texture tex = new Texture(path);
                 string absolute_path = path.Replace(folder_path, string.Empty).Trim();
-                CacheDrawSpriteInstanceMap.Add(absolute_path, new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex));
+                CacheDrawSpriteInstanceMap.Add(absolute_path.ToLower(), new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex));
 
                 Log.User($"Loaded storyboard image file :{path}");
             });
         }
-
-        internal float update_current_time;
 
         public void Start()
         {
@@ -194,6 +205,8 @@ namespace ReOsuStoryBoardPlayer
         
         public void Update(float delay_time)
         {
+            runTimer.Start();
+
             if (player.IsPlaying)
             {
                 update_current_time += delay_time;
@@ -233,10 +246,11 @@ namespace ReOsuStoryBoardPlayer
                     });
                 }
 
-                foreach (var obj in objs)
-                {
-                    StoryBoardObjectUpdate(obj, current_time);
-                }
+                objs.ForEach(obj =>
+                    {
+                        StoryBoardObjectUpdate(obj, current_time);
+                    }
+                );
             }
 
             //remove unused objects
@@ -260,6 +274,10 @@ namespace ReOsuStoryBoardPlayer
             CallUpdateDebugControllerWindowInfo();
 
             #endif
+
+            UpdateCastTime = runTimer.ElapsedMilliseconds;
+
+            runTimer.Reset();
         }
 
         private void StoryBoardObjectUpdate(StoryBoardObject storyboard_obj,uint time)
@@ -313,6 +331,8 @@ namespace ReOsuStoryBoardPlayer
 
         public void PostDrawStoryBoard()
         {
+            runTimer.Start();
+
             foreach (var layout_list in _UpdatingStoryBoard)
             {
                 if (layout_list.Value.Count==0)
@@ -322,6 +342,10 @@ namespace ReOsuStoryBoardPlayer
 
                 PostDrawStoryBoardLayout(layout_list.Value);
             }
+
+            RenderCastTime = runTimer.ElapsedMilliseconds;
+
+            runTimer.Reset();
         }
 
         public void PostDrawStoryBoardLayout(List<StoryBoardObject> UpdatingStoryboardObjectList)
@@ -383,7 +407,7 @@ namespace ReOsuStoryBoardPlayer
                 Log.User($"Dump Layout:{layout.Key.ToString()}");
                 foreach (var obj in layout.Value)
                 {
-                    Log.User($"\"{obj.ImageFilePath}\"\nPosition={obj.Postion} \\ Rotate = {obj.Rotate} \\ Scale = {obj.Scale} \n Color = {obj.Color} \\ Anchor : {obj.Anchor} \n -----------------------");
+                    Log.User($"\"{obj.ImageFilePath}\" \\ Z = {obj.Z} \\ {obj.FrameStartTime} ~ {obj.FrameEndTime} \nPosition={obj.Postion} \\ Rotate = {obj.Rotate} \\ Scale = {obj.Scale} \n Color = {obj.Color} \\ Anchor : {obj.Anchor} \n -----------------------");
                 }
             }
         }
