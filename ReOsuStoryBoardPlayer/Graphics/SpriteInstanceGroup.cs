@@ -199,7 +199,7 @@ namespace ReOsuStoryBoardPlayer
             var data = instanceData.data;
 
             //Z float
-            data[0] = -z_other;
+            data[0] = 0;
 
             //Anchor write
             data[1] = anchor.x;

@@ -242,6 +242,10 @@ namespace ReOsuStoryBoardPlayer
                 if (isAdd)
                 {
                     objs.Sort((a, b) => {
+                        if (a.FrameStartTime != b.FrameStartTime)
+                        {
+                            return a.FrameStartTime - b.FrameStartTime;
+                        }
                         return a.Z - b.Z;
                     });
                 }
