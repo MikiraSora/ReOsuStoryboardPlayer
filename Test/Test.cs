@@ -13,7 +13,7 @@ namespace Test
 		{
             TestGameWindow s = new TestGameWindow();
 
-            Engine.Debug = false;
+            Engine.Debug = true;
 
             s.resizeWindow(640, 480);
             s.Run();

@@ -28,7 +28,7 @@ namespace Test
 
             #endregion
 
-            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\511637 solfa featChata - I will");
+            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\365163 Hana - MAJICK");
 
             instance.Start();
 

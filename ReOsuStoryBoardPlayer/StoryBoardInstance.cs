@@ -197,9 +197,65 @@ namespace ReOsuStoryBoardPlayer
             foreach (var pair in _UpdatingStoryBoard)
             {
                 pair.Value.Clear();
+
             }
             update_current_time = 0;
+
             CurrentScanNode = StoryboardObjectList.First;
+
+            ScanPrev(player.CurrentPlayback);
+
+            //debug
+            player.Pause();
+        }
+
+        private bool ScanNext(float current_time)
+        {
+            bool isAdd = false;
+
+            while (true)
+            {
+                if (CurrentScanNode == null || CurrentScanNode.Value.FrameStartTime >= current_time)
+                    break;
+
+                Log.Debug($"[{current_time}]Add storyboard obj \"{CurrentScanNode.Value.ImageFilePath}\"");
+
+                _UpdatingStoryBoard[CurrentScanNode.Value.layout].Add(CurrentScanNode.Value);
+
+                isAdd = true;
+
+                CurrentScanNode = CurrentScanNode.Next;
+            }
+
+            return isAdd;
+        }
+        
+        private bool ScanPrev(float current_time)
+        {
+            bool isAdd = false;
+
+            LinkedListNode<StoryBoardObject> CurrentScanNode=StoryboardObjectList.First;
+
+            while (true)
+            {
+                if (CurrentScanNode == null || CurrentScanNode.Value.FrameEndTime < current_time)
+                    break;
+
+                //start_time<= current_time <=end_time
+                if (current_time<=CurrentScanNode.Value.FrameEndTime&&CurrentScanNode.Value.FrameStartTime<=current_time)
+                {
+
+                    Log.User($"[ScanPrev][{current_time} : {CurrentScanNode.Value.FrameStartTime} ~ {CurrentScanNode.Value.FrameEndTime}]Add storyboard obj \"{CurrentScanNode.Value.ImageFilePath}\"");
+
+                    _UpdatingStoryBoard[CurrentScanNode.Value.layout].Add(CurrentScanNode.Value);
+
+                    isAdd = true;
+                }
+                
+                CurrentScanNode = CurrentScanNode.Next;
+            }
+
+            return isAdd;
         }
         
         public void Update(float delay_time)
@@ -222,26 +278,11 @@ namespace ReOsuStoryBoardPlayer
 
             float current_time = update_current_time;
 
-            bool isAdd = false;
-
-            while (true)
-            {
-                if (CurrentScanNode == null|| CurrentScanNode.Value.FrameStartTime >= current_time)
-                    break;
-
-                Log.Debug($"[{current_time}]Add storyboard obj \"{CurrentScanNode.Value.ImageFilePath}\"");
-
-                _UpdatingStoryBoard[CurrentScanNode.Value.layout].Add(CurrentScanNode.Value);
-
-                isAdd = true;
-
-                CurrentScanNode = CurrentScanNode.Next;
-            }
-
-
+            bool hasAdded = ScanNext(current_time);
+            
             foreach (var objs in _UpdatingStoryBoard.Values)
             {
-                if (isAdd)
+                if (hasAdded)
                 {
                     objs.Sort((a, b) => {
                         /*
