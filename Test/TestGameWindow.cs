@@ -28,7 +28,7 @@ namespace Test
 
             #endregion
 
-            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\365163 Hana - MAJICK");
+            instance = new ReOsuStoryBoardPlayer.StoryBoardInstance(@"H:\SBTest\511637 solfa featChata - I will");
 
             instance.Start();
 
@@ -37,13 +37,15 @@ namespace Test
             VSync = VSyncMode.Off;
 
             Engine.LoadSystem(new ReOsuStoryBoardPlayer.StoryboardRenderSystem(instance));
+
+            Schedule.addMainThreadUpdateTask(new Schedule.ScheduleTask(3, true, null, -1, (task,obj) => {
+                instance.Update(3);
+            }));
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            base.OnUpdateFrame(e);          
-
-            instance.Update((float)e.Time);
+            base.OnUpdateFrame(e);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

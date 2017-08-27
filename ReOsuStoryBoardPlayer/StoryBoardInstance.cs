@@ -189,7 +189,6 @@ namespace ReOsuStoryBoardPlayer
         {
             player.Play();
             CurrentScanNode = StoryboardObjectList.First;
-
             update_current_time = 0;
         }
 
@@ -199,7 +198,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 pair.Value.Clear();
             }
-
+            update_current_time = 0;
             CurrentScanNode = StoryboardObjectList.First;
         }
         
@@ -221,7 +220,7 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
 
-            float current_time = /*player.CurrentPlayback*/update_current_time;
+            float current_time = update_current_time;
 
             bool isAdd = false;
 
