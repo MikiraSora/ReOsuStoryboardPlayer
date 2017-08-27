@@ -127,14 +127,9 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion
 
-        public static void DispatchCommandExecute(StoryBoardObject ref_obj, uint current_playing_time, Command command)
+        public static void DispatchCommandExecute(StoryBoardObject ref_obj, float current_playing_time, Command command)
         {
             #region Calculate interpolator value
-
-            if (ref_obj.ImageFilePath.EndsWith("4.png")&&command.CommandEventType==Event.Color)
-            {
-                Log.Debug("");
-            }
 
             float current_value = command.Easing.calculate(current_playing_time- command.StartTime, command.StartTime, command.EndTime);
 

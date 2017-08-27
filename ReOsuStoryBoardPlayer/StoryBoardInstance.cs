@@ -213,12 +213,15 @@ namespace ReOsuStoryBoardPlayer
 
                 if (Math.Abs(update_current_time-player.CurrentPlayback)>22)
                 {
+                    /*
+                     * 现存BUG，update累计时间太慢以至于播放器的时间同步
+                     */
                     //force
                     update_current_time = player.CurrentPlayback;
                 }
             }
 
-            uint current_time = /*player.CurrentPlayback*/(uint)update_current_time;
+            float current_time = /*player.CurrentPlayback*/update_current_time;
 
             bool isAdd = false;
 
@@ -242,10 +245,15 @@ namespace ReOsuStoryBoardPlayer
                 if (isAdd)
                 {
                     objs.Sort((a, b) => {
+                        /*
+                         * 咕咕咕
+                         */
+                        /*
                         if (a.FrameStartTime != b.FrameStartTime)
                         {
                             return a.FrameStartTime - b.FrameStartTime;
                         }
+                        */
                         return a.Z - b.Z;
                     });
                 }
@@ -284,7 +292,7 @@ namespace ReOsuStoryBoardPlayer
             runTimer.Reset();
         }
 
-        private void StoryBoardObjectUpdate(StoryBoardObject storyboard_obj,uint time)
+        private void StoryBoardObjectUpdate(StoryBoardObject storyboard_obj,float time)
         {
             if (time > storyboard_obj.FrameEndTime)
             {
