@@ -120,4 +120,13 @@ namespace ReOsuStoryBoardPlayer
         public readonly float Distance;
         public float StartRotate, EndRotate;
     }
+
+    public class LoopCommandParamesters : CommandParameters
+    {
+        public List<Command> LoopCommandList = new List<Command>();
+
+        public LoopCommandParamesters() { }
+
+        public uint CostTime;
+    }
 }

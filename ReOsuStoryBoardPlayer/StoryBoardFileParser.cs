@@ -46,6 +46,10 @@ namespace ReOsuStoryBoardPlayer
 
             int command_count = 0;
             int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue, z_order=0;
+            bool isSubCommand = false;
+
+            LoopCommand current_loop_command = null;
+
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
@@ -59,10 +63,21 @@ namespace ReOsuStoryBoardPlayer
 
                 if (line.StartsWith(" ") || line.StartsWith("_"))
                 {
-                    Command cmd = ParseCommandLine(line);
+                    Command cmd = ParseCommandLine(line,out isSubCommand);
 
                     if (cmd==null)
                     {
+                        continue;
+                    }
+
+                    if (isSubCommand)
+                    {
+                        if (current_loop_command!=null)
+                        {
+                            Log.Debug($"add subCommand \"{cmd.ToString()}\" to Loop \"{current_loop_command.ToString()}\"");
+                            current_loop_command.LoopParamesters.LoopCommandList.Add(cmd);
+                        }
+
                         continue;
                     }
 
@@ -71,13 +86,22 @@ namespace ReOsuStoryBoardPlayer
                         frame_start_time = cmd.StartTime;
                     }
 
+                    command_count++;
+
+                    //Loop 中断
+                    if (cmd is LoopCommand)
+                    {
+                        current_loop_command = (LoopCommand)cmd;
+                        current_command.Add(cmd);
+                        continue;
+                    }
+
                     if (int.MaxValue == frame_end_time || frame_end_time < cmd.EndTime)
                     {
                         frame_end_time = cmd.EndTime;
                     }
 
                     current_command.Add(cmd);
-                    command_count++;
                 }
                 else
                 {
@@ -118,12 +142,19 @@ namespace ReOsuStoryBoardPlayer
             return obj_list;
         }
 
-        public static Command ParseCommandLine(string line)
+        public static Command ParseCommandLine(string line,out bool IsSubCommand)
         {
             Command cmd = new Command();
             string[] command_params = line.Split(',');
 
+            IsSubCommand = false;
+
             #region Event
+
+            if (command_params[0].StartsWith("  "))
+            {
+                IsSubCommand = true;
+            }
 
             switch (command_params[0].Trim().Replace("_",string.Empty).ToUpper())
             {
@@ -153,10 +184,16 @@ namespace ReOsuStoryBoardPlayer
                     break;
 
                 case "T":
-                case "L":
                 case "P":
-                    //not support , skip
                     return null;
+                case "L":
+                    var loop_cmd = new LoopCommand();
+                    loop_cmd.Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear];
+                    loop_cmd.CommandEventType = Event.Loop;
+                    loop_cmd.StartTime = int.Parse(command_params[1]);
+                    loop_cmd.CurrentLoopCount = int.Parse(command_params[2]);
+                    loop_cmd.executor = CommandExecutor.CommandFunctionMap[Event.Loop];
+                    return loop_cmd;
                 default:
                     break;
             }
@@ -404,6 +441,7 @@ namespace ReOsuStoryBoardPlayer
                     return new Vector(0.5f,0.5f);
             }
         }
+
     }
 
     public static class StoryBoardAdjustment
@@ -423,6 +461,12 @@ namespace ReOsuStoryBoardPlayer
                 }
 
                 result[command.CommandEventType].Add(command);
+
+                if (command is LoopCommand)
+                {
+                    //特殊调整
+                    AdjustLoopCommand((LoopCommand)command);
+                }
             }
 
             foreach (var pair in result)
@@ -431,6 +475,22 @@ namespace ReOsuStoryBoardPlayer
             }
 
             return result;
+        }
+
+        static void AdjustLoopCommand(LoopCommand loop_command)
+        {
+            int current_end_time = loop_command.StartTime;
+
+            for (int i = 0; i < loop_command.CurrentLoopCount; i++)
+            {
+                foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
+                {
+                    current_end_time += sub_command.EndTime;
+                }
+            }
+
+            loop_command.EndTime = current_end_time;
+            loop_command.LoopParamesters.CostTime =(uint)((loop_command.EndTime - loop_command.StartTime) / loop_command.CurrentLoopCount);
         }
     }
 }

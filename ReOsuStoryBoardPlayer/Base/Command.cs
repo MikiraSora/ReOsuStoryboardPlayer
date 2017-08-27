@@ -18,4 +18,13 @@ namespace ReOsuStoryBoardPlayer
 
         public override string ToString() => $"{CommandEventType.ToString()},{Easing.ToString()},{StartTime},{EndTime}";
     }
+
+    public class LoopCommand :Command
+    {
+        public int LoopCount,CurrentLoopCount=0;
+
+        public LoopCommandParamesters LoopParamesters=new LoopCommandParamesters();
+        
+        public override string ToString() => $"{CommandEventType.ToString()},{StartTime},{LoopCount}";
+    }
 }

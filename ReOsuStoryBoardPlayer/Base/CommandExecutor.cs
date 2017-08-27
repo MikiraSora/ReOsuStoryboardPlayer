@@ -22,7 +22,8 @@ namespace ReOsuStoryBoardPlayer
             {Event.MoveY,MoveY},
             {Event.Scale,Scale},
             {Event.VectorScale,ScaleVector},
-            {Event.Rotate,Rotate}
+            {Event.Rotate,Rotate},
+            {Event.Loop,Loop}
         };
 
         #endregion
@@ -123,6 +124,28 @@ namespace ReOsuStoryBoardPlayer
             float a = ref_obj.Color.w;
             ref_obj.Color = temp;
             ref_obj.Color.w = a;
+        }
+
+        public static void Loop(StoryBoardObject ref_obj, float current_value, ReOsuStoryBoardPlayer.Command command)
+        {
+            int recovery_time = (int)((command.EndTime - command.StartTime) * current_value);
+            LoopCommand loop_command = (LoopCommand)command;
+
+            int clamp_time = (int)(recovery_time % loop_command.LoopParamesters.CostTime);
+
+            foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
+            {
+                int cost = sub_command.EndTime - sub_command.StartTime;
+
+                if (clamp_time<=cost)
+                {
+                    //execute
+                    DispatchCommandExecute(ref_obj, clamp_time, sub_command);
+                    break;
+                }
+
+                clamp_time -= cost;
+            }
         }
 
         #endregion
