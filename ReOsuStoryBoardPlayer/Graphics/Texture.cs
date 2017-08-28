@@ -203,10 +203,5 @@ namespace ReOsuStoryBoardPlayer
         {
             GL.DeleteTexture(_id);
         }
-
-        ~Texture()
-        {
-            Dispose();
-        }
     }
 }

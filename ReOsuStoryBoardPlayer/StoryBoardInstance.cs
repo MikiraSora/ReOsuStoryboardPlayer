@@ -91,7 +91,7 @@ namespace ReOsuStoryBoardPlayer
 
             #endregion
 
-            BuildCacheDrawSpriteBatch();
+            //BuildCacheDrawSpriteBatch();
 
             #region Load and Parse osb/osu file
 
@@ -170,7 +170,7 @@ namespace ReOsuStoryBoardPlayer
             update_current_time = new_time;
         }
 
-        private void BuildCacheDrawSpriteBatch()
+        internal void BuildCacheDrawSpriteBatch()
         {
             List<String> pic_list = new List<string>();
             pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.png", SearchOption.AllDirectories));
