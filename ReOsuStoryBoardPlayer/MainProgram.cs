@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"H:\SBTest\372552 yuiko - Azuma no Sora kara Hajimaru Sekai (Short)";
+                beatmap_folder = @"H:\SBTest\417306 pocotan - Dear Jewel";
             }
             else
                 beatmap_folder = argv[1];
