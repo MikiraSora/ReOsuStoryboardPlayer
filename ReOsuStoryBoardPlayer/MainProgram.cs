@@ -18,7 +18,7 @@ namespace ReOsuStoryBoardPlayer
                 beatmap_folder = @"H:\SBTest\417306 pocotan - Dear Jewel";
             }
             else
-                beatmap_folder = argv[1];
+                beatmap_folder = argv[0];
 
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
