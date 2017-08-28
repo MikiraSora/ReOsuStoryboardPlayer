@@ -30,7 +30,7 @@ namespace ReOsuStoryBoardPlayer
 
         public MusicPlayer player;
 
-        internal float update_current_time;
+        //internal float update_current_time;
 
         Stopwatch runTimer = new Stopwatch();
 
@@ -167,7 +167,7 @@ namespace ReOsuStoryBoardPlayer
             //fast seek? tan 90°
             Flush();
             
-            update_current_time = new_time;
+            //update_current_time = new_time;
         }
 
         internal void BuildCacheDrawSpriteBatch()
@@ -190,7 +190,7 @@ namespace ReOsuStoryBoardPlayer
         {
             player.Play();
             CurrentScanNode = StoryboardObjectList.First;
-            update_current_time = 0;
+            //update_current_time = 0;
         }
 
         public void Flush()
@@ -200,7 +200,7 @@ namespace ReOsuStoryBoardPlayer
                 pair.Value.Clear();
 
             }
-            update_current_time = 0;
+            //update_current_time = 0;
 
             CurrentScanNode = StoryboardObjectList.First;
 
@@ -263,6 +263,7 @@ namespace ReOsuStoryBoardPlayer
         {
             runTimer.Start();
 
+            /*
             if (player.IsPlaying)
             {
                 update_current_time += delay_time;
@@ -271,13 +272,14 @@ namespace ReOsuStoryBoardPlayer
                 {
                     /*
                      * 现存BUG，update累计时间太慢以至于播放器的时间同步
-                     */
+                     *
                     //force
                     update_current_time = player.CurrentPlayback;
                 }
             }
+            */
 
-            float current_time = update_current_time;
+            float current_time =/* update_current_time */player.FixCurrentPlayback;
 
             bool hasAdded = ScanNext(current_time);
             
@@ -286,15 +288,6 @@ namespace ReOsuStoryBoardPlayer
                 if (hasAdded)
                 {
                     objs.Sort((a, b) => {
-                        /*
-                         * 咕咕咕
-                         */
-                        /*
-                        if (a.FrameStartTime != b.FrameStartTime)
-                        {
-                            return a.FrameStartTime - b.FrameStartTime;
-                        }
-                        */
                         return a.Z - b.Z;
                     });
                 }
@@ -486,8 +479,13 @@ namespace ReOsuStoryBoardPlayer
             ControllerWindow.progressBar1.Maximum = (int)player.Length;
         }
 
-        #endif
+#endif
 
         #endregion
+
+        ~StoryBoardInstance()
+        {
+            player.Term();
+        }
     }
 }
