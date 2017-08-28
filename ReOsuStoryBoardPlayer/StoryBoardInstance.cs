@@ -98,14 +98,16 @@ namespace ReOsuStoryBoardPlayer
 
             List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs=new List<StoryBoardObject>();
 
+            int z_order = 0;
+
+            //get objs from osu file
+            List<StoryBoardObject> parse_osu_storyboard_objs = StoryBoardFileParser.ParseFromOsuFile(osu_file_path,ref z_order);
+
             if ((!string.IsNullOrWhiteSpace(osb_file_path))&&File.Exists(osb_file_path))
             {
-                parse_osb_storyboard_objs = StoryBoardFileParser.ParseFromOsbFile(osb_file_path);
+                parse_osb_storyboard_objs = StoryBoardFileParser.ParseFromOsbFile(osb_file_path,ref z_order);
             }
             
-            //get objs from osu file
-            List<StoryBoardObject> parse_osu_storyboard_objs = StoryBoardFileParser.ParseFromOsuFile(osu_file_path);
-
             temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
 
             foreach (var obj in temp_objs_list)

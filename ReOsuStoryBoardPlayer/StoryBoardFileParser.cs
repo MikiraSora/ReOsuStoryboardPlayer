@@ -11,15 +11,15 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryBoardFileParser
     {
-        public static List<StoryBoardObject> ParseFromOsbFile(string osb_file_path)
+        public static List<StoryBoardObject> ParseFromOsbFile(string osb_file_path, ref int z_order)
         {
             using (var reader = File.OpenText(osb_file_path))
             {
-                return ParseFromStream(reader);
+                return ParseFromStream(reader, ref z_order);
             }
         }
 
-        public static List<StoryBoardObject> ParseFromOsuFile(string osu_file_path)
+        public static List<StoryBoardObject> ParseFromOsuFile(string osu_file_path, ref int z_order)
         {
             using (StreamReader reader = File.OpenText(osu_file_path))
             {
@@ -33,11 +33,11 @@ namespace ReOsuStoryBoardPlayer
                     }
                 }
 
-                return ParseFromStream(reader);
+                return ParseFromStream(reader, ref z_order);
             }
         }
 
-        static List<StoryBoardObject> ParseFromStream(StreamReader reader)
+        static List<StoryBoardObject> ParseFromStream(StreamReader reader,ref int z_order)
         {
             List<StoryBoardObject> obj_list = new List<StoryBoardObject>();
             List<Command> current_command = new List<Command>();
@@ -45,7 +45,7 @@ namespace ReOsuStoryBoardPlayer
             StoryBoardObject current_storyboard_obj = null;
 
             int command_count = 0;
-            int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue, z_order=0;
+            int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue;
             bool isSubCommand = false;
 
             LoopCommand current_loop_command = null;
@@ -204,9 +204,15 @@ namespace ReOsuStoryBoardPlayer
 
             #region Easing
 
-            int easingID = int.Parse(command_params[1].Trim());
+            Easing easingID = (Easing)int.Parse(command_params[1].Trim());
 
-            cmd.Easing = EasingConverter.CacheEasingInterpolatorMap[((Easing)easingID)];
+            if (!EasingConverter.CacheEasingInterpolatorMap.ContainsKey(easingID))
+            {
+                Log.Warn($"Cant found the easing = {easingID.ToString()} , will be set Linear");
+                cmd.Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear];
+            }
+            else
+                cmd.Easing = EasingConverter.CacheEasingInterpolatorMap[easingID];
             
             #endregion
 
