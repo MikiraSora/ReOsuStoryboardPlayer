@@ -19,9 +19,9 @@ namespace ReOsuStoryBoardPlayer
             }
             else
                 beatmap_folder = argv[0];
-
+            
             StoryBoardInstance instance = GetInstance(beatmap_folder);
-
+            
             StoryboardWindow window = new StoryboardWindow(instance);
 
             window.Run();
@@ -39,14 +39,14 @@ namespace ReOsuStoryBoardPlayer
                 Exit($"\"{beatmap_folder}\" not a folder!");
             }
 
-            //try
-            //{
+            try
+            {
                 return new StoryBoardInstance(beatmap_folder);
-            //}
-            //catch (Exception e)
-            //{
-            //    Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
-            //}
+            }
+            catch (Exception e)
+            {
+               Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
+            }
 
             return null;
         }

@@ -13,7 +13,10 @@ namespace ReOsuStoryBoardPlayer
 
         static bool _outPutWithColor = true;
 
-        public static bool AbleLog { get; set; } = true;
+        public static bool AbleLog { get;
+            set; } = true;
+
+        public static bool AbleDebugLog { get; set; } = false;
 
         public static bool IsColorOutput { get { return _outPutWithColor; } set { _outPutWithColor = value; } }
 
@@ -105,7 +108,7 @@ namespace ReOsuStoryBoardPlayer
 
         public static void Debug(string message, params object[] paramsArr)
         {
-            if (!AbleLog)
+            if (!AbleDebugLog)
                 return;
             _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.Debug);
         }
