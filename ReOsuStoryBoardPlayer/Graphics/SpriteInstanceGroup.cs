@@ -27,7 +27,7 @@ namespace ReOsuStoryBoardPlayer
 
         int _vao, _vbo, _vbo_vertexBase, _vbo_texPosBase;
 
-        InstanceData[] _instanceDataArray;
+        byte[] _instanceDataArray;
 
         private SpriteInstanceGroup() { }
 
@@ -54,8 +54,7 @@ namespace ReOsuStoryBoardPlayer
 
             _buildBuffer();
 
-            _staticCacheData = new float[_calculateCapacitySize()];
-            _instanceDataArray = new InstanceData[capacity];
+            PostData = new float[_calculateCapacitySize()*capacity];
         }
 
         ~SpriteInstanceGroup()
@@ -175,7 +174,7 @@ namespace ReOsuStoryBoardPlayer
 
         Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
 
-        float[] _staticCacheData;
+        float[] PostData;
 
         public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, Vec4 color)
         {
@@ -183,29 +182,25 @@ namespace ReOsuStoryBoardPlayer
 			*orther		anchor	    color		bound       modelMatrix
 			*float(1)	vec2(2)		vec4(4)     vec2(2)     Matrix4(16)
 			*/
-            if (_instanceDataArray[_currentPostCount] == null)
-                _instanceDataArray[_currentPostCount] = new InstanceData();
-            var instanceData = _instanceDataArray[_currentPostCount];
-            if (instanceData.data == null)
-                instanceData.data = new float[_calculateCapacitySize()];
-            var data = instanceData.data;
+
+            int base_index = _currentPostCount * _calculateCapacitySize();
 
             //Z float
-            data[0] = 0;
+            PostData[base_index + 0] = 0;
 
             //Anchor write
-            data[1] = anchor.x;
-            data[2] = -anchor.y;
+            PostData[base_index + 1] = anchor.x;
+            PostData[base_index + 2] = -anchor.y;
 
             //Color write
-            data[3] = color.x;
-            data[4] = color.y;
-            data[5] = color.z;
-            data[6] = color.w;
+            PostData[base_index + 3] = color.x;
+            PostData[base_index + 4] = color.y;
+            PostData[base_index + 5] = color.z;
+            PostData[base_index + 6] = color.w;
 
             //Bound write
-            data[7] = bound.x;
-            data[8] = bound.y;
+            PostData[base_index + 7] = bound.x;
+            PostData[base_index + 8] = bound.y;
 
             //ModelMatrix write
             Matrix4 model =
@@ -220,7 +215,7 @@ namespace ReOsuStoryBoardPlayer
             _Matrix4ToFloatArray(ref model);
             foreach (var value in _cacheMatrix)
             {
-                data[9 + (i++)] = value;
+                PostData[base_index + 9 + (i++)] = value;
             }
 
             _currentPostCount++;
@@ -232,45 +227,19 @@ namespace ReOsuStoryBoardPlayer
 
         public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale,Vector anchor, Vec4 color) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color);
 
-        class InstanceData : IComparable
-        {
-            public float[] data;
-            public float z { get { return data == null ? 0 : data[0]; } }
-
-            public int CompareTo(object obj)
-            {
-                var other = ((InstanceData)obj);
-                var result = (other).z - z;
-                return result < 0 ? -1 : result > 0 ? 1 : 0;
-            }
-        }
-
         Matrix4 offset_view = Matrix4.CreateTranslation(new Vector3(-StoryboardWindow.CurrentWindow.Width / 2, -StoryboardWindow.CurrentWindow.Height / 2, 0));
 
         void _draw()
         {
             _shader.begin();
             var VP = Projection * (View);
-
-            /*
-            foreach (var pair in _material.parameters)
-            {
-                if (pair.Value != null)
-                    _material.shader.PassUniform(pair.Key, pair.Value);
-            }
-            */
-
-            //_material.shader.PassUniform("ViewProjection", VP);
-
+            
             _shader.PassUniform("diffuse", texture);
             _shader.PassUniform("ViewProjection", VP);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
             {
-                for (int i = 0; i < _currentPostCount; i++)
-                {
-                    GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)(i * _calculateCapacitySize()), (IntPtr)_instanceDataArray[i].data.Length, _instanceDataArray[i].data);
-                }  
+                GL.BufferSubData<float>(BufferTarget.ArrayBuffer, (IntPtr)(0), (IntPtr)(_calculateCapacitySize() * CurrentPostCount), PostData);
             }
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
@@ -280,11 +249,6 @@ namespace ReOsuStoryBoardPlayer
             }
 
             GL.BindVertexArray(0);
-            
-            for (int i = 0; i < _currentPostCount; i++)
-            {
-                _instanceDataArray[i].data[0] = -1000000;
-            }
 
             _shader.Clear();
             _shader.end();
@@ -292,8 +256,6 @@ namespace ReOsuStoryBoardPlayer
 
         public void FlushDraw()
         {
-            Array.Sort(_instanceDataArray, 0, _currentPostCount);
-            
             _draw();
             Clear();
         }
