@@ -1,5 +1,4 @@
-﻿using SimpleRenderFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,7 +77,7 @@ namespace ReOsuStoryBoardPlayer
                 cal_result = parameters.StartRotate + sign * parameters.Distance * current_value;
             }
 
-            cal_result = (float)Mathf.toDegrees(cal_result);
+            cal_result = (float)(cal_result/Math.PI*180.0f);
 
             ref_obj.Rotate =cal_result ;
         }

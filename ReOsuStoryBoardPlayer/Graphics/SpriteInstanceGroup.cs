@@ -6,7 +6,6 @@ using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
 using OpenTK;
 using System.Threading.Tasks;
-using SimpleRenderFramework;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections;
@@ -18,12 +17,11 @@ namespace ReOsuStoryBoardPlayer
         public uint Capacity { get; protected set; } = 0;
 
         int _currentPostCount = 0;
-
-        static DebugBatchShader _debug_shader;
+        
         static BatchShader _shader;
 
-        public static Matrix4 Projection { get { return Engine.ProjectionMatrix; } }
-        public static Matrix4 View { get { return Engine.CameraViewMatrix; } }
+        public static Matrix4 Projection { get { return StoryboardWindow.ProjectionMatrix; } }
+        public static Matrix4 View { get { return StoryboardWindow.CameraViewMatrix; } }
 
         public int CurrentPostCount { get => _currentPostCount; }
 
@@ -33,7 +31,7 @@ namespace ReOsuStoryBoardPlayer
 
         private SpriteInstanceGroup() { }
 
-        public Material _material;
+        Texture texture;
 
         public string ImagePath { get; private set; }
 
@@ -41,9 +39,6 @@ namespace ReOsuStoryBoardPlayer
         {
             _shader = new BatchShader();
             _shader.compile();
-
-            _debug_shader = new DebugBatchShader();
-            _debug_shader.compile();
         }
 
         internal SpriteInstanceGroup(uint capacity,string image_path, Texture texture)
@@ -54,11 +49,8 @@ namespace ReOsuStoryBoardPlayer
             _bound.y = texture.Height;
 
             this.Capacity = capacity;
-            _material = new Material();
             
-            _material.shader = _shader;
-
-            _material.parameters["diffuse"] = texture;
+            this.texture = texture;
 
             _buildBuffer();
 
@@ -220,7 +212,7 @@ namespace ReOsuStoryBoardPlayer
                 Matrix4.Identity *
             Matrix4.CreateScale(scale.x, scale.y, 1) *
             Matrix4.CreateFromAxisAngle(_staticCacheAxis, rotate / 180.0f * 3.1415926f) *
-            Matrix4.CreateTranslation(position.x-Window.CurrentWindow.Width/2, -position.y+ Window.CurrentWindow.Height / 2, 0);
+            Matrix4.CreateTranslation(position.x-StoryboardWindow.CurrentWindow.Width/2, -position.y+ StoryboardWindow.CurrentWindow.Height / 2, 0);
             //model.Transpose();
 
             int i = 0;
@@ -253,24 +245,25 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        Matrix4 offset_view = Matrix4.CreateTranslation(new Vector3(-Window.CurrentWindow.Width / 2, -Window.CurrentWindow.Height / 2, 0));
+        Matrix4 offset_view = Matrix4.CreateTranslation(new Vector3(-StoryboardWindow.CurrentWindow.Width / 2, -StoryboardWindow.CurrentWindow.Height / 2, 0));
 
         void _draw()
         {
-            if (Engine.Debug)
-                _material.shader = _debug_shader;
-            else
-                _material.shader = _shader;
-
-            _material.shader.begin();
+            _shader.begin();
             var VP = Projection * (View);
+
+            /*
             foreach (var pair in _material.parameters)
             {
                 if (pair.Value != null)
                     _material.shader.PassUniform(pair.Key, pair.Value);
             }
+            */
 
-            _material.shader.PassUniform("ViewProjection", VP);
+            //_material.shader.PassUniform("ViewProjection", VP);
+
+            _shader.PassUniform("diffuse", texture);
+            _shader.PassUniform("ViewProjection", VP);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
             {
@@ -293,8 +286,8 @@ namespace ReOsuStoryBoardPlayer
                 _instanceDataArray[i].data[0] = -1000000;
             }
 
-            _material.shader.Clear();
-            _material.shader.end();
+            _shader.Clear();
+            _shader.end();
         }
 
         public void FlushDraw()

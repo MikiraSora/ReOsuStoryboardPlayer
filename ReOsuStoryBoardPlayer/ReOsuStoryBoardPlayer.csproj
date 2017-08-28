@@ -56,6 +56,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="irrKlang.NET4">
       <HintPath>..\Dependencies\irrKlang.NET4.dll</HintPath>
@@ -66,10 +69,6 @@
     </Reference>
     <Reference Include="OpenTK.GLControl">
       <HintPath>..\Dependencies\OpenTK.GLControl.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleRenderFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SimpleRenderFramework\SimpleRenderFramework\bin\Debug\SimpleRenderFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,7 +90,9 @@
     <Compile Include="Base\CommandExecutor.cs" />
     <Compile Include="Base\CommandParameters.cs" />
     <Compile Include="Base\Easing.cs" />
+    <Compile Include="Base\EasingInterpolator.cs" />
     <Compile Include="Base\Event.cs" />
+    <Compile Include="Base\IInterpolator.cs" />
     <Compile Include="Base\Layout.cs" />
     <Compile Include="DebugController\ControllerWindow.cs">
       <SubType>Form</SubType>
@@ -111,15 +112,20 @@
     <Compile Include="DebugController\JumpToWindow.Designer.cs">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugController\Log.cs" />
     <Compile Include="Graphics\BatchShader.cs" />
+    <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
-    <Compile Include="Graphics\StoryboardRenderSystem.cs" />
+    <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Graphics\Vec4.cs" />
+    <Compile Include="Graphics\Vector.cs" />
+    <Compile Include="MainProgram.cs" />
     <Compile Include="MusicPlayer.cs" />
     <Compile Include="StoryBoardFileParser.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\StoryBoardObject.cs" />
     <Compile Include="StoryBoardInstance.cs" />
+    <Compile Include="StoryboardWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

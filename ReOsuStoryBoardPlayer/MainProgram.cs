@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer
 {
-    class Program
+    public class MainProgram
     {
-        static void Main(string[] args)
+        public static void Main(string[] argv)
         {
+
         }
     }
 }

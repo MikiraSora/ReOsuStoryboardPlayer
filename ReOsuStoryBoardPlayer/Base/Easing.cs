@@ -1,5 +1,4 @@
-﻿using SimpleRenderFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using static System.Math;
@@ -282,7 +281,7 @@ namespace ReOsuStoryBoardPlayer
 
                 case Easing.EasingOut:
                 case Easing.EasingIn:
-                    SimpleRenderFramework.Log.Warn("not support easing type {0},return linear.", easing.ToString());
+                    Log.Warn("not support easing type {0},return linear.", easing.ToString());
                     return new EasingInterpolator(EasingInterpolator.EaseType.Linear);
 
                 case Easing.QuadIn:
@@ -359,7 +358,7 @@ namespace ReOsuStoryBoardPlayer
 
                 case Easing.ElasticHalfOut:
                 case Easing.ElasticQuarterOut:
-                    SimpleRenderFramework.Log.Warn("not support easing type {0}", easing.ToString());
+                    Log.Warn("not support easing type {0}", easing.ToString());
                     return new EasingInterpolator(EasingInterpolator.EaseType.Linear);
 
                 case Easing.BackIn:
@@ -381,7 +380,7 @@ namespace ReOsuStoryBoardPlayer
                     return new EasingInterpolator(EasingInterpolator.EaseType.BounceEaseInOut);
 
                 default:
-                    SimpleRenderFramework.Log.Warn("unknown easing type {0},return linear.", easing.ToString());
+                    Log.Warn("unknown easing type {0},return linear.", easing.ToString());
                     return new EasingInterpolator(EasingInterpolator.EaseType.Linear);
             }
         }
