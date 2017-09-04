@@ -263,23 +263,9 @@ namespace ReOsuStoryBoardPlayer
         {
             runTimer.Start();
 
-            /*
-            if (player.IsPlaying)
-            {
-                update_current_time += delay_time;
+            player.Tick();
 
-                if (Math.Abs(update_current_time-player.CurrentPlayback)>22)
-                {
-                    /*
-                     * 现存BUG，update累计时间太慢以至于播放器的时间同步
-                     *
-                    //force
-                    update_current_time = player.CurrentPlayback;
-                }
-            }
-            */
-
-            float current_time =/* update_current_time */player.FixCurrentPlayback;
+            float current_time =player.CurrentFixedTime;
 
             bool hasAdded = ScanNext(current_time);
             
@@ -292,7 +278,7 @@ namespace ReOsuStoryBoardPlayer
                     });
                 }
 
-                objs.ForEach(obj =>
+                objs.ForEach/*AsParallel().ForAll*/(obj =>
                     {
                         StoryBoardObjectUpdate(obj, current_time);
                     }

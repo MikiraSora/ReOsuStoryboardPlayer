@@ -1,6 +1,7 @@
 ﻿using IrrKlang;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -35,19 +36,9 @@ namespace ReOsuStoryBoardPlayer
 
         private object locker = new object();
 
-        public uint FixCurrentPlayback {
-            get
-            {
-                lock (locker)
-                {
-                    return _fixCurrentPlayback;
-                }
-            }
-        }
+        private Stopwatch time_counter = new Stopwatch();
 
-        public uint _fixCurrentPlayback = 0;
-
-        Thread fix_thread;
+        public float CurrentFixedTime { get; private set; }
 
         public MusicPlayer(string file_path)
         {
@@ -57,39 +48,32 @@ namespace ReOsuStoryBoardPlayer
 
             sound.Volume = 0;
 
-            fix_thread = new Thread(() =>
+            CurrentFixedTime = 0;
+        }
+
+        public void Tick()
+        {
+            float tick_time = time_counter.ElapsedTicks * (1.0f / Stopwatch.Frequency);
+
+            CurrentFixedTime +=tick_time;
+
+            if (Math.Abs(CurrentFixedTime-CurrentPlayback)>26)
             {
-                while (true)
-                {
-                    lock (locker)
-                    {
-                        if (!sound.Paused)
-                        {
-                            _fixCurrentPlayback += 8;
-                        }
-
-                        if (Math.Abs(_fixCurrentPlayback - CurrentPlayback) >= 22)
-                        {
-                            _fixCurrentPlayback = CurrentPlayback;
-                        }
-
-                    }
-
-                    Thread.Sleep(8);
-                }
-            });
-
-            fix_thread.Start();
+                CurrentFixedTime = CurrentPlayback;
+            }
         }
 
         public void Play()
         {
             sound.Paused = false;
+            time_counter.Reset();
+            time_counter.Start();
         }
 
         public void Pause()
         {
             sound.Paused = true;
+            time_counter.Stop();
         }
 
         public void Jump(uint pos)
@@ -100,7 +84,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void Term()
         {
-            fix_thread.Abort();
+            //fix_thread.Abort();
         }
     }
 }

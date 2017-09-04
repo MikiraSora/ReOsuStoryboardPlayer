@@ -64,5 +64,12 @@ namespace ReOsuStoryBoardPlayer
 
             instance.Update((float)e.Time);
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Environment.Exit(0);
+        }
     }
 }
