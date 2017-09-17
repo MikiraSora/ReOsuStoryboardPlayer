@@ -24,6 +24,8 @@ namespace ReOsuStoryBoardPlayer
             
             StoryboardWindow window = new StoryboardWindow(instance);
 
+            Log.AbleDebugLog = true;
+
             window.Run();
         }
 
