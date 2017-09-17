@@ -102,5 +102,10 @@ namespace ReOsuStoryBoardPlayer.DebugController
             JumpToWindow windows = new JumpToWindow(CurrentStoryboardIntance);
             windows.ShowDialog(this);
         }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            CurrentStoryboardIntance.player.Volume = ((TrackBar)sender).Value/100.0f;
+        }
     }
 }

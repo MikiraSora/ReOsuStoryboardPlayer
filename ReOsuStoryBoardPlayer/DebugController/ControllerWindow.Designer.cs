@@ -43,6 +43,8 @@
             this.button9 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -189,6 +191,16 @@
             this.label5.TabIndex = 15;
             this.label5.Text = "FrameTimeCast:";
             // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(309, 61);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(104, 45);
+            this.trackBar1.TabIndex = 16;
+            this.trackBar1.Value = 100;
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            // 
             // ControllerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -196,6 +208,7 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(519, 147);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button9);
@@ -217,6 +230,7 @@
             this.Text = "Esu!StoryboardPlayer Debug Controller Window";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ControllerWindow_FormClosed);
             this.Load += new System.EventHandler(this.ControllerWindow_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,5 +252,6 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }

@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"H:\SBTest\413707 Milkychan - Stronger Than You -Chara Response-";
+                beatmap_folder = @"H:\SBTest\60744 L i z z - Answer";
             }
             else
                 beatmap_folder = argv[0];

@@ -40,14 +40,14 @@ namespace ReOsuStoryBoardPlayer
 
         public float CurrentFixedTime { get; private set; }
 
+        public float Volume { get => sound.Volume; set => sound.Volume = value; }
+
         public MusicPlayer(string file_path)
         {
             audioFilePath = file_path;
 
             sound = engine.Play2D(file_path, false, true, StreamMode.AutoDetect, false);
-
-            sound.Volume = 0;
-
+            
             CurrentFixedTime = 0;
         }
 
