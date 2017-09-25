@@ -33,15 +33,13 @@ namespace ReOsuStoryBoardPlayer
         public float PlaybackSpeed { get => sound.PlaybackSpeed; set => sound.PlaybackSpeed=value; }
 
         public bool IsPlaying { get => !sound.Paused; }
-
-        private object locker = new object();
-
-        private Stopwatch time_counter = new Stopwatch();
-
+        
         public float CurrentFixedTime { get; private set; }
 
         public float Volume { get => sound.Volume; set => sound.Volume = value; }
 
+        private DateTime prev_time;
+        
         public MusicPlayer(string file_path)
         {
             audioFilePath = file_path;
@@ -53,7 +51,9 @@ namespace ReOsuStoryBoardPlayer
 
         public void Tick()
         {
-            float tick_time = time_counter.ElapsedTicks * (1.0f / Stopwatch.Frequency)*1000;
+            var now_time =DateTime.Now;
+            float tick_time = IsPlaying?(float)(now_time-prev_time).TotalMilliseconds/*offset*/:0/*keep*/;
+            prev_time = now_time;
 
             CurrentFixedTime +=tick_time;
 
@@ -66,14 +66,13 @@ namespace ReOsuStoryBoardPlayer
         public void Play()
         {
             sound.Paused = false;
-            time_counter.Reset();
-            time_counter.Start();
+
+            prev_time = DateTime.Now;
         }
 
         public void Pause()
         {
             sound.Paused = true;
-            time_counter.Stop();
         }
 
         public void Jump(uint pos)
