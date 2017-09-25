@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"H:\SBTest\60744 L i z z - Answer";
+                beatmap_folder = @"H:\SBTest\94790 Hatsuki Yura - Fuuga";
             }
             else
                 beatmap_folder = argv[0];
@@ -24,7 +24,7 @@ namespace ReOsuStoryBoardPlayer
             
             StoryboardWindow window = new StoryboardWindow(instance);
 
-            Log.AbleDebugLog = true;
+            Log.AbleDebugLog = false;
 
             window.Run();
         }

@@ -53,7 +53,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void Tick()
         {
-            float tick_time = time_counter.ElapsedTicks * (1.0f / Stopwatch.Frequency);
+            float tick_time = time_counter.ElapsedTicks * (1.0f / Stopwatch.Frequency)*1000;
 
             CurrentFixedTime +=tick_time;
 
