@@ -485,28 +485,28 @@ namespace ReOsuStoryBoardPlayer
 
         static void AdjustLoopCommand(LoopCommand loop_command)
         {
-            int offeset_start_time = loop_command.LoopParamesters.LoopCommandList.FirstOrDefault().StartTime- loop_command.StartTime;
+            int first_start_time = loop_command.LoopParamesters.LoopCommandList.FirstOrDefault().StartTime;
 
-            int current_end_time = loop_command.StartTime+ offeset_start_time;
+            int current_end_time = 0;
 
             //reset children commands start_time and end_time
             foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
             {
-                sub_command.StartTime -= offeset_start_time;
-                sub_command.EndTime -= offeset_start_time;
+                sub_command.StartTime -= first_start_time;
+                sub_command.EndTime -= first_start_time;
             }
 
             for (int i = 0; i < loop_command.LoopCount; i++)
             {
                 foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
                 {
-                    current_end_time += sub_command.EndTime;
+                    current_end_time += sub_command.EndTime- sub_command.StartTime;
                 }
             }
 
-            loop_command.StartTime += offeset_start_time;
-            loop_command.EndTime = current_end_time;
-            loop_command.LoopParamesters.CostTime =(uint)((loop_command.EndTime - loop_command.StartTime) / loop_command.LoopCount);
+            loop_command.StartTime += first_start_time;
+            loop_command.EndTime = loop_command.StartTime + current_end_time;
+            loop_command.LoopParamesters.CostTime =(uint)((/*loop_command.EndTime - loop_command.StartTime*/current_end_time) / loop_command.LoopCount);
         }
     }
 }
