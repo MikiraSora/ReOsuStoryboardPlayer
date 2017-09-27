@@ -27,8 +27,6 @@ namespace ReOsuStoryBoardPlayer
 
         int _vao, _vbo, _vbo_vertexBase, _vbo_texPosBase;
 
-        byte[] _instanceDataArray;
-
         private SpriteInstanceGroup() { }
 
         Texture texture;
