@@ -504,7 +504,7 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
 
-            //loop_command.StartTime += offeset_start_time;
+            loop_command.StartTime += offeset_start_time;
             loop_command.EndTime = current_end_time;
             loop_command.LoopParamesters.CostTime =(uint)((loop_command.EndTime - loop_command.StartTime) / loop_command.LoopCount);
         }
