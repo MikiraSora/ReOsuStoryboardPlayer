@@ -44,7 +44,6 @@ namespace ReOsuStoryBoardPlayer
             StoryBoardObject current_storyboard_obj = null;
 
             int command_count = 0;
-            int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue;
             bool isSubCommand = false;
 
             LoopCommand current_loop_command = null;
@@ -80,11 +79,6 @@ namespace ReOsuStoryBoardPlayer
                         continue;
                     }
 
-                    if (int.MaxValue == frame_start_time || frame_start_time > cmd.StartTime)
-                    {
-                        frame_start_time = cmd.StartTime;
-                    }
-
                     command_count++;
 
                     //Loop 中断
@@ -93,11 +87,6 @@ namespace ReOsuStoryBoardPlayer
                         current_loop_command = (LoopCommand)cmd;
                         current_command.Add(cmd);
                         continue;
-                    }
-
-                    if (int.MaxValue == frame_end_time || frame_end_time < cmd.EndTime)
-                    {
-                        frame_end_time = cmd.EndTime;
                     }
 
                     current_command.Add(cmd);
@@ -111,15 +100,8 @@ namespace ReOsuStoryBoardPlayer
                     {
                         obj.Z = z_order++;
 
-                        if (current_storyboard_obj != null)
-                        {
-                            current_storyboard_obj.CommandMap = StoryBoardAdjustment.AdujustCommands(current_command);
-                            current_storyboard_obj.FrameStartTime = frame_start_time;
-                            current_storyboard_obj.FrameEndTime = frame_end_time;
-                        }
-
-                        frame_end_time = frame_start_time = int.MaxValue;
-
+                        AddCommandMapToStoryboardObject(current_storyboard_obj, current_command);
+                        
                         //set current storyboard obj
                         current_storyboard_obj = obj;
                         obj_list.Add(obj);
@@ -129,16 +111,23 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
 
-            if (current_storyboard_obj != null)
-            {
-                current_storyboard_obj.CommandMap = StoryBoardAdjustment.AdujustCommands(current_command);
-                current_storyboard_obj.FrameStartTime = frame_start_time==int.MaxValue? int.MinValue : frame_start_time;
-                current_storyboard_obj.FrameEndTime = frame_end_time;
-            }
+            AddCommandMapToStoryboardObject(current_storyboard_obj, current_command);
 
             Log.Debug($"parsed {obj_list.Count} objects and {command_count} commands");
 
             return obj_list;
+        }
+
+        private static void AddCommandMapToStoryboardObject(StoryBoardObject obj, List<Command> command)
+        {
+            if (obj != null)
+            {
+                var result = StoryBoardAdjustment.AdujustCommands(command);
+
+                obj.CommandMap = result.cmd_map;
+                obj.FrameStartTime = result.start_time;
+                obj.FrameEndTime = result.end_time;
+            }
         }
 
         public static Command ParseCommandLine(string line,out bool IsSubCommand)
@@ -451,12 +440,14 @@ namespace ReOsuStoryBoardPlayer
 
     public static class StoryBoardAdjustment
     {
-        public static Dictionary<Event,List<Command>> AdujustCommands(List<Command> command_list)
+        public static (Dictionary<Event,List<Command>> cmd_map,int start_time, int end_time) AdujustCommands(List<Command> command_list)
         {
             Dictionary<Event, List<Command>> result = new Dictionary<Event, List<Command>>();
 
+            int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue;
+
             if (command_list == null)
-                return result;
+                return (result,0,0);
 
             foreach (var command in command_list)
             {
@@ -472,6 +463,16 @@ namespace ReOsuStoryBoardPlayer
                     //特殊调整
                     AdjustLoopCommand((LoopCommand)command);
                 }
+
+                if (int.MaxValue == frame_start_time || frame_start_time > command.StartTime)
+                {
+                    frame_start_time = command.StartTime;
+                }
+
+                if (int.MaxValue == frame_end_time || frame_end_time < command.EndTime)
+                {
+                    frame_end_time = command.EndTime;
+                }
             }
 
             foreach (var pair in result)
@@ -479,7 +480,7 @@ namespace ReOsuStoryBoardPlayer
                 pair.Value.Sort((a, b)=> a.StartTime-b.StartTime);
             }
 
-            return result;
+            return (result, frame_start_time, frame_end_time);
         }
 
         static void AdjustLoopCommand(LoopCommand loop_command)
