@@ -190,7 +190,7 @@ namespace ReOsuStoryBoardPlayer
                     loop_cmd.Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear];
                     loop_cmd.CommandEventType = Event.Loop;
                     loop_cmd.StartTime = int.Parse(command_params[1]);
-                    loop_cmd.CurrentLoopCount = int.Parse(command_params[2]);
+                    loop_cmd.LoopCount = int.Parse(command_params[2]);
                     loop_cmd.executor = CommandExecutor.CommandFunctionMap[Event.Loop];
                     return loop_cmd;
                 default:
@@ -484,9 +484,18 @@ namespace ReOsuStoryBoardPlayer
 
         static void AdjustLoopCommand(LoopCommand loop_command)
         {
-            int current_end_time = loop_command.StartTime;
+            int offeset_start_time = loop_command.LoopParamesters.LoopCommandList.FirstOrDefault().StartTime- loop_command.StartTime;
 
-            for (int i = 0; i < loop_command.CurrentLoopCount; i++)
+            int current_end_time = loop_command.StartTime+ offeset_start_time;
+
+            //reset children commands start_time and end_time
+            foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
+            {
+                sub_command.StartTime -= offeset_start_time;
+                sub_command.EndTime -= offeset_start_time;
+            }
+
+            for (int i = 0; i < loop_command.LoopCount; i++)
             {
                 foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
                 {
@@ -494,8 +503,9 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
 
+            //loop_command.StartTime += offeset_start_time;
             loop_command.EndTime = current_end_time;
-            loop_command.LoopParamesters.CostTime =(uint)((loop_command.EndTime - loop_command.StartTime) / loop_command.CurrentLoopCount);
+            loop_command.LoopParamesters.CostTime =(uint)((loop_command.EndTime - loop_command.StartTime) / loop_command.LoopCount);
         }
     }
 }

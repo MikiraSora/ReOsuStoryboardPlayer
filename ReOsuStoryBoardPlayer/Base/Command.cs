@@ -20,7 +20,7 @@ namespace ReOsuStoryBoardPlayer
 
     public class LoopCommand :Command
     {
-        public int LoopCount,CurrentLoopCount=0;
+        public int LoopCount=0;
 
         public LoopCommandParamesters LoopParamesters=new LoopCommandParamesters();
         
