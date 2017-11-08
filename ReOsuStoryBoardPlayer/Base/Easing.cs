@@ -99,6 +99,15 @@ namespace ReOsuStoryBoardPlayer
 
     public static class OsuEasingInterpolator
     {
+        /// <summary>
+        /// 缓动函数
+        /// </summary>
+        /// <param name="easing">缓动类型</param>
+        /// <param name="time">当前相对时间</param>
+        /// <param name="initial">初始值</param>
+        /// <param name="change">总变化值</param>
+        /// <param name="duration">总时间</param>
+        /// <returns>归一化值</returns>
         public static double ApplyEasing(EasingTypes easing, double time, double initial, double change, double duration)
         {
             if (change == 0 || time == 0 || duration == 0) return initial;
