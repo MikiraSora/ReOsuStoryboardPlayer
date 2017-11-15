@@ -27,4 +27,4 @@ Oldvervion:
 
 
 #### Special Thanks
-***麻花***(43size),Damnae，鹅苗，外服大师 ，****[毛毛]({)https://github.com/KedamaOvO)****，量子玫瑰 and all of 恶俗麻婆2857吹比黄图群
+***麻花***(43size),Damnae，鹅苗，外服大师 ,[kj415j45](https://github.com/kj415j45)，****[毛毛](https://github.com/KedamaOvO)****，量子玫瑰 and all of 恶俗麻婆2857吹比黄图群
