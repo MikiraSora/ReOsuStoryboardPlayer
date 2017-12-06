@@ -444,7 +444,7 @@ namespace ReOsuStoryBoardPlayer
         {
             Dictionary<Event, List<Command>> result = new Dictionary<Event, List<Command>>();
 
-            int frame_start_time = int.MaxValue, frame_end_time = int.MaxValue;
+            int frame_start_time = int.MinValue, frame_end_time = int.MaxValue;
 
             if (command_list == null)
                 return (result,0,0);
@@ -464,7 +464,7 @@ namespace ReOsuStoryBoardPlayer
                     AdjustLoopCommand((LoopCommand)command);
                 }
 
-                if (int.MaxValue == frame_start_time || frame_start_time > command.StartTime)
+                if (int.MinValue == frame_start_time || frame_start_time > command.StartTime)
                 {
                     frame_start_time = command.StartTime;
                 }
