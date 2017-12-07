@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\Anchor.cs" />
+    <Compile Include="Base\LoopType.cs" />
     <Compile Include="Base\Command.cs" />
     <Compile Include="Base\CommandExecutor.cs" />
     <Compile Include="Base\CommandParameters.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Base\Event.cs" />
     <Compile Include="Base\IInterpolator.cs" />
     <Compile Include="Base\Layout.cs" />
+    <Compile Include="Base\StoryboardAnimation.cs" />
     <Compile Include="DebugController\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>

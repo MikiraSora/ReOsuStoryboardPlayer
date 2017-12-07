@@ -360,7 +360,7 @@ namespace ReOsuStoryBoardPlayer
 
         public static StoryBoardObject ParseStoryBoardObject(string line)
         {
-            StoryBoardObject obj=null;
+            StoryBoardObject obj = null;
             string[] sprite_param = line.Split(',');
 
             #region ObjectType
@@ -372,6 +372,9 @@ namespace ReOsuStoryBoardPlayer
                     break;
 
                 case "Animation":
+                    obj = new StoryboardAnimation();
+                    break;
+
                 default:
                     return null;
             }
@@ -396,7 +399,7 @@ namespace ReOsuStoryBoardPlayer
 
             #region ImageFilePath
 
-            obj.ImageFilePath = sprite_param[3].Trim(',').Trim('\"',' ').Replace("/","\\").ToLower();
+            obj.ImageFilePath = sprite_param[3].Trim(',').Trim('\"', ' ').Replace("/", "\\").ToLower();
 
             #endregion
 
@@ -405,6 +408,31 @@ namespace ReOsuStoryBoardPlayer
             obj.Postion = new Vector(float.Parse(sprite_param[4]), float.Parse(sprite_param[5]));
 
             #endregion
+
+            if (obj is StoryboardAnimation animation)
+            {
+                #region Animation Setup
+
+                #region FrameCount
+
+                animation.FrameCount = int.Parse(sprite_param[6]);
+
+                #endregion
+
+                #region FrameDelay
+
+                animation.FrameDelay = int.Parse(sprite_param[7]);
+
+                #endregion
+
+                #region LoopType
+
+                animation.LoopType = (LoopType)Enum.Parse(typeof(LoopType), sprite_param[8]);
+
+                #endregion
+
+                #endregion
+            }
 
             return obj;
         }
