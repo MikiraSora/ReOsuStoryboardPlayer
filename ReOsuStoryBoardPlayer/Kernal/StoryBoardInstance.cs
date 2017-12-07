@@ -328,17 +328,36 @@ namespace ReOsuStoryBoardPlayer
 
                 #endif
 
+                if (command==null)
+                {
+                    foreach (var cmd in command_list)
+                    {
+                        if (time >= cmd.StartTime && time <= cmd.EndTime)
+                        {
+                            command = cmd;
+                            break;
+                        }
+                    }
+                }
+
+                if (command==null)
+                {
+                    for (int i = 0; i < command_list.Count-1; i++)
+                    {
+                        var cur_cmd = command_list[i];
+                        var next_cmd = command_list[i + 1];
+
+                        if (time>=cur_cmd.EndTime&&time<=next_cmd.StartTime)
+                        {
+                            command = cur_cmd;
+                            break;
+                        }
+                    }
+                }
+
                 if (command!=null)
                 {
                     CommandExecutor.DispatchCommandExecute(storyboard_obj, time, command);
-                    continue;
-                }
-
-                foreach (var cmd in command_list)
-                {
-                    if (time < cmd.StartTime|| time > cmd.EndTime)
-                        continue;
-                    CommandExecutor.DispatchCommandExecute(storyboard_obj, time, cmd);
                 }
             }
         }
