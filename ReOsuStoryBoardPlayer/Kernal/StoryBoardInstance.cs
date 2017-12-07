@@ -264,7 +264,7 @@ namespace ReOsuStoryBoardPlayer
 
                 objs.ForEach/*AsParallel().ForAll*/(obj =>
                     {
-                        StoryBoardObjectUpdate(obj, current_time);
+                        obj.Update(current_time);
                     }
                 );
             }
@@ -294,72 +294,6 @@ namespace ReOsuStoryBoardPlayer
             UpdateCastTime = runTimer.ElapsedMilliseconds;
 
             runTimer.Reset();
-        }
-
-        private void StoryBoardObjectUpdate(StoryBoardObject storyboard_obj,float time)
-        {
-            if (time > storyboard_obj.FrameEndTime)
-            {
-                storyboard_obj.markDone = true;
-                return;
-            }
-
-            foreach (var command_list in storyboard_obj.CommandMap.Values)
-            {
-                Command command=null;
-                if (time<command_list[0].StartTime)
-                {
-                    //早于开始前
-                    command = command_list[0];
-                }
-                else if (time>command_list[command_list.Count-1].EndTime)
-                {
-                    //迟于结束后
-                    command = command_list[command_list.Count - 1];
-                }
-
-                #if DEBUG
-
-                if (storyboard_obj.ImageFilePath==debug_break_storyboard_image&&command?.CommandEventType==debug_break_event)
-                {
-                    player.Pause();
-                    Debugger.Break();   
-                }
-
-                #endif
-
-                if (command==null)
-                {
-                    foreach (var cmd in command_list)
-                    {
-                        if (time >= cmd.StartTime && time <= cmd.EndTime)
-                        {
-                            command = cmd;
-                            break;
-                        }
-                    }
-                }
-
-                if (command==null)
-                {
-                    for (int i = 0; i < command_list.Count-1; i++)
-                    {
-                        var cur_cmd = command_list[i];
-                        var next_cmd = command_list[i + 1];
-
-                        if (time>=cur_cmd.EndTime&&time<=next_cmd.StartTime)
-                        {
-                            command = cur_cmd;
-                            break;
-                        }
-                    }
-                }
-
-                if (command!=null)
-                {
-                    CommandExecutor.DispatchCommandExecute(storyboard_obj, time, command);
-                }
-            }
         }
 
         #region Storyboard Rendering
