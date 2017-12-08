@@ -181,7 +181,7 @@ namespace ReOsuStoryBoardPlayer
 			*float(1)	vec2(2)		vec4(4)     vec2(2)     Matrix4(16)
 			*/
 
-            int base_index = _currentPostCount * _calculateCapacitySize();
+            int base_index = _currentPostCount * _calculateCapacitySize()/sizeof(float);
 
             //Z float
             PostData[base_index + 0] = 0;
