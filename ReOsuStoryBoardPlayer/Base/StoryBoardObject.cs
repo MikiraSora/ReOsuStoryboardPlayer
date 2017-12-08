@@ -30,6 +30,8 @@ namespace ReOsuStoryBoardPlayer
 
         public Vector Anchor=new Vector(0.5f,0.5f);
 
+        public bool IsAddtive=false;
+
         #endregion
 
         public virtual void Update(float current_time)
