@@ -122,11 +122,11 @@ namespace ReOsuStoryBoardPlayer
         {
             if (obj != null)
             {
-                var result = StoryBoardAdjustment.AdujustCommands(command);
+                var (cmd_map, start_time, end_time) = StoryBoardAdjustment.AdujustCommands(command);
 
-                obj.CommandMap = result.cmd_map;
-                obj.FrameStartTime = result.start_time;
-                obj.FrameEndTime = result.end_time;
+                obj.CommandMap = cmd_map;
+                obj.FrameStartTime = start_time;
+                obj.FrameEndTime = end_time;
             }
         }
 
@@ -175,12 +175,14 @@ namespace ReOsuStoryBoardPlayer
                 case "P":
                     return null;
                 case "L":
-                    var loop_cmd = new LoopCommand();
-                    loop_cmd.Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear];
-                    loop_cmd.CommandEventType = Event.Loop;
-                    loop_cmd.StartTime = int.Parse(command_params[1]);
-                    loop_cmd.LoopCount = int.Parse(command_params[2]);
-                    loop_cmd.executor = CommandExecutor.CommandFunctionMap[Event.Loop];
+                    var loop_cmd = new LoopCommand
+                    {
+                        Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear],
+                        CommandEventType = Event.Loop,
+                        StartTime = int.Parse(command_params[1]),
+                        LoopCount = int.Parse(command_params[2]),
+                        executor = CommandExecutor.CommandFunctionMap[Event.Loop]
+                    };
                     return loop_cmd;
                 default:
                     break;
@@ -217,9 +219,11 @@ namespace ReOsuStoryBoardPlayer
             switch (cmd.CommandEventType)
             {
                 case Event.Move:
-                    Vector start_pos = new Vector();
-                    start_pos.x = float.Parse(command_params[4]);
-                    start_pos.y = float.Parse(command_params[5]);
+                    Vector start_pos = new Vector
+                    {
+                        x = float.Parse(command_params[4]),
+                        y = float.Parse(command_params[5])
+                    };
 
                     Vector end_pos = start_pos;
 
@@ -262,9 +266,11 @@ namespace ReOsuStoryBoardPlayer
 
                 case Event.VectorScale:
                     {
-                        Vector start = new Vector();
-                        start.x = float.Parse(command_params[4]);
-                        start.y = float.Parse(command_params[5]);
+                        Vector start = new Vector
+                        {
+                            x = float.Parse(command_params[4]),
+                            y = float.Parse(command_params[5])
+                        };
 
                         Vector end = start;
 
@@ -295,10 +301,12 @@ namespace ReOsuStoryBoardPlayer
 
                 case Event.Color:
                     {
-                        Vec4 start = new Vec4();
-                        start.x = float.Parse(command_params[4]);
-                        start.y = float.Parse(command_params[5]);
-                        start.z = float.Parse(command_params[6]);
+                        Vec4 start = new Vec4
+                        {
+                            x = float.Parse(command_params[4]),
+                            y = float.Parse(command_params[5]),
+                            z = float.Parse(command_params[6])
+                        };
 
                         Vec4 end = start.clone();
 
