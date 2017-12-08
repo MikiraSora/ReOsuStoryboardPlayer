@@ -341,6 +341,7 @@ namespace ReOsuStoryBoardPlayer
                 if (group.ImagePath!=obj.ImageFilePath||additive_trigger!=obj.IsAdditive)
                 {
                     PostDraw();
+                    additive_trigger = obj.IsAdditive;
                     group = CacheDrawSpriteInstanceMap[obj.ImageFilePath];
                 }
                 group.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color);
