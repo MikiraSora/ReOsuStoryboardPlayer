@@ -322,6 +322,26 @@ namespace ReOsuStoryBoardPlayer
                     break;
 
                 case Event.Parameter:
+                    {
+                        EffectParameter efffect=EffectParameter.AdditiveBlend;
+
+                        switch (command_params[4])
+                        {
+                            case "A":
+                                efffect = EffectParameter.AdditiveBlend;
+                                break;
+                            case "H":
+                                efffect = EffectParameter.HorizontalFlip;
+                                break;
+                            case "V":
+                                efffect = EffectParameter.VerticalFlip;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        cmd.Parameters = new ParameterCommandParamester(efffect);
+                    }
                     break;
                 case Event.MoveX:
                     {

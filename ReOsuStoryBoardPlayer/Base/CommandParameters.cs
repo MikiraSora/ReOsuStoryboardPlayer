@@ -128,4 +128,14 @@ namespace ReOsuStoryBoardPlayer
 
         public uint CostTime;
     }
+
+    public class ParameterCommandParamester : CommandParameters
+    {
+        public EffectParameter Effect;
+
+        public ParameterCommandParamester(EffectParameter effect)
+        {
+            Effect = effect;
+        }
+    }
 }

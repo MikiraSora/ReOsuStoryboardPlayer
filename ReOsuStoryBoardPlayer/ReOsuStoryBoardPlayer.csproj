@@ -86,6 +86,7 @@
     <Compile Include="Base\Command.cs" />
     <Compile Include="Base\CommandExecutor.cs" />
     <Compile Include="Base\CommandParameters.cs" />
+    <Compile Include="Base\EffectParameter.cs" />
     <Compile Include="Base\LoopType.cs" />
     <Compile Include="Base\Easing.cs" />
     <Compile Include="Base\EasingInterpolator.cs" />

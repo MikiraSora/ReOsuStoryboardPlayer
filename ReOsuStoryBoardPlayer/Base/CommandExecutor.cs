@@ -147,6 +147,24 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
+        public static void Parameter(StoryBoardObject ref_obj, float current_value, Command command)
+        {
+            ParameterCommandParamester param = (ParameterCommandParamester)command.Parameters;
+
+            switch (param.Effect)
+            {
+                case EffectParameter.HorizontalFlip:
+                    break;
+                case EffectParameter.VerticalFlip:
+                    break;
+                case EffectParameter.AdditiveBlend:
+                    ref_obj.IsAdditive = (current_value >= 0 && current_value <= 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         #endregion
 
         public static void DispatchCommandExecute(StoryBoardObject ref_obj, float current_playing_time, Command command)

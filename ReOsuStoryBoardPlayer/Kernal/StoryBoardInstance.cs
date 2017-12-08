@@ -349,7 +349,7 @@ namespace ReOsuStoryBoardPlayer
             if (group.CurrentPostCount!=0)
             {
                 PostDraw();
-            }
+            } 
 
             void PostDraw()
             {
