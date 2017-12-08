@@ -331,15 +331,16 @@ namespace ReOsuStoryBoardPlayer
             
             SpriteInstanceGroup group = CacheDrawSpriteInstanceMap[draw_list[0].ImageFilePath];
 
+            bool additive_trigger = draw_list.First().IsAdditive;
+
             foreach (var obj in draw_list)
             {
                 if (obj.Color.w <= 0)
                     continue;//skip
 
-                if (group.ImagePath!=obj.ImageFilePath)
+                if (group.ImagePath!=obj.ImageFilePath||additive_trigger!=obj.IsAdditive)
                 {
-                    //draw immediatly and switch to new group
-                    group.FlushDraw();
+                    PostDraw();
                     group = CacheDrawSpriteInstanceMap[obj.ImageFilePath];
                 }
                 group.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color);
@@ -347,6 +348,20 @@ namespace ReOsuStoryBoardPlayer
 
             if (group.CurrentPostCount!=0)
             {
+                PostDraw();
+            }
+
+            void PostDraw()
+            {
+                if (additive_trigger)
+                {
+                    GL.BlendFunc(BlendingFactorSrc.SrcColor, BlendingFactorDest.DstColor);
+                }
+                else
+                {
+                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+                }
+                
                 group.FlushDraw();
             }
         }
