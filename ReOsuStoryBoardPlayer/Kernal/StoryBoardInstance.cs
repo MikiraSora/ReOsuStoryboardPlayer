@@ -320,14 +320,8 @@ namespace ReOsuStoryBoardPlayer
         public void PostDrawStoryBoardLayout(List<StoryBoardObject> UpdatingStoryboardObjectList)
         {
             bool isEnable = GL.IsEnabled(EnableCap.DepthTest);
-
-            GL.Disable(EnableCap.DepthTest);
+            
             DrawStoryBoards(UpdatingStoryboardObjectList);
-
-            if (isEnable)
-            {
-                GL.Enable(EnableCap.DepthTest);
-            }
         }
 
         private void DrawStoryBoards(List<StoryBoardObject> draw_list)
