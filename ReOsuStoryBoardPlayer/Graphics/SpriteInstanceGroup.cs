@@ -36,7 +36,7 @@ namespace ReOsuStoryBoardPlayer
         static SpriteInstanceGroup()
         {
             _shader = new BatchShader();
-            _shader.compile();
+            _shader.Compile();
         }
 
         internal SpriteInstanceGroup(uint capacity,string image_path, Texture texture)
@@ -229,7 +229,7 @@ namespace ReOsuStoryBoardPlayer
 
         void _draw()
         {
-            _shader.begin();
+            _shader.Begin();
             var VP = Projection * (View);
             
             _shader.PassUniform("diffuse", texture);
@@ -249,7 +249,7 @@ namespace ReOsuStoryBoardPlayer
             GL.BindVertexArray(0);
 
             _shader.Clear();
-            _shader.end();
+            _shader.End();
         }
 
         public void FlushDraw()

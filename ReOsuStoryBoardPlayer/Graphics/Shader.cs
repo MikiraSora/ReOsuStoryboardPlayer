@@ -18,54 +18,29 @@ namespace ReOsuStoryBoardPlayer
     [Serializable()]
     public class Shader
     {
-        [NonSerialized]
         int vertexShader, fragmentShader, program;
-
-        [NonSerialized]
+        
         bool compiled = false;
 
-        string vert =
-        "void main(void)" +
-        "{" +
-            "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;" +
-            "gl_Position = ftransform();" +
-        "}";
+        string vert;
 
-        string frag =
-        "uniform sampler2D diffuse;" +
-                "uniform vec4 colorkey;" +
-                "void main(void)" +
-                "{" +
-                    "vec4 color = texture2D(diffuse, gl_TexCoord[0].st);" +
-                    "gl_FragColor = color * colorkey;" +
-                "}";
-        //[Editor(typeof(StringEditor), typeof(UITypeEditor))]
-        [Browsable(false)]
-        public string vertexProgram { get { return vert; } set { vert = value; } }
-
-        //[Editor(typeof(StringEditor), typeof(UITypeEditor))]
-        [Browsable(false)]
-        public string fragmentProgram { get { return frag; } set { frag = value; } }
-
-        [NonSerialized]
+        string frag;
+        
+        public string VertexProgram { get { return vert; } set { vert = value; } }
+        
+        public string FragmentProgram { get { return frag; } set { frag = value; } }
+        
         Dictionary<string, object> _uniforms;
 
-        public Dictionary<string, object> uniforms { get { return _uniforms; } internal set { _uniforms = value; } }
+        public Dictionary<string, object> Uniforms { get { return _uniforms; } internal set { _uniforms = value; } }
 
-        string name;
-
-        public Shader()
-        {
-            name = "Shader";
-        }
-
-        public void compile()
+        public void Compile()
         {
             if (compiled == false)
             {
                 compiled = true;
 
-                uniforms = new Dictionary<string, object>();
+                Uniforms = new Dictionary<string, object>();
 
                 GL.DeleteShader(vertexShader);
                 GL.DeleteShader(fragmentShader);
@@ -95,8 +70,6 @@ namespace ReOsuStoryBoardPlayer
 
                 if (!String.IsNullOrEmpty(GL.GetProgramInfoLog(program)))
                     Log.Error(GL.GetProgramInfoLog(program));
-                else
-                    Log.Debug("Shader \"" + name + "\" successfully compiled");
 
                 int total = 0;
 
@@ -118,140 +91,117 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public void fullRecompile()
-        {
-            compiled = false;
-            compile();
-        }
-
-        public void begin()
+        public void Begin()
         {
             GL.UseProgram(program);
         }
 
-        public void end()
+        public void End()
         {
             GL.UseProgram(0);
         }
 
-        internal void _passUniform(string name, Texture tex)
+        public void PassUniform(string name, Texture tex)
         {
+            if (tex==null)
+            {
+                PassNullTexUniform(name);
+                return;
+            }
+
             int l = GL.GetUniformLocation(program, name);
             GL.ActiveTexture(TextureUnit.Texture0 + tex.ID);
             GL.BindTexture(TextureTarget.Texture2D, tex.ID);
             GL.Uniform1(l, tex.ID);
             GL.ActiveTexture(TextureUnit.Texture0);
-            l = 0;
+
+            AddPassRecord(name, "Texture");
         }
 
-        internal void _passNullTexUniform(string name)
+        public void PassNullTexUniform(string name)
         {
             int l = GL.GetUniformLocation(program, name);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.Uniform1(l, 0);
-            l = 0;
         }
 
-        internal void _passUniform(string name, Vec4 vec)
+        public void PassUniform(string name, Vec4 vec)
         {
             int l = GL.GetUniformLocation(program, name);
             GL.Uniform4(l, vec.x, vec.y, vec.z, vec.w);
-            l = 0;
+
+            AddPassRecord(name, "Vec4");
         }
 
-        internal void _passUniform(string name, float val)
+        public void PassUniform(string name, float val)
         {
             int l = GL.GetUniformLocation(program, name);
             GL.Uniform1(l, val);
-            l = 0;
+            
+            AddPassRecord(name, "Float");
         }
 
-        internal void _passUniform(string name, int val)
+        public void PassUniform(string name, int val)
         {
             int l = GL.GetUniformLocation(program, name);
             GL.Uniform1(l, val);
-            l = 0;
+            
+            AddPassRecord(name, "Int");
         }
 
-        internal void _passUniform(string name, Vector2 val)
+        public void PassUniform(string name, Vector2 val)
         {
             int l = GL.GetUniformLocation(program, name);
             GL.Uniform2(l, val);
-            l = 0;
+            
+            AddPassRecord(name, "Vector2");
         }
 
-        internal void _passUniform(string name, OpenTK.Matrix4 matrix4)
+        public void PassUniform(string name, OpenTK.Matrix4 matrix4)
         {
             int l = GL.GetUniformLocation(program, name);
             GL.UniformMatrix4(l, false, ref matrix4);
-            l = 0;
+            
+            AddPassRecord(name, "Matrix4");
         }
-
-        public void PassUniform(string _key, object _value)
+        
+        internal void AddPassRecord(string name,string value)
         {
-            switch (_value)
-            {
-                case Texture texture:
-                    if (texture == null)
-                        _passNullTexUniform(_key);
-                    else
-                        _passUniform(_key, texture);
-                    break;
-                case Vec4 v4:
-                    _passUniform(_key, v4);
-                    break;
-                case float f:
-                    _passUniform(_key, f);
-                    break;
-                case int i:
-                    _passUniform(_key, i);
-                    break;
-                case Matrix4 m:
-                    _passUniform(_key, m);
-                    break;
-                case Vector v:
-                    _passUniform(_key, new Vector2(v.x, v.y));
-                    break;
-                case Vector2 v2:
-                    _passUniform(_key, v2);
-                    break;
-                default:
-                    Log.Warn("type {0} cant pass to shader uniform", _key);
-                    break;
-            }
-
             recordPassHistory.Add(new passUniformRecord()
             {
-                name = _key,
-                value = _value.GetType().Name
+                name = name,
+                value = value
             });
         }
 
-        public void passClearUniform(string key, string typeName)
+        public void ClearUniform(string key, string typeName)
         {
             switch (typeName)
             {
                 case "Sampler2D":
-                    _passNullTexUniform(key);
+                    PassNullTexUniform(key);
                     break;
                 case "Texture":
-                    _passNullTexUniform(key);
+                    PassNullTexUniform(key);
                     break;
                 case "Vec4":
-                    _passUniform(key, Vec4.zero);
+                    PassUniform(key, Vec4.zero);
                     break;
                 case "Float":
-                    _passUniform(key, (float)0);
+                    PassUniform(key, (float)0);
                     break;
                 case "Int":
-                    _passUniform(key, (int)0);
+                    PassUniform(key, (int)0);
                     break;
                 case "Int32":
-                    _passUniform(key, (Int32)0);
+                    PassUniform(key, (Int32)0);
                     break;
                 case "Single":
-                    _passUniform(key, (Single)0);
+                    PassUniform(key, (Single)0);
+                    break;
+                case "Vector2":
+                    PassUniform(key, (Vector2.Zero));
                     break;
             }
         }
@@ -268,28 +218,13 @@ namespace ReOsuStoryBoardPlayer
         {
             foreach (var history in recordPassHistory)
             {
-                passClearUniform(history.name, history.value);
+                ClearUniform(history.name, history.value);
             }
 
             recordPassHistory.Clear();
             GL.UseProgram(0);
         }
 
-        public int getProgram()
-        {
-            return program;
-        }
-
-        public override string ToString()
-        {
-            return name;
-        }
-
-        [OnDeserializedAttribute()]
-        private void onDeserialized(StreamingContext context)
-        {
-            //compile();
-            //Console.WriteLine("Deserialized");
-        }
+        public int ShaderProgram => program;
     }
 }

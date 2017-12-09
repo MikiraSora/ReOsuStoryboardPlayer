@@ -10,7 +10,7 @@ namespace ReOsuStoryBoardPlayer
     {
         public BatchShader()
         {
-            this.vertexProgram = @"
+            this.VertexProgram = @"
                 #version 330
                 out vec4 varying_color;
                 out vec2 varying_texPos;
@@ -32,7 +32,7 @@ namespace ReOsuStoryBoardPlayer
 	                varying_texPos=in_texPos;
                 }
                 ";
-            this.fragmentProgram = @"
+            this.FragmentProgram = @"
                 #version 330
 
                 uniform sampler2D diffuse;
@@ -54,7 +54,7 @@ namespace ReOsuStoryBoardPlayer
     {
         public DebugBatchShader()
         {
-            this.vertexProgram = @"
+            this.VertexProgram = @"
 #version 330
 out vec4 varying_color;
 out vec2 varying_texPos;
@@ -76,7 +76,7 @@ void main(){
 	varying_texPos=in_texPos;
 }
 ";
-            this.fragmentProgram = @"
+            this.FragmentProgram = @"
 #version 330
 
 uniform sampler2D diffuse;
