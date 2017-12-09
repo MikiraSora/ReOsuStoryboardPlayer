@@ -45,7 +45,7 @@ namespace ReOsuStoryBoardPlayer
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            GL.ClearColor(Color.Gray);
+            GL.ClearColor(Color.Black);
 
             CameraViewMatrix = Matrix4.Identity;
 
