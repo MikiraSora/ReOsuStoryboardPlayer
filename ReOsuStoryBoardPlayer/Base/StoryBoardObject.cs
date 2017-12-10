@@ -30,7 +30,7 @@ namespace ReOsuStoryBoardPlayer
 
         public Vector Anchor=new Vector(0.5f,0.5f);
 
-        public bool IsAdditive=false;
+        public bool IsAdditive=false,IsHorizonFlip=false,IsVerticalFlip=false;
 
         #endregion
 

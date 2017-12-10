@@ -12,7 +12,7 @@ namespace ReOsuStoryBoardPlayer
 
         #region Build CommandFunctionMap
 
-        public static Dictionary<Event,CommandFunc> CommandFunctionMap = new Dictionary<Event, CommandFunc>()
+        public static Dictionary<Event, CommandFunc> CommandFunctionMap = new Dictionary<Event, CommandFunc>()
         {
             {Event.Move,Move},
             {Event.Fade,Fade},
@@ -22,7 +22,10 @@ namespace ReOsuStoryBoardPlayer
             {Event.Scale,Scale},
             {Event.VectorScale,ScaleVector},
             {Event.Rotate,Rotate},
-            {Event.Loop,Loop}
+            {Event.Loop,Loop},
+            {Event.HorizonFlip,HorizonFlip},
+            {Event.VerticalFlip,VerticalFlip},
+            {Event.AdditiveBlend,AdditiveBlend}
         };
 
         #endregion
@@ -163,6 +166,21 @@ namespace ReOsuStoryBoardPlayer
                 default:
                     break;
             }
+        }
+
+        public static void AdditiveBlend(StoryBoardObject ref_obj, float current_value, Command command)
+        {
+            ref_obj.IsAdditive = current_value <= 1;
+        }
+
+        public static void HorizonFlip(StoryBoardObject ref_obj, float current_value, Command command)
+        {
+            ref_obj.IsHorizonFlip = current_value <= 1;
+        }
+
+        public static void VerticalFlip(StoryBoardObject ref_obj, float current_value, Command command)
+        {
+            ref_obj.IsVerticalFlip = current_value <= 1;
         }
 
         #endregion

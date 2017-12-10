@@ -386,7 +386,7 @@ namespace ReOsuStoryBoardPlayer
                 Log.User($"Dump Layout:{layout.Key.ToString()}");
                 foreach (var obj in layout.Value)
                 {
-                    Log.User($"\"{obj.ImageFilePath}\" \\ Z = {obj.Z} \\ {obj.FrameStartTime} ~ {obj.FrameEndTime} \nPosition={obj.Postion} \\ Rotate = {obj.Rotate} \\ Scale = {obj.Scale} \n Color = {obj.Color} \\ Anchor : {obj.Anchor} \n -----------------------");
+                    Log.User($"\"{obj.ImageFilePath}\" \\ Z = {obj.Z} \\ {obj.FrameStartTime} ~ {obj.FrameEndTime} \nPosition={obj.Postion} \\ Rotate = {obj.Rotate} \\ Scale = {obj.Scale} \n Color = {obj.Color} \\ Anchor : {obj.Anchor} \n A:{obj.IsAdditive} / H:{obj.IsHorizonFlip} / V:{obj.IsVerticalFlip} \n-----------------------");
                 }
             }
         }
