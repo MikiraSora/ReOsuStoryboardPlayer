@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\346213 Tatsh - reunion";
+                beatmap_folder = @"G:\SBTest\365163 Hana - MAJICK";
             }
             else
                 beatmap_folder = argv[0];

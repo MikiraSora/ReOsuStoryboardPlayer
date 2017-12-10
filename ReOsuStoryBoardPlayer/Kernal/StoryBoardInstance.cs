@@ -356,7 +356,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 if (additive_trigger)
                 {
-                    GL.BlendFunc(BlendingFactorSrc.SrcColor, BlendingFactorDest.DstColor);
+                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.One);
                 }
                 else
                 {
