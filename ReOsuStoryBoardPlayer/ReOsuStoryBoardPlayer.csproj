@@ -94,25 +94,25 @@
     <Compile Include="Base\IInterpolator.cs" />
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
-    <Compile Include="DebugController\ControllerWindow.cs">
+    <Compile Include="DebugTool\DebugControllerWindow\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugController\ControllerWindow.Designer.cs">
+    <Compile Include="DebugTool\DebugControllerWindow\ControllerWindow.Designer.cs">
       <DependentUpon>ControllerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugController\CreateBreakpointDialog.cs">
+    <Compile Include="DebugTool\DebugControllerWindow\CreateBreakpointDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugController\CreateBreakpointDialog.Designer.cs">
+    <Compile Include="DebugTool\DebugControllerWindow\CreateBreakpointDialog.Designer.cs">
       <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugController\JumpToWindow.cs">
+    <Compile Include="DebugTool\DebugControllerWindow\JumpToWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugController\JumpToWindow.Designer.cs">
+    <Compile Include="DebugTool\DebugControllerWindow\JumpToWindow.Designer.cs">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugController\Log.cs" />
+    <Compile Include="DebugTool\DebugControllerWindow\Log.cs" />
     <Compile Include="Graphics\BatchShader.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
@@ -133,15 +133,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DebugController\ControllerWindow.resx">
+    <EmbeddedResource Include="DebugTool\DebugControllerWindow\ControllerWindow.resx">
       <DependentUpon>ControllerWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugController\CreateBreakpointDialog.resx">
+    <EmbeddedResource Include="DebugTool\DebugControllerWindow\CreateBreakpointDialog.resx">
       <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugController\JumpToWindow.resx">
+    <EmbeddedResource Include="DebugTool\DebugControllerWindow\JumpToWindow.resx">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DebugTool\ObjectInfoVisualizer\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
