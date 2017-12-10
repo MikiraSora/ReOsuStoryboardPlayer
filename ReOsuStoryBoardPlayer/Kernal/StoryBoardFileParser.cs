@@ -170,10 +170,40 @@ namespace ReOsuStoryBoardPlayer
                 case "MY":
                     cmd.CommandEventType = Event.MoveY;
                     break;
-
+                case "AB":
+                    cmd.CommandEventType = Event.AdditiveBlend;
+                    break;
+                case "VF":
+                    cmd.CommandEventType = Event.VerticalFlip;
+                    break;
+                case "HF":
+                    cmd.CommandEventType = Event.HorizonFlip;
+                    break;
                 case "T":
-                case "P":
                     return null;
+                case "P":
+                    {
+                        //改一下内容,然后递归一下
+                        line = line.TrimEnd();
+                        string pp=string.Empty;
+                        switch (line.Last())
+                        {
+                            case 'A':
+                                pp = "AB";
+                                break;
+                            case 'H':
+                                pp = "HF";
+                                break;
+                            case 'V':
+                                pp = "VF";
+                                break;
+                            default:
+                                break;
+                        }
+                        line = line.Replace("P", pp);
+
+                        return ParseCommandLine(line, out IsSubCommand);
+                    }
                 case "L":
                     var loop_cmd = new LoopCommand
                     {
@@ -320,7 +350,7 @@ namespace ReOsuStoryBoardPlayer
                         cmd.Parameters = new ColorCommandParameters(start, end);
                     }
                     break;
-
+                    /*
                 case Event.Parameter:
                     {
                         EffectParameter efffect=EffectParameter.AdditiveBlend;
@@ -342,7 +372,7 @@ namespace ReOsuStoryBoardPlayer
 
                         cmd.Parameters = new ParameterCommandParamester(efffect);
                     }
-                    break;
+                    break;*/
                 case Event.MoveX:
                     {
                         float start = float.Parse(command_params[4]);
@@ -376,6 +406,12 @@ namespace ReOsuStoryBoardPlayer
                 case Event.Loop:
                     break;
                 case Event.Trigger:
+                    break;
+                case Event.HorizonFlip:
+                    break;
+                case Event.VerticalFlip:
+                    break;
+                case Event.AdditiveBlend:
                     break;
                 default:
                     break;
