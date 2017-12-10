@@ -18,6 +18,11 @@ namespace ReOsuStoryBoardPlayer
         MoveX = 7,
         MoveY = 8,
         Loop = 9,
-        Trigger = 10
+        Trigger = 10,
+
+        //custon events
+        VerticalFlip=11,
+        HorizonFlip=12,
+        AdditiveBlend=13
     }
 }

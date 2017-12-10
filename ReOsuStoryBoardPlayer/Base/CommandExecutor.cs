@@ -44,7 +44,7 @@ namespace ReOsuStoryBoardPlayer
 
             float cal_result = current_value >= 1 ? parameters.EndX : (current_value <= 0 ? parameters.StartX : parameters.StartX + parameters.Distance * current_value);
 
-            ref_obj.Postion.x = (int)cal_result;
+            ref_obj.Postion.x = cal_result;
         }
 
         public static void MoveY(StoryBoardObject ref_obj, float current_value, ReOsuStoryBoardPlayer.Command command)
@@ -53,7 +53,7 @@ namespace ReOsuStoryBoardPlayer
 
             float cal_result = current_value >= 1 ? parameters.EndY : (current_value <= 0 ? parameters.StartY : parameters.StartY + parameters.Distance * current_value);
 
-            ref_obj.Postion.y = (int)cal_result;
+            ref_obj.Postion.y = cal_result;
         }
 
         public static void Rotate(StoryBoardObject ref_obj, float current_value, ReOsuStoryBoardPlayer.Command command)
