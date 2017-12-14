@@ -7,16 +7,18 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
+using System.Linq;
 using System.Diagnostics;
 using System.Threading;
+using ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer;
 
 namespace ReOsuStoryBoardPlayer
 {
     public class StoryBoardInstance
     {
         static readonly uint DrawCallInstanceCountMax = 50;
-        
-        LinkedList<StoryBoardObject> StoryboardObjectList;
+
+        internal LinkedList<StoryBoardObject> StoryboardObjectList;
 
         LinkedListNode<StoryBoardObject> CurrentScanNode;
 
@@ -37,6 +39,11 @@ namespace ReOsuStoryBoardPlayer
         public long UpdateCastTime { get; private set; }
 
         public long RenderCastTime { get; private set; }
+
+#if DEBUG
+        DebugToolInstance debug_instance;
+        public DebugToolInstance DebugToolInstance { get => debug_instance; }
+#endif
 
         public StoryBoardInstance(string folder_path)
         {
@@ -135,9 +142,8 @@ namespace ReOsuStoryBoardPlayer
                 builder.AppendLine($"{sprite.ImageFilePath}[{sprite.FrameStartTime} - {sprite.FrameEndTime}]");
             }
 
-            #if DEBUG
-
-            InitDebugControllerWindow();
+#if DEBUG
+            debug_instance = new DebugToolInstance(this);
 
             #endif
         }
@@ -284,10 +290,10 @@ namespace ReOsuStoryBoardPlayer
                     return true;
                 });
             }
-            
+
             #if DEBUG
 
-            CallUpdateDebugControllerWindowInfo();
+            debug_instance.Update();
 
             #endif
 
@@ -366,53 +372,6 @@ namespace ReOsuStoryBoardPlayer
                 group.FlushDraw();
             }
         }
-
-        #endregion
-
-        #region Debug Controller
-
-        #if DEBUG
-
-        DebugController.ControllerWindow ControllerWindow;
-
-        string debug_break_storyboard_image;
-
-        Event debug_break_event;
-        
-        public void DumpCurrentStoryboardStatus()
-        {
-            foreach (var layout in _UpdatingStoryBoard)
-            {
-                Log.User($"Dump Layout:{layout.Key.ToString()}");
-                foreach (var obj in layout.Value)
-                {
-                    Log.User($"\"{obj.ImageFilePath}\" \\ Z = {obj.Z} \\ {obj.FrameStartTime} ~ {obj.FrameEndTime} \nPosition={obj.Postion} \\ Rotate = {obj.Rotate} \\ Scale = {obj.Scale} \n Color = {obj.Color} \\ Anchor : {obj.Anchor} \n A:{obj.IsAdditive} / H:{obj.IsHorizonFlip} / V:{obj.IsVerticalFlip} \n-----------------------");
-                }
-            }
-        }
-
-        public void CreateBreakpointInCommandExecuting(string break_storyboard_image,Event break_event)
-        {
-            this.debug_break_event = break_event;
-            this.debug_break_storyboard_image = break_storyboard_image.Trim().Replace("/","\\");
-            Flush();
-        }
-
-        public void ClearBreakpoint()
-        {
-            this.debug_break_storyboard_image = string.Empty;
-        }
-
-        public void CallUpdateDebugControllerWindowInfo() => ControllerWindow.UpdateInfo();
-
-        public void InitDebugControllerWindow()
-        {
-            ControllerWindow = new DebugController.ControllerWindow(this);
-            ControllerWindow.Show();
-            ControllerWindow.progressBar1.Maximum = (int)player.Length;
-        }
-
-#endif
 
         #endregion
 

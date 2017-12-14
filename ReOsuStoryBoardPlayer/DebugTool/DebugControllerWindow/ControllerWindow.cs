@@ -40,7 +40,7 @@ namespace ReOsuStoryBoardPlayer.DebugController
         {
 
 #if DEBUG
-            CurrentStoryboardIntance.DumpCurrentStoryboardStatus();
+            CurrentStoryboardIntance.DebugToolInstance.DumpCurrentStoryboardStatus();
             
 #endif
         }
@@ -54,7 +54,7 @@ namespace ReOsuStoryBoardPlayer.DebugController
         private void button8_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            CurrentStoryboardIntance.ClearBreakpoint();
+            CurrentStoryboardIntance.DebugToolInstance.ClearBreakpoint();
             MessageBox.Show("Clear braekpoints!");
             
 #endif

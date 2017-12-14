@@ -33,6 +33,8 @@ namespace ReOsuStoryBoardPlayer
 
         public string ImagePath { get; private set; }
 
+        public Texture Texture { get => texture; }
+
         static SpriteInstanceGroup()
         {
             _shader = new BatchShader();
@@ -69,7 +71,7 @@ namespace ReOsuStoryBoardPlayer
             return (1 + 2 + 4 + 2 + 16) * sizeof(float);
         }
 
-        Vector _bound,_anchor=new Vector(0.5f,0.5f);
+        Vector _bound;
 
         static float[] _cacheBaseVertex = new float[] {
                 0,0,
@@ -224,8 +226,6 @@ namespace ReOsuStoryBoardPlayer
         }
 
         public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale,Vector anchor, Vec4 color) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color);
-
-        Matrix4 offset_view = Matrix4.CreateTranslation(new Vector3(-StoryboardWindow.CurrentWindow.Width / 2, -StoryboardWindow.CurrentWindow.Height / 2, 0));
 
         void _draw()
         {

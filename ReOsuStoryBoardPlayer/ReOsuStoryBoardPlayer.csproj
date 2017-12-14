@@ -113,6 +113,13 @@
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugTool\DebugControllerWindow\Log.cs" />
+    <Compile Include="DebugTool\DebugToolInstance.cs" />
+    <Compile Include="DebugTool\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugTool\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.Designer.cs">
+      <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\BatchShader.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
@@ -142,9 +149,10 @@
     <EmbeddedResource Include="DebugTool\DebugControllerWindow\JumpToWindow.resx">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DebugTool\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.resx">
+      <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DebugTool\ObjectInfoVisualizer\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

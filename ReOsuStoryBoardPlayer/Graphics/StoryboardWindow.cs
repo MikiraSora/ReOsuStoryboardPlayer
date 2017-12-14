@@ -7,10 +7,11 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
+using OpenTK.Input;
 
 namespace ReOsuStoryBoardPlayer
 {
-    public class StoryboardWindow:GameWindow
+    public class StoryboardWindow : GameWindow
     {
         public static StoryboardWindow CurrentWindow { get; set; }
 
@@ -20,8 +21,8 @@ namespace ReOsuStoryBoardPlayer
 
         public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
 
-        public StoryboardWindow(StoryBoardInstance instance,int width = 640, int height = 480):base(width,height,new GraphicsMode(ColorFormat.Empty,32), "Esu!StoryBoardPlayer"
-            , GameWindowFlags.FixedWindow,DisplayDevice.Default,3,3, GraphicsContextFlags.Default)
+        public StoryboardWindow(StoryBoardInstance instance, int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
+            , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
         {
             InitGraphics();
             this.instance = instance;
@@ -51,7 +52,7 @@ namespace ReOsuStoryBoardPlayer
 
             ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(Width, Height, 0, 100);
 
-            CameraViewMatrix = CameraViewMatrix * Matrix4.CreateTranslation(-0 /(Width / 2.0f), 0 /(Height / 2.0f), 0);
+            CameraViewMatrix = CameraViewMatrix * Matrix4.CreateTranslation(-0 / (Width / 2.0f), 0 / (Height / 2.0f), 0);
 
             instance.PostDrawStoryBoard();
 
@@ -71,5 +72,23 @@ namespace ReOsuStoryBoardPlayer
 
             Environment.Exit(0);
         }
+
+#if DEBUG
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (e.Mouse.LeftButton == ButtonState.Pressed)
+            {
+                var x = e.X;
+                var y = e.Y;
+
+                instance.DebugToolInstance.SelectObjectIntoVisualizer(x, y);
+            }
+            else if(e.Mouse.RightButton == ButtonState.Pressed)
+            {
+                instance.DebugToolInstance.CannelSelectObject();
+            }
+        }
+#endif
     }
 }

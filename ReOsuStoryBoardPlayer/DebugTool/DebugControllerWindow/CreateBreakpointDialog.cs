@@ -35,9 +35,8 @@ namespace ReOsuStoryBoardPlayer.DebugController
             }
 
 #if DEBUG
-            CurrentStoryboardInstance.CreateBreakpointInCommandExecuting(textBox1.Text, (Event)(Enum.Parse(typeof(Event), textBox2.Text)));
+            CurrentStoryboardInstance.DebugToolInstance.CreateBreakpointInCommandExecuting(textBox1.Text, (Event)(Enum.Parse(typeof(Event), textBox2.Text)));
             Close();
-            
 #endif
         }
     }
