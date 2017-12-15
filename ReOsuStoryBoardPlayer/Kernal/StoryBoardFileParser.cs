@@ -78,6 +78,10 @@ namespace ReOsuStoryBoardPlayer
 
                         continue;
                     }
+                    else
+                    {
+                        current_loop_command = null;
+                    }
 
                     command_count++;
 
@@ -122,6 +126,10 @@ namespace ReOsuStoryBoardPlayer
         {
             if (obj != null)
             {
+                if (obj.ImageFilePath.Contains("mini_j8"))
+                {
+
+                }
                 var (cmd_map, start_time, end_time) = StoryBoardAdjustment.AdujustCommands(command);
 
                 obj.CommandMap = cmd_map;
@@ -602,17 +610,22 @@ namespace ReOsuStoryBoardPlayer
                 sub_command.EndTime -= first_start_time;
             }
 
-            for (int i = 0; i < loop_command.LoopCount; i++)
+            for (int index = 0; index < loop_command.LoopParamesters.LoopCommandList.Count; index++)
             {
-                foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
+                var sub_command = loop_command.LoopParamesters.LoopCommandList[index];
+                current_end_time += sub_command.EndTime - sub_command.StartTime;
+                if (index != 0)
                 {
-                    current_end_time += sub_command.EndTime- sub_command.StartTime;
+                    var prev_sub_command = loop_command.LoopParamesters.LoopCommandList[index - 1];
+                    current_end_time += sub_command.StartTime - prev_sub_command.EndTime;
                 }
             }
 
+            current_end_time *= loop_command.LoopCount;
+
             loop_command.StartTime += first_start_time;
             loop_command.EndTime = loop_command.StartTime + current_end_time;
-            loop_command.LoopParamesters.CostTime =(uint)((/*loop_command.EndTime - loop_command.StartTime*/current_end_time) / loop_command.LoopCount);
+            loop_command.LoopParamesters.CostTime = (uint)((/*loop_command.EndTime - loop_command.StartTime*/current_end_time) / loop_command.LoopCount);
         }
     }
 }
