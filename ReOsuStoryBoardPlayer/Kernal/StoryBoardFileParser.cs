@@ -534,6 +534,14 @@ namespace ReOsuStoryBoardPlayer
 
     public static class StoryBoardAdjustment
     {
+        static Event[] SkipEvent = new[] 
+        {
+            Event.Parameter,
+            Event.HorizonFlip,
+            Event.AdditiveBlend,
+            Event.VerticalFlip
+        };
+
         public static (Dictionary<Event,List<Command>> cmd_map,int start_time, int end_time) AdujustCommands(List<Command> command_list)
         {
             Dictionary<Event, List<Command>> result = new Dictionary<Event, List<Command>>();
@@ -558,14 +566,18 @@ namespace ReOsuStoryBoardPlayer
                     AdjustLoopCommand((LoopCommand)command);
                 }
 
-                if (int.MinValue == frame_start_time || frame_start_time > command.StartTime)
+                if (!SkipEvent.Contains(command.CommandEventType))
                 {
-                    frame_start_time = command.StartTime;
-                }
+                    if (int.MinValue == frame_start_time || frame_start_time > command.StartTime)
+                    {
+                        frame_start_time = command.StartTime;
+                    }
 
-                if (int.MaxValue == frame_end_time || frame_end_time < command.EndTime)
-                {
-                    frame_end_time = command.EndTime;
+                    if (int.MaxValue == frame_end_time || frame_end_time < command.EndTime)
+                    {
+                        frame_end_time = command.EndTime;
+                    }
+
                 }
             }
 
