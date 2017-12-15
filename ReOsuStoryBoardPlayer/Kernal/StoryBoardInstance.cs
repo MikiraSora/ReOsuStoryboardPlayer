@@ -348,7 +348,17 @@ namespace ReOsuStoryBoardPlayer
                 {
                     PostDraw();
                     additive_trigger = obj.IsAdditive;
-                    group = CacheDrawSpriteInstanceMap[obj.ImageFilePath];
+
+#if DEBUG //临时解决
+                    var temp = group;
+                    //group = CacheDrawSpriteInstanceMap[obj.ImageFilePath];
+                    if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath,out group))
+                    {
+                        group = temp;
+                        Log.Debug($"not found image:{obj.ImageFilePath}");
+                        obj.markDone = true;
+                    }
+#endif
                 }
                 group.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color);
             }
