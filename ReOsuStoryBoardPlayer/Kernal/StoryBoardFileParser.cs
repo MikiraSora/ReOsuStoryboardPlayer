@@ -333,18 +333,18 @@ namespace ReOsuStoryBoardPlayer
                     {
                         Vec4 start = new Vec4
                         {
-                            x = float.Parse(command_params[4]),
-                            y = float.Parse(command_params[5]),
-                            z = float.Parse(command_params[6])
+                            x = float.Parse(command_params[4]) / 255.0f,
+                            y = float.Parse(command_params[5]) / 255.0f,
+                            z = float.Parse(command_params[6]) / 255.0f
                         };
 
                         Vec4 end = start.clone();
 
                         if (command_params.Length > 7)
                         {
-                            end.x = float.Parse(command_params[7]);
-                            end.y = float.Parse(command_params[8]);
-                            end.z = float.Parse(command_params[9]);
+                            end.x = float.Parse(command_params[7]) / 255.0f;
+                            end.y = float.Parse(command_params[8]) / 255.0f;
+                            end.z = float.Parse(command_params[9]) / 255.0f;
                         }
 
                         cmd.Parameters = new ColorCommandParameters(start, end);

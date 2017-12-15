@@ -82,6 +82,13 @@ namespace ReOsuStoryBoardPlayer
 
             cal_result = (float)(cal_result/Math.PI*180.0f);
 
+#if DEBUG
+            //todo this is a bug fix
+            if (float.IsNaN(cal_result))
+            {
+                cal_result = 0;
+            }
+#endif
             ref_obj.Rotate =cal_result ;
         }
 
@@ -117,9 +124,9 @@ namespace ReOsuStoryBoardPlayer
             ColorCommandParameters parameters = (ColorCommandParameters)command.Parameters;
 
             Vec4 temp = new Vec4();
-            temp.x = (parameters.StartColor.x + parameters.Distance.x * current_value)/255.0f;
-            temp.y = (parameters.StartColor.y + parameters.Distance.y * current_value)/255.0f;
-            temp.z = (parameters.StartColor.z + parameters.Distance.z * current_value)/255.0f;
+            temp.x = Math.Min((parameters.StartColor.x + parameters.Distance.x * current_value),1);
+            temp.y = Math.Min((parameters.StartColor.y + parameters.Distance.y * current_value),1);
+            temp.z = Math.Min((parameters.StartColor.z + parameters.Distance.z * current_value),1);
 
             Vec4 cal_result = current_value >= 1 ? parameters.EndColor : (current_value <= 0 ? parameters.StartColor : temp);
                 
