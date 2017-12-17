@@ -20,6 +20,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly float Distance;
         public float StartX, EndX;
+
+        public override string ToString() => $"{StartX},{EndX}";
     }
 
     public class MoveYCommandParameters : CommandParameters
@@ -34,6 +36,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly float Distance;
         public float StartY, EndY;
+
+        public override string ToString() => $"{StartY},{EndY}";
     }
 
     public class ColorCommandParameters : CommandParameters
@@ -48,6 +52,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly Vec4 Distance;
         public Vec4 StartColor, EndColor;
+        
+        public override string ToString() => $"{StartColor},{EndColor}";
     }
 
     public class MoveCommandParameters : CommandParameters
@@ -62,6 +68,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly Vector Distance;
         public Vector StartPostion, EndPosition;
+
+        public override string ToString() => $"{StartPostion},{EndPosition}";
     }
 
     public class ScaleCommandParameters : CommandParameters
@@ -76,6 +84,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly float Distance;
         public float StartScale, EndScale;
+        
+        public override string ToString() => $"{StartScale},{EndScale}";
     }
 
     public class ScaleVectorCommandParamesters : CommandParameters
@@ -90,6 +100,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly Vector Distance;
         public Vector StartScale, EndScale;
+        
+        public override string ToString() => $"{StartScale.ToString()},{EndScale.ToString()}";
     }
 
     public class FadeCommandParamesters : CommandParameters
@@ -104,6 +116,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly float Distance;
         public float StartFade, EndFade;
+
+        public override string ToString() => $"{StartFade},{EndFade}";
     }
 
     public class RotateCommandParamesters : CommandParameters
@@ -118,6 +132,8 @@ namespace ReOsuStoryBoardPlayer
 
         public readonly float Distance;
         public float StartRotate, EndRotate;
+        
+        public override string ToString() => $"{StartRotate},{EndRotate}";
     }
 
     public class LoopCommandParamesters : CommandParameters
@@ -137,5 +153,7 @@ namespace ReOsuStoryBoardPlayer
         {
             Effect = effect;
         }
+
+        public override string ToString() => $"{Effect.ToString()}";
     }
 }

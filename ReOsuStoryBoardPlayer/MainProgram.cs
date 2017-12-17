@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\osu!\Songs\M.Graveyard - hope";
+                beatmap_folder = @"G:\SBTest\94790 Hatsuki Yura - Fuuga";
             }
             else
                 beatmap_folder = argv[0];

@@ -35,14 +35,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                 PositionLabel.Text = obj.Postion.ToString();
 
-                ColorLabel.Text = obj.Color.ToString();
-                ColorLabel.ForeColor = Color.FromArgb((int)(obj.Color.x * 255), (int)(obj.Color.y * 255), (int)(obj.Color.z * 255));
+                int r=(int)(obj.Color.x * 255), g=(int)(obj.Color.y * 255), b=(int)(obj.Color.z * 255);
+                ColorLabel.Text = $"{r},{g},{b}";
+                ColorLabel.ForeColor = Color.FromArgb(r,g,b);
+                ColorLabel.BackColor = Color.FromArgb(255-r, 255 - g, 255 - b);
 
                 AngleLabel.Text = obj.Rotate.ToString();
                 AlphaLabel.Text = obj.Color.w.ToString();
 
                 ParameterLabel.Text = $"{(obj.IsAdditive ? "A" : " ")}{(obj.IsHorizonFlip ? "H" : " ")}{(obj.IsVerticalFlip ? "V" : " ")}";
-                MarkdoneLabel.Text      = obj.markDone.ToString();
+                MarkdoneLabel.Text = obj.markDone.ToString();
             }
             else
             {
@@ -60,6 +62,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                     OrderLabel.Text = string.Empty;
 
                     ColorLabel.ForeColor = Color.White;
+                    ColorLabel.BackColor = Color.White;
                 }
             }
 
@@ -81,22 +84,17 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
             {
                 CommandTreeViewer.Nodes.Clear();
 
-                //Font font = new Font("Consolas", 12);
-
                 if (obj!=null)
                 {
                     var root=CommandTreeViewer.Nodes.Add(obj.ToString());
-                    //root.NodeFont = font;
                     foreach (var command_list in obj.CommandMap)
                     {
                         var cmd_root = root.Nodes.Add(command_list.Key.ToString());
                         cmd_root.ForeColor = Color.Aqua;
-                        //cmd_root.NodeFont = font;
                         foreach (var cmd in command_list.Value)
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
                             cmd_note.ForeColor = Color.LightGreen;
-                            //cmd_note.NodeFont = font;   
                         }
                     }
 

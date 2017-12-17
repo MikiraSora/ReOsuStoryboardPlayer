@@ -29,6 +29,10 @@ namespace ReOsuStoryBoardPlayer
             _type = type;
         }
 
+        public override string ToString()
+        {
+            return _type.ToString();
+        }
 
         /*
          以下的缓动函数均是从
