@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\404658 Giga - -BWW SCREAM-";
+                beatmap_folder = @"G:\osu!\Songs\M.Graveyard - hope";
             }
             else
                 beatmap_folder = argv[0];

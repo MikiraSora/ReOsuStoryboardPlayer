@@ -78,24 +78,34 @@ namespace ReOsuStoryBoardPlayer
         {
             int last_order_index = VisualizerWindow.obj == null ? -1 : VisualizerWindow.obj.Z;
 
-            var obj = (from temp in refInstance.StoryboardObjectList where temp.Z > last_order_index && IsPointInObjectArea(temp, x, y) select temp).FirstOrDefault();
+            StoryBoardObject obj=null;
+
+            foreach (var list in refInstance._UpdatingStoryBoard.Values)
+            {
+                foreach (var temp in list)
+                {
+                    if (temp.Z>last_order_index&&(obj==null?true:(temp.Z<obj.Z))&&IsPointInObjectArea(temp,x,y))
+                    {
+                        obj = temp;
+                    }
+                }
+            }
 
             VisualizerWindow.obj = obj;
         }
 
-        Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
+        static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
 
-        bool IsPointInObjectArea(StoryBoardObject sb_obj, float x, float y)
-        {
-            //ViewProjection*in_model*vec4((in_pos-in_anchor)*in_bound,in_Z,1.0);
-            var mouse_point = new Vector2(x, y);
-
-            float[] _cacheBaseVertex = new float[] {
+        static readonly float[] _cacheBaseVertex = new float[] {
                 0,0,
                 0,-1,
                 1,-1,
                 1,0,
             };
+
+        bool IsPointInObjectArea(StoryBoardObject sb_obj, float x, float y)
+        {
+            var mouse_point = new Vector2(x, y);
             Vector3[] points = new Vector3[4];
 
             Vector2 in_anchor = new Vector2(sb_obj.Anchor.x, -sb_obj.Anchor.y);
@@ -109,25 +119,26 @@ namespace ReOsuStoryBoardPlayer
                 Matrix4.Identity *
             Matrix4.CreateScale(sb_obj.Scale.x, sb_obj.Scale.y, 1) *
             Matrix4.CreateFromAxisAngle(_staticCacheAxis, sb_obj.Rotate / 180.0f * 3.1415926f) *
-            Matrix4.CreateTranslation(sb_obj.Postion.x - StoryboardWindow.CurrentWindow.Width / 2, -sb_obj.Postion.y + StoryboardWindow.CurrentWindow.Height / 2, 0);
-            
+            Matrix4.CreateTranslation(sb_obj.Postion.x, sb_obj.Postion.y , 0);
+
             for (int i = 0; i < 4; i++)
             {
                 var vertex = new Vector2(_cacheBaseVertex[i * 2 + 0], _cacheBaseVertex[i * 2 + 1]);
                 var temp = (vertex - in_anchor) * in_bound;
-                var transform = StoryboardWindow.CameraViewMatrix*in_model * new Vector4(temp.X,temp.Y,0,1);
-                points[i] = new Vector3(mouse_point-new Vector2(transform.X, transform.Y));
+                var transform = new Vector4(temp.X, temp.Y, 0, 1)*StoryboardWindow.CameraViewMatrix*in_model ;
+                points[i] = new Vector3(mouse_point-new Vector2(transform.X, transform.Y) );
             }
 
-            Vector3 
-                result_vec1 = Vector3.Cross(points[0], points[1]),
-                result_vec2= Vector3.Cross(points[0], points[2]) , 
-                result_vec3= Vector3.Cross(points[0], points[3]) , 
-                result_vec4= Vector3.Cross(points[1], points[2]) , 
-                result_vec5= Vector3.Cross(points[1], points[3]) , 
-                result_vec6= Vector3.Cross(points[2], points[1]);
+            Vector3 v1 = Vector3.Cross(points[0], points[1]).Normalized();
+            Vector3 v2 = Vector3.Cross(points[1], points[2]).Normalized();
+            Vector3 v3 = Vector3.Cross(points[2], points[3]).Normalized();
+            Vector3 v4 = Vector3.Cross(points[3], points[0]).Normalized();
 
-            return true;
+            if (Vector3.Dot(v1, v2) > 0.99999f && Vector3.Dot(v2, v3) > 0.9999f &&
+                Vector3.Dot(v3, v4) > 0.9999f && Vector3.Dot(v4, v1) > 0.9999f)
+                return true;
+            return false;
+
         }
 
         public void CannelSelectObject()
