@@ -95,6 +95,15 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
                             cmd_note.ForeColor = Color.LightGreen;
+
+                            if (cmd is LoopCommand loop_command)
+                            {
+                                foreach (var loop_sub_command in loop_command.LoopParamesters.LoopCommandList)
+                                {
+                                    var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
+                                    loop_sub_note.ForeColor = Color.LightGreen;
+                                }
+                            }
                         }
                     }
 
