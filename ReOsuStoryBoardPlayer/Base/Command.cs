@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
         public CommandExecutor.CommandFunc executor;
 
-        public override string ToString() => $"{CommandEventType.ToString()},{Easing.ToString()},{StartTime},{EndTime},{Parameters.ToString()}";
+        public override string ToString() => $"{CommandEventType.ToString()},{Easing?.ToString()},{StartTime},{EndTime},{Parameters?.ToString()}";
     }
 
     public class LoopCommand :Command

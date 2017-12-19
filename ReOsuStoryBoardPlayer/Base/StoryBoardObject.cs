@@ -42,8 +42,16 @@ namespace ReOsuStoryBoardPlayer
                 return;
             }
 
-            foreach (var command_list in CommandMap.Values)
+            foreach (var command_pair in CommandMap)
             {
+                if (command_pair.Key==Event.Loop)
+                {
+                    UpdateForEachCommand(command_pair.Value);
+                    continue;
+                }
+
+                var command_list = command_pair.Value;
+
                 Command command = null;
                 if (current_time < command_list[0].StartTime)
                 {
@@ -86,6 +94,17 @@ namespace ReOsuStoryBoardPlayer
                 if (command != null)
                 {
                     CommandExecutor.DispatchCommandExecute(this, current_time, command);
+                }
+            }
+
+            void UpdateForEachCommand(List<Command> command_list)
+            {
+                foreach (var cmd in command_list)
+                {
+                    if (current_time>=cmd.StartTime&&current_time<=cmd.EndTime)
+                    {
+                        CommandExecutor.DispatchCommandExecute(this, current_time, cmd);
+                    }
                 }
             }
         }

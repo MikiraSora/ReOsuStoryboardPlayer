@@ -135,26 +135,59 @@ namespace ReOsuStoryBoardPlayer
             ref_obj.Color.w = a;
         }
 
-        public static void Loop(StoryBoardObject ref_obj, float current_value, ReOsuStoryBoardPlayer.Command command)
+        public static void Loop(StoryBoardObject ref_obj, float current_value, ReOsuStoryBoardPlayer.Command _command)
         {
-            int recovery_time = (int)((command.EndTime - command.StartTime) * current_value);
-            LoopCommand loop_command = (LoopCommand)command;
+            int recovery_time = (int)((_command.EndTime - _command.StartTime) * current_value);
+            LoopCommand loop_command = (LoopCommand)_command;
 
-            int clamp_time = (int)(recovery_time % loop_command.LoopParamesters.CostTime);
+            int current_time = (int)(recovery_time % loop_command.LoopParamesters.CostTime);
 
-            foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
+            var command_list = loop_command.LoopParamesters.LoopCommandList;
+
+            Command command = null;
+            if (current_time < command_list[0].StartTime)
             {
-                int cost = sub_command.EndTime - sub_command.StartTime;
-
-                if (clamp_time<=cost)
-                {
-                    //execute
-                    DispatchCommandExecute(ref_obj, clamp_time, sub_command);
-                    break;
-                }
-
-                clamp_time -= cost;
+                //早于开始前
+                command = command_list[0];
             }
+            else if (current_time > command_list[command_list.Count - 1].EndTime)
+            {
+                //迟于结束后
+                command = command_list[command_list.Count - 1];
+            }
+
+            if (command == null)
+            {
+                foreach (var cmd in command_list)
+                {
+                    if (current_time >= cmd.StartTime && current_time <= cmd.EndTime)
+                    {
+                        command = cmd;
+                        break;
+                    }
+                }
+            }
+
+            if (command == null)
+            {
+                for (int i = 0; i < command_list.Count - 1; i++)
+                {
+                    var cur_cmd = command_list[i];
+                    var next_cmd = command_list[i + 1];
+
+                    if (current_time >= cur_cmd.EndTime && current_time <= next_cmd.StartTime)
+                    {
+                        command = cur_cmd;
+                        break;
+                    }
+                }
+            }
+
+            if (command != null)
+            {
+                CommandExecutor.DispatchCommandExecute(ref_obj, current_time, command);
+            }
+
         }
 
         public static void Parameter(StoryBoardObject ref_obj, float current_value, Command command)
