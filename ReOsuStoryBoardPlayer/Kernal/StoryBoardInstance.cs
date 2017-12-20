@@ -192,10 +192,13 @@ namespace ReOsuStoryBoardPlayer
 
             for (int i = 0; i < obj_list.Count; i++)
             {
-                var command = obj_list[i];
-                if (!CacheDrawSpriteInstanceMap.TryGetValue(command.ImageFilePath.ToLower(),out command.RenderGroup))
+                var obj = obj_list[i];
+                if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(),out obj.RenderGroup))
                 {
-                    Log.Warn($"not found image:{command.ImageFilePath}");
+                    if (!(obj is StoryboardAnimation))
+                    {
+                        Log.Warn($"not found image:{obj.ImageFilePath}");
+                    }
                 }
             }
         }
