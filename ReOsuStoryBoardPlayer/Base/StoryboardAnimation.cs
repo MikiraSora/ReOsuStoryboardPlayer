@@ -14,6 +14,10 @@ namespace ReOsuStoryBoardPlayer
 
         public LoopType LoopType;
 
+        public SpriteInstanceGroup[] backup_group;
+
+        int prev_frame_index=-2857;
+
         public override void Update(float current_time)
         {
             base.Update(current_time);
@@ -53,7 +57,13 @@ namespace ReOsuStoryBoardPlayer
                     break;
             }
 
-            ImageFilePath = FrameBaseImagePath + current_frame_index + ".png";
+            if (prev_frame_index!=current_frame_index)
+            {
+                ImageFilePath = FrameBaseImagePath + current_frame_index + ".png";
+                this.RenderGroup = backup_group[current_frame_index];
+            }
+
+            prev_frame_index = current_frame_index;
         }
     }
 }

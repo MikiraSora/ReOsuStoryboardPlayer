@@ -193,12 +193,30 @@ namespace ReOsuStoryBoardPlayer
             for (int i = 0; i < obj_list.Count; i++)
             {
                 var obj = obj_list[i];
-                if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(),out obj.RenderGroup))
+                if (!(obj is StoryboardAnimation animation))
                 {
-                    if (!(obj is StoryboardAnimation))
+                    if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
                     {
                         Log.Warn($"not found image:{obj.ImageFilePath}");
                     }
+                }
+                else
+                {
+                    List<SpriteInstanceGroup> list = new List<SpriteInstanceGroup>();
+
+                    for (int index = 0; index < animation.FrameCount; index++)
+                    {
+                        SpriteInstanceGroup group;
+                        string path = animation.FrameBaseImagePath + index + ".png";
+                        if (!CacheDrawSpriteInstanceMap.TryGetValue(path, out group))
+                        {
+                            Log.Warn($"not found image:{path}");
+                            continue;
+                        }
+                        list.Add(group);
+                    }
+
+                    animation.backup_group = list.ToArray();
                 }
             }
         }
