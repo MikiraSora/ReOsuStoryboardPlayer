@@ -21,23 +21,31 @@ namespace ReOsuStoryBoardPlayer
 
         public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
 
-        public StoryboardWindow(StoryBoardInstance instance, int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
+        public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
         {
             InitGraphics();
-            this.instance = instance;
             VSync = VSyncMode.Off;
             Log.Init();
             CurrentWindow = this;
-            instance.BuildCacheDrawSpriteBatch();
-
-            instance.Start();
         }
 
         private void InitGraphics()
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+        }
+
+        public new void Run()
+        {
+            instance.Start();
+            base.Run();
+        }
+        
+        public void LoadStoryboardInstance(StoryBoardInstance instance)
+        {
+            this.instance = instance;
+            instance.BuildCacheDrawSpriteBatch();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

@@ -22,7 +22,9 @@ namespace ReOsuStoryBoardPlayer
             
             StoryBoardInstance instance = GetInstance(beatmap_folder);
             
-            StoryboardWindow window = new StoryboardWindow(instance);
+            StoryboardWindow window = new StoryboardWindow();
+
+            window.LoadStoryboardInstance(instance);
 
             Log.AbleDebugLog = false;
 

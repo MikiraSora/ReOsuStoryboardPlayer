@@ -110,8 +110,8 @@ namespace ReOsuStoryBoardPlayer
 
             Vector2 in_anchor = new Vector2(sb_obj.Anchor.x, -sb_obj.Anchor.y);
 
-            float w = refInstance.CacheDrawSpriteInstanceMap[sb_obj.ImageFilePath].Texture.Width ;
-            float h = refInstance.CacheDrawSpriteInstanceMap[sb_obj.ImageFilePath].Texture.Height ;
+            float w = sb_obj.RenderGroup.Texture.Width ;
+            float h = sb_obj.RenderGroup.Texture.Height ;
 
             Vector2 in_bound = new Vector2(w, h);
 

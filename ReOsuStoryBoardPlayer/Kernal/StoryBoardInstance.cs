@@ -25,9 +25,7 @@ namespace ReOsuStoryBoardPlayer
         List<StoryBoardObject> DrawSplitList = new List<StoryBoardObject>();
 
         internal Dictionary<Layout, List<StoryBoardObject>> _UpdatingStoryBoard = new Dictionary<Layout, List<StoryBoardObject>>();
-
-        internal Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
-
+        
         internal string osb_file_path = string.Empty, osu_file_path = string.Empty, audio_file_path = string.Empty,folder_path=string.Empty;
 
         public MusicPlayer player;
@@ -98,8 +96,6 @@ namespace ReOsuStoryBoardPlayer
 
             #endregion
 
-            //BuildCacheDrawSpriteBatch();
-
             #region Load and Parse osb/osu file
 
             List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs=new List<StoryBoardObject>();
@@ -136,16 +132,9 @@ namespace ReOsuStoryBoardPlayer
 
             player.OnJumpCurrentPlayingTime += Player_OnJumpCurrentPlayingTime;
 
-            StringBuilder builder = new StringBuilder();
-            foreach (var sprite in StoryboardObjectList)
-            {
-                builder.AppendLine($"{sprite.ImageFilePath}[{sprite.FrameStartTime} - {sprite.FrameEndTime}]");
-            }
-
 #if DEBUG
             debug_instance = new DebugToolInstance(this);
-
-            #endif
+#endif
         }
 
         private List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list,List<StoryBoardObject> osu_list)
@@ -184,18 +173,31 @@ namespace ReOsuStoryBoardPlayer
 
         internal void BuildCacheDrawSpriteBatch()
         {
+            var obj_list = StoryboardObjectList.ToList();
+
             List<String> pic_list = new List<string>();
             pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.png", SearchOption.AllDirectories));
             pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.jpg", SearchOption.AllDirectories));
+
+            Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap=new Dictionary<string, SpriteInstanceGroup>();
 
             pic_list.ForEach((path)=>
             {
                 Texture tex = new Texture(path);
                 string absolute_path = path.Replace(folder_path, string.Empty).Trim();
-                CacheDrawSpriteInstanceMap.Add(absolute_path.ToLower(), new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex));
+                CacheDrawSpriteInstanceMap[absolute_path.ToLower()]= new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex);
 
                 Log.User($"Loaded storyboard image file :{path}");
             });
+
+            for (int i = 0; i < obj_list.Count; i++)
+            {
+                var command = obj_list[i];
+                if (!CacheDrawSpriteInstanceMap.TryGetValue(command.ImageFilePath.ToLower(),out command.RenderGroup))
+                {
+                    Log.Warn($"not found image:{command.ImageFilePath}");
+                }
+            }
         }
 
         public void Start()
@@ -335,7 +337,7 @@ namespace ReOsuStoryBoardPlayer
             if (draw_list.Count == 0)
                 return;
             
-            SpriteInstanceGroup group = CacheDrawSpriteInstanceMap[draw_list[0].ImageFilePath];
+            SpriteInstanceGroup group = draw_list.First().RenderGroup;
 
             bool additive_trigger = draw_list.First().IsAdditive;
 
@@ -344,21 +346,11 @@ namespace ReOsuStoryBoardPlayer
                 if (obj.Color.w <= 0)
                     continue;//skip
 
-                if (group.ImagePath!=obj.ImageFilePath||additive_trigger!=obj.IsAdditive)
+                if (group!=obj.RenderGroup||additive_trigger!=obj.IsAdditive)
                 {
                     PostDraw();
                     additive_trigger = obj.IsAdditive;
-
-#if DEBUG //临时解决
-                    var temp = group;
-                    //group = CacheDrawSpriteInstanceMap[obj.ImageFilePath];
-                    if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath,out group))
-                    {
-                        group = temp;
-                        Log.Debug($"not found image:{obj.ImageFilePath}");
-                        obj.markDone = true;
-                    }
-#endif
+                    group = obj.RenderGroup;
                 }
                 group.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color);
             }
