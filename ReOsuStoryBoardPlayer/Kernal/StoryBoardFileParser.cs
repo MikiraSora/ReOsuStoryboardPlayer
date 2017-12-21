@@ -603,29 +603,20 @@ namespace ReOsuStoryBoardPlayer
 
             int current_end_time = 0;
 
-            //reset children commands start_time and end_time
-            foreach (var sub_command in loop_command.LoopParamesters.LoopCommandList)
-            {
-                sub_command.StartTime -= first_start_time;
-                sub_command.EndTime -= first_start_time;
-            }
-
             for (int index = 0; index < loop_command.LoopParamesters.LoopCommandList.Count; index++)
             {
                 var sub_command = loop_command.LoopParamesters.LoopCommandList[index];
                 current_end_time += sub_command.EndTime - sub_command.StartTime;
-                if (index != 0)
-                {
-                    var prev_sub_command = loop_command.LoopParamesters.LoopCommandList[index - 1];
-                    current_end_time += sub_command.StartTime - prev_sub_command.EndTime;
-                }
+
+                var prev_sub_command_time = index==0?0:loop_command.LoopParamesters.LoopCommandList[index - 1].EndTime;
+                current_end_time += sub_command.StartTime - prev_sub_command_time;
             }
 
+            loop_command.LoopParamesters.CostTime = current_end_time;
             current_end_time *= loop_command.LoopCount;
 
             loop_command.StartTime += first_start_time;
             loop_command.EndTime = loop_command.StartTime + current_end_time;
-            loop_command.LoopParamesters.CostTime = (uint)((/*loop_command.EndTime - loop_command.StartTime*/current_end_time) / loop_command.LoopCount);
         }
     }
 }

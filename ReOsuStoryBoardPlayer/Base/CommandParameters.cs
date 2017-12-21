@@ -142,7 +142,7 @@ namespace ReOsuStoryBoardPlayer
 
         public LoopCommandParamesters() { }
 
-        public uint CostTime;
+        public float CostTime;
     }
 
     public class ParameterCommandParamester : CommandParameters
