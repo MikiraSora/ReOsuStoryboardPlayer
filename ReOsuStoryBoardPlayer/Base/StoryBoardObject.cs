@@ -96,6 +96,7 @@ namespace ReOsuStoryBoardPlayer
                 if (command != null)
                 {
                     CommandExecutor.DispatchCommandExecute(this, current_time, command);
+                    CommandExecutor.ClearCommandRegisterArray();
                 }
             }
 

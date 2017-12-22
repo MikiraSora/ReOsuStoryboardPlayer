@@ -6,8 +6,7 @@
 
 namespace ReOsuStoryBoardPlayer
 {
-    [Serializable]
-    public class Vec4
+    public struct Vec4
     {
         public static Vec4 zero = new Vec4();
 
@@ -19,14 +18,6 @@ namespace ReOsuStoryBoardPlayer
         public float y { get { return __y; } set { __y = value; } }
         public float z { get { return __z; } set { __z = value; } }
         public float w { get { return __w; } set { __w = value; } }
-
-        public Vec4()
-        {
-            __x = 0;
-            __y = 0;
-            __z = 0;
-            __w = 0;
-        }
 
         public Vec4(int _x, int _y, int _z)
         {

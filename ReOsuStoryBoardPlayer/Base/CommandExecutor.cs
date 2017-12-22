@@ -225,8 +225,25 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion
 
+        static Command[] _ExecutedCommandRegisterArray = new Command[14];
+
+        public static void ClearCommandRegisterArray() => Array.Clear(_ExecutedCommandRegisterArray, 0, 14);
+
         public static void DispatchCommandExecute(StoryBoardObject ref_obj, float current_playing_time, Command command)
         {
+
+            #region Check Command Conflct
+
+            var reg_cmd = _ExecutedCommandRegisterArray[(int)command.CommandEventType];
+            if (reg_cmd != command&& reg_cmd!=null&& command.EndTime < reg_cmd.EndTime)
+            {
+                    return;
+            }
+
+            _ExecutedCommandRegisterArray[(int)command.CommandEventType] = command;
+
+            #endregion
+
             #region Calculate interpolator value
 
             float current_value = command.Easing.calculate(current_playing_time- command.StartTime, command.StartTime, command.EndTime);
