@@ -246,7 +246,18 @@ namespace ReOsuStoryBoardPlayer
 
             #region Calculate interpolator value
 
-            float current_value = command.Easing.calculate(current_playing_time- command.StartTime, command.StartTime, command.EndTime);
+            float current_value = 0;
+
+            if (current_playing_time<command.StartTime)
+            {
+                current_value = 0;
+            }
+            else if(current_playing_time > command.EndTime)
+            {
+                current_value = 1;
+            }
+            else
+                current_value= command.Easing.calculate(current_playing_time - command.StartTime, command.StartTime, command.EndTime);
 
             //fix infinity
             if (float.IsInfinity(current_value))

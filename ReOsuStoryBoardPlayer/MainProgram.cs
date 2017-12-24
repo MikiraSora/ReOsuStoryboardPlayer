@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\365163 Hana - MAJICK";
+                beatmap_folder = @"G:\SBTest\463479 Nanahira - Bassdrop Freaks (Long Ver)";
             }
             else
                 beatmap_folder = argv[0];
