@@ -65,20 +65,20 @@ namespace ReOsuStoryBoardPlayer
 
             float cal_result = 0;
 
-            int sign = Math.Sign(parameters.Distance);
-
             if (current_value<=0)
             {
-                cal_result = Math.Abs(parameters.StartRotate);
+                cal_result = (parameters.StartRotate);
             }
             else if (current_value>=1)
             {
-                cal_result = Math.Abs(parameters.EndRotate);
+                cal_result = (parameters.EndRotate);
             }
             else
             {
-                cal_result = parameters.StartRotate + sign * parameters.Distance * current_value;
+                cal_result = parameters.StartRotate + parameters.Distance * current_value;
             }
+
+            cal_result = -cal_result;
 
             cal_result = (float)(cal_result/Math.PI*180.0f);
 
