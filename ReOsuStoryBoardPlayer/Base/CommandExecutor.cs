@@ -234,7 +234,8 @@ namespace ReOsuStoryBoardPlayer
 
             #region Check Command Conflct
 
-            var reg_cmd = _ExecutedCommandRegisterArray[(int)command.CommandEventType];
+            var reg_cmd = command.CommandEventType!=Event.Loop?_ExecutedCommandRegisterArray[(int)command.CommandEventType]:null;
+
             if (reg_cmd != command&& reg_cmd!=null&& command.EndTime < reg_cmd.EndTime)
             {
                     return;
