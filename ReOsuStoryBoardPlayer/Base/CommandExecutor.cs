@@ -137,10 +137,12 @@ namespace ReOsuStoryBoardPlayer
 
         public static void Loop(StoryBoardObject ref_obj, float current_value, ReOsuStoryBoardPlayer.Command _command)
         {
-            int recovery_time = (int)((_command.EndTime - _command.StartTime) * current_value);
+            int recovery_time = (int)((current_value - _command.StartTime));
             LoopCommand loop_command = (LoopCommand)_command;
 
             int current_time = (int)(recovery_time % loop_command.LoopParamesters.CostTime);
+
+            int current_loop_index = (int)(recovery_time / loop_command.LoopParamesters.CostTime);
 
             var command_list = loop_command.LoopParamesters.LoopCommandList;
 
@@ -153,6 +155,12 @@ namespace ReOsuStoryBoardPlayer
             else if (current_time > command_list[command_list.Count - 1].EndTime)
             {
                 //迟于结束后
+                command = command_list[command_list.Count - 1];
+            }
+
+            if (current_loop_index>=loop_command.LoopCount)
+            {
+                //判断是否已经循环结束
                 command = command_list[command_list.Count - 1];
             }
 
@@ -185,7 +193,16 @@ namespace ReOsuStoryBoardPlayer
 
             if (command != null)
             {
-                CommandExecutor.DispatchCommandExecute(ref_obj, current_time, command);
+                //store command start/end time
+                var offset_time= (int)(loop_command.StartTime + current_loop_index * loop_command.LoopParamesters.CostTime);
+                command.StartTime += offset_time;
+                command.EndTime += offset_time;
+
+                DispatchCommandExecute(ref_obj, current_value, command);
+
+                //restore command
+                command.StartTime -= offset_time;
+                command.EndTime -= offset_time;
             }
 
         }

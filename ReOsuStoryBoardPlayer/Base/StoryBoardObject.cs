@@ -106,7 +106,7 @@ namespace ReOsuStoryBoardPlayer
                 {
                     if (current_time>=cmd.StartTime&&current_time<=cmd.EndTime)
                     {
-                        CommandExecutor.DispatchCommandExecute(this, current_time, cmd);
+                        CommandExecutor.Loop(this, current_time, cmd);
                     }
                 }
             }

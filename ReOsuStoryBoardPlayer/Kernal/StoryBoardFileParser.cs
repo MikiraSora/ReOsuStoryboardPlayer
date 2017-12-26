@@ -604,13 +604,13 @@ namespace ReOsuStoryBoardPlayer
             int current_end_time = 0;
 
             int fix_start_time = loop_command.LoopParamesters.LoopCommandList.First().StartTime;
-
+            
             foreach (var sub_cmd in loop_command.LoopParamesters.LoopCommandList)
             {
                 sub_cmd.StartTime -= fix_start_time;
                 sub_cmd.EndTime -= fix_start_time;
             }
-
+            
             for (int index = 0; index < loop_command.LoopParamesters.LoopCommandList.Count; index++)
             {
                 var sub_command = loop_command.LoopParamesters.LoopCommandList[index];

@@ -22,48 +22,19 @@ namespace ReOsuStoryBoardPlayer
         {
             base.Update(current_time);
 
-            int current_frame_index = 0;
+            float current_frame_index = (current_time - FrameStartTime) / FrameDelay;
 
-            switch (LoopType)
+            current_frame_index = (int)(LoopType == LoopType.LoopForever ? (current_frame_index % FrameCount) : Math.Min(current_frame_index, FrameCount - 1));
+
+            int result = Math.Max(0,(int)current_frame_index);
+
+            if (prev_frame_index!= result)
             {
-                case LoopType.LoopOnce:
-                    {
-                        if (current_time >= (FrameStartTime + FrameCount * FrameDelay))
-                        {
-                            current_frame_index = FrameCount;
-                        }
-                        else
-                        {
-                            var offset_time = (FrameStartTime + FrameCount * FrameDelay) - current_time;
-                            current_frame_index = FrameCount-(int)(offset_time / FrameDelay)-1;
-                        }
-                    }
-                    break;
-                case LoopType.LoopForever:
-                    {
-                        if (current_time<FrameStartTime)
-                        {
-                            current_frame_index = 0;
-                        }
-                        else
-                        {
-                            var offset_time = current_time - FrameStartTime;
-                            offset_time %= FrameCount * FrameDelay;
-                            current_frame_index = (int)(offset_time / FrameDelay);
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                ImageFilePath = FrameBaseImagePath + result + ".png";
+                this.RenderGroup = backup_group[result];
             }
 
-            if (prev_frame_index!=current_frame_index)
-            {
-                ImageFilePath = FrameBaseImagePath + current_frame_index + ".png";
-                this.RenderGroup = backup_group[current_frame_index];
-            }
-
-            prev_frame_index = current_frame_index;
+            prev_frame_index = result;
         }
     }
 }
