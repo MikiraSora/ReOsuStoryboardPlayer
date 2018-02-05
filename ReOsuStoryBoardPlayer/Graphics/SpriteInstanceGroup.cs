@@ -65,10 +65,10 @@ namespace ReOsuStoryBoardPlayer
         int _calculateCapacitySize()
         {
             /*-----------------CURRENT VERSION------------------ -
-					*orther		anchor	    color		bound       modelMatrix
-					*float(1)	vec2(2)		vec4(4)     vec2(2)     Matrix4(16)
+					*orther		anchor	    color		bound       modelMatrix   flip
+					*float(1)	vec2(2)		vec4(4)     vec2(2)     Matrix4(16)   vec2(2)
 					*/
-            return (1 + 2 + 4 + 2 + 16) * sizeof(float);
+            return (1 + 2 + 4 + 2 + 16+2) * sizeof(float);
         }
 
         Vector _bound;
@@ -122,11 +122,6 @@ namespace ReOsuStoryBoardPlayer
                 {
                     GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_calculateCapacitySize() * Capacity), IntPtr.Zero, BufferUsageHint.DynamicDraw);
 
-                    /*-----------------CURRENT VERSION------------------ -
-					*orther		anchor	    color		bound       modelMatrix
-					*float(1)	vec2(2)		vec4(4)     vec2(2)     Matrix4(16)
-					*/
-
                     //orther
                     GL.EnableVertexAttribArray(2);
                     GL.VertexAttribPointer(2, 1, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 0);//THIS: 最后一个参数是字节数
@@ -147,19 +142,25 @@ namespace ReOsuStoryBoardPlayer
                     GL.VertexAttribPointer(5, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 28);
                     GL.VertexAttribDivisor(5, 1);
 
-                    //ModelMatrix
+                    //filp
                     GL.EnableVertexAttribArray(6);
-                    GL.VertexAttribPointer(6, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 36);
+                    GL.VertexAttribPointer(6, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 36);
                     GL.VertexAttribDivisor(6, 1);
+
+                    //ModelMatrix
                     GL.EnableVertexAttribArray(7);
-                    GL.VertexAttribPointer(7, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 52);
+                    GL.VertexAttribPointer(7, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 44);
                     GL.VertexAttribDivisor(7, 1);
                     GL.EnableVertexAttribArray(8);
-                    GL.VertexAttribPointer(8, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 68);
+                    GL.VertexAttribPointer(8, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 60);
                     GL.VertexAttribDivisor(8, 1);
                     GL.EnableVertexAttribArray(9);
-                    GL.VertexAttribPointer(9, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 84);
+                    GL.VertexAttribPointer(9, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 76);
                     GL.VertexAttribDivisor(9, 1);
+                    GL.EnableVertexAttribArray(10);
+                    GL.VertexAttribPointer(10, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 92);
+                    GL.VertexAttribDivisor(10, 1);
+
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             }
@@ -176,7 +177,7 @@ namespace ReOsuStoryBoardPlayer
 
         float[] PostData;
 
-        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, Vec4 color)
+        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, Vec4 color,bool vertical_flip,bool horizon_flip)
         {
             /*-----------------CURRENT VERSION------------------ -
 			*orther		anchor	    color		bound       modelMatrix
@@ -202,6 +203,10 @@ namespace ReOsuStoryBoardPlayer
             PostData[base_index + 7] = bound.x;
             PostData[base_index + 8] = bound.y;
 
+            //flip write
+            PostData[base_index + 9] = horizon_flip ? -1 : 1;
+            PostData[base_index + 10] = vertical_flip ? -1 : 1;
+
             //ModelMatrix write
             Matrix4 model =
                 Matrix4.Identity *
@@ -215,7 +220,7 @@ namespace ReOsuStoryBoardPlayer
             _Matrix4ToFloatArray(ref model);
             foreach (var value in _cacheMatrix)
             {
-                PostData[base_index + 9 + (i++)] = value;
+                PostData[base_index + 11 + (i++)] = value;
             }
 
             _currentPostCount++;
@@ -225,7 +230,7 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale,Vector anchor, Vec4 color) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color);
+        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale,Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color,vertical_flip,horizon_flip);
 
         void _draw()
         {

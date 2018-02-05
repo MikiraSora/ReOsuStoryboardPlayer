@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\455780 Kano - Sakura no Zenya";
+                beatmap_folder = @"G:\SBTest\420754 Nekomata Master feat Misawa Aki - chrono diver -fragment-";
             }
             else
                 beatmap_folder = argv[0];
