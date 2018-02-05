@@ -207,7 +207,7 @@ namespace ReOsuStoryBoardPlayer
                     for (int index = 0; index < animation.FrameCount; index++)
                     {
                         SpriteInstanceGroup group;
-                        string path = animation.FrameBaseImagePath + index + ".png";
+                        string path = animation.FrameBaseImagePath + index + animation.FrameFileExtension;
                         if (!CacheDrawSpriteInstanceMap.TryGetValue(path, out group))
                         {
                             Log.Warn($"not found image:{path}");

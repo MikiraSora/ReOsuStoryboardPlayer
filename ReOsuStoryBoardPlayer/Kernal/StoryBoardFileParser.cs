@@ -485,7 +485,13 @@ namespace ReOsuStoryBoardPlayer
             {
                 #region Animation Setup
 
-                animation.FrameBaseImagePath = animation.ImageFilePath.Replace(".png",string.Empty);
+                #region Frame
+
+                int dot_position = animation.ImageFilePath.LastIndexOf('.');
+                animation.FrameFileExtension = animation.ImageFilePath.Substring(dot_position);
+                animation.FrameBaseImagePath = animation.ImageFilePath.Replace(animation.FrameFileExtension, string.Empty);
+
+                #endregion
 
                 #region FrameCount
 

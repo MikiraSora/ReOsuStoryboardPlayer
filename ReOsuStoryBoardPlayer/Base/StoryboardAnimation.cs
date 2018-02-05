@@ -10,7 +10,7 @@ namespace ReOsuStoryBoardPlayer
     {
         public int FrameDelay, FrameCount;
 
-        public string FrameBaseImagePath;
+        public string FrameBaseImagePath, FrameFileExtension;
 
         public LoopType LoopType;
 
@@ -30,7 +30,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (prev_frame_index!= result)
             {
-                ImageFilePath = FrameBaseImagePath + result + ".png";
+                ImageFilePath = FrameBaseImagePath + result + FrameFileExtension;
                 this.RenderGroup = backup_group[result];
             }
 

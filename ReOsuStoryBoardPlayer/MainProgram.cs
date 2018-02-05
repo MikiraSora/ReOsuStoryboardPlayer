@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\357579 Tatsh - Xepher";
+                beatmap_folder = @"G:\SBTest\455780 Kano - Sakura no Zenya";
             }
             else
                 beatmap_folder = argv[0];
