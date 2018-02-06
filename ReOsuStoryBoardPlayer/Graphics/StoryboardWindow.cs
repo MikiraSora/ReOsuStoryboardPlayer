@@ -25,26 +25,36 @@ namespace ReOsuStoryBoardPlayer
 
         float x_offset , y_offset ;
 
-        public StoryboardWindow(int width=640, int height=480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
+        public StoryboardWindow(int width=640, int height=480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), $"Esu!StoryBoardPlayer ({width}x{height})"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
         {
             InitGraphics();
             VSync = VSyncMode.Off;
             Log.Init();
             CurrentWindow = this;
+
+            Title += $" OpenGL:{GL.GetInteger(GetPName.MajorVersion)}.{GL.GetInteger(GetPName.MinorVersion)}";
         }
 
         private void InitGraphics()
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+        }
+
+        public void InitWindowRenderSize(bool is_wide_screen = false)
+        {
+            Log.User("Init window size as "+(is_wide_screen?"WideScreen":"DefaultScreen"));
 
             CameraViewMatrix = Matrix4.Identity;
 
-            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_Width, SB_Height, 0, 100);
+            if (is_wide_screen)
+            {
+                ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_Width, SB_Height, 0, 100);
 
-            x_offset = (Width - SB_Width) / SB_Width;
-            y_offset = -(Height - SB_Height) / SB_Height;
+                x_offset = (Width - SB_Width) / SB_Width;
+                y_offset = -(Height - SB_Height) / SB_Height;
+            }
 
             CameraViewMatrix = CameraViewMatrix * Matrix4.CreateTranslation(x_offset, y_offset, 0);
         }
@@ -58,6 +68,7 @@ namespace ReOsuStoryBoardPlayer
         public void LoadStoryboardInstance(StoryBoardInstance instance)
         {
             this.instance = instance;
+            InitWindowRenderSize(instance.IsWideScreen);
             instance.BuildCacheDrawSpriteBatch();
         }
 

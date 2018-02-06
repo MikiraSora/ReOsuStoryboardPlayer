@@ -38,6 +38,8 @@ namespace ReOsuStoryBoardPlayer
 
         public long RenderCastTime { get; private set; }
 
+        public bool IsWideScreen { get; set; } = false;
+
 #if DEBUG
         DebugToolInstance debug_instance;
         public DebugToolInstance DebugToolInstance { get => debug_instance; }
@@ -56,7 +58,7 @@ namespace ReOsuStoryBoardPlayer
 
             CurrentScanNode = StoryboardObjectList.First;
 
-            int audioLeadIn = 0;
+            //int audioLeadIn = 0;
 
             #region Get files path
 
@@ -73,13 +75,20 @@ namespace ReOsuStoryBoardPlayer
                     Log.User($"osu file path={path}");
 
                     string content = File.ReadAllText(path);
-                    var match = Regex.Match(content, @"AudioFilename:\s*(.+)");
+                    var match = Regex.Match(content, @"AudioFilename\s*:\s*(.+)");
 
-                    audioLeadIn = int.Parse(Regex.Match(content, @"AudioLeadIn:\s*(.+)").Groups[1].Value.Replace("\r", string.Empty));
+                    //audioLeadIn = int.Parse(Regex.Match(content, @"AudioLeadIn:\s*(.+)").Groups[1].Value.Replace("\r", string.Empty));
                     if (true)
                     {
                         audio_file_path =folder_path + match.Groups[1].Value.Replace("\r",string.Empty);
                         Log.User($"audio file path={audio_file_path}");
+                    }
+
+                    //WidescreenStoryboard
+                    match = Regex.Match(content, @"WidescreenStoryboard\s*:\s*(.+)");
+                    if (match.Success)
+                    {
+                        IsWideScreen = match.Groups[1].Value.ToString().Trim() == "1";
                     }
                 }
             }
@@ -187,7 +196,7 @@ namespace ReOsuStoryBoardPlayer
                 string absolute_path = path.Replace(folder_path, string.Empty).Trim();
                 CacheDrawSpriteInstanceMap[absolute_path.ToLower()]= new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex);
 
-                Log.User($"Loaded storyboard image file :{path}");
+                Log.Debug($"Loaded storyboard image file :{path}");
             });
 
             for (int i = 0; i < obj_list.Count; i++)
