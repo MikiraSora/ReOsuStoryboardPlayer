@@ -15,14 +15,14 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\420754 Nekomata Master feat Misawa Aki - chrono diver -fragment-";
+                beatmap_folder = @"G:\SBTest\404658 Giga - -BWW SCREAM-";
             }
             else
                 beatmap_folder = argv[0];
             
             StoryBoardInstance instance = GetInstance(beatmap_folder);
-            
-            StoryboardWindow window = new StoryboardWindow();
+
+            StoryboardWindow window = new StoryboardWindow((int)(1280),(int)(768));
 
             window.LoadStoryboardInstance(instance);
 

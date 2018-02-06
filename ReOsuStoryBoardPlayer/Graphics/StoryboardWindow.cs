@@ -17,11 +17,15 @@ namespace ReOsuStoryBoardPlayer
 
         StoryBoardInstance instance;
 
+        float SB_Width = 640.0f, SB_Height = 480.0f;
+
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
         public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
 
-        public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
+        float x_offset , y_offset ;
+
+        public StoryboardWindow(int width=640, int height=480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
         {
             InitGraphics();
@@ -34,6 +38,15 @@ namespace ReOsuStoryBoardPlayer
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+            CameraViewMatrix = Matrix4.Identity;
+
+            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_Width, SB_Height, 0, 100);
+
+            x_offset = (Width - SB_Width) / SB_Width;
+            y_offset = -(Height - SB_Height) / SB_Height;
+
+            CameraViewMatrix = CameraViewMatrix * Matrix4.CreateTranslation(x_offset, y_offset, 0);
         }
 
         public new void Run()
@@ -55,12 +68,6 @@ namespace ReOsuStoryBoardPlayer
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             GL.ClearColor(Color.Black);
-
-            CameraViewMatrix = Matrix4.Identity;
-
-            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(Width, Height, 0, 100);
-
-            CameraViewMatrix = CameraViewMatrix * Matrix4.CreateTranslation(-0 / (Width / 2.0f), 0 / (Height / 2.0f), 0);
 
             instance.PostDrawStoryBoard();
 
