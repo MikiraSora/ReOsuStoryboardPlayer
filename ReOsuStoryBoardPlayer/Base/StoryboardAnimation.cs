@@ -8,7 +8,9 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryboardAnimation : StoryBoardObject
     {
-        public int FrameDelay, FrameCount;
+        public int FrameCount;
+
+        public float FrameDelay;
 
         public string FrameBaseImagePath, FrameFileExtension;
 

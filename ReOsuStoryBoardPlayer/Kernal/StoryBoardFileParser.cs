@@ -501,7 +501,7 @@ namespace ReOsuStoryBoardPlayer
 
                 #region FrameDelay
 
-                animation.FrameDelay = int.Parse(sprite_param[7]);
+                animation.FrameDelay = float.Parse(sprite_param[7]);
 
                 #endregion
 
