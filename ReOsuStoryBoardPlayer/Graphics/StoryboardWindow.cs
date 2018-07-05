@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer
 
         StoryBoardInstance instance;
 
-        float SB_Width = 640.0f, SB_Height = 480.0f;
+        const float SB_WIDTH = 640.0f, SB_WIDE_WIDTH =747.0f, SB_HEIGHT = 480.0f;
 
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
@@ -48,12 +48,20 @@ namespace ReOsuStoryBoardPlayer
 
             CameraViewMatrix = Matrix4.Identity;
 
-            if (is_wide_screen)
+            ///todo,不确定对不对
+            if (!is_wide_screen)
             {
-                ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_Width, SB_Height, 0, 100);
+                ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_WIDTH, SB_HEIGHT, 0, 100);
 
-                x_offset = (Width - SB_Width) / SB_Width;
-                y_offset = -(Height - SB_Height) / SB_Height;
+                x_offset = (Width - SB_WIDTH) / SB_WIDTH;
+                y_offset = -(Height - SB_HEIGHT) / SB_HEIGHT;
+            }
+            else
+            {
+                ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_WIDE_WIDTH, SB_HEIGHT, 0, 100);
+
+                x_offset = (Width - SB_WIDE_WIDTH) / SB_WIDTH;
+                y_offset = -(Height - SB_HEIGHT) / SB_HEIGHT;
             }
 
             CameraViewMatrix = CameraViewMatrix * Matrix4.CreateTranslation(x_offset, y_offset, 0);

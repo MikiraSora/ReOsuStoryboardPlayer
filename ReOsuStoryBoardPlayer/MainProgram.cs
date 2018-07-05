@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
+                beatmap_folder = @"G:\SBTest\404658 Giga - -BWW SCREAM-";
             }
             else
                 beatmap_folder = argv[0];
@@ -43,13 +43,13 @@ namespace ReOsuStoryBoardPlayer
                 Exit($"\"{beatmap_folder}\" not a folder!");
             }
 
-            //try
+            try
             {
                 return new StoryBoardInstance(beatmap_folder);
             }
-            //catch (Exception e)
+            catch (Exception e)
             {
-               //Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
+               Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
             }
 
             return null;
