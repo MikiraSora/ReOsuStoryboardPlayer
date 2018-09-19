@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\372552 yuiko - Azuma no Sora kara Hajimaru Sekai (Short)";
+                beatmap_folder = @"G:\SBTest\17154 IOSYS feat 3L - Miracle-Hinacle";
             }
             else
                 beatmap_folder = argv[0];

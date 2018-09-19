@@ -383,7 +383,7 @@ namespace ReOsuStoryBoardPlayer
                     group = obj.RenderGroup;
                 }
 
-                group.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color,obj.IsVerticalFlip,obj.IsHorizonFlip);
+                group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color,obj.IsVerticalFlip,obj.IsHorizonFlip);
             }
 
             if (group.CurrentPostCount!=0)
@@ -402,7 +402,7 @@ namespace ReOsuStoryBoardPlayer
                     GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
                 }
                 
-                group.FlushDraw();
+                group?.FlushDraw();
             }
         }
 
