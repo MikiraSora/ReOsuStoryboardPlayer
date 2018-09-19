@@ -38,6 +38,11 @@ namespace ReOsuStoryBoardPlayer
 
         public virtual void Update(float current_time)
         {
+#if DEBUG
+            ExecutedCommands.ForEach(c => c.IsExecuted = false);
+            ExecutedCommands.Clear();
+#endif
+
             if (current_time > FrameEndTime)
             {
                 markDone = true;
@@ -96,10 +101,15 @@ namespace ReOsuStoryBoardPlayer
                 if (command != null)
                 {
                     CommandExecutor.DispatchCommandExecute(this, current_time, command);
-                    CommandExecutor.ClearCommandRegisterArray();
+
+                    //???不应该这时候clear,但我忘记为啥要这样，先注释mark
+                    //CommandExecutor.ClearCommandRegisterArray();
                 }
             }
 
+            CommandExecutor.ClearCommandRegisterArray();
+            
+            //每个物件可能有多个Loop
             void UpdateForEachCommand(List<Command> command_list)
             {
                 foreach (var cmd in command_list)
@@ -113,5 +123,9 @@ namespace ReOsuStoryBoardPlayer
         }
 
         public override string ToString() => $"{Z}: {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
+
+#if DEBUG
+        internal List<Command> ExecutedCommands=new List<Command>();
+#endif
     }
 }

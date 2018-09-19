@@ -152,7 +152,7 @@
             // 
             // CommandTreeViewer
             // 
-            this.CommandTreeViewer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.CommandTreeViewer.BackColor = System.Drawing.Color.White;
             this.CommandTreeViewer.Location = new System.Drawing.Point(16, 153);
             this.CommandTreeViewer.Name = "CommandTreeViewer";
             this.CommandTreeViewer.Size = new System.Drawing.Size(854, 395);

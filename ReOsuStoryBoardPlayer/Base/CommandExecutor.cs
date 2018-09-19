@@ -253,10 +253,8 @@ namespace ReOsuStoryBoardPlayer
 
             var reg_cmd = command.CommandEventType!=Event.Loop?_ExecutedCommandRegisterArray[(int)command.CommandEventType]:null;
 
-            if (reg_cmd != command&& reg_cmd!=null&& command.EndTime < reg_cmd.EndTime)
-            {
-                    return;
-            }
+            if (reg_cmd != command && reg_cmd != null && command.EndTime < reg_cmd.EndTime)
+                return;
 
             _ExecutedCommandRegisterArray[(int)command.CommandEventType] = command;
 
@@ -286,6 +284,9 @@ namespace ReOsuStoryBoardPlayer
             #endregion
 
             command.executor(ref_obj, current_value, command);
+
+            command.IsExecuted = true;
+            ref_obj.ExecutedCommands.Add(command);
         }
     }
 }

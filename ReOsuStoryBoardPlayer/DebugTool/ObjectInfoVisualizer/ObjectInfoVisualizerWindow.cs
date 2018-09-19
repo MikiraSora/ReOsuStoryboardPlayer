@@ -18,6 +18,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
         public StoryBoardObject obj { get; set; }
         public StoryBoardInstance Instance { get; }
 
+        private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
+
         public ObjectInfoVisualizerWindow(StoryBoardInstance instance)
         {
             InitializeComponent();
@@ -30,10 +32,14 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
             {
                 if (obj!=last_obj)
                 {
-                    this.Text = obj.ImageFilePath;
+                    //这里是物件装载一次的
+
+                    Text = obj.ImageFilePath;
                     AnchorLabel.Text = obj.Anchor.ToString();
                     OrderLabel.Text = obj.Z.ToString();
                     TimeLabel.Text = $"{obj.FrameStartTime}~{obj.FrameEndTime}";
+
+                    command_node_map.Clear();
 
                     try
                     {
@@ -53,6 +59,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                     }
                 }
 
+                //这里是要实时更新的
+
                 PositionLabel.Text = obj.Postion.ToString();
 
                 int r=(int)(obj.Color.x * 255), g=(int)(obj.Color.y * 255), b=(int)(obj.Color.z * 255);
@@ -65,6 +73,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                 ParameterLabel.Text = $"{(obj.IsAdditive ? "A" : " ")}{(obj.IsHorizonFlip ? "H" : " ")}{(obj.IsVerticalFlip ? "V" : " ")}";
                 MarkdoneLabel.Text = obj.markDone.ToString();
+
+                UpdateCommandNode();
             }
             else
             {
@@ -83,6 +93,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                     ColorLabel.ForeColor = Color.White;
                     ColorLabel.BackColor = Color.White;
+
+                    command_node_map.Clear();
                 }
             }
 
@@ -98,7 +110,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
             last_obj = obj;
         }
 
-        void ShowCommandList()
+        private void ShowCommandList()
         {
             if (obj!=last_obj)
             {
@@ -107,10 +119,12 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                 if (obj!=null)
                 {
                     var root=CommandTreeViewer.Nodes.Add(obj.ToString());
+
                     foreach (var command_list in obj.CommandMap)
                     {
                         var cmd_root = root.Nodes.Add(command_list.Key.ToString());
                         cmd_root.ForeColor = Color.Aqua;
+
                         foreach (var cmd in command_list.Value)
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
@@ -122,15 +136,30 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                                 {
                                     var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
                                     loop_sub_note.ForeColor = Color.LightGreen;
+                                    BindCommandNode(loop_sub_command, loop_sub_note);
                                 }
                             }
+                            else
+                                BindCommandNode(cmd, cmd_note);
                         }
                     }
 
                     root.ExpandAll();
                 }
             }
+
+            void BindCommandNode(Command command,TreeNode node)
+            {
+                command_node_map[command] = node;
+            }
         }
+
+        private void UpdateCommandNode()
+        {
+            foreach (var pair in command_node_map)
+                pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
+        }
+
         /*
         void ShowRawCommandList()
         {
