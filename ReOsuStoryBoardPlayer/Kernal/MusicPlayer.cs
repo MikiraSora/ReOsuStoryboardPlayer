@@ -37,8 +37,8 @@ namespace ReOsuStoryBoardPlayer
         public float CurrentFixedTime { get; private set; }
 
         public float Volume { get => sound.Volume; set => sound.Volume = value; }
-
-        private DateTime prev_time;
+        
+        const float TIME_ADD = 0.75f;
         
         public MusicPlayer(string file_path)
         {
@@ -51,12 +51,8 @@ namespace ReOsuStoryBoardPlayer
 
         public void Tick()
         {
-            var now_time =DateTime.Now;
-            float tick_time = IsPlaying?(float)(now_time-prev_time).TotalMilliseconds/*offset*/:0/*keep*/;
-            prev_time = now_time;
-
-            CurrentFixedTime +=tick_time;
-
+            CurrentFixedTime = (CurrentPlayback - CurrentPlayback) * TIME_ADD + CurrentFixedTime;
+            
             if (Math.Abs(CurrentFixedTime-CurrentPlayback)>26)
             {
                 CurrentFixedTime = CurrentPlayback;
@@ -66,8 +62,6 @@ namespace ReOsuStoryBoardPlayer
         public void Play()
         {
             sound.Paused = false;
-
-            prev_time = DateTime.Now;
         }
 
         public void Pause()
