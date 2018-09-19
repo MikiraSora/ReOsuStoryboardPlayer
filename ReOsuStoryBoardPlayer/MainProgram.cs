@@ -15,18 +15,18 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\404658 Giga - -BWW SCREAM-";
+                beatmap_folder = @"G:\SBTest\372552 yuiko - Azuma no Sora kara Hajimaru Sekai (Short)";
             }
             else
                 beatmap_folder = argv[0];
             
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
-            StoryboardWindow window = new StoryboardWindow((int)(1280),(int)(768));
+            StoryboardWindow window = new StoryboardWindow((int)(640),(int)(480));
 
             window.LoadStoryboardInstance(instance);
 
-            Log.AbleDebugLog = false;
+            //Log.AbleDebugLog = false;
 
             window.Run();
         }

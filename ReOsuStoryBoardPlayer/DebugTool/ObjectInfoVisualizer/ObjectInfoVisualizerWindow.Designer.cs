@@ -124,7 +124,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Consolas", 12F);
-            this.label7.Location = new System.Drawing.Point(570, 66);
+            this.label7.Location = new System.Drawing.Point(12, 95);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(117, 19);
             this.label7.TabIndex = 8;
@@ -134,7 +134,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Consolas", 12F);
-            this.label8.Location = new System.Drawing.Point(570, 38);
+            this.label8.Location = new System.Drawing.Point(550, 12);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(90, 19);
             this.label8.TabIndex = 9;
@@ -144,7 +144,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Consolas", 12F);
-            this.label9.Location = new System.Drawing.Point(12, 95);
+            this.label9.Location = new System.Drawing.Point(308, 95);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(144, 19);
             this.label9.TabIndex = 10;
@@ -206,7 +206,7 @@
             this.TimeLabel.AutoSize = true;
             this.TimeLabel.Font = new System.Drawing.Font("Consolas", 12F);
             this.TimeLabel.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.TimeLabel.Location = new System.Drawing.Point(153, 95);
+            this.TimeLabel.Location = new System.Drawing.Point(449, 95);
             this.TimeLabel.Name = "TimeLabel";
             this.TimeLabel.Size = new System.Drawing.Size(72, 19);
             this.TimeLabel.TabIndex = 16;
@@ -250,7 +250,7 @@
             this.MarkdoneLabel.AutoSize = true;
             this.MarkdoneLabel.Font = new System.Drawing.Font("Consolas", 12F);
             this.MarkdoneLabel.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.MarkdoneLabel.Location = new System.Drawing.Point(666, 38);
+            this.MarkdoneLabel.Location = new System.Drawing.Point(646, 12);
             this.MarkdoneLabel.Name = "MarkdoneLabel";
             this.MarkdoneLabel.Size = new System.Drawing.Size(72, 19);
             this.MarkdoneLabel.TabIndex = 20;
@@ -261,7 +261,7 @@
             this.OrderLabel.AutoSize = true;
             this.OrderLabel.Font = new System.Drawing.Font("Consolas", 12F);
             this.OrderLabel.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.OrderLabel.Location = new System.Drawing.Point(693, 66);
+            this.OrderLabel.Location = new System.Drawing.Point(135, 95);
             this.OrderLabel.Name = "OrderLabel";
             this.OrderLabel.Size = new System.Drawing.Size(72, 19);
             this.OrderLabel.TabIndex = 21;

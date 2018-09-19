@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void InitStoryboardObjectVisualizerWindow()
         {
-            VisualizerWindow = new ObjectInfoVisualizerWindow();
+            VisualizerWindow = new ObjectInfoVisualizerWindow(refInstance);
             VisualizerWindow.Show();
         }
 
@@ -119,13 +119,28 @@ namespace ReOsuStoryBoardPlayer
                 Matrix4.Identity *
             Matrix4.CreateScale(sb_obj.Scale.x, sb_obj.Scale.y, 1) *
             Matrix4.CreateFromAxisAngle(_staticCacheAxis, sb_obj.Rotate / 180.0f * 3.1415926f) *
-            Matrix4.CreateTranslation(sb_obj.Postion.x, sb_obj.Postion.y , 0);
+            Matrix4.CreateTranslation(sb_obj.Postion.x - StoryboardWindow.CurrentWindow.Width / 2, -sb_obj.Postion.y + StoryboardWindow.CurrentWindow.Height / 2, 0);
+
+            Log.User("--------------------");
+            Log.User($"obj:{sb_obj.ImageFilePath}");
+
+            mouse_point.X = mouse_point.X - StoryboardWindow.CurrentWindow.Width / 2;
+            mouse_point.Y = StoryboardWindow.CurrentWindow.Height / 2 - mouse_point.Y;
+
+            Log.User($"Mouse pos:{mouse_point} \t raw:({x},{y})");
 
             for (int i = 0; i < 4; i++)
             {
                 var vertex = new Vector2(_cacheBaseVertex[i * 2 + 0], _cacheBaseVertex[i * 2 + 1]);
                 var temp = (vertex - in_anchor) * in_bound;
-                var transform = new Vector4(temp.X, temp.Y, 0, 1)*StoryboardWindow.CameraViewMatrix*in_model ;
+                var transform = new Vector4(temp.X, temp.Y, 0, 1) * StoryboardWindow.CameraViewMatrix * in_model;
+                /*
+                transform.X = transform.X - StoryboardWindow.CurrentWindow.Width / 2;
+                transform.Y = StoryboardWindow.CurrentWindow.Height / 2-transform.Y;
+                */
+
+                Log.User($"{transform}");
+
                 points[i] = new Vector3(mouse_point-new Vector2(transform.X, transform.Y) );
             }
 

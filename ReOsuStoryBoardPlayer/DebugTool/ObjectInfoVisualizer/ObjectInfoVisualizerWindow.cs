@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,10 +16,12 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
         StoryBoardObject last_obj;
 
         public StoryBoardObject obj { get; set; }
+        public StoryBoardInstance Instance { get; }
 
-        public ObjectInfoVisualizerWindow()
+        public ObjectInfoVisualizerWindow(StoryBoardInstance instance)
         {
             InitializeComponent();
+            Instance = instance;
         }
 
         public void UpdateCurrentStoryboardObject()
@@ -31,6 +34,23 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                     AnchorLabel.Text = obj.Anchor.ToString();
                     OrderLabel.Text = obj.Z.ToString();
                     TimeLabel.Text = $"{obj.FrameStartTime}~{obj.FrameEndTime}";
+
+                    try
+                    {
+                        var path = Path.Combine(Instance.folder_path, obj.ImageFilePath);
+                        var img = Bitmap.FromFile(path);
+
+                        if (img!=null)
+                        {
+                            var prev_imgae = pictureBox1.Image;
+                            pictureBox1.Image = img;
+                            prev_imgae.Dispose();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("[ObjectInfoVisualizer]Can't load bitmap:"+e.Message);
+                    }
                 }
 
                 PositionLabel.Text = obj.Postion.ToString();

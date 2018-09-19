@@ -382,6 +382,7 @@ namespace ReOsuStoryBoardPlayer
                     additive_trigger = obj.IsAdditive;
                     group = obj.RenderGroup;
                 }
+
                 group.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color,obj.IsVerticalFlip,obj.IsHorizonFlip);
             }
 

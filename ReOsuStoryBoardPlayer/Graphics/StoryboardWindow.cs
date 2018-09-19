@@ -48,6 +48,9 @@ namespace ReOsuStoryBoardPlayer
 
             CameraViewMatrix = Matrix4.Identity;
 
+            //force before debugging
+            is_wide_screen = false;
+
             ///todo,不确定对不对
             if (!is_wide_screen)
             {
@@ -115,6 +118,8 @@ namespace ReOsuStoryBoardPlayer
             {
                 var x = e.X;
                 var y = e.Y;
+
+                Console.WriteLine($"Mouse:({x},{y})");
 
                 instance.DebugToolInstance.SelectObjectIntoVisualizer(x, y);
             }
