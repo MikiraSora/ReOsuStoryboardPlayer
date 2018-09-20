@@ -70,6 +70,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                 AngleLabel.Text = obj.Rotate.ToString();
                 AlphaLabel.Text = obj.Color.w.ToString();
+                asd.Text = obj.Scale.ToString();
 
                 ParameterLabel.Text = $"{(obj.IsAdditive ? "A" : " ")}{(obj.IsHorizonFlip ? "H" : " ")}{(obj.IsVerticalFlip ? "V" : " ")}";
                 MarkdoneLabel.Text = obj.markDone.ToString();
@@ -123,19 +124,17 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                     foreach (var command_list in obj.CommandMap)
                     {
                         var cmd_root = root.Nodes.Add(command_list.Key.ToString());
-                        cmd_root.ForeColor = Color.Aqua;
+                        cmd_root.ForeColor = Color.AliceBlue;
 
                         foreach (var cmd in command_list.Value)
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
-                            cmd_note.ForeColor = Color.LightGreen;
 
                             if (cmd is LoopCommand loop_command)
                             {
                                 foreach (var loop_sub_command in loop_command.LoopParamesters.LoopCommandList)
                                 {
                                     var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
-                                    loop_sub_note.ForeColor = Color.LightGreen;
                                     BindCommandNode(loop_sub_command, loop_sub_note);
                                 }
                             }
@@ -157,7 +156,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
         private void UpdateCommandNode()
         {
             foreach (var pair in command_node_map)
+            {
                 pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
+            }
         }
 
         /*

@@ -38,7 +38,7 @@ namespace ReOsuStoryBoardPlayer
 
         public float Volume { get => sound.Volume; set => sound.Volume = value; }
         
-        const float TIME_ADD = 0.75f;
+        const float TIME_ADD = 0.1f;
         
         public MusicPlayer(string file_path)
         {
@@ -51,7 +51,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void Tick()
         {
-            CurrentFixedTime = (CurrentPlayback - CurrentPlayback) * TIME_ADD + CurrentFixedTime;
+            CurrentFixedTime = (CurrentPlayback - CurrentFixedTime) * TIME_ADD + CurrentFixedTime;
             
             if (Math.Abs(CurrentFixedTime-CurrentPlayback)>26)
             {

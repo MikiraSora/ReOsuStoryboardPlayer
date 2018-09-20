@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\17154 IOSYS feat 3L - Miracle-Hinacle";
+                beatmap_folder = @"G:\SBTest\60744 L i z z - Answer";
             }
             else
                 beatmap_folder = argv[0];

@@ -242,21 +242,38 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion
 
-        static Command[] _ExecutedCommandRegisterArray = new Command[14];
+        static (Command command,int StartTime,int EndTime)[] _ExecutedCommandRegisterArray = new (Command command, int StartTime, int EndTime)[14];
 
         public static void ClearCommandRegisterArray() => Array.Clear(_ExecutedCommandRegisterArray, 0, 14);
 
         public static void DispatchCommandExecute(StoryBoardObject ref_obj, float current_playing_time, Command command)
         {
-
             #region Check Command Conflct
 
-            var reg_cmd = command.CommandEventType!=Event.Loop?_ExecutedCommandRegisterArray[(int)command.CommandEventType]:null;
+            var reg_cmd_info = command.CommandEventType!=Event.Loop?_ExecutedCommandRegisterArray[(int)command.CommandEventType]:(null,0,0);
 
-            if (reg_cmd != command && reg_cmd != null && command.EndTime < reg_cmd.EndTime)
-                return;
+            /*
+             如果之前有同类型命令执行了，比如Loop里面的子命令
+             将之前的命令和现在的命令当做在一条时间轴上判断
+                                                                      (allow)
+                                                                      |
+             |-----reg_cmd_a-----|    o   |------current_cmd------|   o  |-----reg_cmd_b-----|
+                                      |
+                                      current_playing_time(reject)
+             至于考虑重叠的，不考虑了
+             */
+            if (
+                //是否存在已执行命令
+                reg_cmd_info.command != null &&(
+                    //已执行的命令比现在还靠后
+                    command.EndTime<=reg_cmd_info.command.StartTime ||
 
-            _ExecutedCommandRegisterArray[(int)command.CommandEventType] = command;
+                    //现在命令比已执行命令还靠后，但当前时间在现命令之前
+                    (reg_cmd_info.command.StartTime<command.StartTime&&current_playing_time<command.StartTime)
+                ))
+                return;//不给执行
+
+            _ExecutedCommandRegisterArray[(int)command.CommandEventType] = (command,command.StartTime,command.EndTime);
 
             #endregion
 
