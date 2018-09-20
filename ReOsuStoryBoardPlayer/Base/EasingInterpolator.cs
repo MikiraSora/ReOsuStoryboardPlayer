@@ -52,7 +52,7 @@ namespace ReOsuStoryBoardPlayer
             QuintEaseOut, QuintEaseIn, QuintEaseInOut, QuintEaseOutIn,
             CircEaseOut, CircEaseIn, CircEaseInOut, CircEaseOutIn,
             SineEaseOut, SineEaseIn, SineEaseInOut, SineEaseOutIn,
-            ElasticEaseOut, ElasticEaseIn, ElasticEaseInOut, ElasticEaseOutIn,
+            ElasticEaseOut, ElasticEaseIn, ElasticEaseInOut, ElasticEaseOutIn, ElasticEaseHalfOut, ElasticEaseQuarterOut,
             BounceEaseOut, BounceEaseIn, BounceEaseInOut, BounceEaseOutIn,
             BackEaseOut, BackEaseIn, BackEaseInOut, BackEaseOutIn
         }
@@ -622,6 +622,23 @@ namespace ReOsuStoryBoardPlayer
             return ElasticEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
+        public static float ElasticEaseHalfOut(float t, float b, float c, float d)
+        {
+            if (t >= d) return 1;
+
+            var p = d * .3;
+            var s = p / (2 * Math.PI) * Math.Asin(1);
+            return (float)(Math.Pow(2, -10 * t) * Math.Sin((0.5f * t * d - s) * (2 * Math.PI) / p) + 1);
+        }
+
+        public static float ElasticEaseQuarterOut(float t, float b, float c, float d)
+        {
+            if (t >= d) return 1;
+
+            var p = d * .3;
+            var s = p / (2 * Math.PI) * Math.Asin(1);
+            return (float)(Math.Pow(2, -10 * t) * Math.Sin((0.25f * t * d - s) * (2 * Math.PI) / p) + 1);
+        }
         #endregion
 
         #region Bounce

@@ -288,14 +288,11 @@ namespace ReOsuStoryBoardPlayer
                 case Easing.Linear:
                     return new EasingInterpolator(EasingInterpolator.EaseType.Linear);
 
-                case Easing.EasingOut:
                 case Easing.EasingIn:
-                    Log.Warn("not support easing type {0},return linear.", easing.ToString());
-                    return new EasingInterpolator(EasingInterpolator.EaseType.Linear);
-
                 case Easing.QuadIn:
                     return new EasingInterpolator(EasingInterpolator.EaseType.QuadEaseIn);
 
+                case Easing.EasingOut:
                 case Easing.QuadOut:
                     return new EasingInterpolator(EasingInterpolator.EaseType.QuadEaseOut);
 
@@ -366,9 +363,10 @@ namespace ReOsuStoryBoardPlayer
                     return new EasingInterpolator(EasingInterpolator.EaseType.ElasticEaseInOut);
 
                 case Easing.ElasticHalfOut:
+                    return new EasingInterpolator(EasingInterpolator.EaseType.ElasticEaseHalfOut);
+
                 case Easing.ElasticQuarterOut:
-                    Log.Warn("not support easing type {0}", easing.ToString());
-                    return new EasingInterpolator(EasingInterpolator.EaseType.Linear);
+                    return new EasingInterpolator(EasingInterpolator.EaseType.ElasticEaseQuarterOut);
 
                 case Easing.BackIn:
                     return new EasingInterpolator(EasingInterpolator.EaseType.BackEaseIn);

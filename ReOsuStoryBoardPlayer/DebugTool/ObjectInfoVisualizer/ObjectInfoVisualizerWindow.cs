@@ -70,7 +70,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                 AngleLabel.Text = obj.Rotate.ToString();
                 AlphaLabel.Text = obj.Color.w.ToString();
-                asd.Text = obj.Scale.ToString();
+                ScaleLabel.Text = obj.Scale.ToString();
 
                 ParameterLabel.Text = $"{(obj.IsAdditive ? "A" : " ")}{(obj.IsHorizonFlip ? "H" : " ")}{(obj.IsVerticalFlip ? "V" : " ")}";
                 MarkdoneLabel.Text = obj.markDone.ToString();
