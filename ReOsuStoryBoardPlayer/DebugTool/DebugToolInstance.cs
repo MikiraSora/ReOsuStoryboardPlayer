@@ -76,7 +76,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void SelectObjectIntoVisualizer(float x, float y)
         {
-            int last_order_index = VisualizerWindow.obj == null ? -1 : VisualizerWindow.obj.Z;
+            int last_order_index = VisualizerWindow?.obj?.Z??-1;
 
             StoryBoardObject obj=null;
 
@@ -84,7 +84,9 @@ namespace ReOsuStoryBoardPlayer
             {
                 foreach (var temp in list)
                 {
-                    if (temp.Z>last_order_index&&(obj==null?true:(temp.Z<obj.Z))&&IsPointInObjectArea(temp,x,y))
+                    if (temp.Z > last_order_index &&
+                        (obj == null ? true : (temp.Z < obj.Z)) &&
+                        IsPointInObjectArea(temp, x, y))
                     {
                         obj = temp;
                     }

@@ -369,40 +369,39 @@ namespace ReOsuStoryBoardPlayer
             
             SpriteInstanceGroup group = draw_list.First().RenderGroup;
 
-            bool additive_trigger = draw_list.First().IsAdditive;
+            bool additive_trigger;
+            ChangeAdditiveStatus(draw_list.First().IsAdditive);
 
-            foreach (var obj in draw_list)
+            for (int i = 0; i < draw_list.Count; i++)
             {
+                var obj = draw_list[i];
+
                 if (obj.Color.w <= 0)
                     continue;//skip
 
                 if (group!=obj.RenderGroup||additive_trigger!=obj.IsAdditive)
                 {
-                    PostDraw();
-                    additive_trigger = obj.IsAdditive;
+                    group?.FlushDraw();
+
+                    //应该是现在设置Blend否则Group自动渲染来不及钦定
+                    ChangeAdditiveStatus(obj.IsAdditive);
+
                     group = obj.RenderGroup;
                 }
 
                 group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color,obj.IsVerticalFlip,obj.IsHorizonFlip);
             }
-
+            
             if (group.CurrentPostCount!=0)
-            {
-                PostDraw();
-            } 
-
-            void PostDraw()
-            {
-                if (additive_trigger)
-                {
-                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.One);
-                }
-                else
-                {
-                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-                }
-                
                 group?.FlushDraw();
+
+            //恢复Blend
+            ChangeAdditiveStatus(false);
+
+            void ChangeAdditiveStatus(bool is_additive_blend)
+            {
+                additive_trigger = is_additive_blend;
+                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, additive_trigger ? BlendingFactorDest.One : BlendingFactorDest.OneMinusSrcAlpha);
             }
         }
 

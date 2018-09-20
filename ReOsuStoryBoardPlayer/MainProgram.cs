@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\364401 Shiena Nishizawa - Meaning";
+                beatmap_folder = @"G:\SBTest\315799 Madotsuki@ - Ikanaide";
             }
             else
                 beatmap_folder = argv[0];
