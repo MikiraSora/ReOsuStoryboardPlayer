@@ -144,67 +144,26 @@ namespace ReOsuStoryBoardPlayer
 
             int current_loop_index = (int)(recovery_time / loop_command.LoopParamesters.CostTime);
 
-            var command_list = loop_command.LoopParamesters.LoopCommandList;
+            var command_map = loop_command.LoopParamesters.LoopCommandList;
+            
+            foreach (var command_list in command_map.Values)
+            {
+                var command = PickCommand(current_time, command_list);
 
-            Command command = null;
-            if (current_time < command_list[0].StartTime)
-            {
-                //早于开始前
-                command = command_list[0];
-            }
-            else if (current_time > command_list[command_list.Count - 1].EndTime)
-            {
-                //迟于结束后
-                command = command_list[command_list.Count - 1];
-            }
-
-            if (current_loop_index>=loop_command.LoopCount)
-            {
-                //判断是否已经循环结束
-                command = command_list[command_list.Count - 1];
-            }
-
-            if (command == null)
-            {
-                foreach (var cmd in command_list)
+                if (command != null)
                 {
-                    if (current_time >= cmd.StartTime && current_time <= cmd.EndTime)
-                    {
-                        command = cmd;
-                        break;
-                    }
+                    //store command start/end time
+                    var offset_time = (int)(loop_command.StartTime + current_loop_index * loop_command.LoopParamesters.CostTime);
+                    command.StartTime += offset_time;
+                    command.EndTime += offset_time;
+
+                    DispatchCommandExecute(ref_obj, current_value, command);
+
+                    //restore command
+                    command.StartTime -= offset_time;
+                    command.EndTime -= offset_time;
                 }
             }
-
-            if (command == null)
-            {
-                for (int i = 0; i < command_list.Count - 1; i++)
-                {
-                    var cur_cmd = command_list[i];
-                    var next_cmd = command_list[i + 1];
-
-                    if (current_time >= cur_cmd.EndTime && current_time <= next_cmd.StartTime)
-                    {
-                        command = cur_cmd;
-                        break;
-                    }
-                }
-            }
-
-            if (command != null)
-            {
-                //store command start/end time
-                var offset_time= (int)(loop_command.StartTime + current_loop_index * loop_command.LoopParamesters.CostTime);
-                command.StartTime += offset_time;
-                command.EndTime += offset_time;
-
-                DispatchCommandExecute(ref_obj, current_value, command);
-
-                //restore command
-                command.StartTime -= offset_time;
-                command.EndTime -= offset_time;
-            }
-
         }
 
         public static void Parameter(StoryBoardObject ref_obj, float current_value, Command command)
@@ -310,6 +269,50 @@ namespace ReOsuStoryBoardPlayer
 
             command.IsExecuted = true;
             ref_obj.ExecutedCommands.Add(command);
+        }
+
+        public static Command PickCommand(float current_time,IEnumerable<Command> command_list)
+        {
+            Command command = null;
+            if (current_time < command_list.First().StartTime)
+            {
+                //早于开始前
+                return command_list.First();
+            }
+            else if (current_time > command_list.Last().EndTime)
+            {
+                //迟于结束后
+                return command_list.Last();
+            }
+
+            //尝试选取在时间范围内的命令
+            if (command == null)
+            {
+                foreach (var cmd in command_list)
+                {
+                    if (current_time >= cmd.StartTime && current_time <= cmd.EndTime)
+                    {
+                        return cmd;
+                    }
+                }
+            }
+
+            //尝试选取在命令之间的前者
+            if (command == null)
+            {
+                for (int i = 0; i < command_list.Count()-1; i++)
+                {
+                    var cur_cmd = command_list.ElementAt(i);
+                    var next_cmd = command_list.ElementAt(i + 1);
+
+                    if (current_time >= cur_cmd.EndTime && current_time <= next_cmd.StartTime)
+                    {
+                        return cur_cmd;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

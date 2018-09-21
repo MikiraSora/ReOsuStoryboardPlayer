@@ -129,10 +129,10 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                         foreach (var cmd in command_list.Value)
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
-
+                                    
                             if (cmd is LoopCommand loop_command)
                             {
-                                foreach (var loop_sub_command in loop_command.LoopParamesters.LoopCommandList)
+                                foreach (var loop_sub_command in loop_command.LoopParamesters.LoopCommandList.Values.SelectMany(l => l).OrderBy(c=>c.StartTime))
                                 {
                                     var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
                                     BindCommandNode(loop_sub_command, loop_sub_note);

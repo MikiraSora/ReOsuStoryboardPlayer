@@ -75,7 +75,9 @@ namespace ReOsuStoryBoardPlayer
                         if (current_loop_command!=null)
                         {
                             Log.Debug($"add subCommand \"{cmd.ToString()}\" to Loop \"{current_loop_command.ToString()}\"");
-                            current_loop_command.LoopParamesters.LoopCommandList.Add(cmd);
+                            if (!current_loop_command.LoopParamesters.LoopCommandList.ContainsKey(cmd.CommandEventType))
+                                current_loop_command.LoopParamesters.LoopCommandList[cmd.CommandEventType] = new List<Command>();
+                            current_loop_command.LoopParamesters.LoopCommandList[cmd.CommandEventType].Add(cmd);
                         }
 
                         continue;
@@ -621,32 +623,35 @@ namespace ReOsuStoryBoardPlayer
 
         static void AdjustLoopCommand(LoopCommand loop_command)
         {
-            int first_start_time = loop_command.LoopParamesters.LoopCommandList.FirstOrDefault().StartTime;
+            var total_command_list = loop_command.LoopParamesters.LoopCommandList.Values.SelectMany(l => l).OrderBy(c => c.StartTime);
 
-            int current_end_time = 0;
-
-            int fix_start_time = loop_command.LoopParamesters.LoopCommandList.First().StartTime;
+            int first_start_time = total_command_list.First().StartTime;
             
-            foreach (var sub_cmd in loop_command.LoopParamesters.LoopCommandList)
+            int fix_start_time = total_command_list.First().StartTime;
+            
+            //因为Loop子命令是可以有offset的，所以在这就把那些子命令减去共同的offset
+            foreach (var sub_cmd in total_command_list)
             {
                 sub_cmd.StartTime -= fix_start_time;
                 sub_cmd.EndTime -= fix_start_time;
             }
-            
-            for (int index = 0; index < loop_command.LoopParamesters.LoopCommandList.Count; index++)
+
+            /*
+            for (int index = 0; index < total_command_list.Count(); index++)
             {
-                var sub_command = loop_command.LoopParamesters.LoopCommandList[index];
+                var sub_command = total_command_list.ElementAt(index);
                 current_end_time += sub_command.EndTime - sub_command.StartTime;
 
-                var prev_sub_command_time = index==0?0:loop_command.LoopParamesters.LoopCommandList[index - 1].EndTime;
+                var prev_sub_command_time = index==0?0: total_command_list.Last().EndTime;
                 current_end_time += sub_command.StartTime - prev_sub_command_time;
             }
+            */
 
-            loop_command.LoopParamesters.CostTime = current_end_time;
-            current_end_time *= loop_command.LoopCount;
+            loop_command.LoopParamesters.CostTime = total_command_list.Last().EndTime - total_command_list.First().StartTime;
+            var total_cast_time = loop_command.LoopParamesters.CostTime * loop_command.LoopCount;
 
             loop_command.StartTime += first_start_time;
-            loop_command.EndTime = loop_command.StartTime + current_end_time;
+            loop_command.EndTime = (int)(loop_command.StartTime + total_cast_time);
         }
     }
 }

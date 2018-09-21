@@ -59,45 +59,8 @@ namespace ReOsuStoryBoardPlayer
 
                 var command_list = command_pair.Value;
 
-                Command command = null;
-                if (current_time < command_list[0].StartTime)
-                {
-                    //早于开始前
-                    command = command_list[0];
-                }
-                else if (current_time > command_list[command_list.Count - 1].EndTime)
-                {
-                    //迟于结束后
-                    command = command_list[command_list.Count - 1];
-                }
-
-                if (command == null)
-                {
-                    foreach (var cmd in command_list)
-                    {
-                        if (current_time >= cmd.StartTime && current_time <= cmd.EndTime)
-                        {
-                            command = cmd;
-                            break;
-                        }
-                    }
-                }
-
-                if (command == null)
-                {
-                    for (int i = 0; i < command_list.Count - 1; i++)
-                    {
-                        var cur_cmd = command_list[i];
-                        var next_cmd = command_list[i + 1];
-
-                        if (current_time >= cur_cmd.EndTime && current_time <= next_cmd.StartTime)
-                        {
-                            command = cur_cmd;
-                            break;
-                        }
-                    }
-                }
-
+                var command = CommandExecutor.PickCommand(current_time, command_list);
+                
                 if (command != null)
                 {
                     CommandExecutor.DispatchCommandExecute(this, current_time, command);

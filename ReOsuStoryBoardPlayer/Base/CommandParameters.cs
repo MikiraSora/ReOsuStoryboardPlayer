@@ -138,10 +138,11 @@ namespace ReOsuStoryBoardPlayer
 
     public class LoopCommandParamesters : CommandParameters
     {
-        public List<Command> LoopCommandList = new List<Command>();
+        public Dictionary<Event,List<Command>> LoopCommandList =new Dictionary<Event, List<Command>>();
 
         public LoopCommandParamesters() { }
 
+        //指执行完一次循环所需要的时间
         public float CostTime;
     }
 
