@@ -227,17 +227,23 @@ namespace ReOsuStoryBoardPlayer
 
         public static void AdditiveBlend(StoryBoardObject ref_obj, float current_value, Command command)
         {
-            ref_obj.IsAdditive = current_value <= 1;
+            ref_obj.IsAdditive = command.StartTime == command.EndTime? 
+                true :
+                0 < current_value && current_value < 1;
         }
 
         public static void HorizonFlip(StoryBoardObject ref_obj, float current_value, Command command)
         {
-            ref_obj.IsHorizonFlip = current_value <= 1;
+            ref_obj.IsHorizonFlip = command.StartTime == command.EndTime ?
+                true : 
+                0 < current_value && current_value < 1;
         }
 
         public static void VerticalFlip(StoryBoardObject ref_obj, float current_value, Command command)
         {
-            ref_obj.IsVerticalFlip = current_value <= 1;
+            ref_obj.IsVerticalFlip = command.StartTime == command.EndTime ?
+                true :
+                0 <current_value&& current_value < 1;
         }
 
         #endregion

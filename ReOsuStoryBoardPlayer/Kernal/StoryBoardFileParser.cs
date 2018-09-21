@@ -44,13 +44,14 @@ namespace ReOsuStoryBoardPlayer
             StoryBoardObject current_storyboard_obj = null;
 
             int command_count = 0;
+            long file_line = 0;
             bool isSubCommand = false;
 
             LoopCommand current_loop_command = null;
 
             while (!reader.EndOfStream)
             {
-                string line = reader.ReadLine();
+                string line = ReadFileLine();
 
                 if (line.StartsWith("//") || line.StartsWith("[") || string.IsNullOrWhiteSpace(line))
                     continue;
@@ -59,6 +60,7 @@ namespace ReOsuStoryBoardPlayer
                 if (line == "[TimingPoints]")
                     break;
 
+                //if is command
                 if (line.StartsWith(" ") || line.StartsWith("_"))
                 {
                     Command cmd = ParseCommandLine(line,out isSubCommand);
@@ -99,9 +101,12 @@ namespace ReOsuStoryBoardPlayer
                 {
                     //try parse sprite/anamition obj
                     StoryBoardObject obj = ParseStoryBoardObject(line);
-
+                    
                     if (obj != null)
                     {
+#if DEBUG
+                        obj.FileLine = file_line;
+#endif
                         obj.Z = z_order++;
 
                         AddCommandMapToStoryboardObject(current_storyboard_obj, current_command);
@@ -120,6 +125,17 @@ namespace ReOsuStoryBoardPlayer
             Log.Debug($"parsed {obj_list.Count} objects and {command_count} commands");
 
             return obj_list;
+
+            string ReadFileLine()
+            {
+                if (!reader.EndOfStream)
+                {
+                    file_line++;
+                    return reader.ReadLine();
+                }
+
+                return null;
+            }
         }
 
         private static void AddCommandMapToStoryboardObject(StoryBoardObject obj, List<Command> command)
