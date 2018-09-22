@@ -15,14 +15,14 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\179323 Sakamoto Maaya - Okaerinasai (tomatomerde Remix)";
+                beatmap_folder = @"G:\SBTest\237977 marina - Towa yori Towa ni";
             }
             else
                 beatmap_folder = argv[0];
             
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
-            StoryboardWindow window = new StoryboardWindow((int)(640),(int)(480));
+            StoryboardWindow window = new StoryboardWindow((int)(1280),(int)(960));
 
             window.LoadStoryboardInstance(instance);
 

@@ -2,6 +2,7 @@
 using ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -117,15 +118,27 @@ namespace ReOsuStoryBoardPlayer
 
             Vector2 in_bound = new Vector2(w, h);
 
+            //将物件的坐标投影到当前屏幕大小
+            var fix_obj_pos = new Vector(
+                sb_obj.Postion.x / 640 * StoryboardWindow.CurrentWindow.Width,
+                sb_obj.Postion.y / 480 * StoryboardWindow.CurrentWindow.Height
+                );
+
+            //将物件的缩放投影到当前屏幕大小
+            var fix_obj_size = new Vector(
+                sb_obj.Scale.x / 640 * StoryboardWindow.CurrentWindow.Width,
+                sb_obj.Scale.y / 480 * StoryboardWindow.CurrentWindow.Height
+                );
+
             Matrix4 in_model =
                 Matrix4.Identity *
-            Matrix4.CreateScale(sb_obj.Scale.x, sb_obj.Scale.y, 1) *
+            Matrix4.CreateScale(fix_obj_size.x, fix_obj_size.y, 1) *
             Matrix4.CreateFromAxisAngle(_staticCacheAxis, sb_obj.Rotate / 180.0f * 3.1415926f) *
-            Matrix4.CreateTranslation(sb_obj.Postion.x - StoryboardWindow.CurrentWindow.Width / 2, -sb_obj.Postion.y + StoryboardWindow.CurrentWindow.Height / 2, 0);
+            Matrix4.CreateTranslation(fix_obj_pos.x - StoryboardWindow.CurrentWindow.Width / 2, -fix_obj_pos.y + StoryboardWindow.CurrentWindow.Height / 2, 0);
 
             mouse_point.X = mouse_point.X - StoryboardWindow.CurrentWindow.Width / 2;
             mouse_point.Y = StoryboardWindow.CurrentWindow.Height / 2 - mouse_point.Y;
-
+            
             for (int i = 0; i < 4; i++)
             {
                 var vertex = new Vector2(_cacheBaseVertex[i * 2 + 0], _cacheBaseVertex[i * 2 + 1]);
