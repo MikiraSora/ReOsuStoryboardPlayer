@@ -71,17 +71,12 @@ namespace ReOsuStoryBoardPlayer
             }
 
             CommandExecutor.ClearCommandRegisterArray();
-            
-            //每个物件可能有多个Loop
+
+            //每个物件可能有多个Loop,全都执行了，至于命令先后循序，交给DispatchCommandExecute()判断
             void UpdateForEachCommand(List<Command> command_list)
             {
                 foreach (var cmd in command_list)
-                {
-                    if (current_time>=cmd.StartTime&&current_time<=cmd.EndTime)
-                    {
-                        CommandExecutor.Loop(this, current_time, cmd);
-                    }
-                }
+                    CommandExecutor.Loop(this, current_time, cmd);
             }
         }
 

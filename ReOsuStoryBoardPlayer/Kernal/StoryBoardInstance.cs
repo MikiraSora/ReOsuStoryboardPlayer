@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
-using System.Linq;
 using System.Diagnostics;
 using System.Threading;
 using ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer;

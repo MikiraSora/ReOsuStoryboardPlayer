@@ -74,7 +74,11 @@ namespace ReOsuStoryBoardPlayer.DebugController
 
         private void progressBar1_Click(object sender, EventArgs e)
         {
+            var bar = sender as ProgressBar;
+            var normalize_pos = ((e as MouseEventArgs).X /*- bar.Bounds.X*/ * 1.0f) / bar.Bounds.Width;
+            var jump_pos = (uint)(normalize_pos * bar.Maximum);
 
+            CurrentStoryboardIntance.player.Jump(jump_pos);
         }
 
         private void ControllerWindow_Load(object sender, EventArgs e)
