@@ -37,8 +37,9 @@ namespace ReOsuStoryBoardPlayer
         public float CurrentFixedTime { get; private set; }
 
         public float Volume { get => sound.Volume; set => sound.Volume = value; }
-        
-        const float TIME_ADD = 0.1f;
+
+        public Stopwatch offset_watch = new Stopwatch();
+        public uint prev_mp3_time=0;
         
         public MusicPlayer(string file_path)
         {
@@ -47,32 +48,40 @@ namespace ReOsuStoryBoardPlayer
             sound = engine.Play2D(file_path, false, true, StreamMode.AutoDetect, false);
             
             CurrentFixedTime = 0;
+            offset_watch.Reset();
         }
 
         public void Tick()
         {
-            CurrentFixedTime = (CurrentPlayback - CurrentFixedTime) * TIME_ADD + CurrentFixedTime;
-            
-            if (Math.Abs(CurrentFixedTime-CurrentPlayback)>26)
-            {
-                CurrentFixedTime = CurrentPlayback;
-            }
+            if (prev_mp3_time!=CurrentPlayback && !sound.Paused)
+                offset_watch.Restart();
+
+            prev_mp3_time = CurrentPlayback;
+
+            CurrentFixedTime = prev_mp3_time + offset_watch.ElapsedMilliseconds;
+
+            //Debug.Assert(offset_watch.ElapsedMilliseconds > 26);
         }
 
         public void Play()
         {
             sound.Paused = false;
+            offset_watch.Start();
         }
 
         public void Pause()
         {
             sound.Paused = true;
+            offset_watch.Stop();
         }
 
         public void Jump(uint pos)
         {
+            Pause();
             sound.PlayPosition = pos;
-            OnJumpCurrentPlayingTime?.Invoke(pos);
+            offset_watch.Reset();
+
+            OnJumpCurrentPlayingTime?.Invoke((uint)CurrentFixedTime);
         }
 
         public void Term()

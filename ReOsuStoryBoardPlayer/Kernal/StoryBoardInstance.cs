@@ -247,9 +247,6 @@ namespace ReOsuStoryBoardPlayer
             CurrentScanNode = StoryboardObjectList.First;
 
             StoryboardObjectList.AsParallel().ForAll((obj) => obj.markDone = false);
-
-            //debug
-            player.Pause();
         }
 
         private bool Scan(float current_time)
@@ -392,7 +389,7 @@ namespace ReOsuStoryBoardPlayer
                 group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color,obj.IsVerticalFlip,obj.IsHorizonFlip);
             }
             
-            if (group.CurrentPostCount!=0)
+            if (group?.CurrentPostCount!=0)
                 group?.FlushDraw();
 
             //恢复Blend
