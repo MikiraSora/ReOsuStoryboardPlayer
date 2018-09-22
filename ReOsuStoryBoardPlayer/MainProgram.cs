@@ -15,14 +15,14 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\237977 marina - Towa yori Towa ni";
+                beatmap_folder = @"G:\SBTest\17154 IOSYS feat 3L - Miracle-Hinacle";
             }
             else
                 beatmap_folder = argv[0];
             
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
-            StoryboardWindow window = new StoryboardWindow((int)(1280),(int)(960));
+            StoryboardWindow window = new StoryboardWindow((int)(747),(int)(480));
 
             window.LoadStoryboardInstance(instance);
 
