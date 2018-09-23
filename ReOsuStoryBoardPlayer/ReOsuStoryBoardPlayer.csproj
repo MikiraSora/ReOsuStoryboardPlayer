@@ -121,6 +121,7 @@
       <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Graphics\BatchShader.cs" />
+    <Compile Include="Graphics\DrawUtils.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
     <Compile Include="Graphics\Texture.cs" />

@@ -168,11 +168,7 @@ namespace ReOsuStoryBoardPlayer
         
         internal void AddPassRecord(string name,string value)
         {
-            recordPassHistory.Add(new passUniformRecord()
-            {
-                name = name,
-                value = value
-            });
+            recordPassHistory[name] = value;
         }
 
         public void ClearUniform(string key, string typeName)
@@ -206,19 +202,13 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        struct passUniformRecord
-        {
-            internal string name;
-            internal string value;
-        }
-
-        List<passUniformRecord> recordPassHistory = new List<passUniformRecord>();
+        System.Collections.Concurrent.ConcurrentDictionary<string, string> recordPassHistory = new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
 
         public void Clear()
         {
             foreach (var history in recordPassHistory)
             {
-                ClearUniform(history.name, history.value);
+                ClearUniform(history.Key, history.Value);
             }
 
             recordPassHistory.Clear();
