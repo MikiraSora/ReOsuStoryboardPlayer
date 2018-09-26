@@ -5,10 +5,9 @@ VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryBoardPlayer", "ReOsuStoryBoardPlayer\ReOsuStoryBoardPlayer.csproj", "{5116D93A-A7D9-4312-B052-FBC2FE5D0444}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3E2C429F-9837-46ED-ADEE-E417F602B1C6}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -24,12 +23,23 @@ Global
 		{5116D93A-A7D9-4312-B052-FBC2FE5D0444}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5116D93A-A7D9-4312-B052-FBC2FE5D0444}.Release|x86.ActiveCfg = Release|x86
 		{5116D93A-A7D9-4312-B052-FBC2FE5D0444}.Release|x86.Build.0 = Release|x86
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Debug|x86.Build.0 = Debug|Any CPU
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Release|x86.ActiveCfg = Release|Any CPU
+		{3E2C429F-9837-46ED-ADEE-E417F602B1C6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF763B3D-CD0D-43F0-A8E4-E56C4520F279}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

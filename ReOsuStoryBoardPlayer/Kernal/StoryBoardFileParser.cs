@@ -63,41 +63,28 @@ namespace ReOsuStoryBoardPlayer
                 //if is command
                 if (line.StartsWith(" ") || line.StartsWith("_"))
                 {
-                    Command cmd = ParseCommandLine(line,out isSubCommand);
+                    var cmds = ParseCommandLine(line);
+                    command_count+=cmds.Count();
 
-                    if (cmd==null)
+                    foreach (var cmd in cmds)
                     {
-                        continue;
-                    }
-
-                    if (isSubCommand)
-                    {
-                        if (current_loop_command!=null)
+                        if (isSubCommand)
                         {
-                            Log.Debug($"add subCommand \"{cmd.ToString()}\" to Loop \"{current_loop_command.ToString()}\"");
-                            if (!current_loop_command.LoopParamesters.LoopCommandList.ContainsKey(cmd.CommandEventType))
-                                current_loop_command.LoopParamesters.LoopCommandList[cmd.CommandEventType] = new List<Command>();
-                            current_loop_command.LoopParamesters.LoopCommandList[cmd.CommandEventType].Add(cmd);
+                            //如果是子命令的话就要添加到当前Group
+                            if (current_loop_command != null)
+                            {
+                                Log.Debug($"add subCommand \"{cmd.ToString()}\" to Loop \"{current_loop_command.ToString()}\"");
+                                if (!current_loop_command.LoopParamesters.LoopCommandList.ContainsKey(cmd.CommandEventType))
+                                    current_loop_command.LoopParamesters.LoopCommandList[cmd.CommandEventType] = new List<Command>();
+                                current_loop_command.LoopParamesters.LoopCommandList[cmd.CommandEventType].Add(cmd);
+                            }
                         }
-
-                        continue;
+                        else
+                        {
+                            current_loop_command = cmd as LoopCommand;
+                            current_command.Add(cmd);
+                        }
                     }
-                    else
-                    {
-                        current_loop_command = null;
-                    }
-
-                    command_count++;
-
-                    //Loop 中断
-                    if (cmd is LoopCommand)
-                    {
-                        current_loop_command = (LoopCommand)cmd;
-                        current_command.Add(cmd);
-                        continue;
-                    }
-
-                    current_command.Add(cmd);
                 }
                 else
                 {
@@ -124,7 +111,7 @@ namespace ReOsuStoryBoardPlayer
 
             AddCommandMapToStoryboardObject(current_storyboard_obj, current_command);
 
-            Log.Debug($"parsed {obj_list.Count} objects and {command_count} commands");
+            Log.Debug($"parsed {obj_list.Count} objects and {command_count} commands(include short-hand command expand)");
 
             return obj_list;
 
@@ -144,10 +131,6 @@ namespace ReOsuStoryBoardPlayer
         {
             if (obj != null)
             {
-                if (obj.ImageFilePath.Contains("mini_j8"))
-                {
-
-                }
                 var (cmd_map, start_time, end_time) = StoryBoardAdjustment.AdujustCommands(command);
 
                 obj.CommandMap = cmd_map;
@@ -156,18 +139,18 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public static Command ParseCommandLine(string line,out bool IsSubCommand)
+        public static IEnumerable<Command> ParseCommandLine(string line)
         {
+            List<Command> result=new List<Command>();
+
             Command cmd = new Command();
             string[] command_params = line.Split(',');
-
-            IsSubCommand = false;
-
+            
             #region Event
 
             if (command_params[0].StartsWith("  "))
             {
-                IsSubCommand = true;
+                cmd.IsSubCommand = true;
             }
 
             switch (command_params[0].Trim().Replace("_",string.Empty).ToUpper())
@@ -228,7 +211,7 @@ namespace ReOsuStoryBoardPlayer
                         }
                         line = line.Replace("P", pp);
 
-                        return ParseCommandLine(line, out IsSubCommand);
+                        return ParseCommandLine(line);
                     }
                 case "L":
                     var loop_cmd = new LoopCommand
@@ -239,7 +222,8 @@ namespace ReOsuStoryBoardPlayer
                         LoopCount = int.Parse(command_params[2]),
                         executor = CommandExecutor.CommandFunctionMap[Event.Loop]
                     };
-                    return loop_cmd;
+                    result.Add(loop_cmd);
+                    return result;
                 default:
                     break;
             }
@@ -444,8 +428,8 @@ namespace ReOsuStoryBoardPlayer
             }
 
             #endregion
-
-            return cmd;
+            result.Add(cmd);
+            return result;
         }
 
         public static StoryBoardObject ParseStoryBoardObject(string line)

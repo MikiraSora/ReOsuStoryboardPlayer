@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\839266 Jeremy Blake - Flex";
+                beatmap_folder = @"G:\SBTest\179323 Sakamoto Maaya - Okaerinasai (tomatomerde Remix)";
             }
             else
                 beatmap_folder = argv[0];

@@ -11,6 +11,7 @@ namespace ReOsuStoryBoardPlayer
         public Event CommandEventType;
         public EasingInterpolator Easing;
         public int StartTime, EndTime;
+        public bool IsSubCommand = false;
         public CommandParameters Parameters;
 
         public CommandExecutor.CommandFunc executor;
