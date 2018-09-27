@@ -141,6 +141,9 @@
     <Compile Include="MainProgram.cs" />
     <Compile Include="Kernal\MusicPlayer.cs" />
     <Compile Include="Kernal\StoryBoardFileParser.cs" />
+    <Compile Include="Parser\Collection\CharPatternCollection.cs" />
+    <Compile Include="Parser\Rubbish\EnumParser.cs" />
+    <Compile Include="Parser\Extension\ReadOnlyMemoryMethodExtension.cs" />
     <Compile Include="Parser\Stream\CharMemoryReader.cs" />
     <Compile Include="Parser\Stream\EventReader.cs" />
     <Compile Include="Parser\Stream\OsuFileReader.cs" />
@@ -148,10 +151,10 @@
     <Compile Include="Parser\Reader\VariableReader.cs" />
     <Compile Include="Parser\Section.cs" />
     <Compile Include="Parser\StoryboardVariable.cs" />
-    <Compile Include="Parser\StreamReaderMethodExtension.cs" />
+    <Compile Include="Parser\Extension\StreamReaderMethodExtension.cs" />
     <Compile Include="Parser\Reader\StoryboardReader.cs" />
     <Compile Include="Parser\Stream\SectionReader.cs" />
-    <Compile Include="Parser\VariableCollection.cs" />
+    <Compile Include="Parser\Collection\VariableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\StoryBoardObject.cs" />
     <Compile Include="Kernal\StoryBoardInstance.cs" />

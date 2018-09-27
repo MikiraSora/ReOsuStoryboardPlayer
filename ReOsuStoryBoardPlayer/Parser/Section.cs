@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser
 {
-    public enum Section
+    public enum Section 
     {
         Unknown = 0,
         General = 1,

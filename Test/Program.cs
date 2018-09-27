@@ -1,4 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Parser;
+using ReOsuStoryBoardPlayer.Parser.Collection;
+using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using System;
@@ -27,12 +29,21 @@ namespace Test
 
             StoryboardReader storyboardReader = new StoryboardReader(er);
 
-            foreach (var obj in storyboardReader.GetValues(3))
-            {
-                obj.ImageFilePath = "";
-            }
+            VariableCollection variables = new VariableCollection();
 
-            Console.ReadLine();
+            variables["$zz"] = new StoryboardVariable("$zz", "666");
+            variables["$aa"] = new StoryboardVariable("$aa", "222");
+            variables["$aab"] = new StoryboardVariable("$aab", "252");
+            variables["$abb"] = new StoryboardVariable("$abb", "27");
+            
+            var test = ",$zz,is,$aa$aa$zz,2,,from,$abb,";
+
+            int i = 0;
+
+            foreach (var sub in test.AsMemory().Split(',',StringSplitOptions.None))
+                Console.WriteLine($"{i++}:"+sub+"|");
+
+            var zz=EnumParser<Section>.Instance.Parse(Section.Metadata.ToString());
         }
     }
 }
