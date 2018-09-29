@@ -105,6 +105,16 @@
     <Compile Include="Base\IInterpolator.cs" />
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
+    <Compile Include="Command\CommandConflictChecker.cs" />
+    <Compile Include="Command\CommandTimeline.cs" />
+    <Compile Include="Command\_GroupCommand.cs" />
+    <Compile Include="Command\_ParameterCommand.cs" />
+    <Compile Include="Command\_Command.cs" />
+    <Compile Include="Command\_FloatValueCommand.cs" />
+    <Compile Include="Command\_StateCommand.cs" />
+    <Compile Include="Command\_ValueCommand.cs" />
+    <Compile Include="Command\_Vec4ValueCommand.cs" />
+    <Compile Include="Command\_VectorValueCommand.cs" />
     <Compile Include="DebugTool\DebugControllerWindow\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,7 +151,9 @@
     <Compile Include="MainProgram.cs" />
     <Compile Include="Kernal\MusicPlayer.cs" />
     <Compile Include="Kernal\StoryBoardFileParser.cs" />
+    <Compile Include="Parser\Base\StoryboardObjectType.cs" />
     <Compile Include="Parser\Collection\CharPatternCollection.cs" />
+    <Compile Include="Parser\CommandParser.cs" />
     <Compile Include="Parser\Rubbish\EnumParser.cs" />
     <Compile Include="Parser\Extension\ReadOnlyMemoryMethodExtension.cs" />
     <Compile Include="Parser\Stream\CharMemoryReader.cs" />

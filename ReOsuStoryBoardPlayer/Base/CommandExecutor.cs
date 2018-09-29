@@ -215,7 +215,7 @@ namespace ReOsuStoryBoardPlayer
         {
             #region Check Command Conflct
 
-            var reg_cmd_info = command.CommandEventType!=Event.Loop?_ExecutedCommandRegisterArray[(int)command.CommandEventType]:(null,0,0);
+            var reg_cmd_info = command.CommandEventType != Event.Loop ? _ExecutedCommandRegisterArray[(int)command.CommandEventType] : (null, 0, 0);
 
             /*
              如果之前有同类型命令执行了，比如Loop里面的子命令
@@ -229,16 +229,16 @@ namespace ReOsuStoryBoardPlayer
              */
             if (
                 //是否存在已执行命令
-                reg_cmd_info.command != null &&(
+                reg_cmd_info.command != null && (
                     //已执行的命令比现在还靠后
-                    command.EndTime<=reg_cmd_info.command.StartTime ||
+                    command.EndTime <= reg_cmd_info.command.StartTime ||
 
                     //现在命令比已执行命令还靠后，但当前时间在现命令之前
-                    (reg_cmd_info.command.StartTime<command.StartTime&&current_playing_time<command.StartTime)
+                    (reg_cmd_info.command.StartTime < command.StartTime && current_playing_time < command.StartTime)
                 ))
                 return;//不给执行
 
-            _ExecutedCommandRegisterArray[(int)command.CommandEventType] = (command,command.StartTime,command.EndTime);
+            _ExecutedCommandRegisterArray[(int)command.CommandEventType] = (command, command.StartTime, command.EndTime);
 
             #endregion
 

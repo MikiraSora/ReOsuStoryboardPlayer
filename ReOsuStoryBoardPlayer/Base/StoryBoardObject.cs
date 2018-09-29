@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,8 @@ namespace ReOsuStoryBoardPlayer
         public Layout layout;
 
         public int Z=-1;
+
+        public CommandConflictChecker CommandConflictChecker => new CommandConflictChecker();
 
         #region Transform
 

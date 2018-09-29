@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Parser;
+﻿using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Parser.Reader;
@@ -35,15 +36,12 @@ namespace Test
             variables["$aa"] = new StoryboardVariable("$aa", "222");
             variables["$aab"] = new StoryboardVariable("$aab", "252");
             variables["$abb"] = new StoryboardVariable("$abb", "27");
-            
-            var test = ",$zz,is,$aa$aa$zz,2,,from,$abb,";
 
-            int i = 0;
+            var text = "_F,0,1000,5000,0,0.5,1";
 
-            foreach (var sub in test.AsMemory().Split(',',StringSplitOptions.None))
-                Console.WriteLine($"{i++}:"+sub+"|");
+            List<_Command> asdasd = new List<_Command>();
 
-            var zz=EnumParser<Section>.Instance.Parse(Section.Metadata.ToString());
+            CommandParserIntance<_FadeCommand>.Instance.Parse(text.Split(','), asdasd);
         }
     }
 }
