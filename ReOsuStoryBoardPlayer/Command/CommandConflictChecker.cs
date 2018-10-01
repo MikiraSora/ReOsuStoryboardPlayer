@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,14 @@ namespace ReOsuStoryBoardPlayer.Commands
     /// </summary>
     public class CommandConflictChecker
     {
-        private Dictionary<Event,(_Command command, int StartTime, int EndTime)> ExecutedCommandRegisterMap { get; } = new Dictionary<Event, (_Command command, int StartTime, int EndTime)>();
+        class RegisterData
+        {
+            public _Command command { get; set; }
+            public int StartTime { get; set; }
+            public int EndTime { get; set; }
+        }
+
+        private Dictionary<Event, RegisterData> ExecutedCommandRegisterMap { get; } = new Dictionary<Event, RegisterData>();
 
         public bool CheckIfConflict(_Command command,float current_playing_time)
         {
@@ -44,7 +52,13 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public void ForceUpdate(_Command command)
         {
-            ExecutedCommandRegisterMap[command.Event] = (command, command.StartTime, command.EndTime);
+            var data = ObjectPool<RegisterData>.Instance.GetObject();
+
+            data.command = command;
+            data.StartTime = command.StartTime;
+            data.EndTime = command.EndTime;
+
+            ExecutedCommandRegisterMap[command.Event] = data;
         }
 
         public bool CheckIfConflictThenUpdate(_Command command, float current_playing_time)
@@ -57,6 +71,9 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public void Reset()
         {
+            foreach (var data in ExecutedCommandRegisterMap.Values)
+                ObjectPool<RegisterData>.Instance.PutObject(data);
+
             ExecutedCommandRegisterMap.Clear();
         }
     }

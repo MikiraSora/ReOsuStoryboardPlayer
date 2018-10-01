@@ -1,18 +1,13 @@
-﻿using ReOsuStoryBoardPlayer.Parser.Base;
+﻿using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Parser.Base;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Parser.Stream;
+using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Buffers.Binary;
-using System.Buffers.Text;
-using System.Buffers;
 using static ReOsuStoryBoardPlayer.Parser.Stream.EventReader;
-using ReOsuStoryBoardPlayer.Commands;
-using ReOsuStoryBoardPlayer.Utils;
 
 namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
@@ -55,7 +50,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 }
 
                 //已经读完SB文本并且全部任务执行完毕,才给跳出循环
-                while ((!Reader.EndOfStream)&&(!tasks.Any(t=>t.IsCompleted)))
+                while ((!Reader.EndOfStream) && (!tasks.Any(t => t.IsCompleted)))
                 {
                     var completed_task = tasks.FirstOrDefault(t => t.IsCompleted);
 
@@ -73,11 +68,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 }
             }
         }
-        
+
         private StoryBoardObject GetPacketAndParse()
         {
             //maybe be locked
-            var packet=Reader.GetStoryboardPacket();
+            var packet = Reader.GetStoryboardPacket();
 
             return ParsePacket(packet);
         }
@@ -121,7 +116,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             var data_arr = line.Split(',');
 
-            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].ToString(), true, out var obj_type) ) || !(obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite)) 
+            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].ToString(), true, out var obj_type)) || !(obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
                 throw new Exception($"Unknown/Unsupport storyboard object type:" + data_arr[0]);
 
             switch (obj_type)
@@ -129,13 +124,15 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 case StoryboardObjectType.Sprite:
                     obj = new StoryBoardObject();
                     break;
+
                 case StoryboardObjectType.Animation:
                     obj = new StoryboardAnimation();
                     break;
+
                 default:
                     break;
             }
-            
+
             obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1].ToString());
 
             obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].ToString()));
@@ -155,7 +152,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             int dot_position = animation.ImageFilePath.LastIndexOf('.');
             animation.FrameFileExtension = animation.ImageFilePath.Substring(dot_position);
             animation.FrameBaseImagePath = animation.ImageFilePath.Replace(animation.FrameFileExtension, string.Empty);
-            
+
             animation.FrameCount = int.Parse(sprite_param[6].ToString());
 
             animation.FrameDelay = float.Parse(sprite_param[7].ToString());
@@ -169,22 +166,31 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             {
                 case Anchor.TopLeft:
                     return new Vector(0, 0);
+
                 case Anchor.TopCentre:
                     return new Vector(0.5f, 0.0f);
+
                 case Anchor.TopRight:
                     return new Vector(1.0f, 0.0f);
+
                 case Anchor.CentreLeft:
                     return new Vector(0.0f, 0.5f);
+
                 case Anchor.Centre:
                     return new Vector(0.5f, 0.5f);
+
                 case Anchor.CentreRight:
                     return new Vector(1.0f, 0.5f);
+
                 case Anchor.BottomLeft:
                     return new Vector(0.0f, 1.0f);
+
                 case Anchor.BottomCentre:
                     return new Vector(0.5f, 1.0f);
+
                 case Anchor.BottomRight:
                     return new Vector(1.0f, 1.0f);
+
                 default:
                     return new Vector(0.5f, 0.5f);
             }
@@ -209,7 +215,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         public List<_Command> ParseCommand(List<ReadOnlyMemory<char>> lines)
         {
             List<_Command> commands = new List<_Command>(), temp = ObjectPool<List<_Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<_Command>>.Instance.GetObject();
-            
+
             _GroupCommand current_group_command = null;
 
             foreach (var line in lines)
@@ -217,7 +223,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 var data_arr = line.ToString().Split(',');
 
                 var is_sub_cmd = data_arr.First().StartsWith("  ") || data_arr.First().StartsWith("__");
-                
+
                 foreach (var cmd in CommandParserIntance.Parse(data_arr, temp))
                 {
                     if (is_sub_cmd)
@@ -256,6 +262,6 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             return commands;
         }
 
-        #endregion
+        #endregion Packet Parse
     }
 }

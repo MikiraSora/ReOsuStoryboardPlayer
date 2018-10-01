@@ -56,7 +56,7 @@ namespace ReOsuStoryBoardPlayer
                 {
                     command.Execute(this, current_time);
 
-#if true
+#if DEBUG
                     ExecutedCommands.Add(command);
                     command.IsExecuted = true;
 #endif
@@ -71,7 +71,7 @@ namespace ReOsuStoryBoardPlayer
 
 #if DEBUG
         internal List<_Command> ExecutedCommands=new List<_Command>();
-        internal long FileLine;
 #endif
+        public long FileLine { get; set; }
     }
 }

@@ -156,10 +156,13 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
         private void UpdateCommandNode()
         {
+#if DEBUG
+
             foreach (var pair in command_node_map)
             {
                 pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
             }
+#endif
         }
 
         /*
