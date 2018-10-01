@@ -12,8 +12,6 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
     {
         public VariableCollection Variables { get; }
 
-        private ArrayPool<char> string_pool=ArrayPool<char>.Shared;
-
         public struct StoryboardPacket:IComparable<StoryboardPacket>
         {
             public List<ReadOnlyMemory<char>> CommandLines;
@@ -114,11 +112,6 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
         public void ReturnPacket(ref StoryboardPacket packet)
         {
-            string_pool.Return(packet.ObjectLine.ToArray());
-
-            foreach (var str in packet.CommandLines)
-                string_pool.Return(str.ToArray());
-
             //force set null and wait for GC
             packet = StoryboardPacket.Empty;
         }
@@ -135,10 +128,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
             var chars = result.ToCharArray();
 
-            var buffer = string_pool.Rent(chars.Length);
-            chars.CopyTo(buffer, 0);
-
-            return buffer;
+            return chars;
         }
     }
 }

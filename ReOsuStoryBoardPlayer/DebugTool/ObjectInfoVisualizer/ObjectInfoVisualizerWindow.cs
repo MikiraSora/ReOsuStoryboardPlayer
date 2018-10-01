@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
         public StoryBoardObject obj { get; set; }
         public StoryBoardInstance Instance { get; }
 
-        private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
+        private Dictionary<_Command, TreeNode> command_node_map = new Dictionary<_Command, TreeNode>();
 
         public ObjectInfoVisualizerWindow(StoryBoardInstance instance)
         {
@@ -130,9 +131,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
                                     
-                            if (cmd is LoopCommand loop_command)
+                            if (cmd is _LoopCommand loop_command)
                             {
-                                foreach (var loop_sub_command in loop_command.LoopParamesters.LoopCommandList.Values.SelectMany(l => l).OrderBy(c=>c.StartTime))
+                                foreach (var loop_sub_command in loop_command.SubCommands.OrderBy(c=>c.StartTime))
                                 {
                                     var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
                                     BindCommandNode(loop_sub_command, loop_sub_note);
@@ -147,7 +148,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                 }
             }
 
-            void BindCommandNode(Command command,TreeNode node)
+            void BindCommandNode(_Command command,TreeNode node)
             {
                 command_node_map[command] = node;
             }

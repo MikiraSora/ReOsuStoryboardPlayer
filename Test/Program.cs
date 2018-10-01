@@ -18,7 +18,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var chars = new ReadOnlyMemory<char>(File.ReadAllText("m.osb").ToCharArray());
+            var chars = new ReadOnlyMemory<char>(File.ReadAllText("2d.osb").ToCharArray());
 
             OsuFileReader reader = new OsuFileReader(chars);
 
@@ -37,11 +37,9 @@ namespace Test
             variables["$aab"] = new StoryboardVariable("$aab", "252");
             variables["$abb"] = new StoryboardVariable("$abb", "27");
 
-            var text = "_F,0,1000,5000,0,0.5,1";
-
             List<_Command> asdasd = new List<_Command>();
-
-            CommandParserIntance<_FadeCommand>.Instance.Parse(text.Split(','), asdasd);
+            
+            var dd=storyboardReader.GetValues(0).ToList();
         }
     }
 }

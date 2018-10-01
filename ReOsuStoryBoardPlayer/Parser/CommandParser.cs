@@ -49,7 +49,7 @@ namespace ReOsuStoryBoardPlayer.Parser
             int end_time = string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? start_time : int.Parse(data_arr.ElementAt(3));
             int time_duration = end_time - start_time;
 
-            int loop_count = data_arr.Count() - 4 - 1;
+            int loop_count = (data_arr.Count() - 4 - ParamCount)/ ParamCount;
             loop_count = loop_count == 0 ? 1 : loop_count;
 
             for (int i = 0; i < loop_count; i++)
@@ -94,19 +94,84 @@ namespace ReOsuStoryBoardPlayer.Parser
 
     #endregion
 
-    #region Parameter Command Parser
-
     public class ParameterCommandParser : ICommandParser
     {
         public List<_Command> Parse(IEnumerable<string> data_arr, List<_Command> result)
         {
-            throw new NotImplementedException();
+            _StateCommand command = null;
+
+            switch (data_arr.ElementAt(4))
+            {
+                case "A":
+                    command = new _AdditiveBlendCommand();
+                    break;
+                case "H":
+                    command = new _HorizonFlipCommand();
+                    break;
+                case "V":
+                    command = new _VerticalFlipCommand();
+                    break;
+                default:
+                    throw new Exception($"unknown Parameter command type:" + data_arr.ElementAt(3));
+            }
+
+            command.StartTime = int.Parse(data_arr.ElementAt(2));
+            command.EndTime = string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? command.StartTime : int.Parse(data_arr.ElementAt(3));
+
+            result.Add(command);
+            return result;
         }
     }
 
-    #endregion
+    public class LoopCommandParser : ICommandParser
+    {
+        public List<_Command> Parse(IEnumerable<string> data_arr, List<_Command> result)
+        {
+            _LoopCommand command = new _LoopCommand();
 
-    public class CommandParserIntance<COMMAND>
+            command.StartTime = int.Parse(data_arr.ElementAt(1));
+            command.LoopCount = int.Parse(data_arr.ElementAt(2));
+
+            result.Add(command);
+            return result;
+        }
+    }
+
+    public class CommandParserIntance
+    {
+        public static List<_Command> Parse(IEnumerable<string> data_arr, List<_Command> result)
+        {
+            var command_event = data_arr.First().Trim('_', ' ');
+
+            switch (command_event)
+            {
+                case "M":
+                    return CommandParserIntance<_MoveCommand>.Instance.Parse(data_arr, result);
+                case "S":
+                    return CommandParserIntance<_ScaleCommand>.Instance.Parse(data_arr, result);
+                case "V":
+                    return CommandParserIntance<_VectorScaleCommand>.Instance.Parse(data_arr, result);
+                case "MX":
+                    return CommandParserIntance<_MoveXCommand>.Instance.Parse(data_arr, result);
+                case "MY":
+                    return CommandParserIntance<_MoveYCommand>.Instance.Parse(data_arr, result);
+                case "R":
+                    return CommandParserIntance<_RotateCommand>.Instance.Parse(data_arr, result);
+                case "F":
+                    return CommandParserIntance<_FadeCommand>.Instance.Parse(data_arr, result);
+                case "P":
+                    return CommandParserIntance<_StateCommand>.Instance.Parse(data_arr, result);
+                case "L":
+                    return CommandParserIntance<_LoopCommand>.Instance.Parse(data_arr, result);
+                case "C":
+                    return CommandParserIntance<_ColorCommand>.Instance.Parse(data_arr, result);
+                default:
+                    throw new Exception("Unknown command event:" + command_event);
+            }
+        }
+    }
+
+    public class CommandParserIntance<COMMAND> where COMMAND:_Command
     {
         public static ICommandParser _instance;
 
@@ -139,11 +204,16 @@ namespace ReOsuStoryBoardPlayer.Parser
                     return new VectorCommandParser<_VectorScaleCommand>();
                 case "_ColorCommand":
                     return new Vec4CommandParser<_ColorCommand>();
+                case "_LoopCommand":
+                    return new LoopCommandParser();
+                case "_StateCommand":
+                case "_AdditiveBlendCommand":
+                case "_HorizonFlipCommand":
+                case "_VerticalFlipCommand":
+                    return new ParameterCommandParser();
                 default:
-                    break;
+                    throw new Exception("Unknown command name:" + typeof(COMMAND).Name);
             }
-
-            return null;
         }
     }
 }

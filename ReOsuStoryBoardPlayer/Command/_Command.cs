@@ -8,6 +8,10 @@ namespace ReOsuStoryBoardPlayer.Commands
 {
     public abstract class _Command:IComparable<_Command>
     {
+#if DEBUG
+        internal bool IsExecuted { get; set; } = false;
+#endif
+
         public Event Event { get; set; }
 
         public int StartTime { get; set; }

@@ -15,7 +15,8 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public bool CheckIfConflict(_Command command,float current_playing_time)
         {
-            var reg_cmd_info = ExecutedCommandRegisterMap[command.Event];
+            if (!ExecutedCommandRegisterMap.TryGetValue(command.Event,out var reg_cmd_info))
+                return true;
 
             /*
              如果之前有同类型命令执行了，比如Loop里面的子命令

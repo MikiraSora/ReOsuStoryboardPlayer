@@ -10,6 +10,11 @@ using OpenTK.Graphics;
 using System.Diagnostics;
 using System.Threading;
 using ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer;
+using ReOsuStoryBoardPlayer.Parser.Stream;
+using ReOsuStoryBoardPlayer.Parser.Collection;
+using ReOsuStoryBoardPlayer.Parser.Reader;
+using static System.Collections.Specialized.BitVector32;
+using ReOsuStoryBoardPlayer.Parser;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -107,15 +112,23 @@ namespace ReOsuStoryBoardPlayer
             #region Load and Parse osb/osu file
 
             List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs=new List<StoryBoardObject>();
-
-            int z_order = 0;
-
+            /*
+            Task<List<StoryBoardObject>>[] tasks = new[] {
+                Task.Run(()=>StoryboardParserHelper.GetStoryBoardObjects(osu_file_path)),
+                Task.Run(()=>StoryboardParserHelper.GetStoryBoardObjects(osb_file_path))
+            };
+            
+            Task.WaitAll(tasks);
+            */
             //get objs from osu file
-            List<StoryBoardObject> parse_osu_storyboard_objs = StoryBoardFileParser.ParseFromOsuFile(osu_file_path,ref z_order);
+            List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osu_file_path);
+
+            AdjustZ(parse_osu_storyboard_objs, 0);
 
             if ((!string.IsNullOrWhiteSpace(osb_file_path))&&File.Exists(osb_file_path))
             {
-                parse_osb_storyboard_objs = StoryBoardFileParser.ParseFromOsbFile(osb_file_path,ref z_order);
+                parse_osb_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osb_file_path);
+                AdjustZ(parse_osb_storyboard_objs, parse_osu_storyboard_objs.Count);
             }
             
             temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
@@ -143,6 +156,13 @@ namespace ReOsuStoryBoardPlayer
 #if DEBUG
             debug_instance = new DebugToolInstance(this);
 #endif
+
+            void AdjustZ(List<StoryBoardObject> list,int base_z)
+            {
+                list.Sort((a,b)=> (int)(a.FileLine-b.FileLine));
+                for (int i = 0; i < list.Count; i++)
+                    list[i].Z = base_z+i;
+            }
         }
 
         private List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list,List<StoryBoardObject> osu_list)
@@ -298,7 +318,15 @@ namespace ReOsuStoryBoardPlayer
 
                 objs.ForEach/*AsParallel().ForAll*/(obj =>
                     {
-                        obj.Update(current_time);
+                        if (current_time < obj.FrameStartTime || current_time > obj.FrameEndTime)
+                        {
+                            obj.markDone = true;
+                        }
+                        else
+                        {
+                            obj.markDone = false;
+                            obj.Update(current_time);
+                        }
                     }
                 );
             }

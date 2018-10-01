@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryBoardObject
     {
-        public Dictionary<Event, List<Command>> CommandMap = new Dictionary<Event, List<Command>>();
+        public Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
         public string ImageFilePath;
 
@@ -41,52 +42,35 @@ namespace ReOsuStoryBoardPlayer
 
         public virtual void Update(float current_time)
         {
+            var temp = ObjectPool<List<_Command>>.Instance.GetObject();
+
 #if DEBUG
             ExecutedCommands.ForEach(c => c.IsExecuted = false);
             ExecutedCommands.Clear();
 #endif
+            CommandConflictChecker.Reset();
 
-            if (current_time > FrameEndTime)
+            foreach (var timeline in CommandMap.Values)
             {
-                markDone = true;
-                return;
-            }
-
-            foreach (var command_pair in CommandMap)
-            {
-                if (command_pair.Key==Event.Loop)
+                foreach (var command in timeline.PickCommands(current_time, temp))
                 {
-                    UpdateForEachCommand(command_pair.Value);
-                    continue;
-                }
+                    command.Execute(this, current_time);
 
-                var command_list = command_pair.Value;
-
-                var command = CommandExecutor.PickCommand(current_time, command_list);
-                
-                if (command != null)
-                {
-                    CommandExecutor.DispatchCommandExecute(this, current_time, command);
-
-                    //???不应该这时候clear,但我忘记为啥要这样，先注释mark
-                    //CommandExecutor.ClearCommandRegisterArray();
+#if true
+                    ExecutedCommands.Add(command);
+                    command.IsExecuted = true;
+#endif
                 }
             }
 
-            CommandExecutor.ClearCommandRegisterArray();
-
-            //每个物件可能有多个Loop,全都执行了，至于命令先后循序，交给DispatchCommandExecute()判断
-            void UpdateForEachCommand(List<Command> command_list)
-            {
-                foreach (var cmd in command_list)
-                    CommandExecutor.Loop(this, current_time, cmd);
-            }
+            temp.Clear();
+            ObjectPool<List<_Command>>.Instance.PutObject(temp);
         }
 
         public override string ToString() => $"line {FileLine} (index {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
 
 #if DEBUG
-        internal List<Command> ExecutedCommands=new List<Command>();
+        internal List<_Command> ExecutedCommands=new List<_Command>();
         internal long FileLine;
 #endif
     }

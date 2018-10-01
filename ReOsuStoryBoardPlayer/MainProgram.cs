@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\179323 Sakamoto Maaya - Okaerinasai (tomatomerde Remix)";
+                beatmap_folder = @"G:\SBTest\372552 yuiko - Azuma no Sora kara Hajimaru Sekai (Short)";
             }
             else
                 beatmap_folder = argv[0];

@@ -60,5 +60,15 @@ namespace ReOsuStoryBoardPlayer
         {
             return x + ", " + y + ", " + z + ", " + w;
         }
+
+        public static Vec4 operator -(Vec4 a,Vec4 b)
+        {
+            return new Vec4(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
+        }
+
+        public static Vec4 operator *(Vec4 a, float b)
+        {
+            return new Vec4(a.x * b, a.y * b, a.z * b, a.w * b);
+        }
     }
 }

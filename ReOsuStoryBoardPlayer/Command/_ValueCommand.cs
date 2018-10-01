@@ -16,10 +16,16 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public VALUE_TYPE EndValue { get; set; }
 
-        public VALUE_TYPE CalculateValue(float time)
+        public abstract VALUE_TYPE CalculateValue(float normalize_value);
+
+        private float CalculateNormalizeValue(float time)
         {
-            //todo
-            return default;
+            if (time < StartTime)
+                return 0;
+            else if (time > EndTime)
+                return 1;
+            else
+                return Easing.calculate(time - StartTime, StartTime, EndTime);
         }
 
         public override void Execute(StoryBoardObject @object, float time)
@@ -27,7 +33,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             if (!@object.CommandConflictChecker.CheckIfConflictThenUpdate(this,time))
                 return;
 
-            var val = CalculateValue(time);
+            var val = CalculateValue(CalculateNormalizeValue(time));
 
             ApplyValue(@object, val);
         }
