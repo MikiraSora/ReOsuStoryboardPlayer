@@ -22,9 +22,9 @@ namespace ReOsuStoryBoardPlayer.Commands
             Vec4 Distance = EndValue - StartValue;
 
             Vec4 temp = new Vec4();
-            temp.x = Math.Max(0, Math.Min((StartValue.x + Distance.x * normalize_value), 1));
-            temp.y = Math.Max(0, Math.Min((StartValue.y + Distance.y * normalize_value), 1));
-            temp.z = Math.Max(0, Math.Min((StartValue.z + Distance.z * normalize_value), 1));
+            temp.x = Math.Max(0, Math.Min((StartValue.x + Distance.x * normalize_value), 255)) / 255.0f;
+            temp.y = Math.Max(0, Math.Min((StartValue.y + Distance.y * normalize_value), 255)) / 255.0f;
+            temp.z = Math.Max(0, Math.Min((StartValue.z + Distance.z * normalize_value), 255)) / 255.0f;
 
             return temp;
         }

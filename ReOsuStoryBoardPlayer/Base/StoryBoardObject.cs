@@ -24,7 +24,7 @@ namespace ReOsuStoryBoardPlayer
 
         public int Z=-1;
 
-        public CommandConflictChecker CommandConflictChecker => new CommandConflictChecker();
+        public CommandConflictChecker CommandConflictChecker { get; } = new CommandConflictChecker();
 
         #region Transform
 

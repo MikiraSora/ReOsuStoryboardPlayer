@@ -24,7 +24,7 @@ namespace ReOsuStoryBoardPlayer.Commands
         public bool CheckIfConflict(_Command command,float current_playing_time)
         {
             var reg_cmd_info = ExecutedCommandRegisterMap[(int)command.Event];
-
+                
             if (reg_cmd_info==null)
                 return true;
 
