@@ -25,7 +25,8 @@ namespace ReOsuStoryBoardPlayer.Utils
 
         public void PutObject(T item)
         {
-            _objects.Add(item);
+            if (item!=null)
+                _objects.Add(item);
         }
 
         private static ObjectPool<T> _instance;

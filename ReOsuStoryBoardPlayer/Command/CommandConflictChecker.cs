@@ -19,11 +19,13 @@ namespace ReOsuStoryBoardPlayer.Commands
             public int EndTime { get; set; }
         }
 
-        private Dictionary<Event, RegisterData> ExecutedCommandRegisterMap { get; } = new Dictionary<Event, RegisterData>();
+        private RegisterData[] ExecutedCommandRegisterMap { get; } = new RegisterData[Enum.GetValues(typeof(Event)).Length];
 
         public bool CheckIfConflict(_Command command,float current_playing_time)
         {
-            if (!ExecutedCommandRegisterMap.TryGetValue(command.Event,out var reg_cmd_info))
+            var reg_cmd_info = ExecutedCommandRegisterMap[(int)command.Event];
+
+            if (reg_cmd_info==null)
                 return true;
 
             /*
@@ -58,7 +60,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             data.StartTime = command.StartTime;
             data.EndTime = command.EndTime;
 
-            ExecutedCommandRegisterMap[command.Event] = data;
+            ExecutedCommandRegisterMap[(int)command.Event] = data;
         }
 
         public bool CheckIfConflictThenUpdate(_Command command, float current_playing_time)
@@ -71,10 +73,10 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public void Reset()
         {
-            foreach (var data in ExecutedCommandRegisterMap.Values)
+            foreach (var data in ExecutedCommandRegisterMap)
                 ObjectPool<RegisterData>.Instance.PutObject(data);
 
-            ExecutedCommandRegisterMap.Clear();
+            Array.Clear(ExecutedCommandRegisterMap,0, ExecutedCommandRegisterMap.Length);
         }
     }
 }

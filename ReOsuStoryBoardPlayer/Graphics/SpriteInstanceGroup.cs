@@ -211,7 +211,7 @@ namespace ReOsuStoryBoardPlayer
             Matrix4 model =
                 Matrix4.Identity *
             Matrix4.CreateScale(scale.x, scale.y, 1) *
-            Matrix4.CreateFromAxisAngle(_staticCacheAxis, rotate / 180.0f * 3.1415926f) *
+            Matrix4.CreateFromAxisAngle(_staticCacheAxis, rotate) *
             Matrix4.CreateTranslation(position.x-StoryboardWindow.CurrentWindow.Width/2, -position.y+ StoryboardWindow.CurrentWindow.Height / 2, 0);
             //model.Transpose();
 

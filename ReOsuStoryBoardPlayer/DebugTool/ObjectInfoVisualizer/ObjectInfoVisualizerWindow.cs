@@ -69,7 +69,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                 ColorLabel.ForeColor = Color.FromArgb(r,g,b);
                 ColorLabel.BackColor = Color.FromArgb(255-r, 255 - g, 255 - b);
 
-                AngleLabel.Text = obj.Rotate.ToString();
+                AngleLabel.Text = (obj.Rotate * 180 / Math.PI).ToString();
                 AlphaLabel.Text = obj.Color.w.ToString();
                 ScaleLabel.Text = obj.Scale.ToString();
 
