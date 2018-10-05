@@ -102,17 +102,17 @@
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
     <Compile Include="Command\CommandConflictChecker.cs" />
-    <Compile Include="Command\_CommandTimeline.cs" />
-    <Compile Include="Command\_GroupCommand.cs" />
-    <Compile Include="Command\_LoopCommand.cs" />
-    <Compile Include="Command\_GroupSubTimelineCommand.cs" />
-    <Compile Include="Command\_ParameterCommand.cs" />
-    <Compile Include="Command\_Command.cs" />
-    <Compile Include="Command\_FloatValueCommand.cs" />
-    <Compile Include="Command\_StateCommand.cs" />
-    <Compile Include="Command\_ValueCommand.cs" />
-    <Compile Include="Command\_Vec4ValueCommand.cs" />
-    <Compile Include="Command\_VectorValueCommand.cs" />
+    <Compile Include="Command\Timeline\CommandTimeline.cs" />
+    <Compile Include="Command\Group\GroupCommand.cs" />
+    <Compile Include="Command\Group\LoopCommand.cs" />
+    <Compile Include="Command\Timeline\GroupSubTimelineCommand.cs" />
+    <Compile Include="Command\ParameterCommand\ParameterCommand.cs" />
+    <Compile Include="Command\Command.cs" />
+    <Compile Include="Command\ValueCommand\FloatValueCommand.cs" />
+    <Compile Include="Command\ParameterCommand\StateCommand.cs" />
+    <Compile Include="Command\ValueCommand\ValueCommand.cs" />
+    <Compile Include="Command\ValueCommand\Vec4ValueCommand.cs" />
+    <Compile Include="Command\ValueCommand\VectorValueCommand.cs" />
     <Compile Include="DebugTool\DebugControllerWindow\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>

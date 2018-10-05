@@ -16,7 +16,7 @@ namespace ReOsuStoryBoardPlayer
 #else
         private
 #endif
-         Dictionary<Event, _CommandTimeline> CommandMap = new Dictionary<Event, _CommandTimeline>();
+         Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
         public string ImageFilePath;
 
@@ -46,32 +46,32 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion
 
-        public void AddCommand(_Command command)
+        public void AddCommand(Command command)
         {
-            if (command is _LoopCommand loop)
+            if (command is LoopCommand loop)
             {
                 AddCommand(loop);
             }
 
             if (!CommandMap.TryGetValue(command.Event, out var timeline))
-                timeline = CommandMap[command.Event] = new _CommandTimeline();
+                timeline = CommandMap[command.Event] = new CommandTimeline();
             timeline.Add(command);
         }
 
-        void AddCommand(_LoopCommand loop_command)
+        void AddCommand(LoopCommand loop_command)
         {
             foreach (var @event in loop_command.SubCommands.Keys)
             {
-                var sub_command_wrapper = new _LoopSubTimelineCommand(loop_command, @event);
+                var sub_command_wrapper = new LoopSubTimelineCommand(loop_command, @event);
                 AddCommand(sub_command_wrapper);
             }
         }
 
-        public void AddCommand(_CommandTimeline timeline) => timeline.ForEach(c => AddCommand(c));
+        public void AddCommand(CommandTimeline timeline) => timeline.ForEach(c => AddCommand(c));
         
         public virtual void Update(float current_time)
         {
-            var temp = ObjectPool<List<_Command>>.Instance.GetObject();
+            var temp = ObjectPool<List<Command>>.Instance.GetObject();
 
 #if DEBUG
             ExecutedCommands.ForEach(c => c.IsExecuted = false);
@@ -93,16 +93,16 @@ namespace ReOsuStoryBoardPlayer
                 temp.Clear();
             }
 
-            ObjectPool<List<_Command>>.Instance.PutObject(temp);
+            ObjectPool<List<Command>>.Instance.PutObject(temp);
         }
 
         public override string ToString() => $"line {FileLine} (index {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
 
 #if DEBUG
-        internal List<_Command> ExecutedCommands=new List<_Command>();
+        internal List<Command> ExecutedCommands=new List<Command>();
 
 
-        internal void MarkCommandExecuted(_Command command,bool is_exec=true)
+        internal void MarkCommandExecuted(Command command,bool is_exec=true)
         {
             if (is_exec)
                 ExecutedCommands.Add(command);

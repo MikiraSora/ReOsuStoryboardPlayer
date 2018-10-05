@@ -22,7 +22,7 @@ namespace ReOsuStoryBoardPlayer
     {
         static readonly uint DrawCallInstanceCountMax = 50;
 
-        internal LinkedList<StoryBoardObject> StoryboardObjectList;
+        public LinkedList<StoryBoardObject> StoryboardObjectList { get; set; }
 
         LinkedListNode<StoryBoardObject> CurrentScanNode;
 

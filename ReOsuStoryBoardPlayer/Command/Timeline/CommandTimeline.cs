@@ -7,30 +7,30 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public class _CommandTimeline:List<_Command>
+    public class CommandTimeline:List<Command>
     {
         public int StartTime => this.Min(c => c.StartTime);
         public int EndTime => this.Max(c => c.EndTime);
 
-        public virtual List<_Command> PickCommands(float time, List<_Command> result)
+        public virtual List<Command> PickCommands(float time, List<Command> result)
         {
             var command = PickCommand(time);
             result.Add(command);
             return result;
         }
 
-        public new void Add(_Command command)
+        public new void Add(Command command)
         {
             Debug.Assert(Count==0 || command.Event == this.First().Event);
             base.Add(command);
             Sort();
         }
 
-        _Command selected_command;
+        Command selected_command;
 
-        public _Command PickCommand(float current_time)
+        public Command PickCommand(float current_time)
         {
-            _Command command = null;
+            Command command = null;
 
             if (selected_command != null && (selected_command.StartTime <= current_time && current_time <= selected_command.EndTime))
                 return selected_command;
@@ -71,9 +71,9 @@ namespace ReOsuStoryBoardPlayer.Commands
         }
     }
 
-    public class LoopCommandTimeline : _CommandTimeline
+    public class LoopCommandTimeline : CommandTimeline
     {
-        public override List<_Command> PickCommands(float time, List<_Command> result)
+        public override List<Command> PickCommands(float time, List<Command> result)
         {
             //每个物件可能有多个Loop,全都执行了，至于命令先后循序，交给DispatchCommandExecute()判断
             result.AddRange(this);

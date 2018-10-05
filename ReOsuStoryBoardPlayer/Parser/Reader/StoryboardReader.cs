@@ -99,8 +99,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                     var vaild_commands = commands.Where(v => !SkipEvent.Contains(v.Key)).SelectMany(l => l.Value);
 
-                    storyboard_object.FrameStartTime = vaild_commands.Where(p=>!(p is _GroupCommand)).Min(p => p.StartTime);
-                    storyboard_object.FrameEndTime = vaild_commands.Where(p => !(p is _GroupCommand)).Max(p => p.EndTime);
+                    storyboard_object.FrameStartTime = vaild_commands.Where(p=>!(p is GroupCommand)).Min(p => p.StartTime);
+                    storyboard_object.FrameEndTime = vaild_commands.Where(p => !(p is GroupCommand)).Max(p => p.EndTime);
                 }
 
                 Reader.ReturnPacket(ref packet);
@@ -201,27 +201,27 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             }
         }
 
-        private Dictionary<Event, _CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<char>> lines)
+        private Dictionary<Event, CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<char>> lines)
         {
             var list = ParseCommand(lines);
 
-            Dictionary<Event, _CommandTimeline> map = new Dictionary<Event, _CommandTimeline>();
+            Dictionary<Event, CommandTimeline> map = new Dictionary<Event, CommandTimeline>();
 
             foreach (var cmd in list)
             {
                 if (!map.ContainsKey(cmd.Event))
-                    map[cmd.Event] = cmd.Event == Event.Loop ? new LoopCommandTimeline() : new _CommandTimeline();
+                    map[cmd.Event] = cmd.Event == Event.Loop ? new LoopCommandTimeline() : new CommandTimeline();
                 map[cmd.Event].Add(cmd);
             }
 
             return map;
         }
 
-        public List<_Command> ParseCommand(List<ReadOnlyMemory<char>> lines)
+        public List<Command> ParseCommand(List<ReadOnlyMemory<char>> lines)
         {
-            List<_Command> commands = new List<_Command>(), temp = ObjectPool<List<_Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<_Command>>.Instance.GetObject();
+            List<Command> commands = new List<Command>(), temp = ObjectPool<List<Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
 
-            _GroupCommand current_group_command = null;
+            GroupCommand current_group_command = null;
 
             foreach (var line in lines)
             {
@@ -243,10 +243,10 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                     else
                     {
                         var prev_group = current_group_command;
-                        current_group_command = cmd as _GroupCommand;
+                        current_group_command = cmd as GroupCommand;
 
                         if (current_group_command != prev_group &&
-                            prev_group is _LoopCommand loopc)
+                            prev_group is LoopCommand loopc)
                         {
                             loopc.UpdateParam();
                         }
@@ -258,11 +258,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 temp.Clear();
             }
 
-            if (current_group_command is _LoopCommand loop)
+            if (current_group_command is LoopCommand loop)
                 loop.UpdateParam();
 
-            ObjectPool<List<_Command>>.Instance.PutObject(temp);
-            ObjectPool<List<_Command>>.Instance.PutObject(cur_group_cmds);
+            ObjectPool<List<Command>>.Instance.PutObject(temp);
+            ObjectPool<List<Command>>.Instance.PutObject(cur_group_cmds);
 
             return commands;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class _ValueCommand<VALUE_TYPE>:_Command
+    public abstract class ValueCommand<VALUE_TYPE>:Command
     {
         public abstract void ApplyValue(StoryBoardObject @object, VALUE_TYPE value);
 

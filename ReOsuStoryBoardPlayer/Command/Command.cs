@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class _Command:IComparable<_Command>
+    public abstract class Command:IComparable<Command>
     {
 
 #if DEBUG
@@ -19,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public int EndTime { get; set; }
 
-        public int CompareTo(_Command other) => StartTime - other.StartTime;
+        public int CompareTo(Command other) => StartTime - other.StartTime;
 
         public abstract void Execute(StoryBoardObject @object, float time);
 

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    class _LoopCommand : _GroupCommand
+    class LoopCommand : GroupCommand
     {
-        public _LoopCommand() => Event = Event.Loop;
+        public LoopCommand() => Event = Event.Loop;
 
         public int CostTime { get; private set; }
 
         public int LoopCount { get; set; }
         
-        public void AddSubCommandsAndUpdate(IEnumerable<_Command> commands)
+        public void AddSubCommandsAndUpdate(IEnumerable<Command> commands)
         {
             AddSubCommand(commands);
             UpdateParam();

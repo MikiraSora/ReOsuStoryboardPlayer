@@ -105,6 +105,8 @@ namespace ReOsuStoryBoardPlayer
             this.instance = instance;
             InitWindowRenderSize(instance.IsWideScreen);
             instance.BuildCacheDrawSpriteBatch();
+
+
             InitBackgroundDrawing(instance);
         }
 

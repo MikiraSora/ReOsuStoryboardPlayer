@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class _StateCommand : _Command
+    public abstract class StateCommand : Command
     {
         public abstract void ApplyValue(StoryBoardObject @object, bool value);
 

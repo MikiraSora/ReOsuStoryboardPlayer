@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    class _LoopSubTimelineCommand : _Command
+    class LoopSubTimelineCommand : Command
     {
         private readonly Event bind_event;
 
-        _LoopCommand loop_command { get; }
+        LoopCommand loop_command { get; }
 
-        _CommandTimeline timeline => loop_command.SubCommands[bind_event];
+        CommandTimeline timeline => loop_command.SubCommands[bind_event];
 
-        public _LoopSubTimelineCommand(_LoopCommand loop_command, Event bind_event)
+        public LoopSubTimelineCommand(LoopCommand loop_command, Event bind_event)
         {
             this.loop_command = loop_command;
             this.bind_event = bind_event;

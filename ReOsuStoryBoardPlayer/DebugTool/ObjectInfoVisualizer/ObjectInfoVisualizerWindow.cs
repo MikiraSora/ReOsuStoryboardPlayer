@@ -19,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
         public StoryBoardObject obj { get; set; }
         public StoryBoardInstance Instance { get; }
 
-        private Dictionary<_Command, TreeNode> command_node_map = new Dictionary<_Command, TreeNode>();
+        private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
 
         public ObjectInfoVisualizerWindow(StoryBoardInstance instance)
         {
@@ -131,7 +131,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
                                     
-                            if (cmd is _LoopCommand loop_command)
+                            if (cmd is LoopCommand loop_command)
                             {
                                 foreach (var loop_sub_command in loop_command.SubCommands.SelectMany(l=>l.Value).OrderBy(c=>c.StartTime))
                                 {
@@ -148,7 +148,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                 }
             }
 
-            void BindCommandNode(_Command command,TreeNode node)
+            void BindCommandNode(Command command,TreeNode node)
             {
                 command_node_map[command] = node;
             }

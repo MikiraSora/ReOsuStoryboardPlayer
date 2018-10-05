@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public class _HorizonFlipCommand : _StateCommand
+    public class HorizonFlipCommand : StateCommand
     {
-        public _HorizonFlipCommand() => Event = Event.HorizonFlip;
+        public HorizonFlipCommand() => Event = Event.HorizonFlip;
 
         public override void ApplyValue(StoryBoardObject @object, bool value) => @object.IsHorizonFlip = value;
     }
 
-    public class _VerticalFlipCommand : _StateCommand
+    public class VerticalFlipCommand : StateCommand
     {
-        public _VerticalFlipCommand() => Event = Event.VerticalFlip;
+        public VerticalFlipCommand() => Event = Event.VerticalFlip;
 
         public override void ApplyValue(StoryBoardObject @object, bool value) => @object.IsVerticalFlip = value;
     }
 
-    public class _AdditiveBlendCommand : _StateCommand
+    public class AdditiveBlendCommand : StateCommand
     {
-        public _AdditiveBlendCommand() => Event = Event.AdditiveBlend;
+        public AdditiveBlendCommand() => Event = Event.AdditiveBlend;
 
         public override void ApplyValue(StoryBoardObject @object, bool value) => @object.IsAdditive = value;
     }

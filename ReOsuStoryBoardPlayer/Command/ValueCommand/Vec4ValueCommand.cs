@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    class _ColorCommand : _ValueCommand<Vec4>
+    class ColorCommand : ValueCommand<Vec4>
     {
-        public _ColorCommand() => Event = Event.Color;
+        public ColorCommand() => Event = Event.Color;
 
         public override void ApplyValue(StoryBoardObject @object, Vec4 value)
         {

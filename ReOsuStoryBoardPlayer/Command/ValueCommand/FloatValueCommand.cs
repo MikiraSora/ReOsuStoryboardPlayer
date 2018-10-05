@@ -6,42 +6,42 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class _FloatValueCommand : _ValueCommand<float>
+    public abstract class FloatValueCommand : ValueCommand<float>
     {
         public override float CalculateValue(float normalize_value) => StartValue + (EndValue - StartValue) * normalize_value;
     }
 
-    public class _FadeCommand : _FloatValueCommand
+    public class FadeCommand : FloatValueCommand
     {
-        public _FadeCommand() => Event = Event.Fade;
+        public FadeCommand() => Event = Event.Fade;
 
         public override void ApplyValue(StoryBoardObject @object, float value) => @object.Color.w = value;
     }
 
-    public class _MoveXCommand : _FloatValueCommand
+    public class MoveXCommand : FloatValueCommand
     {
-        public _MoveXCommand() => Event = Event.MoveX;
+        public MoveXCommand() => Event = Event.MoveX;
 
         public override void ApplyValue(StoryBoardObject @object, float value) => @object.Postion.x = value;
     }
 
-    public class _MoveYCommand : _FloatValueCommand
+    public class MoveYCommand : FloatValueCommand
     {
-        public _MoveYCommand() => Event = Event.MoveY;
+        public MoveYCommand() => Event = Event.MoveY;
 
         public override void ApplyValue(StoryBoardObject @object, float value) => @object.Postion.y = value;
     }
 
-    public class _RotateCommand : _FloatValueCommand
+    public class RotateCommand : FloatValueCommand
     {
-        public _RotateCommand() => Event = Event.Rotate;
+        public RotateCommand() => Event = Event.Rotate;
 
-        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Rotate = value;
+        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Rotate = -value;
     }
 
-    public class _ScaleCommand : _FloatValueCommand
+    public class ScaleCommand : FloatValueCommand
     {
-        public _ScaleCommand() => Event = Event.Scale;
+        public ScaleCommand() => Event = Event.Scale;
 
         public override void ApplyValue(StoryBoardObject @object, float value) => @object.Scale.x = @object.Scale.y = value;
     }

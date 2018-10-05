@@ -37,7 +37,7 @@ namespace Test
             variables["$aab"] = new StoryboardVariable("$aab", "252");
             variables["$abb"] = new StoryboardVariable("$abb", "27");
 
-            List<_Command> asdasd = new List<_Command>();
+            List<Command> asdasd = new List<Command>();
             
             var dd=storyboardReader.GetValues(0).ToList();
         }

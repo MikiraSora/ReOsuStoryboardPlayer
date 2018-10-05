@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\511637 solfa featChata - I will";
+                beatmap_folder = @"G:\SBTest\237977 marina - Towa yori Towa ni";
             }
             else
                 beatmap_folder = argv[0];

@@ -9,19 +9,20 @@ namespace ReOsuStoryBoardPlayer.Commands
 {
     /// <summary>
     /// 检查命令是否和之前命令冲突的封装类
+    /// * 暂时废弃（毕竟这货只是用来解决Loop子命令和外部命令的先后执行顺序）
     /// </summary>
     public class CommandConflictChecker
     {
         class RegisterData
         {
-            public _Command command { get; set; }
+            public Command command { get; set; }
             public int StartTime { get; set; }
             public int EndTime { get; set; }
         }
 
         private RegisterData[] ExecutedCommandRegisterMap { get; } = new RegisterData[Enum.GetValues(typeof(Event)).Length];
 
-        public bool CheckIfConflict(_Command command,float current_playing_time)
+        public bool CheckIfConflict(Command command,float current_playing_time)
         {
             var reg_cmd_info = ExecutedCommandRegisterMap[(int)command.Event];
                 
@@ -52,7 +53,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             return true;
         }
 
-        public void ForceUpdate(_Command command)
+        public void ForceUpdate(Command command)
         {
             var data = ObjectPool<RegisterData>.Instance.GetObject();
 
@@ -67,7 +68,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             ExecutedCommandRegisterMap[(int)command.Event] = data;
         }
 
-        public bool CheckIfConflictThenUpdate(_Command command, float current_playing_time)
+        public bool CheckIfConflictThenUpdate(Command command, float current_playing_time)
         {
             if (!CheckIfConflict(command, current_playing_time))
                 return false;

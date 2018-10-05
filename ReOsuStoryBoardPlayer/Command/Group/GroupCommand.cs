@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class _GroupCommand : _Command
+    public abstract class GroupCommand : Command
     {
-        public Dictionary<Event, _CommandTimeline> SubCommands { get; set; } = new Dictionary<Event, _CommandTimeline>();
+        public Dictionary<Event, CommandTimeline> SubCommands { get; set; } = new Dictionary<Event, CommandTimeline>();
 
-        public virtual void AddSubCommand(_Command command)
+        public virtual void AddSubCommand(Command command)
         {
             if (!SubCommands.ContainsKey(command.Event))
-                SubCommands[command.Event] = new _CommandTimeline();
+                SubCommands[command.Event] = new CommandTimeline();
             SubCommands[command.Event].Add(command);
         }
 
-        public void AddSubCommand(IEnumerable<_Command> commands)
+        public void AddSubCommand(IEnumerable<Command> commands)
         {
             foreach (var command in commands)
                 AddSubCommand(command);

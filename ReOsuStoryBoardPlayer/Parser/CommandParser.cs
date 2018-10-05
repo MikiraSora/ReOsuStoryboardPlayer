@@ -9,16 +9,16 @@ namespace ReOsuStoryBoardPlayer.Parser
 {
     public interface ICommandParser
     {
-        List<_Command> Parse(IEnumerable<string> data_arr,List<_Command> result);
+        List<Command> Parse(IEnumerable<string> data_arr,List<Command> result);
     }
 
     #region Value Command Parsers
 
-    public abstract class IValueCommandParser<T,CMD> : ICommandParser where CMD:_ValueCommand<T>,new()
+    public abstract class IValueCommandParser<T,CMD> : ICommandParser where CMD:ValueCommand<T>,new()
     {
         public abstract int ParamCount { get; }
 
-        public virtual _Command Parse(IEnumerable<string> data_arr, int StartTime, int EndTime, T StartValue, T EndValue)
+        public virtual Command Parse(IEnumerable<string> data_arr, int StartTime, int EndTime, T StartValue, T EndValue)
         {
             CMD command = new CMD();
 
@@ -43,7 +43,7 @@ namespace ReOsuStoryBoardPlayer.Parser
 
         public abstract T ConvertValue(IEnumerable<string> p);
 
-        public List<_Command> Parse(IEnumerable<string> data_arr, List<_Command> result)
+        public List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
         {
             int start_time = int.Parse(data_arr.ElementAt(2));
             int end_time = string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? start_time : int.Parse(data_arr.ElementAt(3));
@@ -71,21 +71,21 @@ namespace ReOsuStoryBoardPlayer.Parser
         }
     }
 
-    public class FloatCommandParser<CMD> : IValueCommandParser<float,CMD> where CMD : _ValueCommand<float>, new()
+    public class FloatCommandParser<CMD> : IValueCommandParser<float,CMD> where CMD : ValueCommand<float>, new()
     {
         public override int ParamCount => 1;
 
         public override float ConvertValue(IEnumerable<string> p) => float.Parse(p.First());
     }
 
-    public class VectorCommandParser<CMD> : IValueCommandParser<Vector, CMD> where CMD : _ValueCommand<Vector>, new()
+    public class VectorCommandParser<CMD> : IValueCommandParser<Vector, CMD> where CMD : ValueCommand<Vector>, new()
     {
         public override int ParamCount => 2;
 
         public override Vector ConvertValue(IEnumerable<string> p) => new Vector(float.Parse(p.First()), float.Parse(p.Last()));
     }
 
-    public class Vec4CommandParser<CMD> : IValueCommandParser<Vec4, CMD> where CMD : _ValueCommand<Vec4>, new()
+    public class Vec4CommandParser<CMD> : IValueCommandParser<Vec4, CMD> where CMD : ValueCommand<Vec4>, new()
     {
         public override int ParamCount => 3;
 
@@ -96,20 +96,20 @@ namespace ReOsuStoryBoardPlayer.Parser
 
     public class ParameterCommandParser : ICommandParser
     {
-        public List<_Command> Parse(IEnumerable<string> data_arr, List<_Command> result)
+        public List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
         {
-            _StateCommand command = null;
+            StateCommand command = null;
 
             switch (data_arr.ElementAt(4))
             {
                 case "A":
-                    command = new _AdditiveBlendCommand();
+                    command = new AdditiveBlendCommand();
                     break;
                 case "H":
-                    command = new _HorizonFlipCommand();
+                    command = new HorizonFlipCommand();
                     break;
                 case "V":
-                    command = new _VerticalFlipCommand();
+                    command = new VerticalFlipCommand();
                     break;
                 default:
                     throw new Exception($"unknown Parameter command type:" + data_arr.ElementAt(3));
@@ -125,9 +125,9 @@ namespace ReOsuStoryBoardPlayer.Parser
 
     public class LoopCommandParser : ICommandParser
     {
-        public List<_Command> Parse(IEnumerable<string> data_arr, List<_Command> result)
+        public List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
         {
-            _LoopCommand command = new _LoopCommand();
+            LoopCommand command = new LoopCommand();
 
             command.StartTime = int.Parse(data_arr.ElementAt(1));
             command.LoopCount = int.Parse(data_arr.ElementAt(2));
@@ -139,39 +139,39 @@ namespace ReOsuStoryBoardPlayer.Parser
 
     public class CommandParserIntance
     {
-        public static List<_Command> Parse(IEnumerable<string> data_arr, List<_Command> result)
+        public static List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
         {
             var command_event = data_arr.First().Trim('_', ' ');
 
             switch (command_event)
             {
                 case "M":
-                    return CommandParserIntance<_MoveCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<MoveCommand>.Instance.Parse(data_arr, result);
                 case "S":
-                    return CommandParserIntance<_ScaleCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<ScaleCommand>.Instance.Parse(data_arr, result);
                 case "V":
-                    return CommandParserIntance<_VectorScaleCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<VectorScaleCommand>.Instance.Parse(data_arr, result);
                 case "MX":
-                    return CommandParserIntance<_MoveXCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<MoveXCommand>.Instance.Parse(data_arr, result);
                 case "MY":
-                    return CommandParserIntance<_MoveYCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<MoveYCommand>.Instance.Parse(data_arr, result);
                 case "R":
-                    return CommandParserIntance<_RotateCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<RotateCommand>.Instance.Parse(data_arr, result);
                 case "F":
-                    return CommandParserIntance<_FadeCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<FadeCommand>.Instance.Parse(data_arr, result);
                 case "P":
-                    return CommandParserIntance<_StateCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<StateCommand>.Instance.Parse(data_arr, result);
                 case "L":
-                    return CommandParserIntance<_LoopCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<LoopCommand>.Instance.Parse(data_arr, result);
                 case "C":
-                    return CommandParserIntance<_ColorCommand>.Instance.Parse(data_arr, result);
+                    return CommandParserIntance<ColorCommand>.Instance.Parse(data_arr, result);
                 default:
                     throw new Exception("Unknown command event:" + command_event);
             }
         }
     }
 
-    public class CommandParserIntance<COMMAND> where COMMAND:_Command
+    public class CommandParserIntance<COMMAND> where COMMAND:Command
     {
         public static ICommandParser _instance;
 
@@ -189,21 +189,21 @@ namespace ReOsuStoryBoardPlayer.Parser
             switch (typeof(COMMAND).Name)
             {
                 case "_FadeCommand":
-                    return new FloatCommandParser<_FadeCommand>();
+                    return new FloatCommandParser<FadeCommand>();
                 case "_MoveXCommand":
-                    return new FloatCommandParser<_MoveXCommand>();
+                    return new FloatCommandParser<MoveXCommand>();
                 case "_MoveYCommand":
-                    return new FloatCommandParser<_MoveYCommand>();
+                    return new FloatCommandParser<MoveYCommand>();
                 case "_RotateCommand":
-                    return new FloatCommandParser<_RotateCommand>();
+                    return new FloatCommandParser<RotateCommand>();
                 case "_ScaleCommand":
-                    return new FloatCommandParser<_ScaleCommand>();
+                    return new FloatCommandParser<ScaleCommand>();
                 case "_MoveCommand":
-                    return new VectorCommandParser<_MoveCommand>();
+                    return new VectorCommandParser<MoveCommand>();
                 case "_VectorScaleCommand":
-                    return new VectorCommandParser<_VectorScaleCommand>();
+                    return new VectorCommandParser<VectorScaleCommand>();
                 case "_ColorCommand":
-                    return new Vec4CommandParser<_ColorCommand>();
+                    return new Vec4CommandParser<ColorCommand>();
                 case "_LoopCommand":
                     return new LoopCommandParser();
                 case "_StateCommand":
