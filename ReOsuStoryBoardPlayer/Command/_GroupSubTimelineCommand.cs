@@ -36,9 +36,9 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             int current_time = recovery_time % timeline_cost_time;
 
-            int current_loop_index  = recovery_time / timeline_cost_time;
+            int current_loop_index  = (recovery_time- timeline.StartTime) / timeline_cost_time;
 
-            var command = timeline.PickCommand(current_time + loop_command.StartTime);
+            var command = timeline.PickCommand((current_value - this.StartTime) % timeline_cost_time + timeline.StartTime);
 
             if (command != null)
             {
@@ -47,7 +47,7 @@ namespace ReOsuStoryBoardPlayer.Commands
                 command.StartTime += offset_time;
                 command.EndTime += offset_time;
 
-                command.Execute(@object, current_time);
+                command.Execute(@object, current_value);
                 @object.MarkCommandExecuted(command);
 
                 //restore command
@@ -55,5 +55,7 @@ namespace ReOsuStoryBoardPlayer.Commands
                 command.EndTime -= offset_time;
             }
         }
+
+        public override string ToString() => $"{base.ToString()} --> ({loop_command.ToString()})";
     }
 }
