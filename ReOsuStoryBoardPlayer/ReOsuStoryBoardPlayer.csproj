@@ -102,9 +102,10 @@
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
     <Compile Include="Command\CommandConflictChecker.cs" />
-    <Compile Include="Command\CommandTimeline.cs" />
+    <Compile Include="Command\_CommandTimeline.cs" />
     <Compile Include="Command\_GroupCommand.cs" />
     <Compile Include="Command\_LoopCommand.cs" />
+    <Compile Include="Command\_GroupSubTimelineCommand.cs" />
     <Compile Include="Command\_ParameterCommand.cs" />
     <Compile Include="Command\_Command.cs" />
     <Compile Include="Command\_FloatValueCommand.cs" />

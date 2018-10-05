@@ -122,15 +122,16 @@ namespace ReOsuStoryBoardPlayer
             */
             //get objs from osu file
             List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osu_file_path);
-
-            AdjustZ(parse_osu_storyboard_objs, 0);
-
+            
             if ((!string.IsNullOrWhiteSpace(osb_file_path))&&File.Exists(osb_file_path))
             {
                 parse_osb_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osb_file_path);
-                AdjustZ(parse_osb_storyboard_objs, parse_osu_storyboard_objs.Count);
+                AdjustZ(parse_osb_storyboard_objs, 0);
             }
-            
+
+            AdjustZ(parse_osu_storyboard_objs, parse_osb_storyboard_objs?.Count()??0);
+
+
             temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
 
             foreach (var obj in temp_objs_list)

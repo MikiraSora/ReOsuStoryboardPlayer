@@ -10,7 +10,13 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryBoardObject
     {
-        public Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
+
+#if DEBUG
+        internal
+#else
+        private
+#endif
+         Dictionary<Event, _CommandTimeline> CommandMap = new Dictionary<Event, _CommandTimeline>();
 
         public string ImageFilePath;
 
@@ -40,6 +46,29 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion
 
+        public void AddCommand(_Command command)
+        {
+            if (command is _LoopCommand loop)
+            {
+                AddCommand(loop);
+            }
+
+            if (!CommandMap.TryGetValue(command.Event, out var timeline))
+                timeline = CommandMap[command.Event] = new _CommandTimeline();
+            timeline.Add(command);
+        }
+
+        void AddCommand(_LoopCommand loop_command)
+        {
+            foreach (var @event in loop_command.SubCommands.Keys)
+            {
+                var sub_command_wrapper = new _LoopSubTimelineCommand(loop_command, @event);
+                AddCommand(sub_command_wrapper);
+            }
+        }
+
+        public void AddCommand(_CommandTimeline timeline) => timeline.ForEach(c => AddCommand(c));
+        
         public virtual void Update(float current_time)
         {
             var temp = ObjectPool<List<_Command>>.Instance.GetObject();
@@ -57,13 +86,13 @@ namespace ReOsuStoryBoardPlayer
                     command.Execute(this, current_time);
 
 #if DEBUG
-                    ExecutedCommands.Add(command);
-                    command.IsExecuted = true;
+                    MarkCommandExecuted(command);
 #endif
                 }
+
+                temp.Clear();
             }
 
-            temp.Clear();
             ObjectPool<List<_Command>>.Instance.PutObject(temp);
         }
 
@@ -71,6 +100,16 @@ namespace ReOsuStoryBoardPlayer
 
 #if DEBUG
         internal List<_Command> ExecutedCommands=new List<_Command>();
+
+        internal void MarkCommandExecuted(_Command command,bool is_exec=true)
+        {
+            if (is_exec)
+                ExecutedCommands.Add(command);
+            else
+                ExecutedCommands.Remove(command);
+
+            command.IsExecuted = is_exec;
+        }
 #endif
         public long FileLine { get; set; }
     }

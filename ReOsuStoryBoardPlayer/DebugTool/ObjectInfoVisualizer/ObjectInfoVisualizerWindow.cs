@@ -133,7 +133,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                                     
                             if (cmd is _LoopCommand loop_command)
                             {
-                                foreach (var loop_sub_command in loop_command.SubCommands.OrderBy(c=>c.StartTime))
+                                foreach (var loop_sub_command in loop_command.SubCommands.SelectMany(l=>l.Value).OrderBy(c=>c.StartTime))
                                 {
                                     var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
                                     BindCommandNode(loop_sub_command, loop_sub_note);
@@ -157,7 +157,6 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
         private void UpdateCommandNode()
         {
 #if DEBUG
-
             foreach (var pair in command_node_map)
             {
                 pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;

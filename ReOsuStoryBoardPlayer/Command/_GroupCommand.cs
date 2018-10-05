@@ -8,15 +8,13 @@ namespace ReOsuStoryBoardPlayer.Commands
 {
     public abstract class _GroupCommand : _Command
     {
-        protected Dictionary<Event,CommandTimeline> sub_commands = new Dictionary<Event, CommandTimeline>();
-
-        public IEnumerable<_Command> SubCommands => sub_commands.Values.SelectMany(l => l).OrderBy(c => c.StartTime);
+        public Dictionary<Event, _CommandTimeline> SubCommands { get; set; } = new Dictionary<Event, _CommandTimeline>();
 
         public virtual void AddSubCommand(_Command command)
         {
-            if (!sub_commands.ContainsKey(command.Event))
-                sub_commands[command.Event] = new CommandTimeline();
-            sub_commands[command.Event].Add(command);
+            if (!SubCommands.ContainsKey(command.Event))
+                SubCommands[command.Event] = new _CommandTimeline();
+            SubCommands[command.Event].Add(command);
         }
 
         public void AddSubCommand(IEnumerable<_Command> commands)

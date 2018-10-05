@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public class CommandTimeline:List<_Command>
+    public class _CommandTimeline:List<_Command>
     {
         public int StartTime => this.Min(c => c.StartTime);
         public int EndTime => this.Max(c => c.EndTime);
@@ -20,6 +21,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public new void Add(_Command command)
         {
+            Debug.Assert(Count==0 || command.Event == this.First().Event);
             base.Add(command);
             Sort();
         }
@@ -28,16 +30,11 @@ namespace ReOsuStoryBoardPlayer.Commands
         public _Command PickCommand(float current_time)
         {
             _Command command = null;
+
             if (current_time < this.First().StartTime)
-            {
-                //早于开始前
                 return this.First();
-            }
             else if (current_time > this.Last().EndTime)
-            {
-                //迟于结束后
                 return this.Last();
-            }
 
             //尝试选取在时间范围内的命令
             if (command == null)
@@ -70,7 +67,7 @@ namespace ReOsuStoryBoardPlayer.Commands
         }
     }
 
-    public class LoopCommandTimeline : CommandTimeline
+    public class LoopCommandTimeline : _CommandTimeline
     {
         public override List<_Command> PickCommands(float time, List<_Command> result)
         {

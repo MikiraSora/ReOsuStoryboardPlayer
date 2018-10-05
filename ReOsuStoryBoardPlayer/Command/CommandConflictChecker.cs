@@ -60,6 +60,10 @@ namespace ReOsuStoryBoardPlayer.Commands
             data.StartTime = command.StartTime;
             data.EndTime = command.EndTime;
 
+            var prev_command = ExecutedCommandRegisterMap[(int)command.Event]?.command;
+            if (prev_command != null)
+                prev_command.IsExecuted = false;
+
             ExecutedCommandRegisterMap[(int)command.Event] = data;
         }
 

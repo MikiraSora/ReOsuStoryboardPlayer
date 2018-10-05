@@ -22,6 +22,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public void UpdateParam()
         {
+            /*
             var total_command_list = sub_commands.Values.SelectMany(l=>l).OrderBy(c => c.StartTime);
 
             int first_start_time = total_command_list.First().StartTime;
@@ -46,25 +47,26 @@ namespace ReOsuStoryBoardPlayer.Commands
             }
             */
 
-            CostTime = total_command_list.Max(c=>c.EndTime) - total_command_list.Min(c => c.StartTime);
+            CostTime = SubCommands.SelectMany(l=>l.Value).Max(c=>c.EndTime) - SubCommands.SelectMany(l => l.Value).Min(c => c.StartTime);
             var total_cast_time = CostTime * LoopCount;
-
-            StartTime += first_start_time;
+            
             EndTime = StartTime + total_cast_time;
 
-            foreach (var list in sub_commands.Values)
+            foreach (var list in SubCommands.Values)
                 list.Sort();
         }
 
         public override void Execute(StoryBoardObject @object, float current_value)
         {
-            int recovery_time = (int)((current_value - StartTime));
+            //throw new NotImplementedException("此处已经迁移到_GroupSubTimelineCommand");
+            /*
+            int recovery_time = (int)(current_value - StartTime);
 
             int current_time = recovery_time % CostTime;
 
             int current_loop_index = recovery_time / CostTime;
 
-            foreach (var command_list in sub_commands.Values)
+            foreach (var command_list in SubCommands.Values)
             {
                 var command = command_list.PickCommand(current_time);
 
@@ -76,12 +78,14 @@ namespace ReOsuStoryBoardPlayer.Commands
                     command.EndTime += offset_time;
 
                     command.Execute(@object, current_time);
+                    @object.MarkCommandExecuted(command);
 
                     //restore command
                     command.StartTime -= offset_time;
                     command.EndTime -= offset_time;
                 }
             }
+            */
         }
     }
 }

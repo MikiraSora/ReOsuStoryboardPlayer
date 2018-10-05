@@ -88,14 +88,19 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 if (storyboard_object != null)
                 {
                     var commands = BuildCommandMap(packet.CommandLines);
-                    storyboard_object.CommandMap = commands ?? throw new Exception($"Storyboard object {packet.ObjectLine.ToString()} in section offset {packet.ObjectFileLine} not exist any commands. ignore.");
+
+                    if (commands==null)
+                        throw new Exception($"Storyboard object {packet.ObjectLine.ToString()} in section offset {packet.ObjectFileLine} not exist any commands. ignore.");
+
+                    foreach (var command in commands.Values)
+                        storyboard_object.AddCommand(command);
 
                     storyboard_object.FileLine = packet.ObjectFileLine;
 
                     var vaild_commands = commands.Where(v => !SkipEvent.Contains(v.Key)).SelectMany(l => l.Value);
 
-                    storyboard_object.FrameStartTime = vaild_commands.Min(p => p.StartTime);
-                    storyboard_object.FrameEndTime = vaild_commands.Max(p => p.EndTime);
+                    storyboard_object.FrameStartTime = vaild_commands.Where(p=>!(p is _GroupCommand)).Min(p => p.StartTime);
+                    storyboard_object.FrameEndTime = vaild_commands.Where(p => !(p is _GroupCommand)).Max(p => p.EndTime);
                 }
 
                 Reader.ReturnPacket(ref packet);
@@ -196,16 +201,16 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             }
         }
 
-        private Dictionary<Event, CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<char>> lines)
+        private Dictionary<Event, _CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<char>> lines)
         {
             var list = ParseCommand(lines);
 
-            Dictionary<Event, CommandTimeline> map = new Dictionary<Event, CommandTimeline>();
+            Dictionary<Event, _CommandTimeline> map = new Dictionary<Event, _CommandTimeline>();
 
             foreach (var cmd in list)
             {
                 if (!map.ContainsKey(cmd.Event))
-                    map[cmd.Event] = cmd.Event == Event.Loop ? new LoopCommandTimeline() : new CommandTimeline();
+                    map[cmd.Event] = cmd.Event == Event.Loop ? new LoopCommandTimeline() : new _CommandTimeline();
                 map[cmd.Event].Add(cmd);
             }
 
