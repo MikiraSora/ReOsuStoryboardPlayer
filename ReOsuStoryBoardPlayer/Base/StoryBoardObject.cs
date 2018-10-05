@@ -77,7 +77,7 @@ namespace ReOsuStoryBoardPlayer
             ExecutedCommands.ForEach(c => c.IsExecuted = false);
             ExecutedCommands.Clear();
 #endif
-            CommandConflictChecker.Reset();
+            //CommandConflictChecker.Reset();
 
             foreach (var timeline in CommandMap.Values)
             {
@@ -100,6 +100,7 @@ namespace ReOsuStoryBoardPlayer
 
 #if DEBUG
         internal List<_Command> ExecutedCommands=new List<_Command>();
+
 
         internal void MarkCommandExecuted(_Command command,bool is_exec=true)
         {

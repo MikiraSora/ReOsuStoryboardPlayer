@@ -16,7 +16,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         _CommandTimeline timeline => loop_command.SubCommands[bind_event];
 
-        public _LoopSubTimelineCommand(_LoopCommand loop_command,Event bind_event)
+        public _LoopSubTimelineCommand(_LoopCommand loop_command, Event bind_event)
         {
             this.loop_command = loop_command;
             this.bind_event = bind_event;
@@ -36,9 +36,9 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             int current_time = recovery_time % timeline_cost_time;
 
-            int current_loop_index  = (recovery_time- timeline.StartTime) / timeline_cost_time;
+            int current_loop_index = (recovery_time - timeline.StartTime) / timeline_cost_time;
 
-            var command = timeline.PickCommand((current_value - this.StartTime) % timeline_cost_time + timeline.StartTime);
+            var command = timeline.PickCommand((current_value - StartTime) % timeline_cost_time + timeline.StartTime);
 
             if (command != null)
             {
