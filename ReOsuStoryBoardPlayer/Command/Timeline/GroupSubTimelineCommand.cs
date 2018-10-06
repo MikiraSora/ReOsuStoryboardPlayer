@@ -25,7 +25,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             var start_time_offset = loop_command.SubCommands[bind_event].Min(c => c.StartTime);
 
             StartTime = loop_command.StartTime + start_time_offset;
-            EndTime = loop_command.SubCommands[bind_event].Max(c => c.EndTime) * loop_command.LoopCount - start_time_offset;
+            EndTime = StartTime+loop_command.SubCommands[bind_event].Max(c => c.EndTime) * loop_command.LoopCount - start_time_offset;
         }
 
         public override void Execute(StoryBoardObject @object, float current_value)
@@ -34,9 +34,9 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             int timeline_cost_time = timeline.EndTime - timeline.StartTime;
 
-            int current_time = recovery_time % timeline_cost_time;
+            int current_time = timeline_cost_time == 0 ? recovery_time : recovery_time % timeline_cost_time;
 
-            int current_loop_index = (recovery_time - timeline.StartTime) / timeline_cost_time;
+            int current_loop_index = timeline_cost_time == 0 ? 0 : (recovery_time - timeline.StartTime) / timeline_cost_time;
 
             var command = timeline.PickCommand((current_value - StartTime) % timeline_cost_time + timeline.StartTime);
 
