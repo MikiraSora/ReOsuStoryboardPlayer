@@ -145,7 +145,6 @@
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
     <Compile Include="Graphics\Texture.cs" />
-    <Compile Include="Graphics\TextureStaticReader.cs" />
     <Compile Include="Graphics\Vec4.cs" />
     <Compile Include="Graphics\Vector.cs" />
     <Compile Include="MainProgram.cs" />

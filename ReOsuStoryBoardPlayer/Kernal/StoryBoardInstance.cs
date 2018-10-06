@@ -15,6 +15,7 @@ using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using static System.Collections.Specialized.BitVector32;
 using ReOsuStoryBoardPlayer.Parser;
+using ReOsuStoryBoardPlayer.Base;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -130,9 +131,21 @@ namespace ReOsuStoryBoardPlayer
             }
 
             AdjustZ(parse_osu_storyboard_objs, parse_osb_storyboard_objs?.Count()??0);
-
-
+            
             temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
+            
+            //delete Background object if there is a normal storyboard object which is same image file.
+            var background_obj = temp_objs_list.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
+            if (temp_objs_list.Any(c => c.ImageFilePath == background_obj?.ImageFilePath && (!(c is StoryboardBackgroundObject))))
+            {
+                Log.User($"Found another same background image object and delete background object.");
+                temp_objs_list.Remove(background_obj);
+            }
+            else
+            {
+                if (background_obj != null)
+                    background_obj.Z = -1;
+            }
 
             foreach (var obj in temp_objs_list)
             {

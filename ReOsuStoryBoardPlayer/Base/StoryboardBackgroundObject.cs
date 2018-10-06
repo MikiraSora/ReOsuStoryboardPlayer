@@ -12,9 +12,19 @@ namespace ReOsuStoryBoardPlayer.Base
         public StoryboardBackgroundObject()
         {
             AddCommand(new FadeCommand() {
-                StartTime=int.MinValue,
-                EndTime = int.MinValue,
+                Easing=EasingConverter.GetEasingInterpolator(Easing.Linear),
+                StartTime=-2857,
+                EndTime = -2857,
                 StartValue= 1,
+                EndValue = 1
+            });
+
+            AddCommand(new FadeCommand()
+            {
+                Easing = EasingConverter.GetEasingInterpolator(Easing.Linear),
+                StartTime = int.MaxValue-2857,
+                EndTime = int.MaxValue - 2857,
+                StartValue = 1,
                 EndValue = 1
             });
 

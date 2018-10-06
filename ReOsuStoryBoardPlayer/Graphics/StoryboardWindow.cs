@@ -107,9 +107,10 @@ namespace ReOsuStoryBoardPlayer
             instance.BuildCacheDrawSpriteBatch();
 
 
-            InitBackgroundDrawing(instance);
+            //InitBackgroundDrawing(instance);
         }
 
+        /*
         private void InitBackgroundDrawing(StoryBoardInstance instance)
         {
             var match = Regex.Match(File.ReadAllText(instance.osu_file_path), @"\""((.+?)\.((jpg)|(png)|(jpeg)))\""", RegexOptions.IgnoreCase);
@@ -146,6 +147,7 @@ namespace ReOsuStoryBoardPlayer
                 background_texture = null;
             }
         }
+        */
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -155,7 +157,7 @@ namespace ReOsuStoryBoardPlayer
 
             GL.ClearColor(Color.Black);
 
-            DrawBackground();
+            //DrawBackground();
 
             instance.PostDrawStoryBoard();
 
