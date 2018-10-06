@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\237977 marina - Towa yori Towa ni";
+                beatmap_folder = @"G:\SBTest\23483 doriko feat Hatsune Miku - Paradise Cage";
             }
             else
                 beatmap_folder = argv[0];

@@ -188,28 +188,28 @@ namespace ReOsuStoryBoardPlayer.Parser
         {
             switch (typeof(COMMAND).Name)
             {
-                case "_FadeCommand":
+                case "FadeCommand":
                     return new FloatCommandParser<FadeCommand>();
-                case "_MoveXCommand":
+                case "MoveXCommand":
                     return new FloatCommandParser<MoveXCommand>();
-                case "_MoveYCommand":
+                case "MoveYCommand":
                     return new FloatCommandParser<MoveYCommand>();
-                case "_RotateCommand":
+                case "RotateCommand":
                     return new FloatCommandParser<RotateCommand>();
-                case "_ScaleCommand":
+                case "ScaleCommand":
                     return new FloatCommandParser<ScaleCommand>();
-                case "_MoveCommand":
+                case "MoveCommand":
                     return new VectorCommandParser<MoveCommand>();
-                case "_VectorScaleCommand":
+                case "VectorScaleCommand":
                     return new VectorCommandParser<VectorScaleCommand>();
-                case "_ColorCommand":
+                case "ColorCommand":
                     return new Vec4CommandParser<ColorCommand>();
-                case "_LoopCommand":
+                case "LoopCommand":
                     return new LoopCommandParser();
-                case "_StateCommand":
-                case "_AdditiveBlendCommand":
-                case "_HorizonFlipCommand":
-                case "_VerticalFlipCommand":
+                case "StateCommand":
+                case "AdditiveBlendCommand":
+                case "HorizonFlipCommand":
+                case "VerticalFlipCommand":
                     return new ParameterCommandParser();
                 default:
                     throw new Exception("Unknown command name:" + typeof(COMMAND).Name);

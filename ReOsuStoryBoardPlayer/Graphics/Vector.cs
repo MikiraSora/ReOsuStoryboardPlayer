@@ -17,7 +17,8 @@ namespace ReOsuStoryBoardPlayer
         public float x { get { return __x; } set { __x = value; } }
         public float y { get { return __y; } set { __y = value; } }
 
-        public static Vector zero { get { return new Vector(0, 0); } }
+        public static Vector Zero { get { return new Vector(0, 0); } }
+        public static Vector One { get { return new Vector(0, 0); } }
 
         public Vector(float _x, float _y)
         {

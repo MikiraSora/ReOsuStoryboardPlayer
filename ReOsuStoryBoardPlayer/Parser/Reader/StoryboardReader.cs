@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Commands;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Parser.Base;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Parser.Stream;
@@ -121,11 +122,15 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             var data_arr = line.Split(',');
 
-            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].ToString(), true, out var obj_type)) || !(obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
+            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].ToString(), true, out var obj_type)) || !(obj_type == StoryboardObjectType.Background||obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
                 throw new Exception($"Unknown/Unsupport storyboard object type:" + data_arr[0]);
 
             switch (obj_type)
             {
+                case StoryboardObjectType.Background:
+                    obj = new StoryboardBackgroundObject();
+                    break;
+
                 case StoryboardObjectType.Sprite:
                     obj = new StoryBoardObject();
                     break;
@@ -138,16 +143,31 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                     break;
             }
 
-            obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1].ToString());
+            if (!(obj is StoryboardBackgroundObject))
+            {
+                obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1].ToString());
 
-            obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].ToString()));
+                obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].ToString()));
 
-            obj.ImageFilePath = data_arr[3].Span.Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+                obj.ImageFilePath = data_arr[3].Span.Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
-            obj.Postion = new Vector(float.Parse(data_arr[4].ToString()), float.Parse(data_arr[5].ToString()));
+                obj.Postion = new Vector(float.Parse(data_arr[4].ToString()), float.Parse(data_arr[5].ToString()));
 
-            if (obj is StoryboardAnimation animation)
-                ParseStoryboardAnimation(animation, data_arr);
+                if (obj is StoryboardAnimation animation)
+                    ParseStoryboardAnimation(animation, data_arr);
+            }
+            else
+            {
+                //For background object
+                obj.ImageFilePath = data_arr[2].Span.Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+
+                obj.Z = -1;
+
+                var position= data_arr.Length>4? new Vector(float.Parse(data_arr[3].ToString()), float.Parse(data_arr[4].ToString())):Vector.Zero;
+
+                if (position != Vector.One)
+                    obj.Postion = position + new Vector(320, 240);
+            }
 
             return obj;
         }
