@@ -28,8 +28,11 @@ namespace ReOsuStoryBoardPlayer.Parser
 
                 StoryboardReader storyboardReader = new StoryboardReader(er);
 
-                return storyboardReader.GetValues(0).ToList();
+                var list = storyboardReader.GetValues(0).ToList();
 
+                list.RemoveAll(c => c == null);
+
+                return list;
             }
             catch (Exception e)
             {

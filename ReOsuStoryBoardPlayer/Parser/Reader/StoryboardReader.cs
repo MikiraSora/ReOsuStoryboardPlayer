@@ -25,6 +25,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         public IEnumerable<StoryBoardObject> GetValues(int thread_count)
         {
+            /*
             if (thread_count == 0)
                 foreach (var packet in Reader.GetStoryboardPackets())
                 {
@@ -60,6 +61,9 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                         yield return storyboard_obj;
                 }
             }
+            */
+
+            return Reader.GetStoryboardPackets().AsParallel().Select(p => ParsePacket(p));
         }
 
         private StoryBoardObject GetPacketAndParse()
@@ -105,7 +109,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         #region Packet Parse
 
-        public StoryBoardObject ParseObjectLine(ReadOnlyMemory<char> line)
+        public StoryBoardObject ParseObjectLine(string line)
         {
             StoryBoardObject obj = null;
 
@@ -138,7 +142,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].ToString()));
 
-                obj.ImageFilePath = data_arr[3].Span.Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+                obj.ImageFilePath = data_arr[3].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
                 obj.Postion = new Vector(float.Parse(data_arr[4].ToString()), float.Parse(data_arr[5].ToString()));
 
@@ -148,7 +152,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             else
             {
                 //For background object
-                obj.ImageFilePath = data_arr[2].Span.Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+                obj.ImageFilePath = data_arr[2].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
                 obj.Z = -1;
 
@@ -161,7 +165,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             return obj;
         }
 
-        private void ParseStoryboardAnimation(StoryboardAnimation animation, ReadOnlyMemory<char>[] sprite_param)
+        private void ParseStoryboardAnimation(StoryboardAnimation animation, string[] sprite_param)
         {
             int dot_position = animation.ImageFilePath.LastIndexOf('.');
             animation.FrameFileExtension = animation.ImageFilePath.Substring(dot_position);
@@ -210,7 +214,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             }
         }
 
-        private Dictionary<Event, CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<char>> lines)
+        private Dictionary<Event, CommandTimeline> BuildCommandMap(List<string> lines)
         {
             var list = ParseCommand(lines);
 
@@ -226,7 +230,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             return map;
         }
 
-        public List<Command> ParseCommand(List<ReadOnlyMemory<char>> lines)
+        public List<Command> ParseCommand(List<string> lines)
         {
             List<Command> commands = new List<Command>(), temp = ObjectPool<List<Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
 

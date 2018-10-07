@@ -14,9 +14,9 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
         public struct StoryboardPacket:IComparable<StoryboardPacket>
         {
-            public List<ReadOnlyMemory<char>> CommandLines;
+            public List<string> CommandLines;
 
-            public ReadOnlyMemory<char> ObjectLine;
+            public string ObjectLine;
             public long ObjectFileLine;
 
             public static readonly StoryboardPacket Empty = new StoryboardPacket() { ObjectFileLine = -2857 };
@@ -78,16 +78,16 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
                             var t = packet;
 
                             packet = new StoryboardPacket();
-                            packet.CommandLines = new List<ReadOnlyMemory<char>>();
+                            packet.CommandLines = new List<string>();
                             packet.ObjectFileLine = FileLine;
-                            packet.ObjectLine = line_mem;
+                            packet.ObjectLine = line_mem.ToString();
 
                             if (t != StoryboardPacket.Empty)
                                 return t;
 
                             break;
                         case LineType.Command:
-                            packet.CommandLines.Add(line_mem);
+                            packet.CommandLines.Add(line_mem.ToString());
                             break;
 
                         //ignore comment/space only

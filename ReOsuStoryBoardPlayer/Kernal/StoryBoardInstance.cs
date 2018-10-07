@@ -227,14 +227,17 @@ namespace ReOsuStoryBoardPlayer
             {
                 Texture tex = new Texture(path);
                 string absolute_path = path.Replace(folder_path, string.Empty).Trim();
-                CacheDrawSpriteInstanceMap[absolute_path.ToLower()]= new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex);
+
+                lock (CacheDrawSpriteInstanceMap)
+                {
+                    CacheDrawSpriteInstanceMap[absolute_path.ToLower()] = new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex);
+                }
 
                 Log.Debug($"Loaded storyboard image file :{path}");
             });
 
-            for (int i = 0; i < obj_list.Count; i++)
+            obj_list.AsParallel().ForAll(obj =>
             {
-                var obj = obj_list[i];
                 if (!(obj is StoryboardAnimation animation))
                 {
                     if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
@@ -260,7 +263,7 @@ namespace ReOsuStoryBoardPlayer
 
                     animation.backup_group = list.ToArray();
                 }
-            }
+            });
         }
 
         public void Start()
@@ -330,7 +333,7 @@ namespace ReOsuStoryBoardPlayer
                     });
                 }
 
-                objs.ForEach/*AsParallel().ForAll*/(obj =>
+                objs.AsParallel().ForAll(obj =>
                     {
                         if (current_time < obj.FrameStartTime || current_time > obj.FrameEndTime)
                         {
