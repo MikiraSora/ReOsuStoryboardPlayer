@@ -25,13 +25,18 @@ namespace ReOsuStoryBoardPlayer
         {
             refInstance = instance;
             InitDebugControllerWindow();
+#if DEBUG
             InitStoryboardObjectVisualizerWindow();
+#endif
         }
 
         public void Update()
         {
             CallUpdateDebugControllerWindowInfo();
+
+#if DEBUG
             UpdateVisualizerWindow();
+#endif
         }
 
         public void DumpCurrentStoryboardStatus()

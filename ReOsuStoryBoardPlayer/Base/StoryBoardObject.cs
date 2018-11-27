@@ -80,11 +80,13 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public override string ToString() => $"line {FileLine} (index {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
 
 #if DEBUG
         internal List<Command> ExecutedCommands=new List<Command>();
-        internal long FileLine;
 #endif
+
+        internal long FileLine;
+
+        public override string ToString() => $"line {FileLine} (index {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
     }
 }

@@ -39,10 +39,8 @@ namespace ReOsuStoryBoardPlayer
 
         public bool IsWideScreen { get; set; } = false;
 
-#if DEBUG
         DebugToolInstance debug_instance;
         public DebugToolInstance DebugToolInstance { get => debug_instance; }
-#endif
 
         public StoryBoardInstance(string folder_path)
         {
@@ -139,10 +137,8 @@ namespace ReOsuStoryBoardPlayer
             player = new MusicPlayer(audio_file_path);
 
             player.OnJumpCurrentPlayingTime += Player_OnJumpCurrentPlayingTime;
-
-#if DEBUG
+            
             debug_instance = new DebugToolInstance(this);
-#endif
         }
 
         private List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list,List<StoryBoardObject> osu_list)
@@ -318,12 +314,8 @@ namespace ReOsuStoryBoardPlayer
                     return true;
                 });
             }
-
-            #if DEBUG
-
+            
             debug_instance.Update();
-
-            #endif
 
             UpdateCastTime = runTimer.ElapsedMilliseconds;
 

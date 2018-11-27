@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\470977 Mili - worldexecute(me);";
+                beatmap_folder = @"./591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
             }
             else
                 beatmap_folder = argv[0];

@@ -106,9 +106,7 @@ namespace ReOsuStoryBoardPlayer
                     
                     if (obj != null)
                     {
-#if DEBUG
                         obj.FileLine = file_line;
-#endif
                         obj.Z = z_order++;
 
                         AddCommandMapToStoryboardObject(current_storyboard_obj, current_command);

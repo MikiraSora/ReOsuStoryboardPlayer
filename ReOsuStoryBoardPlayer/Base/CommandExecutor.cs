@@ -266,9 +266,10 @@ namespace ReOsuStoryBoardPlayer
             #endregion
 
             command.executor(ref_obj, current_value, command);
-
+#if DEBUG
             command.IsExecuted = true;
             ref_obj.ExecutedCommands.Add(command);
+#endif
         }
 
         public static Command PickCommand(float current_time,IEnumerable<Command> command_list)
