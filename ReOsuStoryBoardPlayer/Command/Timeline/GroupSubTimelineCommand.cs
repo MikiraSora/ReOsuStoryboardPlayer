@@ -48,7 +48,10 @@ namespace ReOsuStoryBoardPlayer.Commands
                 command.EndTime += offset_time;
 
                 command.Execute(@object, current_value);
+
+#if DEBUG
                 @object.MarkCommandExecuted(command);
+#endif
 
                 //restore command
                 command.StartTime -= offset_time;

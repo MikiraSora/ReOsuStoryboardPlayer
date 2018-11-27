@@ -16,6 +16,7 @@ using ReOsuStoryBoardPlayer.Parser.Reader;
 using static System.Collections.Specialized.BitVector32;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Commands;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -113,14 +114,7 @@ namespace ReOsuStoryBoardPlayer
             #region Load and Parse osb/osu file
 
             List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs=new List<StoryBoardObject>();
-            /*
-            Task<List<StoryBoardObject>>[] tasks = new[] {
-                Task.Run(()=>StoryboardParserHelper.GetStoryBoardObjects(osu_file_path)),
-                Task.Run(()=>StoryboardParserHelper.GetStoryBoardObjects(osb_file_path))
-            };
-            
-            Task.WaitAll(tasks);
-            */
+         
             //get objs from osu file
             List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osu_file_path);
             
@@ -238,30 +232,48 @@ namespace ReOsuStoryBoardPlayer
 
             obj_list.AsParallel().ForAll(obj =>
             {
-                if (!(obj is StoryboardAnimation animation))
+                switch (obj)
                 {
-                    if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
-                    {
-                        Log.Warn($"not found image:{obj.ImageFilePath}");
-                    }
-                }
-                else
-                {
-                    List<SpriteInstanceGroup> list = new List<SpriteInstanceGroup>();
+                    case StoryboardBackgroundObject background:
+                        if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
+                            Log.Warn($"not found image:{obj.ImageFilePath}");
 
-                    for (int index = 0; index < animation.FrameCount; index++)
-                    {
-                        SpriteInstanceGroup group;
-                        string path = animation.FrameBaseImagePath + index + animation.FrameFileExtension;
-                        if (!CacheDrawSpriteInstanceMap.TryGetValue(path, out group))
+                        if (background.RenderGroup!=null)
                         {
-                            Log.Warn($"not found image:{path}");
-                            continue;
+                            var scale = background.RenderGroup.Texture.Height / StoryboardWindow.CurrentWindow.Height;
+                            background.AddCommand(new ScaleCommand()
+                            {
+                                Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear],
+                                StartTime = -2857,
+                                EndTime = -2857,
+                                StartValue = scale,
+                                EndValue = scale
+                            });
                         }
-                        list.Add(group);
-                    }
+                        break;
 
-                    animation.backup_group = list.ToArray();
+                    case StoryboardAnimation animation:
+                        List<SpriteInstanceGroup> list = new List<SpriteInstanceGroup>();
+
+                        for (int index = 0; index < animation.FrameCount; index++)
+                        {
+                            SpriteInstanceGroup group;
+                            string path = animation.FrameBaseImagePath + index + animation.FrameFileExtension;
+                            if (!CacheDrawSpriteInstanceMap.TryGetValue(path, out group))
+                            {
+                                Log.Warn($"not found image:{path}");
+                                continue;
+                            }
+                            list.Add(group);
+                        }
+
+                        animation.backup_group = list.ToArray();
+                        break;
+
+                    default:
+                        if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
+                            Log.Warn($"not found image:{obj.ImageFilePath}");
+                        break;
                 }
             });
         }

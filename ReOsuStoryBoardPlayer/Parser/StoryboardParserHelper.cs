@@ -28,7 +28,7 @@ namespace ReOsuStoryBoardPlayer.Parser
 
                 StoryboardReader storyboardReader = new StoryboardReader(er);
 
-                var list = storyboardReader.GetValues(0).ToList();
+                var list = storyboardReader.GetValues().ToList();
 
                 list.RemoveAll(c => c == null);
 

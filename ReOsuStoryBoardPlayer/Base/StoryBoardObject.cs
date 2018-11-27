@@ -10,13 +10,7 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryBoardObject
     {
-
-#if DEBUG
-        internal
-#else
-        private
-#endif
-         Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
+        internal Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
         public string ImageFilePath;
 

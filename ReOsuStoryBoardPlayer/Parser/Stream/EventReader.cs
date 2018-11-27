@@ -79,7 +79,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
                             packet = new StoryboardPacket();
                             packet.CommandLines = new List<string>();
-                            packet.ObjectFileLine = FileLine;
+                            packet.ObjectFileLine = FileLine-1;
                             packet.ObjectLine = line_mem.ToString();
 
                             if (t != StoryboardPacket.Empty)

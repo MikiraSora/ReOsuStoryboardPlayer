@@ -23,7 +23,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             Reader = reader;
         }
 
-        public IEnumerable<StoryBoardObject> GetValues(int thread_count)
+        public IEnumerable<StoryBoardObject> GetValues()
         {
             /*
             if (thread_count == 0)
@@ -63,7 +63,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             }
             */
 
-            return Reader.GetStoryboardPackets().AsParallel().Select(p => ParsePacket(p));
+            return Reader.GetStoryboardPackets()/*.AsParallel()*/.Select(p => ParsePacket(p));
         }
 
         private StoryBoardObject GetPacketAndParse()
@@ -73,8 +73,6 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             return ParsePacket(packet);
         }
-
-        public IEnumerable<StoryBoardObject> GetValues() => GetValues(0);
 
         private StoryBoardObject ParsePacket(StoryboardPacket packet)
         {

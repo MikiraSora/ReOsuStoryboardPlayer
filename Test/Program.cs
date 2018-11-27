@@ -39,7 +39,7 @@ namespace Test
 
             List<Command> asdasd = new List<Command>();
             
-            var dd=storyboardReader.GetValues(0).ToList();
+            var dd=storyboardReader.GetValues().ToList();
         }
     }
 }
