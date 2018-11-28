@@ -59,8 +59,6 @@ namespace ReOsuStoryBoardPlayer
             prev_mp3_time = CurrentPlayback;
 
             CurrentFixedTime = prev_mp3_time + offset_watch.ElapsedMilliseconds;
-
-            //Debug.Assert(offset_watch.ElapsedMilliseconds > 26);
         }
 
         public void Play()

@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using ReOsuStoryBoardPlayer.Parser.Stream;
+using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,7 @@ namespace ReOsuStoryBoardPlayer.Parser
         {
             try
             {
-                var chars = new ReadOnlyMemory<char>(File.ReadAllText(path).ToCharArray());
+                var chars = new ReadOnlyMemory<byte>(File.ReadAllBytes(path));
 
                 OsuFileReader reader = new OsuFileReader(chars);
 
@@ -28,7 +29,12 @@ namespace ReOsuStoryBoardPlayer.Parser
 
                 StoryboardReader storyboardReader = new StoryboardReader(er);
 
-                var list = storyboardReader.GetValues().ToList();
+                List<StoryBoardObject> list;
+
+                using (StopwatchRun.Count($"Parse Storyboard Objects/Commands from {path}"))
+                {
+                    list = storyboardReader.GetValues().ToList();
+                }
 
                 list.RemoveAll(c => c == null);
 

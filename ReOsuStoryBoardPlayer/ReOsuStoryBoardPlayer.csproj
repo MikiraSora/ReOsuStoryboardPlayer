@@ -153,7 +153,7 @@
     <Compile Include="Parser\Collection\CharPatternCollection.cs" />
     <Compile Include="Parser\CommandParser.cs" />
     <Compile Include="Parser\Rubbish\EnumParser.cs" />
-    <Compile Include="Parser\Extension\ReadOnlyMemoryMethodExtension.cs" />
+    <Compile Include="Parser\Extension\BufferMethodExtension.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />
     <Compile Include="Parser\Stream\ByteMemoryReader.cs" />
     <Compile Include="Parser\Stream\CharMemoryReader.cs" />
@@ -172,6 +172,7 @@
     <Compile Include="Kernal\StoryBoardInstance.cs" />
     <Compile Include="Graphics\StoryboardWindow.cs" />
     <Compile Include="Utils\ObjectPool.cs" />
+    <Compile Include="Utils\StopwatchRun.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

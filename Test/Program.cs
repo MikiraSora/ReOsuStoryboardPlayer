@@ -21,12 +21,9 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var reader = new ByteMemoryReader(File.ReadAllBytes("2d.osb"));
+            ReadOnlyMemory<byte> d = Encoding.UTF8.GetBytes("123.,456.,789.,");
 
-            while (!reader.EndOfStream)
-            {
-                Console.WriteLine(Encoding.UTF8.GetString(reader.ReadLine().ToArray()));
-            }
+            var x = d.Split(Encoding.UTF8.GetBytes(".,"),StringSplitOptions.RemoveEmptyEntries);
 
             Console.ReadLine();
         }

@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\572790 HoneyWorks - Boku ga Namae o Yobu Hi featMochizuki Souta (CVKaji Yuki)";
+                beatmap_folder = @"G:\SBTest\559622 Duca - Shiawase no Otoshimono";
             }
             else
                 beatmap_folder = argv[0];

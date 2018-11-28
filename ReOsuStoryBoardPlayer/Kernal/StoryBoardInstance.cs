@@ -17,6 +17,7 @@ using static System.Collections.Specialized.BitVector32;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Utils;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -112,44 +113,45 @@ namespace ReOsuStoryBoardPlayer
             #endregion
 
             #region Load and Parse osb/osu file
-
-            List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs=new List<StoryBoardObject>();
-         
-            //get objs from osu file
-            List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osu_file_path);
-            
-            if ((!string.IsNullOrWhiteSpace(osb_file_path))&&File.Exists(osb_file_path))
+            using (StopwatchRun.Count("Load and Parse osb/osu file"))
             {
-                parse_osb_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osb_file_path);
-                AdjustZ(parse_osb_storyboard_objs, 0);
-            }
+                List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs = new List<StoryBoardObject>();
 
-            AdjustZ(parse_osu_storyboard_objs, parse_osb_storyboard_objs?.Count()??0);
-            
-            temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
-            
-            //delete Background object if there is a normal storyboard object which is same image file.
-            var background_obj = temp_objs_list.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
-            if (temp_objs_list.Any(c => c.ImageFilePath == background_obj?.ImageFilePath && (!(c is StoryboardBackgroundObject))))
-            {
-                Log.User($"Found another same background image object and delete background object.");
-                temp_objs_list.Remove(background_obj);
-            }
-            else
-            {
-                if (background_obj != null)
-                    background_obj.Z = -1;
-            }
+                //get objs from osu file
+                List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osu_file_path);
 
-            foreach (var obj in temp_objs_list)
-            {
-                StoryboardObjectList.AddLast(obj);
-            }
+                if ((!string.IsNullOrWhiteSpace(osb_file_path)) && File.Exists(osb_file_path))
+                {
+                    parse_osb_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(osb_file_path);
+                    AdjustZ(parse_osb_storyboard_objs, 0);
+                }
 
+                AdjustZ(parse_osu_storyboard_objs, parse_osb_storyboard_objs?.Count() ?? 0);
+
+                temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
+
+                //delete Background object if there is a normal storyboard object which is same image file.
+                var background_obj = temp_objs_list.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
+                if (temp_objs_list.Any(c => c.ImageFilePath == background_obj?.ImageFilePath && (!(c is StoryboardBackgroundObject))))
+                {
+                    Log.User($"Found another same background image object and delete background object.");
+                    temp_objs_list.Remove(background_obj);
+                }
+                else
+                {
+                    if (background_obj != null)
+                        background_obj.Z = -1;
+                }
+
+                foreach (var obj in temp_objs_list)
+                {
+                    StoryboardObjectList.AddLast(obj);
+                }
+            }
             #endregion
 
             #region Create LayoutListMap
-            
+
             foreach (Layout item in Enum.GetValues(typeof(Layout)))
             {
                 _UpdatingStoryBoard.Add(item, new List<StoryBoardObject>());
@@ -211,26 +213,23 @@ namespace ReOsuStoryBoardPlayer
         {
             var obj_list = StoryboardObjectList.ToList();
 
-            List<String> pic_list = new List<string>();
+            List<string> pic_list = new List<string>();
             pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.png", SearchOption.AllDirectories));
             pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.jpg", SearchOption.AllDirectories));
 
             Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap=new Dictionary<string, SpriteInstanceGroup>();
 
-            pic_list.ForEach((path)=>
+            pic_list.ForEach((path) =>
             {
                 Texture tex = new Texture(path);
                 string absolute_path = path.Replace(folder_path, string.Empty).Trim();
 
-                lock (CacheDrawSpriteInstanceMap)
-                {
-                    CacheDrawSpriteInstanceMap[absolute_path.ToLower()] = new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex);
-                }
+                CacheDrawSpriteInstanceMap[absolute_path.ToLower()] = new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex);
 
-                Log.Debug($"Loaded storyboard image file :{path}");
+                Log.Debug($"Created storyboard sprite instance from image file :{path}");
             });
 
-            obj_list.AsParallel().ForAll(obj =>
+            obj_list.ForEach(obj =>
             {
                 switch (obj)
                 {
@@ -303,15 +302,17 @@ namespace ReOsuStoryBoardPlayer
 
             while (CurrentScanNode != null && CurrentScanNode.Value.FrameStartTime <= current_time/* && current_time <= CurrentScanNode.Value.FrameEndTime*/ )
             {
-                if (current_time > CurrentScanNode.Value.FrameEndTime)
+                var obj= CurrentScanNode.Value;
+                if (current_time > obj.FrameEndTime)
                 {
                     CurrentScanNode = CurrentScanNode.Next;
                     continue;
                 }
 
-                Log.Debug($"[{current_time}]Add storyboard obj \"{CurrentScanNode.Value.ImageFilePath}\"");
+                Log.Debug($"[{current_time}]Add storyboard obj \"{obj.ImageFilePath}\"");
 
-                _UpdatingStoryBoard[CurrentScanNode.Value.layout].Add(CurrentScanNode.Value);
+                obj.markDone = false;
+                _UpdatingStoryBoard[obj.layout].Add(obj);
                 
                 LastAddNode = CurrentScanNode;
 
@@ -328,36 +329,32 @@ namespace ReOsuStoryBoardPlayer
 
         public void Update(float delay_time)
         {
-            runTimer.Start();
+            var t = runTimer.ElapsedMilliseconds;
 
             player.Tick();
 
             float current_time =player.CurrentFixedTime;
 
             bool hasAdded=Scan(current_time);
-            
+
             foreach (var objs in _UpdatingStoryBoard.Values)
             {
                 if (hasAdded)
                 {
-                    objs.Sort((a, b) => {
+                    objs.Sort((a, b) =>
+                    {
                         return a.Z - b.Z;
                     });
                 }
 
-                objs.AsParallel().ForAll(obj =>
-                    {
-                        if (current_time < obj.FrameStartTime || current_time > obj.FrameEndTime)
-                        {
-                            obj.markDone = true;
-                        }
-                        else
-                        {
-                            obj.markDone = false;
-                            obj.Update(current_time);
-                        }
-                    }
-                );
+
+                foreach (var obj in objs)
+                {
+                    if (current_time < obj.FrameStartTime || current_time > obj.FrameEndTime)
+                        obj.markDone = true;
+                    else
+                        obj.Update(current_time);
+                }
             }
 
             //remove unused objects
@@ -366,11 +363,7 @@ namespace ReOsuStoryBoardPlayer
                 objs.RemoveAll((obj) =>
                 {
                     if (!obj.markDone)
-                    {
                         return false;
-                    }
-
-                    Log.Debug($"[{current_time}]remove object \"{obj.ImageFilePath}\"");
 
                     return true;
                 });
@@ -382,9 +375,7 @@ namespace ReOsuStoryBoardPlayer
 
             #endif
 
-            UpdateCastTime = runTimer.ElapsedMilliseconds;
-
-            runTimer.Reset();
+            UpdateCastTime = t-runTimer.ElapsedMilliseconds;
         }
 
         #region Storyboard Rendering

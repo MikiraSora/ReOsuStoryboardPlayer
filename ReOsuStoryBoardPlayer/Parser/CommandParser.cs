@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Parser.Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ReOsuStoryBoardPlayer.Parser
 {
     public interface ICommandParser
     {
-        List<Command> Parse(IEnumerable<string> data_arr,List<Command> result);
+        List<Command> Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr,List<Command> result);
     }
 
     #region Value Command Parsers
@@ -18,16 +19,16 @@ namespace ReOsuStoryBoardPlayer.Parser
     {
         public abstract int ParamCount { get; }
 
-        public virtual Command Parse(IEnumerable<string> data_arr, int StartTime, int EndTime, T StartValue, T EndValue)
+        public virtual Command Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr, int StartTime, int EndTime, T StartValue, T EndValue)
         {
             CMD command = new CMD();
 
-            Easing easingID = (Easing)int.Parse(data_arr.ElementAt(1).Trim());
+            Easing easingID = (Easing)data_arr.ElementAt(1).ToInt();
 
             if (!EasingConverter.CacheEasingInterpolatorMap.ContainsKey(easingID))
             {
                 Log.Warn($"Cant found the easing = {easingID.ToString()} , will be set Linear");
-                command.Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear];
+                command.Easing = EasingConverter.DefaultInterpolator;
             }
             else
                 command.Easing = EasingConverter.CacheEasingInterpolatorMap[easingID];
@@ -41,12 +42,12 @@ namespace ReOsuStoryBoardPlayer.Parser
             return command;
         }
 
-        public abstract T ConvertValue(IEnumerable<string> p);
+        public abstract T ConvertValue(IEnumerable<ReadOnlyMemory<byte>> p);
 
-        public List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
+        public List<Command> Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr, List<Command> result)
         {
-            int start_time = int.Parse(data_arr.ElementAt(2));
-            int end_time = string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? start_time : int.Parse(data_arr.ElementAt(3));
+            int start_time = data_arr.ElementAt(2).ToInt();
+            int end_time = data_arr.ElementAt(3).IsEmptyOrWhiteSpace() ? start_time : data_arr.ElementAt(3).ToInt();
             int time_duration = end_time - start_time;
 
             int loop_count = (data_arr.Count() - 4 - ParamCount)/ ParamCount;
@@ -75,32 +76,32 @@ namespace ReOsuStoryBoardPlayer.Parser
     {
         public override int ParamCount => 1;
 
-        public override float ConvertValue(IEnumerable<string> p) => float.Parse(p.First());
+        public override float ConvertValue(IEnumerable<ReadOnlyMemory<byte>> p) => p.First().ToSigle();
     }
 
     public class VectorCommandParser<CMD> : IValueCommandParser<Vector, CMD> where CMD : ValueCommand<Vector>, new()
     {
         public override int ParamCount => 2;
 
-        public override Vector ConvertValue(IEnumerable<string> p) => new Vector(float.Parse(p.First()), float.Parse(p.Last()));
+        public override Vector ConvertValue(IEnumerable<ReadOnlyMemory<byte>> p) => new Vector(p.First().ToSigle(),p.Last().ToSigle());
     }
 
     public class Vec4CommandParser<CMD> : IValueCommandParser<Vec4, CMD> where CMD : ValueCommand<Vec4>, new()
     {
         public override int ParamCount => 3;
 
-        public override Vec4 ConvertValue(IEnumerable<string> p) => new Vec4(float.Parse(p.ElementAt(0)), float.Parse(p.ElementAt(1)), float.Parse(p.ElementAt(2)), 0);
+        public override Vec4 ConvertValue(IEnumerable<ReadOnlyMemory<byte>> p) => new Vec4(p.ElementAt(0).ToSigle(), p.ElementAt(1).ToSigle(), p.ElementAt(2).ToSigle(), 0);
     }
 
     #endregion
 
     public class ParameterCommandParser : ICommandParser
     {
-        public List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
+        public List<Command> Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr, List<Command> result)
         {
             StateCommand command = null;
 
-            switch (data_arr.ElementAt(4))
+            switch (data_arr.ElementAt(4).GetContentString())
             {
                 case "A":
                     command = new AdditiveBlendCommand();
@@ -115,8 +116,8 @@ namespace ReOsuStoryBoardPlayer.Parser
                     throw new Exception($"unknown Parameter command type:" + data_arr.ElementAt(3));
             }
 
-            command.StartTime = int.Parse(data_arr.ElementAt(2));
-            command.EndTime = string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? command.StartTime : int.Parse(data_arr.ElementAt(3));
+            command.StartTime = data_arr.ElementAt(2).ToInt();
+            command.EndTime = data_arr.ElementAt(3).IsEmptyOrWhiteSpace() ? command.StartTime : data_arr.ElementAt(3).ToInt();
 
             result.Add(command);
             return result;
@@ -125,12 +126,12 @@ namespace ReOsuStoryBoardPlayer.Parser
 
     public class LoopCommandParser : ICommandParser
     {
-        public List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
+        public List<Command> Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr, List<Command> result)
         {
             LoopCommand command = new LoopCommand();
 
-            command.StartTime = int.Parse(data_arr.ElementAt(1));
-            command.LoopCount = int.Parse(data_arr.ElementAt(2));
+            command.StartTime = data_arr.ElementAt(1).ToInt();
+            command.LoopCount = data_arr.ElementAt(2).ToInt();
 
             result.Add(command);
             return result;
@@ -139,9 +140,11 @@ namespace ReOsuStoryBoardPlayer.Parser
 
     public class CommandParserIntance
     {
-        public static List<Command> Parse(IEnumerable<string> data_arr, List<Command> result)
+        private readonly static byte[] TRIM_CMD = new byte[] {0x5f,0x20};
+
+            public static List<Command> Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr, List<Command> result)
         {
-            var command_event = data_arr.First().Trim('_', ' ');
+            var command_event = data_arr.First().TrimStart(TRIM_CMD).GetContentString();
 
             switch (command_event)
             {

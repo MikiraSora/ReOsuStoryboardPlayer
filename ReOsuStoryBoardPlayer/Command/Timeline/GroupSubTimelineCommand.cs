@@ -10,17 +10,15 @@ namespace ReOsuStoryBoardPlayer.Commands
 {
     class LoopSubTimelineCommand : Command
     {
-        private readonly Event bind_event;
+        LoopCommand loop_command;
 
-        LoopCommand loop_command { get; }
-
-        CommandTimeline timeline => loop_command.SubCommands[bind_event];
+        CommandTimeline timeline;
 
         public LoopSubTimelineCommand(LoopCommand loop_command, Event bind_event)
         {
             this.loop_command = loop_command;
-            this.bind_event = bind_event;
             Event = bind_event;
+            timeline = loop_command.SubCommands[bind_event];
 
             var start_time_offset = loop_command.SubCommands[bind_event].Min(c => c.StartTime);
 

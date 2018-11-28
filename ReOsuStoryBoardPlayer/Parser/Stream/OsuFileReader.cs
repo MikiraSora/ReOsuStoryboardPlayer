@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Parser.Extension;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser.Stream
 {
-    public class OsuFileReader : CharMemoryReader
+    public class OsuFileReader : ByteMemoryReader
     {
-        public OsuFileReader(ReadOnlyMemory<char> buffer) : base(buffer)
+        public OsuFileReader(ReadOnlyMemory<byte> buffer) : base(buffer)
         {
 
         }
 
-        public ReadOnlyMemory<char> ReadSectionContent(Section section)
+        public ReadOnlyMemory<byte> ReadSectionContent(Section section)
         {
             var pos = FindSectionPostion(section);
             if (pos < 0)
@@ -76,7 +77,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
                 //[Events] or [32]
                 if (line.Length > 2 && line.Span[0] == '[' && line.Span[line.Length - 1] == ']')
                 {
-                    var section_name = line.Slice(1, line.Length - 2).ToString();
+                    var section_name = line.Slice(1, line.Length - 2).GetContentString();
 
                     if (IsSection(section_name,section))
                     {

@@ -9,7 +9,6 @@ namespace ReOsuStoryBoardPlayer
 
     public class EasingInterpolator : IInterpolator
     {
-
         float _end, _start;
 
         public float end { get { return _end; } set { _end = value; } }

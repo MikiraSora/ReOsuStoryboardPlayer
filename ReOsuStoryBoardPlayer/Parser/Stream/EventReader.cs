@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ReOsuStoryBoardPlayer.Parser.Extension;
 
 namespace ReOsuStoryBoardPlayer.Parser.Stream
 {
@@ -14,9 +15,9 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
         public struct StoryboardPacket:IComparable<StoryboardPacket>
         {
-            public List<string> CommandLines;
+            public List<ReadOnlyMemory<byte>> CommandLines;
 
-            public string ObjectLine;
+            public ReadOnlyMemory<byte> ObjectLine;
             public long ObjectFileLine;
 
             public static readonly StoryboardPacket Empty = new StoryboardPacket() { ObjectFileLine = -2857 };
@@ -37,7 +38,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
             Others
         }
 
-        public EventReader(ReadOnlyMemory<char> buffer,VariableCollection variables) : base(buffer)
+        public EventReader(ReadOnlyMemory<byte> buffer,VariableCollection variables) : base(buffer)
         {
             Variables = variables;
         }
@@ -58,53 +59,50 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
         public StoryboardPacket GetStoryboardPacket()
         {
-            lock (this)
+            while (true)
             {
-                while (true)
+                if (EndOfStream)
                 {
-                    if (EndOfStream)
-                    {
+                    var t = packet;
+                    packet = StoryboardPacket.Empty;//set empty
+                    return t;
+                }
+
+                var line_mem = ReadLine();
+
+                switch (CheckLineType(line_mem))
+                {
+                    case LineType.Object:
+                        //return current object
                         var t = packet;
-                        packet = StoryboardPacket.Empty;//set empty
-                        return t;
-                    }
 
-                    var line_mem = ReadLine();
+                        packet = new StoryboardPacket();
+                        packet.CommandLines = new List<ReadOnlyMemory<byte>>();
+                        packet.ObjectFileLine = FileLine - 1;
+                        packet.ObjectLine = line_mem;
 
-                    switch (CheckLineType(line_mem.Span))
-                    {
-                        case LineType.Object:
-                            //return current object
-                            var t = packet;
+                        if (t != StoryboardPacket.Empty)
+                            return t;
 
-                            packet = new StoryboardPacket();
-                            packet.CommandLines = new List<string>();
-                            packet.ObjectFileLine = FileLine-1;
-                            packet.ObjectLine = line_mem.ToString();
+                        break;
+                    case LineType.Command:
+                        packet.CommandLines.Add(line_mem);
+                        break;
 
-                            if (t != StoryboardPacket.Empty)
-                                return t;
-
-                            break;
-                        case LineType.Command:
-                            packet.CommandLines.Add(line_mem.ToString());
-                            break;
-
-                        //ignore comment/space only
-                        case LineType.Others:
-                        default:
-                            break;
-                    }
+                    //ignore comment/space only
+                    case LineType.Others:
+                    default:
+                        break;
                 }
             }
         }
 
-        public LineType CheckLineType(ReadOnlySpan<char> line)
+        public LineType CheckLineType(ReadOnlyMemory<byte> line)
         {
-            if (line.IsWhiteSpace()||line.ToString().StartsWith("//"))
+            if (!line.CheckLineValid())
                 return LineType.Others;
 
-            if (line[0] == '_' || line[0] == ' ')
+            if (line.Span[0] == '_' || line.Span[0] == ' ')
                 return LineType.Command;
 
             return LineType.Object;

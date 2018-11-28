@@ -7,6 +7,7 @@ using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using static ReOsuStoryBoardPlayer.Parser.Stream.EventReader;
 
@@ -61,6 +62,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         #region Packet Parse
 
+        /*
         public StoryBoardObject ParseObjectLine(string line)
         {
             StoryBoardObject obj = null;
@@ -116,15 +118,18 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             return obj;
         }
-        /*
-        public StoryBoardObject ParseObjectLine(ReadOnlyMemory<char> line)
+        */
+
+        private readonly static byte[] SPLIT = new byte[] { 0x2c };
+        
+        public StoryBoardObject ParseObjectLine(ReadOnlyMemory<byte> line)
         {
             StoryBoardObject obj = null;
 
-            var data_arr = line.Split(',');
+            var data_arr = line.Split(SPLIT);
 
-            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].ToString(), true, out var obj_type)) || !(obj_type == StoryboardObjectType.Background || obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
-                throw new Exception($"Unknown/Unsupport storyboard object type:" + data_arr[0]);
+            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].GetContentString(), true, out var obj_type)) || !(obj_type == StoryboardObjectType.Background || obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
+                throw new Exception($"Unknown/Unsupport storyboard object type:" + data_arr[0].GetContentString());
 
             switch (obj_type)
             {
@@ -146,13 +151,13 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             if (!(obj is StoryboardBackgroundObject))
             {
-                obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1].ToString());
+                obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1].GetContentString());
 
-                obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].ToString()));
+                obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].GetContentString()));
 
-                obj.ImageFilePath = data_arr[3].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+                obj.ImageFilePath = data_arr[3].GetContentString().Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
-                obj.Postion = new Vector(float.Parse(data_arr[4].ToString()), float.Parse(data_arr[5].ToString()));
+                obj.Postion = new Vector(data_arr[4].ToSigle(), data_arr[5].ToSigle());
 
                 if (obj is StoryboardAnimation animation)
                     ParseStoryboardAnimation(animation, data_arr);
@@ -160,11 +165,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             else
             {
                 //For background object
-                obj.ImageFilePath = data_arr[2].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+                obj.ImageFilePath = data_arr[2].GetContentString().Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
                 obj.Z = -1;
 
-                var position = data_arr.Length > 4 ? new Vector(float.Parse(data_arr[3].ToString()), float.Parse(data_arr[4].ToString())) : Vector.Zero;
+                var position = data_arr.Length > 4 ? new Vector(data_arr[3].ToSigle(),data_arr[4].ToSigle()) : Vector.Zero;
 
                 if (position != Vector.One)
                     obj.Postion = position + new Vector(320, 240);
@@ -172,57 +177,36 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             return obj;
         }
-        */
-        private void ParseStoryboardAnimation(StoryboardAnimation animation, string[] sprite_param)
+        
+        private void ParseStoryboardAnimation(StoryboardAnimation animation, ReadOnlyMemory<byte>[] sprite_param)
         {
             int dot_position = animation.ImageFilePath.LastIndexOf('.');
             animation.FrameFileExtension = animation.ImageFilePath.Substring(dot_position);
             animation.FrameBaseImagePath = animation.ImageFilePath.Replace(animation.FrameFileExtension, string.Empty);
 
-            animation.FrameCount = int.Parse(sprite_param[6].ToString());
+            animation.FrameCount = sprite_param[6].ToInt();
 
-            animation.FrameDelay = float.Parse(sprite_param[7].ToString());
+            animation.FrameDelay = sprite_param[7].ToSigle();
 
-            animation.LoopType = (LoopType)Enum.Parse(typeof(LoopType), sprite_param[8].ToString());
+            animation.LoopType = (LoopType)Enum.Parse(typeof(LoopType), sprite_param[8].GetContentString());
         }
 
-        public static Vector GetAnchorVector(Anchor anchor)
+        private readonly static Dictionary<Anchor, Vector> AnchorVectorMap = new Dictionary<Anchor, Vector>()
         {
-            switch (anchor)
-            {
-                case Anchor.TopLeft:
-                    return new Vector(0, 0);
+            {Anchor.TopLeft,new Vector(0,0)},
+            {Anchor.TopCentre,new Vector(0.5f, 0.0f)},
+            {Anchor.TopRight,new Vector(1.0f, 0.0f)},
+            {Anchor.CentreLeft,new Vector(0.0f, 0.5f)},
+            {Anchor.Centre,new Vector(0.5f, 0.5f)},
+            {Anchor.CentreRight,new Vector(1.0f, 0.5f)},
+            {Anchor.BottomLeft,new Vector(0.0f, 1.0f)},
+            {Anchor.BottomCentre,new Vector(0.5f, 1.0f)},
+            {Anchor.BottomRight,new Vector(1.0f, 1.0f)}
+        };
 
-                case Anchor.TopCentre:
-                    return new Vector(0.5f, 0.0f);
-
-                case Anchor.TopRight:
-                    return new Vector(1.0f, 0.0f);
-
-                case Anchor.CentreLeft:
-                    return new Vector(0.0f, 0.5f);
-
-                case Anchor.Centre:
-                    return new Vector(0.5f, 0.5f);
-
-                case Anchor.CentreRight:
-                    return new Vector(1.0f, 0.5f);
-
-                case Anchor.BottomLeft:
-                    return new Vector(0.0f, 1.0f);
-
-                case Anchor.BottomCentre:
-                    return new Vector(0.5f, 1.0f);
-
-                case Anchor.BottomRight:
-                    return new Vector(1.0f, 1.0f);
-
-                default:
-                    return new Vector(0.5f, 0.5f);
-            }
-        }
-
-        private Dictionary<Event, CommandTimeline> BuildCommandMap(List<string> lines)
+        public static Vector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
+        
+        private Dictionary<Event, CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<byte>> lines)
         {
             var list = ParseCommand(lines);
 
@@ -238,7 +222,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             return map;
         }
 
-        public List<Command> ParseCommand(List<string> lines)
+        private readonly static byte[][] CMD_PREFIX = new[] { Encoding.UTF8.GetBytes("__"), Encoding.UTF8.GetBytes("  ") };
+        public List<Command> ParseCommand(List<ReadOnlyMemory<byte>> lines)
         {
             List<Command> commands = new List<Command>(), temp = ObjectPool<List<Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
 
@@ -246,9 +231,9 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             foreach (var line in lines)
             {
-                var data_arr = line.ToString().Split(',');
+                var data_arr = line.Split(SPLIT);
 
-                var is_sub_cmd = data_arr.First().StartsWith("  ") || data_arr.First().StartsWith("__");
+                var is_sub_cmd = data_arr.First().StartsWith(CMD_PREFIX[0]) || data_arr.First().StartsWith(CMD_PREFIX[1]);
 
                 foreach (var cmd in CommandParserIntance.Parse(data_arr, temp))
                 {

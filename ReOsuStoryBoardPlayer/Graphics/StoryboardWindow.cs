@@ -11,6 +11,7 @@ using OpenTK.Input;
 using ReOsuStoryBoardPlayer.Graphics;
 using System.IO;
 using System.Text.RegularExpressions;
+using ReOsuStoryBoardPlayer.Utils;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -24,7 +25,7 @@ namespace ReOsuStoryBoardPlayer
 
         RectangleF background_rect;
 
-        const float SB_WIDTH = 640.0f, SB_WIDE_WIDTH = 747.0f, SB_HEIGHT = 480.0f;
+        const float SB_WIDTH = 640.0f, SB_WIDE_WIDTH = 747, SB_HEIGHT = 480.0f;
 
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
@@ -104,7 +105,11 @@ namespace ReOsuStoryBoardPlayer
         {
             this.instance = instance;
             InitWindowRenderSize(instance.IsWideScreen);
-            instance.BuildCacheDrawSpriteBatch();
+
+            using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
+            {
+                instance.BuildCacheDrawSpriteBatch();
+            }
 
 
             //InitBackgroundDrawing(instance);
