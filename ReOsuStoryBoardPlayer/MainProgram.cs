@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.CommandParser;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,18 +12,26 @@ namespace ReOsuStoryBoardPlayer
     {
         public static void Main(string[] argv)
         {
-            string beatmap_folder=string.Empty;
-
-            if (argv.Length == 0)
+            string beatmap_folder = @"./591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
+            int w = (int)(854), h = (int)(480);
+            var sb = new ArgAnalyzer(new ParamParserV2('-', '\"', '\''));
+            var args = sb.Parse(argv);
+            if (args != null)
             {
-                beatmap_folder = @"./591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
+                if (args.FreeArgs != null)
+                    beatmap_folder = args.FreeArgs.First();
+                if (args.Switches.Any(k => k == "mini"))
+                {
+                    if (args.TryGetArg("w", out var valW))
+                        w = int.Parse(valW);
+                    if (args.TryGetArg("h", out var valH))
+                        w = int.Parse(valH);
+                }
             }
-            else
-                beatmap_folder = argv[0];
-            
+
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
-            StoryboardWindow window = new StoryboardWindow((int)(747),(int)(480));
+            StoryboardWindow window = new StoryboardWindow(w, h);
 
             window.LoadStoryboardInstance(instance);
 
@@ -49,7 +58,7 @@ namespace ReOsuStoryBoardPlayer
             }
             catch (Exception e)
             {
-               Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
+                Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
             }
 
             return null;

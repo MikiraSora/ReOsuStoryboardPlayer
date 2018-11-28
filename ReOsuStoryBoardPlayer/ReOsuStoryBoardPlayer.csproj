@@ -94,6 +94,11 @@
     <Compile Include="Base\IInterpolator.cs" />
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
+    <Compile Include="CommandParser\ArgAnalyzer.cs" />
+    <Compile Include="CommandParser\IParamParser.cs" />
+    <Compile Include="CommandParser\IParameters.cs" />
+    <Compile Include="CommandParser\ParamParserV2.cs" />
+    <Compile Include="CommandParser\Parameters.cs" />
     <Compile Include="DebugTool\DebugControllerWindow\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
