@@ -1,9 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.CommandParser;
+﻿using ReOsuStoryBoardPlayer.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer
@@ -14,7 +15,7 @@ namespace ReOsuStoryBoardPlayer
         {
             string beatmap_folder = @"./591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
             int w = (int)(854), h = (int)(480);
-            var sb = new ArgAnalyzer(new ParamParserV2('-', '\"', '\''));
+            var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
             if (args != null)
             {
@@ -22,6 +23,7 @@ namespace ReOsuStoryBoardPlayer
                     beatmap_folder = args.FreeArgs.First();
                 if (args.Switches.Any(k => k == "mini"))
                 {
+                    Log.MiniMode = true;
                     if (args.TryGetArg("w", out var valW))
                         w = int.Parse(valW);
                     if (args.TryGetArg("h", out var valH))
@@ -36,6 +38,44 @@ namespace ReOsuStoryBoardPlayer
             window.LoadStoryboardInstance(instance);
 
             //Log.AbleDebugLog = false;
+            if (Log.MiniMode)
+            {
+                Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        Console.WriteLine(instance.player.CurrentPlayback);
+                        Thread.Sleep(100);
+                    }
+                });
+                    Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        string input = Console.ReadLine();
+                        if (string.IsNullOrEmpty(input))
+                            continue;
+                        var cmd = new CommandParser(new ParamParserV2('-', '\"', '\'')).Parse(input, out var cmdName);
+                        switch (cmdName)
+                        {
+                            case "play":
+                                instance.player.Play();
+                                break;
+                            case "pause":
+                                instance.player.Pause();
+                                break;
+                            case "jump":
+                                var str = cmd.FreeArgs.FirstOrDefault();
+                                if (str == null) break;
+                                var num = uint.Parse(str);
+                                instance.player.Jump(num);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+            }
 
             window.Run();
         }
@@ -66,11 +106,14 @@ namespace ReOsuStoryBoardPlayer
 
         static void Exit(string reason)
         {
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(reason);
-            Console.ResetColor();
-            Console.ReadKey();
+            if (!Log.MiniMode)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(reason);
+                Console.ResetColor();
+                Console.ReadKey();
+            }
             Environment.Exit(0);
         }
     }

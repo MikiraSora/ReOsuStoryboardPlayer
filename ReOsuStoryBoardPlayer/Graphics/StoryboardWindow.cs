@@ -149,7 +149,7 @@ namespace ReOsuStoryBoardPlayer
                 var x = e.X;
                 var y = e.Y;
 
-                Console.WriteLine($"Mouse:({x},{y})");
+                Log.Write($"Mouse:({x},{y})");
 
                 instance.DebugToolInstance.SelectObjectIntoVisualizer(x, y);
             }

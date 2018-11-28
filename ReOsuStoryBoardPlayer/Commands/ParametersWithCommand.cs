@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.CommandParser
+namespace ReOsuStoryBoardPlayer.Commands
 {
-    public class Parameters : IParameters
+    class ParametersWithCommand : IParameters
     {
+        public string CommandName { get; }
         public string ArgString { get; }
 
         public Dictionary<string, string> Args { get; } = new Dictionary<string, string>();
@@ -15,12 +12,12 @@ namespace ReOsuStoryBoardPlayer.CommandParser
         public List<string> Switches { get; } = new List<string>();
         public List<string> SimpleArgs { get; } = new List<string>();
 
-        public Parameters()
+        public ParametersWithCommand()
         {
 
         }
 
-        public Parameters(IParameters p)
+        public ParametersWithCommand(IParameters p)
         {
             ArgString = p.ArgString;
             Args = p.Args;

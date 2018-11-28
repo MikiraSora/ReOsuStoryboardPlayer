@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.CommandParser
+namespace ReOsuStoryBoardPlayer.Commands
 {
-    public class ArgAnalyzer
+    class CommandParser
     {
         private readonly ParamParserV2 _parser;
 
-        public ArgAnalyzer(ParamParserV2 parser)
+        public CommandParser(ParamParserV2 parser)
         {
             this._parser = parser;
         }
 
-        public Parameters Parse(string args)
+        public Parameters Parse(string args, out string cmdName)
         {
-            if (_parser.TryDivide(args, out var p))
+            var array = args.Split(' ');
+            cmdName = array.First();
+            var arg = string.Join(" ", array.Skip(1));
+            if (_parser.TryDivide(arg, out var p))
             {
                 return new Parameters(p);
             }
@@ -22,7 +24,7 @@ namespace ReOsuStoryBoardPlayer.CommandParser
             return null;
         }
 
-        public Parameters Parse(string[] args)
+        public Parameters Parse(string[] args, out string cmdName)
         {
             for (var i = 0; i < args.Length; i++)
             {
@@ -33,12 +35,7 @@ namespace ReOsuStoryBoardPlayer.CommandParser
                 }
             }
 
-            if (_parser.TryDivide(string.Join(" ", args), out var p))
-            {
-                return new Parameters(p);
-            }
-
-            return null;
+            return Parse(string.Join(" ", args), out cmdName);
         }
     }
 }

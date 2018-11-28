@@ -65,8 +65,15 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                 int r=(int)(obj.Color.x * 255), g=(int)(obj.Color.y * 255), b=(int)(obj.Color.z * 255);
                 ColorLabel.Text = $"{r},{g},{b}";
-                ColorLabel.ForeColor = Color.FromArgb(r,g,b);
-                ColorLabel.BackColor = Color.FromArgb(255-r, 255 - g, 255 - b);
+                try
+                {
+                    ColorLabel.ForeColor = Color.FromArgb(r, g, b);
+                    ColorLabel.BackColor = Color.FromArgb(255 - r, 255 - g, 255 - b);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e.Message);
+                }
 
                 AngleLabel.Text = obj.Rotate.ToString();
                 AlphaLabel.Text = obj.Color.w.ToString();

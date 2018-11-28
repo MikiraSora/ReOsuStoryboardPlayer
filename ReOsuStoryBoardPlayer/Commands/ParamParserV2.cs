@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.CommandParser
+namespace ReOsuStoryBoardPlayer.Commands
 {
     public class ParamParserV2 : IParamParser
     {
@@ -21,7 +21,6 @@ namespace ReOsuStoryBoardPlayer.CommandParser
 
         public bool TryDivide(string args, out IParameters p)
         {
-            Log.User(args);
             p = new Parameters();
             string argStr = args.Trim();
             p.SimpleArgs.AddRange(argStr.Split(' '));

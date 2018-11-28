@@ -94,7 +94,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (string.IsNullOrWhiteSpace(osu_file_path)||string.IsNullOrWhiteSpace(audio_file_path)||(!File.Exists(osu_file_path)||(!File.Exists(audio_file_path))))
             {
-                Console.WriteLine("无法获取到osu文件或者音频文件路径");
+                Log.Write("无法获取到osu文件或者音频文件路径");
                 Environment.Exit(0);
             }
 

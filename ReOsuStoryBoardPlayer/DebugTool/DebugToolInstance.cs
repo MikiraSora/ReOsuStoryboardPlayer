@@ -63,10 +63,11 @@ namespace ReOsuStoryBoardPlayer
             this.debug_break_storyboard_image = string.Empty;
         }
 
-        public void CallUpdateDebugControllerWindowInfo() => ControllerWindow.UpdateInfo();
+        public void CallUpdateDebugControllerWindowInfo() => ControllerWindow?.UpdateInfo();
 
         public void InitDebugControllerWindow()
         {
+            if (Log.MiniMode) return;
             ControllerWindow = new DebugController.ControllerWindow(refInstance);
             ControllerWindow.Show();
             ControllerWindow.progressBar1.Maximum = (int)refInstance.player.Length;
@@ -82,9 +83,9 @@ namespace ReOsuStoryBoardPlayer
 
         public void SelectObjectIntoVisualizer(float x, float y)
         {
-            int last_order_index = VisualizerWindow?.obj?.Z??-1;
+            int last_order_index = VisualizerWindow?.obj?.Z ?? -1;
 
-            StoryBoardObject obj=null;
+            StoryBoardObject obj = null;
 
             foreach (var list in refInstance._UpdatingStoryBoard.Values)
             {
@@ -118,8 +119,8 @@ namespace ReOsuStoryBoardPlayer
 
             Vector2 in_anchor = new Vector2(sb_obj.Anchor.x, -sb_obj.Anchor.y);
 
-            float w = sb_obj.RenderGroup.Texture.Width ;
-            float h = sb_obj.RenderGroup.Texture.Height ;
+            float w = sb_obj.RenderGroup.Texture.Width;
+            float h = sb_obj.RenderGroup.Texture.Height;
 
             Vector2 in_bound = new Vector2(w, h);
 
@@ -143,14 +144,14 @@ namespace ReOsuStoryBoardPlayer
 
             mouse_point.X = mouse_point.X - StoryboardWindow.CurrentWindow.Width / 2;
             mouse_point.Y = StoryboardWindow.CurrentWindow.Height / 2 - mouse_point.Y;
-            
+
             for (int i = 0; i < 4; i++)
             {
                 var vertex = new Vector2(_cacheBaseVertex[i * 2 + 0], _cacheBaseVertex[i * 2 + 1]);
                 var temp = (vertex - in_anchor) * in_bound;
                 var transform = new Vector4(temp.X, temp.Y, 0, 1) * StoryboardWindow.CameraViewMatrix * in_model;
 
-                points[i] = new Vector3(mouse_point-new Vector2(transform.X, transform.Y) );
+                points[i] = new Vector3(mouse_point - new Vector2(transform.X, transform.Y));
             }
 
             Vector3 v1 = Vector3.Cross(points[0], points[1]).Normalized();
