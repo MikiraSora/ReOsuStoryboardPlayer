@@ -25,53 +25,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         public IEnumerable<StoryBoardObject> GetValues()
         {
-            /*
-            if (thread_count == 0)
-                foreach (var packet in Reader.GetStoryboardPackets())
-                {
-                    var o = ParsePacket(packet);
-                    if (o != null)
-                        yield return o;
-                }
-            else
-            {
-                Task<StoryBoardObject>[] tasks = new Task<StoryBoardObject>[thread_count];
-
-                for (int i = 0; i < tasks.Length; i++)
-                {
-                    tasks[i] = new Task<StoryBoardObject>(GetPacketAndParse, TaskCreationOptions.PreferFairness);
-                    tasks[i].Start();
-                }
-
-                //已经读完SB文本并且全部任务执行完毕,才给跳出循环
-                while ((!Reader.EndOfStream) && (!tasks.Any(t => t.IsCompleted)))
-                {
-                    var completed_task = tasks.FirstOrDefault(t => t.IsCompleted);
-
-                    if (completed_task == null)
-                        continue;
-
-                    var storyboard_obj = completed_task.Result;
-
-                    //流都没读完，赶出去继续跑
-                    if (!Reader.EndOfStream)
-                        completed_task.Start();
-
-                    if (storyboard_obj != null)
-                        yield return storyboard_obj;
-                }
-            }
-            */
-
-            return Reader.GetStoryboardPackets()/*.AsParallel()*/.Select(p => ParsePacket(p));
-        }
-
-        private StoryBoardObject GetPacketAndParse()
-        {
-            //maybe be locked
-            var packet = Reader.GetStoryboardPacket();
-
-            return ParsePacket(packet);
+            return Reader.GetStoryboardPackets().Select(p => ParsePacket(p));
         }
 
         private StoryBoardObject ParsePacket(StoryboardPacket packet)
@@ -162,7 +116,63 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             return obj;
         }
+        /*
+        public StoryBoardObject ParseObjectLine(ReadOnlyMemory<char> line)
+        {
+            StoryBoardObject obj = null;
 
+            var data_arr = line.Split(',');
+
+            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].ToString(), true, out var obj_type)) || !(obj_type == StoryboardObjectType.Background || obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
+                throw new Exception($"Unknown/Unsupport storyboard object type:" + data_arr[0]);
+
+            switch (obj_type)
+            {
+                case StoryboardObjectType.Background:
+                    obj = new StoryboardBackgroundObject();
+                    break;
+
+                case StoryboardObjectType.Sprite:
+                    obj = new StoryBoardObject();
+                    break;
+
+                case StoryboardObjectType.Animation:
+                    obj = new StoryboardAnimation();
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (!(obj is StoryboardBackgroundObject))
+            {
+                obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1].ToString());
+
+                obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].ToString()));
+
+                obj.ImageFilePath = data_arr[3].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+
+                obj.Postion = new Vector(float.Parse(data_arr[4].ToString()), float.Parse(data_arr[5].ToString()));
+
+                if (obj is StoryboardAnimation animation)
+                    ParseStoryboardAnimation(animation, data_arr);
+            }
+            else
+            {
+                //For background object
+                obj.ImageFilePath = data_arr[2].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+
+                obj.Z = -1;
+
+                var position = data_arr.Length > 4 ? new Vector(float.Parse(data_arr[3].ToString()), float.Parse(data_arr[4].ToString())) : Vector.Zero;
+
+                if (position != Vector.One)
+                    obj.Postion = position + new Vector(320, 240);
+            }
+
+            return obj;
+        }
+        */
         private void ParseStoryboardAnimation(StoryboardAnimation animation, string[] sprite_param)
         {
             int dot_position = animation.ImageFilePath.LastIndexOf('.');

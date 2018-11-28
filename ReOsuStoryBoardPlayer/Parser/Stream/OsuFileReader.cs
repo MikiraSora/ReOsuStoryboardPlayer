@@ -15,7 +15,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
         public ReadOnlyMemory<char> ReadSectionContent(Section section)
         {
-            var pos = this.FindSectionPostion(section);
+            var pos = FindSectionPostion(section);
             if (pos < 0)
                 return null;
 

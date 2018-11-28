@@ -155,6 +155,7 @@
     <Compile Include="Parser\Rubbish\EnumParser.cs" />
     <Compile Include="Parser\Extension\ReadOnlyMemoryMethodExtension.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />
+    <Compile Include="Parser\Stream\ByteMemoryReader.cs" />
     <Compile Include="Parser\Stream\CharMemoryReader.cs" />
     <Compile Include="Parser\Stream\EventReader.cs" />
     <Compile Include="Parser\Stream\OsuFileReader.cs" />

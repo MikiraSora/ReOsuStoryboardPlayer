@@ -6,9 +6,12 @@ using ReOsuStoryBoardPlayer.Parser.Reader;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using System;
 using System.Buffers;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,28 +21,14 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var chars = new ReadOnlyMemory<char>(File.ReadAllText("2d.osb").ToCharArray());
+            var reader = new ByteMemoryReader(File.ReadAllBytes("2d.osb"));
 
-            OsuFileReader reader = new OsuFileReader(chars);
+            while (!reader.EndOfStream)
+            {
+                Console.WriteLine(Encoding.UTF8.GetString(reader.ReadLine().ToArray()));
+            }
 
-            SectionReader sr = reader.GetSectionReader(Section.Variables);
-
-            VariableCollection collection = new VariableCollection(new VariableReader(sr).GetValues());
-            
-            EventReader er = new EventReader(reader.ReadSectionContent(Section.Events), collection);
-
-            StoryboardReader storyboardReader = new StoryboardReader(er);
-
-            VariableCollection variables = new VariableCollection();
-
-            variables["$zz"] = new StoryboardVariable("$zz", "666");
-            variables["$aa"] = new StoryboardVariable("$aa", "222");
-            variables["$aab"] = new StoryboardVariable("$aab", "252");
-            variables["$abb"] = new StoryboardVariable("$abb", "27");
-
-            List<Command> asdasd = new List<Command>();
-            
-            var dd=storyboardReader.GetValues().ToList();
+            Console.ReadLine();
         }
     }
 }

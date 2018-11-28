@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Buffers;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,5 +36,51 @@ namespace ReOsuStoryBoardPlayer.Parser.Extension
             return list.ToArray();
         }
 
+        public static ReadOnlyMemory<char> TrimStart(this ReadOnlyMemory<char> line)
+        {
+            int index = 0;
+
+            foreach (var item in line.Span)
+            {
+                if (item != ' ')
+                    break;
+                index++;
+            }
+
+            return line.Slice(index);
+        }
+
+        public static ReadOnlyMemory<char> TrimEnd(this ReadOnlyMemory<char> line)
+        {
+            int index = line.Length;
+            var span = line.Span;
+
+            for (int i = line.Length-1; i >= 0; i--)
+            {
+                if (span[i] != ' ')
+                    break;
+                index--;
+            }
+
+            return line.Slice(0,index);
+        }
+
+        public static ReadOnlyMemory<char> Trim(this ReadOnlyMemory<char> line) => TrimEnd(TrimStart(line));
+
+        public static unsafe double ToDouble(this ReadOnlyMemory<char> chars)
+        {
+            using (var owner = MemoryPool<byte>.Shared.Rent(chars.Length))
+            {
+                var buffer = owner.Memory.Span;
+                var tmp = MemoryMarshal.AsBytes(chars.Span);
+
+                for (int i = 0; i < chars.Length; i++)
+                    buffer[i] = tmp[i * 2];
+
+                if (!Utf8Parser.TryParse(buffer, out double val, out int consumed))
+                    throw new FormatException();
+                return val;
+            } 
+        }
     }
 }
