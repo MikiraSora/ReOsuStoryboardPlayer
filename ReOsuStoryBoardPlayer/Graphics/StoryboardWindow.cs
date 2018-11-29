@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer
 
         StoryBoardInstance instance;
 
-        const float SB_WIDTH = 640.0f, SB_WIDE_WIDTH =747.0f, SB_HEIGHT = 480.0f;
+        public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
 
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
@@ -47,43 +47,17 @@ namespace ReOsuStoryBoardPlayer
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
-        void ResizeByResolutionRadio(float radio)
-        {
-            if (this.Width*1.0f/this.Height!=radio)
-            {
-                //force resize
-                var actual_width = (int)(radio * this.Height);
-                Log.Warn($"Resize window width from {this.Width} to {actual_width}");
-                this.Width = actual_width;
-            }
-        }
-
         public void InitWindowRenderSize(bool is_wide_screen = false)
         {
             Log.User("Init window size as "+(is_wide_screen?"WideScreen":"DefaultScreen"));
 
             CameraViewMatrix = Matrix4.Identity;
-            
-            float radio = (is_wide_screen ? 747.0f : 640.0f) / 480f;
-            ResizeByResolutionRadio(radio);
 
-            ///todo,不确定对不对
-            if (!is_wide_screen)
-            {
-                ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_WIDTH, SB_HEIGHT, 0, 100);
+            //裁剪View
+            float radio = (float)Width / (float)Height;
 
-                x_offset = (Width - SB_WIDTH) / SB_WIDTH;
-                y_offset = -(Height - SB_HEIGHT) / SB_HEIGHT;
-            }
-            else
-            {
-                ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_WIDE_WIDTH, SB_HEIGHT, 0, 100);
-
-                x_offset = /*(Width - SB_WIDE_WIDTH) / SB_WIDTH*/+107/747.0f;
-                y_offset = -(Height - SB_HEIGHT) / SB_HEIGHT;
-            }
-
-            CameraViewMatrix = CameraViewMatrix * Matrix4.CreateTranslation(x_offset, y_offset, 0);
+            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, 0, 100);
+            CameraViewMatrix = CameraViewMatrix;
         }
 
         public new void Run()
