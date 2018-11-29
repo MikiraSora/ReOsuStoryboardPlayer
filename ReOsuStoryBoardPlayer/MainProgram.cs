@@ -21,14 +21,14 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\46216 Watarirouka Hashiritai7 - Valentine Kiss";
+                beatmap_folder = @"G:\SBTest\470977 Mili - worldexecute(me);";
             }
             else
                 beatmap_folder = argv[0];
             
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
-            StoryboardWindow window = new StoryboardWindow(747,480);
+            StoryboardWindow window = new StoryboardWindow(747,960);
 
             window.LoadStoryboardInstance(instance);
 

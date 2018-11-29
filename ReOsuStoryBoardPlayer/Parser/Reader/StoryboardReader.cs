@@ -24,29 +24,10 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         {
             Reader = reader;
         }
-        
-        static internal float _parse_ave => _parse_total / _parse_c;
-        static internal int _parse_c;
-        static internal long _parse_max;
-        static internal float _parse_total;
-        static internal Stopwatch _sw = new Stopwatch();
 
         public IEnumerable<StoryBoardObject> GetValues()
         {
-            _sw.Start();
-
-            return Reader.GetStoryboardPackets().Select(p => 
-            {
-                _sw.Restart();
-
-                var obj = ParsePacket(p);
-
-                _parse_c++;
-                _parse_total += _sw.ElapsedMilliseconds;
-                _parse_max = Math.Max(_parse_max, _sw.ElapsedMilliseconds);
-
-                return obj;
-            });
+            return Reader.GetStoryboardPackets().Select(p => ParsePacket(p));
         }
 
         private StoryBoardObject ParsePacket(StoryboardPacket packet)
@@ -261,10 +242,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                     {
                         //如果是子命令的话就要添加到当前Group
                         if (current_group_command != null)
-                        {
-                            Log.Debug($"add subCommand \"{cmd.ToString()}\" to Loop \"{current_group_command.ToString()}\"");
                             current_group_command.AddSubCommand(cmd);
-                        }
                     }
                     else
                     {

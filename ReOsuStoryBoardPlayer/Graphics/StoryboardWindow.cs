@@ -86,7 +86,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_WIDE_WIDTH, SB_HEIGHT, 0, 100);
 
-                x_offset = /*(Width - SB_WIDE_WIDTH) / SB_WIDTH*/+107 / 747.0f;
+                x_offset = (Width - SB_WIDE_WIDTH) / SB_WIDTH;
                 y_offset = -(Height - SB_HEIGHT) / SB_HEIGHT;
             }
 
@@ -167,22 +167,6 @@ namespace ReOsuStoryBoardPlayer
             DrawBlackBlank();
 
             SwapBuffers();
-        }
-
-        private void DrawBackground()
-        {
-            if (background_texture == null)
-                return;
-            
-            DrawUtils.DrawTexture(
-                background_texture,
-                new Vector(-Width/2,-240), 
-                new Vector(0,0), 
-                new Vector(background_rect.Width,background_rect.Height),
-                180, 
-                background_texture.Width, 
-                background_texture.Height, 
-                new Vec4(1, 1, 1, 1));
         }
 
         private void DrawBlackBlank()
