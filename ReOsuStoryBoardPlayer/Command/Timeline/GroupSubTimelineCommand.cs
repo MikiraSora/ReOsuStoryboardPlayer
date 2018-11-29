@@ -37,7 +37,10 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             int current_loop_index = timeline_cost_time == 0 ? 0 : (recovery_time - timeline.StartTime) / timeline_cost_time;
 
-            var command = timeline.PickCommand((current_value - StartTime) % timeline_cost_time + timeline.StartTime);
+            //一个时间轴上只有一个 0 duration的命令
+            var mapped_time = timeline_cost_time == 0 ? timeline.StartTime : (current_value - StartTime) % timeline_cost_time + timeline.StartTime;
+
+            var command = timeline.PickCommand(mapped_time);
 
             if (command != null)
             {

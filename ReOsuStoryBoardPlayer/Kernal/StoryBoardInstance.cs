@@ -305,8 +305,6 @@ namespace ReOsuStoryBoardPlayer
                     continue;
                 }
 
-                Log.Debug($"[{current_time}]Add storyboard obj \"{obj.ImageFilePath}\"");
-
                 obj.markDone = false;
                 _UpdatingStoryBoard[obj.layout].Add(obj);
                 
@@ -371,14 +369,14 @@ namespace ReOsuStoryBoardPlayer
 
             #endif
 
-            UpdateCastTime = t-runTimer.ElapsedMilliseconds;
+            UpdateCastTime = runTimer.ElapsedMilliseconds - t;
         }
 
         #region Storyboard Rendering
 
         public void PostDrawStoryBoard()
         {
-            runTimer.Start();
+            var r = runTimer.ElapsedMilliseconds;
 
             foreach (var layout_list in _UpdatingStoryBoard)
             {
@@ -387,26 +385,16 @@ namespace ReOsuStoryBoardPlayer
                     continue;
                 }
 
-                PostDrawStoryBoardLayout(layout_list.Value);
+                DrawStoryBoardObjects(layout_list.Value);
             }
 
-            RenderCastTime = runTimer.ElapsedMilliseconds;
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            runTimer.Reset();
+            RenderCastTime = runTimer.ElapsedMilliseconds - r;
         }
 
-        public void PostDrawStoryBoardLayout(List<StoryBoardObject> UpdatingStoryboardObjectList)
+        private void DrawStoryBoardObjects(List<StoryBoardObject> draw_list)
         {
-            bool isEnable = GL.IsEnabled(EnableCap.DepthTest);
-            
-            DrawStoryBoards(UpdatingStoryboardObjectList);
-        }
-
-        private void DrawStoryBoards(List<StoryBoardObject> draw_list)
-        {
-            if (draw_list.Count == 0)
-                return;
-            
             SpriteInstanceGroup group = draw_list.First().RenderGroup;
 
             bool additive_trigger;
@@ -434,10 +422,7 @@ namespace ReOsuStoryBoardPlayer
             
             if (group?.CurrentPostCount!=0)
                 group?.FlushDraw();
-
-            //恢复Blend
-            ChangeAdditiveStatus(false);
-
+            
             void ChangeAdditiveStatus(bool is_additive_blend)
             {
                 additive_trigger = is_additive_blend;

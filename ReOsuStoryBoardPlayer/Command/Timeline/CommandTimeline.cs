@@ -29,6 +29,8 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public Command PickCommand(float current_time)
         {
+            Debug.Assert(!float.IsNaN(current_time),$"current_time is not a number");
+
             Command command = null;
 
             if (selected_command != null && (selected_command.StartTime <= current_time && current_time <= selected_command.EndTime))
