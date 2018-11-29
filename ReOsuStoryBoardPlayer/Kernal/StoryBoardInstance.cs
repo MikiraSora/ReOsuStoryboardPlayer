@@ -235,7 +235,7 @@ namespace ReOsuStoryBoardPlayer
 
                         if (background.RenderGroup!=null)
                         {
-                            var scale = background.RenderGroup.Texture.Height / StoryboardWindow.CurrentWindow.Height;
+                            var scale =  StoryboardWindow.CurrentWindow.Height*1.0f/background.RenderGroup.Texture.Height;
                             background.AddCommand(new ScaleCommand()
                             {
                                 Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear],
