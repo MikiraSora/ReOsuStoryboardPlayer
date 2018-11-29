@@ -6,6 +6,7 @@ using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,29 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         {
             Reader = reader;
         }
+        
+        static internal float _parse_ave => _parse_total / _parse_c;
+        static internal int _parse_c;
+        static internal long _parse_max;
+        static internal float _parse_total;
+        static internal Stopwatch _sw = new Stopwatch();
 
         public IEnumerable<StoryBoardObject> GetValues()
         {
-            return Reader.GetStoryboardPackets().Select(p => ParsePacket(p));
+            _sw.Start();
+
+            return Reader.GetStoryboardPackets().Select(p => 
+            {
+                _sw.Restart();
+
+                var obj = ParsePacket(p);
+
+                _parse_c++;
+                _parse_total += _sw.ElapsedMilliseconds;
+                _parse_max = Math.Max(_parse_max, _sw.ElapsedMilliseconds);
+
+                return obj;
+            });
         }
 
         private StoryBoardObject ParsePacket(StoryboardPacket packet)

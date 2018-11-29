@@ -23,6 +23,12 @@ namespace ReOsuStoryBoardPlayer.Commands
         public void UpdateParam()
         {
             /*
+            //整理自己子命令的时间轴
+            foreach (var timeline in this.SubCommands)
+                timeline.Value.Sort();
+            */
+
+            /*
             var total_command_list = sub_commands.Values.SelectMany(l=>l).OrderBy(c => c.StartTime);
 
             int first_start_time = total_command_list.First().StartTime;

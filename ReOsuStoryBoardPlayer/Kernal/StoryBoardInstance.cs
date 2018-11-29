@@ -46,11 +46,9 @@ namespace ReOsuStoryBoardPlayer
         public long RenderCastTime { get; private set; }
 
         public bool IsWideScreen { get; set; } = false;
-
-#if DEBUG
+        
         DebugToolInstance debug_instance;
         public DebugToolInstance DebugToolInstance { get => debug_instance; }
-#endif
 
         public StoryBoardInstance(string folder_path)
         {
@@ -144,9 +142,9 @@ namespace ReOsuStoryBoardPlayer
                 }
 
                 foreach (var obj in temp_objs_list)
-                {
                     StoryboardObjectList.AddLast(obj);
-                }
+
+                StoryboardObjectList.AsParallel().ForAll(c => c.SortCommands());
             }
             #endregion
 
@@ -162,10 +160,8 @@ namespace ReOsuStoryBoardPlayer
             player = new MusicPlayer(audio_file_path);
 
             player.OnJumpCurrentPlayingTime += Player_OnJumpCurrentPlayingTime;
-
-#if DEBUG
+            
             debug_instance = new DebugToolInstance(this);
-#endif
 
             void AdjustZ(List<StoryBoardObject> list,int base_z)
             {

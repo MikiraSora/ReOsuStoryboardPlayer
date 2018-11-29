@@ -19,6 +19,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             this.loop_command = loop_command;
             Event = bind_event;
             timeline = loop_command.SubCommands[bind_event];
+            timeline.Sort();
 
             var start_time_offset = loop_command.SubCommands[bind_event].Min(c => c.StartTime);
 

@@ -11,11 +11,17 @@ namespace ReOsuStoryBoardPlayer
     {
         public static void Main(string[] argv)
         {
-            string beatmap_folder=string.Empty;
+#if DEBUG
+            Log.AbleDebugLog = true;
+#else
+            Log.AbleDebugLog = false;
+#endif
+
+            string beatmap_folder =string.Empty;
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\559622 Duca - Shiawase no Otoshimono";
+                beatmap_folder = @"G:\SBTest\[mahua] - reol - asymmetry";
             }
             else
                 beatmap_folder = argv[0];
@@ -26,7 +32,6 @@ namespace ReOsuStoryBoardPlayer
 
             window.LoadStoryboardInstance(instance);
 
-            //Log.AbleDebugLog = false;
 
             window.Run();
         }

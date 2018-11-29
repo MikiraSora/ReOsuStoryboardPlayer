@@ -8,16 +8,15 @@ namespace ReOsuStoryBoardPlayer.Commands
 {
     public abstract class Command:IComparable<Command>
     {
-
 #if DEBUG
-        internal bool IsExecuted { get; set; } = false;
+        internal bool IsExecuted = false;
 #endif
 
-        public Event Event { get; set; }
+        public Event Event;
 
-        public int StartTime { get; set; }
+        public int StartTime;
 
-        public int EndTime { get; set; }
+        public int EndTime;
 
         public int CompareTo(Command other) => StartTime - other.StartTime;
 
