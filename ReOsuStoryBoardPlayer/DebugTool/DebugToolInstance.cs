@@ -125,14 +125,14 @@ namespace ReOsuStoryBoardPlayer
 
             //将物件的坐标投影到当前屏幕大小
             var fix_obj_pos = new Vector(
-                sb_obj.Postion.x / 640 * StoryboardWindow.CurrentWindow.Width,
-                sb_obj.Postion.y / 480 * StoryboardWindow.CurrentWindow.Height
+                sb_obj.Postion.x / StoryboardWindow.SB_WIDTH * StoryboardWindow.CurrentWindow.Width,
+                sb_obj.Postion.y / StoryboardWindow.SB_HEIGHT * StoryboardWindow.CurrentWindow.Height
                 );
 
             //将物件的缩放投影到当前屏幕大小
             var fix_obj_size = new Vector(
-                sb_obj.Scale.x / 640 * StoryboardWindow.CurrentWindow.Width,
-                sb_obj.Scale.y / 480 * StoryboardWindow.CurrentWindow.Height
+                sb_obj.Scale.x / StoryboardWindow.SB_WIDTH * StoryboardWindow.CurrentWindow.Width,
+                sb_obj.Scale.y / StoryboardWindow.SB_HEIGHT * StoryboardWindow.CurrentWindow.Height
                 );
 
             Matrix4 in_model =
