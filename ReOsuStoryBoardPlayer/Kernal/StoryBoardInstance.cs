@@ -83,6 +83,7 @@ namespace ReOsuStoryBoardPlayer
                     var match = Regex.Match(content, @"AudioFilename\s*:\s*(.+)");
 
                     //audioLeadIn = int.Parse(Regex.Match(content, @"AudioLeadIn:\s*(.+)").Groups[1].Value.Replace("\r", string.Empty));
+
                     if (true)
                     {
                         audio_file_path =folder_path + match.Groups[1].Value.Replace("\r",string.Empty);
@@ -235,7 +236,7 @@ namespace ReOsuStoryBoardPlayer
 
                         if (background.RenderGroup!=null)
                         {
-                            var scale =  StoryboardWindow.CurrentWindow.Height*1.0f/background.RenderGroup.Texture.Height;
+                            var scale = StoryboardWindow.SB_HEIGHT / background.RenderGroup.Texture.Height;
                             background.AddCommand(new ScaleCommand()
                             {
                                 Easing = EasingConverter.CacheEasingInterpolatorMap[Easing.Linear],

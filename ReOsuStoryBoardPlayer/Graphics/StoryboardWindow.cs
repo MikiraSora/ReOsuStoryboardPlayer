@@ -21,11 +21,9 @@ namespace ReOsuStoryBoardPlayer
 
         StoryBoardInstance instance;
 
-        Texture background_texture;
-
         RectangleF background_rect;
 
-        const float SB_WIDTH = 640.0f, SB_WIDE_WIDTH = 747, SB_HEIGHT = 480.0f;
+        public const float SB_WIDTH = 640.0f, SB_WIDE_WIDTH = 747, SB_HEIGHT = 480.0f;
 
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
