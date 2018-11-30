@@ -84,26 +84,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Extension
 
         public static ReadOnlyMemory<char> Trim(this ReadOnlyMemory<char> line) => TrimEnd(TrimStart(line));
 
-        public static double ToDouble(this ReadOnlyMemory<byte> chars)
-        {
-            if (!Utf8Parser.TryParse(chars.Span, out double val, out int consumed))
-                throw new FormatException();
-            return val;
-        }
+        public static double ToDouble(this string chars) => double.Parse(chars);
 
-        public static float ToSigle(this ReadOnlyMemory<byte> chars)
-        {
-            if (!Utf8Parser.TryParse(chars.Span, out float val, out int consumed))
-                throw new FormatException();
-            return val;
-        }
+        public static float ToSigle(this string chars) => float.Parse(chars);
 
-        public static int ToInt(this ReadOnlyMemory<byte> chars)
-        {
-            if (!Utf8Parser.TryParse(chars.Span, out int val, out int consumed))
-                throw new FormatException();
-            return val;
-        }
+        public static int ToInt(this string chars) => int.Parse(chars);
 
         public static bool StartsWith(this ReadOnlyMemory<byte> buffer,byte[] content)
         {
@@ -137,18 +122,12 @@ namespace ReOsuStoryBoardPlayer.Parser.Extension
         private const byte BYTE_UNDERLINE = 95; //"_"
         private const byte BYTE_BACKSPACE = 0x20; //" "
 
-        public static bool CheckLineValid(this ReadOnlyMemory<byte> buffer)
+        public static bool CheckLineValid(this string buffer)
         {
-            if (buffer.Length == 0 || buffer.Length >= 2 && buffer.Span[0] == BYTE_BLANK && buffer.Span[1] == BYTE_BLANK)
+            if (buffer.Length == 0 || buffer.Length >= 2 && buffer[0] == '/' && buffer[1] == '/')
                 return false;
-            else
-            {
-                foreach (var t in buffer.Span)
-                    if (t != BYTE_BACKSPACE)
-                        return true;
-            }
 
-            return false;
+            return !string.IsNullOrWhiteSpace(buffer);
         }
 
         public static bool IsEmptyOrWhiteSpace(this ReadOnlyMemory<byte> buffer)

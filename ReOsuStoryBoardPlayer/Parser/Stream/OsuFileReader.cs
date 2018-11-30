@@ -1,94 +1,47 @@
 ﻿using ReOsuStoryBoardPlayer.Parser.Extension;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser.Stream
 {
-    public class OsuFileReader : ByteMemoryReader
+    public class OsuFileReader
     {
-        public OsuFileReader(ReadOnlyMemory<byte> buffer) : base(buffer)
-        {
+        StreamReader reader;
 
+        public OsuFileReader(string file_path)
+        {
+            reader = new StreamReader(file_path);
         }
 
-        public ReadOnlyMemory<byte> ReadSectionContent(Section section)
+        ~OsuFileReader()
         {
-            var pos = FindSectionPostion(section);
-            if (pos < 0)
-                return null;
+            reader.Dispose();
+        }
 
-            var backup_pos = Position;
-            Position = pos;
+        public bool JumpSectionContent(Section section)
+        {
+            reader.BaseStream.Seek(0,SeekOrigin.Begin);
 
-            //skip current section head
-            ReadLine();
-            int start_pos = (int)Position;
-            int end_pos = start_pos;
-
-            while (!EndOfStream)
+            while (!reader.EndOfStream)
             {
-                var line = ReadLine();
+                var line = reader.ReadLine();
 
-                if (line.Length > 2 && line.Span[0] == '[' && line.Span[line.Length - 1] == ']')
+                if (line.Length > 2 && line[0] == '[' && line[line.Length - 1] == ']' && IsSection(line.Substring(1, line.Length-2),section))
                 {
-                    //get other section head
-                    break;
-                }
-
-                end_pos = (int)Position;
-            }
-
-            Position = backup_pos;
-            return Buffer.Slice(start_pos, end_pos - start_pos);
-        }
-
-        public SectionReader GetSectionReader(Section section)
-        {
-            var pos = this.FindSectionPostion(section);
-            if (pos < 0)
-                return null;
-
-            var backup_pos = Position;
-            Position = pos;
-
-            //skip current section head
-            ReadLine();
-            
-            pos = Position;
-            Position = backup_pos;
-
-            return new SectionReader(Buffer.Slice((int)pos));
-        }
-        
-        public long FindSectionPostion(Section section)
-        {
-            var backup_pos = Position;
-            long result=-1;
-            Position = 0;
-
-            while (!EndOfStream)
-            {
-                result = Position;
-                var line = ReadLine();
-
-                //[Events] or [32]
-                if (line.Length > 2 && line.Span[0] == '[' && line.Span[line.Length - 1] == ']')
-                {
-                    var section_name = line.Slice(1, line.Length - 2).GetContentString();
-
-                    if (IsSection(section_name,section))
-                    {
-                        break;
-                    }
+                    return true;
                 }
             }
 
-            Position = backup_pos;
-            return result;
+            return false;
         }
+
+        public string ReadLine() => reader.ReadLine();
+
+        public bool EndOfStream => reader.EndOfStream;
 
         private static bool IsSection(string name,Section section)
         {

@@ -17,15 +17,11 @@ namespace ReOsuStoryBoardPlayer.Parser
         {
             try
             {
-                var chars = new ReadOnlyMemory<byte>(File.ReadAllBytes(path));
+                OsuFileReader reader = new OsuFileReader(path);
 
-                OsuFileReader reader = new OsuFileReader(chars);
+                VariableCollection collection = new VariableCollection(new VariableReader(reader).EnumValues());
 
-                SectionReader sr = reader.GetSectionReader(Section.Variables);
-
-                VariableCollection collection = new VariableCollection(new VariableReader(sr).GetValues());
-
-                EventReader er = new EventReader(reader.ReadSectionContent(Section.Events), collection);
+                EventReader er = new EventReader(reader, collection);
 
                 StoryboardReader storyboardReader = new StoryboardReader(er);
 
@@ -33,7 +29,7 @@ namespace ReOsuStoryBoardPlayer.Parser
 
                 using (StopwatchRun.Count($"Parse Storyboard Objects/Commands from {path}"))
                 {
-                    list = storyboardReader.GetValues().ToList();
+                    list = storyboardReader.EnumValues().ToList();
                 }
 
                 list.RemoveAll(c => c == null);

@@ -12,16 +12,14 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
     {
         private readonly SectionReader reader;
 
-        public bool IsEnd => reader.EndOfStream;
-
-        public VariableReader(SectionReader reader)
+        public VariableReader(OsuFileReader reader)
         {
-            this.reader = reader;
+            this.reader = new SectionReader(Section.Variables,reader);
         }
 
-        public IEnumerable<StoryboardVariable> GetValues()
+        public IEnumerable<StoryboardVariable> EnumValues()
         {
-            foreach (var line in reader.GetAllLines())
+            foreach (var line in reader.EnumValues())
             {
                 var arr = line.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
                 if (arr.Length != 2)

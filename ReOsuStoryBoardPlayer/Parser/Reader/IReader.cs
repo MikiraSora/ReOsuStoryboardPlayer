@@ -8,8 +8,6 @@ namespace ReOsuStoryBoardPlayer.Parser
 {
     interface IReader<T>
     {
-        bool IsEnd { get; }
-
-        IEnumerable<T> GetValues();
+        IEnumerable<T> EnumValues();
     }
 }
