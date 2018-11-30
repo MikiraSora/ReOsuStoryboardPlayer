@@ -38,13 +38,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 if (storyboard_object != null)
                 {
-                    var commands = BuildCommandMap(packet.CommandLines);
-
-                    if (commands == null)
-                        Log.Warn($"Storyboard object {packet.ObjectLine.ToString()} in section offset {packet.ObjectFileLine} not exist any commands.");
-                    else
-                        foreach (var command in commands.Values)
-                            storyboard_object.AddCommand(command);
+                    BuildCommandMapAndSetup(storyboard_object,packet.CommandLines);
 
                     storyboard_object.FileLine = packet.ObjectFileLine;
 
@@ -149,20 +143,12 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         public static Vector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
         
-        private Dictionary<Event, CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<byte>> lines)
+        private void BuildCommandMapAndSetup(StoryBoardObject obj ,List<ReadOnlyMemory<byte>> lines)
         {
             var list = lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommand(lines) : ParallelParseCommand(lines);
 
-            Dictionary<Event, CommandTimeline> map = new Dictionary<Event, CommandTimeline>();
-
             foreach (var cmd in list)
-            {
-                if (!map.ContainsKey(cmd.Event))
-                    map[cmd.Event] = cmd.Event == Event.Loop ? new LoopCommandTimeline() : new CommandTimeline();
-                map[cmd.Event].Add(cmd);
-            }
-
-            return map;
+                obj.AddCommand(cmd);
         }
 
         private readonly static byte[][] CMD_PREFIX = new[] { Encoding.UTF8.GetBytes("__"), Encoding.UTF8.GetBytes("  ") };
