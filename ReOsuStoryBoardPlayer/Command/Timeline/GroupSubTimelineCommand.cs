@@ -1,18 +1,12 @@
-﻿using ReOsuStoryBoardPlayer.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    class LoopSubTimelineCommand : Command
+    internal class LoopSubTimelineCommand : Command
     {
-        LoopCommand loop_command;
+        private LoopCommand loop_command;
 
-        CommandTimeline timeline;
+        private CommandTimeline timeline;
 
         public LoopSubTimelineCommand(LoopCommand loop_command, Event bind_event)
         {
@@ -24,7 +18,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             var start_time_offset = loop_command.SubCommands[bind_event].Min(c => c.StartTime);
 
             StartTime = loop_command.StartTime + start_time_offset;
-            EndTime = StartTime+loop_command.SubCommands[bind_event].Max(c => c.EndTime) * loop_command.LoopCount - start_time_offset;
+            EndTime = StartTime + loop_command.SubCommands[bind_event].Max(c => c.EndTime) * loop_command.LoopCount - start_time_offset;
         }
 
         public override void Execute(StoryBoardObject @object, float current_value)

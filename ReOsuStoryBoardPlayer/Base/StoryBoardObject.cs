@@ -1,10 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
-using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -22,23 +19,23 @@ namespace ReOsuStoryBoardPlayer
 
         public Layout layout;
 
-        public int Z=-1;
+        public int Z = -1;
 
         public CommandConflictChecker CommandConflictChecker { get; } = new CommandConflictChecker();
 
         #region Transform
 
-        public Vector Postion=new Vector(320,240), Scale=new Vector(1,1);
+        public Vector Postion = new Vector(320, 240), Scale = new Vector(1, 1);
 
-        public Vec4 Color=new Vec4(1,1,1,1);
+        public Vec4 Color = new Vec4(1, 1, 1, 1);
 
-        public float Rotate=0;
+        public float Rotate = 0;
 
-        public Vector Anchor=new Vector(0.5f,0.5f);
+        public Vector Anchor = new Vector(0.5f, 0.5f);
 
-        public bool IsAdditive=false,IsHorizonFlip=false,IsVerticalFlip=false;
+        public bool IsAdditive = false, IsHorizonFlip = false, IsVerticalFlip = false;
 
-        #endregion
+        #endregion Transform
 
         public void AddCommand(Command command)
         {
@@ -53,7 +50,7 @@ namespace ReOsuStoryBoardPlayer
             timeline.Add(command);
         }
 
-        void AddCommand(LoopCommand loop_command)
+        private void AddCommand(LoopCommand loop_command)
         {
             //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
 
@@ -77,7 +74,7 @@ namespace ReOsuStoryBoardPlayer
             foreach (var time in CommandMap.Values)
                 time.Sort();
         }
-        
+
         public virtual void Update(float current_time)
         {
 #if DEBUG
@@ -101,10 +98,9 @@ namespace ReOsuStoryBoardPlayer
         public override string ToString() => $"line {FileLine} (index {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
 
 #if DEBUG
-        internal List<Command> ExecutedCommands=new List<Command>();
+        internal List<Command> ExecutedCommands = new List<Command>();
 
-
-        internal void MarkCommandExecuted(Command command,bool is_exec=true)
+        internal void MarkCommandExecuted(Command command, bool is_exec = true)
         {
             if (is_exec)
                 ExecutedCommands.Add(command);
@@ -113,6 +109,7 @@ namespace ReOsuStoryBoardPlayer
 
             command.IsExecuted = is_exec;
         }
+
 #endif
 
         public void UpdateObjectFrameTime()

@@ -155,13 +155,12 @@
     <Compile Include="Parser\Rubbish\EnumParser.cs" />
     <Compile Include="Parser\Extension\BufferMethodExtension.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />
-    <Compile Include="Parser\Stream\EventReader.cs" />
+    <Compile Include="Parser\Reader\EventReader.cs" />
     <Compile Include="Parser\Stream\OsuFileReader.cs" />
     <Compile Include="Parser\Reader\IReader.cs" />
     <Compile Include="Parser\Reader\VariableReader.cs" />
     <Compile Include="Parser\Section.cs" />
     <Compile Include="Parser\StoryboardVariable.cs" />
-    <Compile Include="Parser\Extension\StreamReaderMethodExtension.cs" />
     <Compile Include="Parser\Reader\StoryboardReader.cs" />
     <Compile Include="Parser\Collection\VariableCollection.cs" />
     <Compile Include="Parser\Reader\SectionReader.cs" />

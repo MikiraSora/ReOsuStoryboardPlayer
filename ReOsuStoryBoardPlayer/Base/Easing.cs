@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using static System.Math;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -117,56 +114,78 @@ namespace ReOsuStoryBoardPlayer
             {
                 default:
                     return change * (time / duration) + initial;
+
                 case EasingTypes.In:
                 case EasingTypes.InQuad:
                     return change * (time /= duration) * time + initial;
+
                 case EasingTypes.Out:
                 case EasingTypes.OutQuad:
                     return -change * (time /= duration) * (time - 2) + initial;
+
                 case EasingTypes.InOutQuad:
                     if ((time /= duration / 2) < 1) return change / 2 * time * time + initial;
                     return -change / 2 * ((--time) * (time - 2) - 1) + initial;
+
                 case EasingTypes.InCubic:
                     return change * (time /= duration) * time * time + initial;
+
                 case EasingTypes.OutCubic:
                     return change * ((time = time / duration - 1) * time * time + 1) + initial;
+
                 case EasingTypes.InOutCubic:
                     if ((time /= duration / 2) < 1) return change / 2 * time * time * time + initial;
                     return change / 2 * ((time -= 2) * time * time + 2) + initial;
+
                 case EasingTypes.InQuart:
                     return change * (time /= duration) * time * time * time + initial;
+
                 case EasingTypes.OutQuart:
                     return -change * ((time = time / duration - 1) * time * time * time - 1) + initial;
+
                 case EasingTypes.InOutQuart:
                     if ((time /= duration / 2) < 1) return change / 2 * time * time * time * time + initial;
                     return -change / 2 * ((time -= 2) * time * time * time - 2) + initial;
+
                 case EasingTypes.InQuint:
                     return change * (time /= duration) * time * time * time * time + initial;
+
                 case EasingTypes.OutQuint:
                     return change * ((time = time / duration - 1) * time * time * time * time + 1) + initial;
+
                 case EasingTypes.InOutQuint:
                     if ((time /= duration / 2) < 1) return change / 2 * time * time * time * time * time + initial;
                     return change / 2 * ((time -= 2) * time * time * time * time + 2) + initial;
+
                 case EasingTypes.InSine:
                     return -change * Math.Cos(time / duration * (PI / 2)) + change + initial;
+
                 case EasingTypes.OutSine:
                     return change * Math.Sin(time / duration * (PI / 2)) + initial;
+
                 case EasingTypes.InOutSine:
                     return -change / 2 * (Math.Cos(PI * time / duration) - 1) + initial;
+
                 case EasingTypes.InExpo:
                     return change * Math.Pow(2, 10 * (time / duration - 1)) + initial;
+
                 case EasingTypes.OutExpo:
                     return (time == duration) ? initial + change : change * (-Math.Pow(2, -10 * time / duration) + 1) + initial;
+
                 case EasingTypes.InOutExpo:
                     if ((time /= duration / 2) < 1) return change / 2 * Math.Pow(2, 10 * (time - 1)) + initial;
                     return change / 2 * (-Math.Pow(2, -10 * --time) + 2) + initial;
+
                 case EasingTypes.InCirc:
                     return -change * (Math.Sqrt(1 - (time /= duration) * time) - 1) + initial;
+
                 case EasingTypes.OutCirc:
                     return change * Math.Sqrt(1 - (time = time / duration - 1) * time) + initial;
+
                 case EasingTypes.InOutCirc:
                     if ((time /= duration / 2) < 1) return -change / 2 * (Math.Sqrt(1 - time * time) - 1) + initial;
                     return change / 2 * (Math.Sqrt(1 - (time -= 2) * time) + 1) + initial;
+
                 case EasingTypes.InElastic:
                     {
                         if ((time /= duration) == 1) return initial + change;
@@ -241,6 +260,7 @@ namespace ReOsuStoryBoardPlayer
                     }
                 case EasingTypes.InBounce:
                     return change - ApplyEasing(EasingTypes.OutBounce, duration - time, 0, change, duration) + initial;
+
                 case EasingTypes.OutBounce:
                     if ((time /= duration) < (1 / 2.75))
                     {

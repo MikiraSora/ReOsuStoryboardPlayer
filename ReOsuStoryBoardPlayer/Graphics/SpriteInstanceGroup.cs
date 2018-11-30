@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System.Runtime.InteropServices;
-using OpenTK;
-using System.Threading.Tasks;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Collections;
+using System;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -16,20 +8,22 @@ namespace ReOsuStoryBoardPlayer
     {
         public uint Capacity { get; protected set; } = 0;
 
-        int _currentPostCount = 0;
-        
-        static BatchShader _shader;
+        private int _currentPostCount = 0;
+
+        private static BatchShader _shader;
 
         public static Matrix4 Projection { get { return StoryboardWindow.ProjectionMatrix; } }
         public static Matrix4 View { get { return StoryboardWindow.CameraViewMatrix; } }
 
         public int CurrentPostCount { get => _currentPostCount; }
 
-        int _vao, _vbo, _vbo_vertexBase, _vbo_texPosBase;
+        private int _vao, _vbo, _vbo_vertexBase, _vbo_texPosBase;
 
-        private SpriteInstanceGroup() { }
+        private SpriteInstanceGroup()
+        {
+        }
 
-        Texture texture;
+        private Texture texture;
 
         public string ImagePath { get; private set; }
 
@@ -41,7 +35,7 @@ namespace ReOsuStoryBoardPlayer
             _shader.Compile();
         }
 
-        internal SpriteInstanceGroup(uint capacity,string image_path, Texture texture)
+        internal SpriteInstanceGroup(uint capacity, string image_path, Texture texture)
         {
             ImagePath = image_path;
 
@@ -49,12 +43,12 @@ namespace ReOsuStoryBoardPlayer
             _bound.y = texture.Height;
 
             this.Capacity = capacity;
-            
+
             this.texture = texture;
 
             _buildBuffer();
 
-            PostData = new float[_calculateCapacitySize()*capacity];
+            PostData = new float[_calculateCapacitySize() * capacity];
         }
 
         ~SpriteInstanceGroup()
@@ -62,32 +56,32 @@ namespace ReOsuStoryBoardPlayer
             _deleteBuffer();
         }
 
-        int _calculateCapacitySize()
+        private int _calculateCapacitySize()
         {
             /*-----------------CURRENT VERSION------------------ -
 					*orther		anchor	    color		bound       modelMatrix   flip
 					*float(1)	vec2(2)		vec4(4)     vec2(2)     Matrix4(16)   vec2(2)
 					*/
-            return (1 + 2 + 4 + 2 + 16+2) * sizeof(float);
+            return (1 + 2 + 4 + 2 + 16 + 2) * sizeof(float);
         }
 
-        Vector _bound;
+        private Vector _bound;
 
-        static float[] _cacheBaseVertex = new float[] {
+        private static float[] _cacheBaseVertex = new float[] {
                 0,0,
                 0,-1,
                 1,-1,
                 1,0,
         };
 
-        static float[] _cacheBaseTexPos = new float[] {
+        private static float[] _cacheBaseTexPos = new float[] {
                  0,1,
                  0,0,
                  1,0,
                  1,1
         };
 
-        void _buildBuffer()
+        private void _buildBuffer()
         {
             _vao = GL.GenVertexArray();
             _vbo = GL.GenBuffer();
@@ -160,31 +154,30 @@ namespace ReOsuStoryBoardPlayer
                     GL.EnableVertexAttribArray(10);
                     GL.VertexAttribPointer(10, 4, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 92);
                     GL.VertexAttribDivisor(10, 1);
-
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             }
             GL.BindVertexArray(0);
         }
 
-        void _deleteBuffer()
+        private void _deleteBuffer()
         {
             //GL.DeleteBuffer(_vbo);
             //GL.DeleteVertexArray(_vao);
         }
 
-        Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
+        private Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
 
-        float[] PostData;
+        private float[] PostData;
 
-        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, Vec4 color,bool vertical_flip,bool horizon_flip)
+        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip)
         {
             /*-----------------CURRENT VERSION------------------ -
 			*orther		anchor	    color		bound       modelMatrix
 			*float(1)	vec2(2)		vec4(4)     vec2(2)     Matrix4(16)
 			*/
 
-            int base_index = _currentPostCount * _calculateCapacitySize()/sizeof(float);
+            int base_index = _currentPostCount * _calculateCapacitySize() / sizeof(float);
 
             //Z float
             PostData[base_index + 0] = 0;
@@ -212,7 +205,7 @@ namespace ReOsuStoryBoardPlayer
                 Matrix4.Identity *
             Matrix4.CreateScale(scale.x, scale.y, 1) *
             Matrix4.CreateFromAxisAngle(_staticCacheAxis, rotate) *
-            Matrix4.CreateTranslation(position.x-StoryboardWindow.CurrentWindow.Width/2, -position.y+ StoryboardWindow.CurrentWindow.Height / 2, 0);
+            Matrix4.CreateTranslation(position.x - StoryboardWindow.CurrentWindow.Width / 2, -position.y + StoryboardWindow.CurrentWindow.Height / 2, 0);
             //model.Transpose();
 
             int i = 0;
@@ -230,13 +223,13 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale,Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color,vertical_flip,horizon_flip);
+        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
 
-        void _draw()
+        private void _draw()
         {
             _shader.Begin();
             var VP = Projection * (View);
-            
+
             _shader.PassUniform("diffuse", texture);
             _shader.PassUniform("ViewProjection", VP);
 
@@ -268,8 +261,9 @@ namespace ReOsuStoryBoardPlayer
             _currentPostCount = 0;
         }
 
-        static float[] _cacheMatrix = new float[16];
-        static void _Matrix4ToFloatArray(ref Matrix4 matrix)
+        private static float[] _cacheMatrix = new float[16];
+
+        private static void _Matrix4ToFloatArray(ref Matrix4 matrix)
         {
             unsafe
             {
@@ -282,4 +276,3 @@ namespace ReOsuStoryBoardPlayer
         }
     }
 }
-

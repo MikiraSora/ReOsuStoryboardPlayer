@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer.Parser
+﻿namespace ReOsuStoryBoardPlayer.Parser
 {
-    public enum Section 
+    public enum Section
     {
         Unknown = 0,
         General = 1,

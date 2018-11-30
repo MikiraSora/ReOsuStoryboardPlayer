@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using System.Drawing;
 using OpenTK.Input;
 using ReOsuStoryBoardPlayer.Graphics;
-using System.IO;
-using System.Text.RegularExpressions;
 using ReOsuStoryBoardPlayer.Utils;
+using System;
+using System.Drawing;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -19,16 +13,16 @@ namespace ReOsuStoryBoardPlayer
     {
         public static StoryboardWindow CurrentWindow { get; set; }
 
-        StoryBoardInstance instance;
+        private StoryBoardInstance instance;
 
-        RectangleF background_rect;
+        private RectangleF background_rect;
 
         public const float SB_WIDTH = 640.0f, SB_WIDE_WIDTH = 747, SB_HEIGHT = 480.0f;
 
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
         public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
-        
+
         public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
         {
@@ -52,7 +46,7 @@ namespace ReOsuStoryBoardPlayer
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
-        void ResizeByResolutionRadio(float radio)
+        private void ResizeByResolutionRadio(float radio)
         {
             if (this.Width * 1.0f / this.Height != radio)
             {
@@ -109,7 +103,6 @@ namespace ReOsuStoryBoardPlayer
                 instance.BuildCacheDrawSpriteBatch();
             }
 
-
             //InitBackgroundDrawing(instance);
         }
 
@@ -143,7 +136,6 @@ namespace ReOsuStoryBoardPlayer
                     background_rect = new RectangleF(-x_offset, -Height / 2, h_scale, h_scale);
                 }
             }
-
             catch (Exception e)
             {
                 Log.Warn($"load background image failed, from {bgPath} ,message:{e.Message}");
@@ -171,7 +163,6 @@ namespace ReOsuStoryBoardPlayer
 
         private void DrawBlackBlank()
         {
-
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -189,6 +180,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
 #if DEBUG
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -206,6 +198,7 @@ namespace ReOsuStoryBoardPlayer
                 instance.DebugToolInstance.CannelSelectObject();
             }
         }
+
 #endif
     }
 }

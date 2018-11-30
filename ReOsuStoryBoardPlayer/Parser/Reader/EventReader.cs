@@ -1,13 +1,9 @@
 ﻿using ReOsuStoryBoardPlayer.Parser.Collection;
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReOsuStoryBoardPlayer.Parser.Extension;
+using System;
+using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Parser.Stream
+namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
     public struct StoryboardPacket : IComparable<StoryboardPacket>
     {
@@ -23,7 +19,30 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
             return Math.Sign(ObjectFileLine - other.ObjectFileLine);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is StoryboardPacket))
+            {
+                return false;
+            }
+
+            var packet = (StoryboardPacket)obj;
+            return EqualityComparer<List<string>>.Default.Equals(CommandLines, packet.CommandLines)&&
+                   ObjectLine==packet.ObjectLine&&
+                   ObjectFileLine==packet.ObjectFileLine;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1274036625;
+            hashCode=hashCode*-1521134295+EqualityComparer<List<string>>.Default.GetHashCode(CommandLines);
+            hashCode=hashCode*-1521134295+EqualityComparer<string>.Default.GetHashCode(ObjectLine);
+            hashCode=hashCode*-1521134295+ObjectFileLine.GetHashCode();
+            return hashCode;
+        }
+
         public static bool operator ==(StoryboardPacket a, StoryboardPacket b) => a.CompareTo(b) == 0;
+
         public static bool operator !=(StoryboardPacket a, StoryboardPacket b) => !(a == b);
     }
 
@@ -31,7 +50,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
     {
         public VariableCollection Variables { get; }
 
-        SectionReader reader;
+        private SectionReader reader;
 
         public enum LineType
         {
@@ -40,13 +59,13 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
             Others
         }
 
-        public EventReader(OsuFileReader reader,VariableCollection variables)
+        public EventReader(OsuFileReader reader, VariableCollection variables)
         {
             Variables = variables;
             this.reader = new SectionReader(Section.Events, reader);
         }
-        
-        StoryboardPacket packet = StoryboardPacket.Empty;
+
+        private StoryboardPacket packet = StoryboardPacket.Empty;
 
         public IEnumerable<StoryboardPacket> EnumValues()
         {
@@ -69,6 +88,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
                             yield return t;
 
                         break;
+
                     case LineType.Command:
                         packet.CommandLines.Add(line);
                         break;

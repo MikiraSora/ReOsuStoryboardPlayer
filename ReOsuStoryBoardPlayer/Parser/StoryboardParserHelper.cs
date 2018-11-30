@@ -4,10 +4,7 @@ using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser
 {
@@ -38,7 +35,7 @@ namespace ReOsuStoryBoardPlayer.Parser
             }
             catch (Exception e)
             {
-                Log.Error($"Parse error! "+e.Message);
+                Log.Error($"Parse error! " + e.Message);
                 return null;
             }
         }

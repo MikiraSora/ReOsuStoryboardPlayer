@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Utils
 {
@@ -15,7 +11,7 @@ namespace ReOsuStoryBoardPlayer.Utils
         private StopwatchRun(string message)
         {
             this.message = message;
-            stopwatch=ObjectPool<Stopwatch>.Instance.GetObject();
+            stopwatch = ObjectPool<Stopwatch>.Instance.GetObject();
             stopwatch.Restart();
         }
 

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Concurrent;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Utils
 {
@@ -22,7 +17,8 @@ namespace ReOsuStoryBoardPlayer.Utils
 
         static ObjectPool()
         {
-            _t = new Timer(_=> {
+            _t = new Timer(_ =>
+            {
                 foreach (var x in _pool_objects)
                     x.Clean();
             }, null, 0, 10_000);

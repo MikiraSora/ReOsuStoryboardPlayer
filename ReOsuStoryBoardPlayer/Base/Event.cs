@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer
+﻿namespace ReOsuStoryBoardPlayer
 {
     public enum Event
     {
@@ -21,8 +15,9 @@ namespace ReOsuStoryBoardPlayer
         Trigger = 10,
 
         //custon events
-        VerticalFlip=11,
-        HorizonFlip=12,
-        AdditiveBlend=13
+        VerticalFlip = 11,
+
+        HorizonFlip = 12,
+        AdditiveBlend = 13
     }
 }

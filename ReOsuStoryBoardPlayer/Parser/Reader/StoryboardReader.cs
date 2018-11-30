@@ -6,11 +6,8 @@ using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static ReOsuStoryBoardPlayer.Parser.Stream.EventReader;
 
 namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
@@ -36,7 +33,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 if (storyboard_object != null)
                 {
-                    BuildCommandMapAndSetup(storyboard_object,packet.CommandLines);
+                    BuildCommandMapAndSetup(storyboard_object, packet.CommandLines);
 
                     storyboard_object.FileLine = packet.ObjectFileLine;
 
@@ -54,7 +51,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         }
 
         #region Packet Parse
-        
+
         public StoryBoardObject ParseObjectLine(string line)
         {
             StoryBoardObject obj = null;
@@ -102,7 +99,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 obj.Z = -1;
 
-                var position = data_arr.Length > 4 ? new Vector(data_arr[3].ToSigle(),data_arr[4].ToSigle()) : Vector.Zero;
+                var position = data_arr.Length > 4 ? new Vector(data_arr[3].ToSigle(), data_arr[4].ToSigle()) : Vector.Zero;
 
                 if (position != Vector.One)
                     obj.Postion = position + new Vector(320, 240);
@@ -110,7 +107,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             return obj;
         }
-        
+
         private void ParseStoryboardAnimation(StoryboardAnimation animation, string[] sprite_param)
         {
             int dot_position = animation.ImageFilePath.LastIndexOf('.');
@@ -138,8 +135,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         };
 
         public static Vector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
-        
-        private void BuildCommandMapAndSetup(StoryBoardObject obj ,List<string> lines)
+
+        private void BuildCommandMapAndSetup(StoryBoardObject obj, List<string> lines)
         {
             var list = lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommand(lines) : ParallelParseCommand(lines);
 
@@ -193,12 +190,13 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             return commands;
         }
-        
+
         public IEnumerable<Command> ParallelParseCommand(List<string> lines)
         {
             System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)> result_list = new System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)>();
 
-            Parallel.For(0, lines.Count,i => {
+            Parallel.For(0, lines.Count, i =>
+            {
                 var line = lines[i];
                 var temp_list = ObjectPool<List<Command>>.Instance.GetObject();
                 temp_list.Clear();
@@ -207,21 +205,22 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 CommandParserIntance.Parse(data_arr, temp_list);
 
-                result_list.Add((i,temp_list.ToArray(),is_sub_cmds));
+                result_list.Add((i, temp_list.ToArray(), is_sub_cmds));
 
                 ObjectPool<List<Command>>.Instance.PutObject(temp_list);
             });
 
-            var result=result_list.SelectMany(p=>p.cmds.Select(cmd=>(p.index,cmd,p.is_sub))).OrderBy(z=>z.index);
+            var result = result_list.SelectMany(p => p.cmds.Select(cmd => (p.index, cmd, p.is_sub))).OrderBy(z => z.index);
             var sub_cmds = result.Where(x => x.is_sub);
-            var fin_list = result.Except(sub_cmds.Where(sub_cmd=> {
+            var fin_list = result.Except(sub_cmds.Where(sub_cmd =>
+            {
                 var r = result.FirstOrDefault(z => z.index == sub_cmd.index - 1);
 
                 if (r.cmd is GroupCommand group)
                     group.AddSubCommand(sub_cmd.cmd);
 
                 return true;
-            })).Select(p=>p.cmd);
+            })).Select(p => p.cmd);
 
             return fin_list;
         }

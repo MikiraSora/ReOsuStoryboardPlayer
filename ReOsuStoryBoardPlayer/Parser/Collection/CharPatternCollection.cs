@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser.Collection
 {
@@ -11,11 +9,13 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
     /// 基于字符串连续字符匹配的字典
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class CharPatternCollectionBase<T>:IDictionary<string, T> where T : IComparable<T>
+    public class CharPatternCollectionBase<T> : IDictionary<string, T> where T : IComparable<T>
     {
         protected class CharItem
         {
-            private CharItem() { }
+            private CharItem()
+            {
+            }
 
             public CharItem(char c, T val)
             {
@@ -30,10 +30,10 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
             public override string ToString() => $"{Char} : {Val}";
         }
 
-        private Func<T,string> PathProjectionFunc;
+        private Func<T, string> PathProjectionFunc;
         private readonly T InvaildTValue;
 
-        protected readonly CharItem root ;
+        protected readonly CharItem root;
 
         public ICollection<string> Keys => GetVariables(root).Select(p => p.Key).ToList();
 
@@ -48,7 +48,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
             get
             {
                 var val = Get(key);
-                if (ValueEquals(val , InvaildTValue))
+                if (ValueEquals(val, InvaildTValue))
                     throw new KeyNotFoundException();
                 return val;
             }
@@ -60,12 +60,12 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="PathProjectionFunc">获取元素的字符串值，将作为key</param>
         /// <param name="InvaildTValue">钦定无效值</param>
         /// <param name="variables">初始集合</param>
-        public CharPatternCollectionBase(Func<T,string> PathProjectionFunc,T InvaildTValue, IEnumerable<T> variables)
+        public CharPatternCollectionBase(Func<T, string> PathProjectionFunc, T InvaildTValue, IEnumerable<T> variables)
         {
             this.PathProjectionFunc = PathProjectionFunc;
             this.InvaildTValue = InvaildTValue;
@@ -76,7 +76,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
 
         public bool ContainsKey(string key)
         {
-            return !ValueEquals(Get(key) , InvaildTValue);
+            return !ValueEquals(Get(key), InvaildTValue);
         }
 
         private T Get(string name)
@@ -130,8 +130,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
         public bool TryGetValue(string key, out T value)
         {
             var val = Get(key);
-            value =!ValueEquals(val, InvaildTValue) ? val : InvaildTValue;
-            return !ValueEquals(val , InvaildTValue);
+            value = !ValueEquals(val, InvaildTValue) ? val : InvaildTValue;
+            return !ValueEquals(val, InvaildTValue);
         }
 
         public void Add(KeyValuePair<string, T> item)
@@ -148,7 +148,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
         {
             var val = Get(item.Key);
 
-            return !ValueEquals(val , InvaildTValue) && ValueEquals(val, item.Value);
+            return !ValueEquals(val, InvaildTValue) && ValueEquals(val, item.Value);
         }
 
         public void CopyTo(KeyValuePair<string, T>[] array, int arrayIndex)
@@ -175,7 +175,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
                 foreach (var t in GetVariables(i))
                     yield return t;
 
-            if (!ValueEquals(item.Val,InvaildTValue))
+            if (!ValueEquals(item.Val, InvaildTValue))
                 yield return new KeyValuePair<string, T>(PathProjectionFunc(item.Val), item.Val);
         }
 

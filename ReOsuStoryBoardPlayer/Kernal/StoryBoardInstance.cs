@@ -1,53 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Graphics;
-using System.Diagnostics;
-using System.Threading;
-using ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer;
-using ReOsuStoryBoardPlayer.Parser.Stream;
-using ReOsuStoryBoardPlayer.Parser.Collection;
-using ReOsuStoryBoardPlayer.Parser.Reader;
-using static System.Collections.Specialized.BitVector32;
-using ReOsuStoryBoardPlayer.Parser;
+﻿using OpenTK.Graphics.OpenGL;
 using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Utils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ReOsuStoryBoardPlayer
 {
     public class StoryBoardInstance
     {
-        static readonly uint DrawCallInstanceCountMax = 50;
+        private static readonly uint DrawCallInstanceCountMax = 50;
 
         public LinkedList<StoryBoardObject> StoryboardObjectList { get; set; }
 
-        LinkedListNode<StoryBoardObject> CurrentScanNode;
+        private LinkedListNode<StoryBoardObject> CurrentScanNode;
 
-        List<StoryBoardObject> DrawSplitList = new List<StoryBoardObject>();
+        private List<StoryBoardObject> DrawSplitList = new List<StoryBoardObject>();
 
         internal Dictionary<Layout, List<StoryBoardObject>> _UpdatingStoryBoard = new Dictionary<Layout, List<StoryBoardObject>>();
-        
-        internal string osb_file_path = string.Empty, osu_file_path = string.Empty, audio_file_path = string.Empty,folder_path=string.Empty;
+
+        internal string osb_file_path = string.Empty, osu_file_path = string.Empty, audio_file_path = string.Empty, folder_path = string.Empty;
 
         public MusicPlayer player;
 
         //internal float update_current_time;
 
-        Stopwatch runTimer = new Stopwatch();
+        private Stopwatch runTimer = new Stopwatch();
 
         public long UpdateCastTime { get; private set; }
 
         public long RenderCastTime { get; private set; }
 
         public bool IsWideScreen { get; set; } = false;
-        
-        DebugToolInstance debug_instance;
+
+        private DebugToolInstance debug_instance;
         public DebugToolInstance DebugToolInstance { get => debug_instance; }
 
         public StoryBoardInstance(string folder_path)
@@ -86,7 +77,7 @@ namespace ReOsuStoryBoardPlayer
 
                     if (true)
                     {
-                        audio_file_path =folder_path + match.Groups[1].Value.Replace("\r",string.Empty);
+                        audio_file_path = folder_path + match.Groups[1].Value.Replace("\r", string.Empty);
                         Log.User($"audio file path={audio_file_path}");
                     }
 
@@ -101,17 +92,18 @@ namespace ReOsuStoryBoardPlayer
 
             #region Check
 
-            if (string.IsNullOrWhiteSpace(osu_file_path)||string.IsNullOrWhiteSpace(audio_file_path)||(!File.Exists(osu_file_path)||(!File.Exists(audio_file_path))))
+            if (string.IsNullOrWhiteSpace(osu_file_path) || string.IsNullOrWhiteSpace(audio_file_path) || (!File.Exists(osu_file_path) || (!File.Exists(audio_file_path))))
             {
                 Console.WriteLine("无法获取到osu文件或者音频文件路径");
                 Environment.Exit(0);
             }
 
-            #endregion
+            #endregion Check
 
-            #endregion
+            #endregion Get files path
 
             #region Load and Parse osb/osu file
+
             using (StopwatchRun.Count("Load and Parse osb/osu file"))
             {
                 List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs = new List<StoryBoardObject>();
@@ -147,7 +139,8 @@ namespace ReOsuStoryBoardPlayer
 
                 StoryboardObjectList.AsParallel().ForAll(c => c.SortCommands());
             }
-            #endregion
+
+            #endregion Load and Parse osb/osu file
 
             #region Create LayoutListMap
 
@@ -156,42 +149,43 @@ namespace ReOsuStoryBoardPlayer
                 _UpdatingStoryBoard.Add(item, new List<StoryBoardObject>());
             }
 
-            #endregion
+            #endregion Create LayoutListMap
 
             player = new MusicPlayer(audio_file_path);
 
             player.OnJumpCurrentPlayingTime += Player_OnJumpCurrentPlayingTime;
-            
+
             debug_instance = new DebugToolInstance(this);
 
-            void AdjustZ(List<StoryBoardObject> list,int base_z)
+            void AdjustZ(List<StoryBoardObject> list, int base_z)
             {
-                list.Sort((a,b)=> (int)(a.FileLine-b.FileLine));
+                list.Sort((a, b) => (int)(a.FileLine - b.FileLine));
                 for (int i = 0; i < list.Count; i++)
-                    list[i].Z = base_z+i;
+                    list[i].Z = base_z + i;
             }
         }
 
-        private List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list,List<StoryBoardObject> osu_list)
+        private List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list, List<StoryBoardObject> osu_list)
         {
             #region Safe Check
 
-            if (osb_list==null)
+            if (osb_list == null)
             {
                 osb_list = new List<StoryBoardObject>();
             }
 
-            if (osu_list==null)
+            if (osu_list == null)
             {
                 osu_list = new List<StoryBoardObject>();
             }
 
-            #endregion
+            #endregion Safe Check
 
             List<StoryBoardObject> result = new List<StoryBoardObject>(osb_list);
             result.AddRange(osu_list);
 
-            result.Sort((a,b)=> {
+            result.Sort((a, b) =>
+            {
                 return a.FrameStartTime - b.FrameStartTime;
             });
 
@@ -202,7 +196,7 @@ namespace ReOsuStoryBoardPlayer
         {
             //fast seek? tan 90°
             Flush();
-            
+
             //update_current_time = new_time;
         }
 
@@ -214,7 +208,7 @@ namespace ReOsuStoryBoardPlayer
             pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.png", SearchOption.AllDirectories));
             pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.jpg", SearchOption.AllDirectories));
 
-            Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap=new Dictionary<string, SpriteInstanceGroup>();
+            Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
 
             pic_list.ForEach((path) =>
             {
@@ -234,7 +228,7 @@ namespace ReOsuStoryBoardPlayer
                         if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
                             Log.Warn($"not found image:{obj.ImageFilePath}");
 
-                        if (background.RenderGroup!=null)
+                        if (background.RenderGroup != null)
                         {
                             var scale = StoryboardWindow.SB_HEIGHT / background.RenderGroup.Texture.Height;
                             background.AddCommand(new ScaleCommand()
@@ -285,7 +279,6 @@ namespace ReOsuStoryBoardPlayer
             foreach (var pair in _UpdatingStoryBoard)
             {
                 pair.Value.Clear();
-
             }
 
             CurrentScanNode = StoryboardObjectList.First;
@@ -295,11 +288,11 @@ namespace ReOsuStoryBoardPlayer
 
         private bool Scan(float current_time)
         {
-            LinkedListNode<StoryBoardObject> LastAddNode=null;
+            LinkedListNode<StoryBoardObject> LastAddNode = null;
 
             while (CurrentScanNode != null && CurrentScanNode.Value.FrameStartTime <= current_time/* && current_time <= CurrentScanNode.Value.FrameEndTime*/ )
             {
-                var obj= CurrentScanNode.Value;
+                var obj = CurrentScanNode.Value;
                 if (current_time > obj.FrameEndTime)
                 {
                     CurrentScanNode = CurrentScanNode.Next;
@@ -308,18 +301,18 @@ namespace ReOsuStoryBoardPlayer
 
                 obj.markDone = false;
                 _UpdatingStoryBoard[obj.layout].Add(obj);
-                
+
                 LastAddNode = CurrentScanNode;
 
                 CurrentScanNode = CurrentScanNode.Next;
             }
 
-            if (LastAddNode!=null)
+            if (LastAddNode != null)
             {
                 CurrentScanNode = LastAddNode.Next;
             }
 
-            return /*isAdd*/LastAddNode!=null;
+            return /*isAdd*/LastAddNode != null;
         }
 
         public void Update(float delay_time)
@@ -328,9 +321,9 @@ namespace ReOsuStoryBoardPlayer
 
             player.Tick();
 
-            float current_time =player.CurrentFixedTime;
+            float current_time = player.CurrentFixedTime;
 
-            bool hasAdded=Scan(current_time);
+            bool hasAdded = Scan(current_time);
 
             foreach (var objs in _UpdatingStoryBoard.Values)
             {
@@ -341,7 +334,6 @@ namespace ReOsuStoryBoardPlayer
                         return a.Z - b.Z;
                     });
                 }
-
 
                 foreach (var obj in objs)
                 {
@@ -364,11 +356,11 @@ namespace ReOsuStoryBoardPlayer
                 });
             }
 
-            #if DEBUG
+#if DEBUG
 
             debug_instance.Update();
 
-            #endif
+#endif
 
             UpdateCastTime = runTimer.ElapsedMilliseconds - t;
         }
@@ -381,7 +373,7 @@ namespace ReOsuStoryBoardPlayer
 
             foreach (var layout_list in _UpdatingStoryBoard)
             {
-                if (layout_list.Value.Count==0)
+                if (layout_list.Value.Count == 0)
                 {
                     continue;
                 }
@@ -408,7 +400,7 @@ namespace ReOsuStoryBoardPlayer
                 if (obj.Color.w <= 0)
                     continue;//skip
 
-                if (group!=obj.RenderGroup||additive_trigger!=obj.IsAdditive)
+                if (group != obj.RenderGroup || additive_trigger != obj.IsAdditive)
                 {
                     group?.FlushDraw();
 
@@ -418,12 +410,12 @@ namespace ReOsuStoryBoardPlayer
                     group = obj.RenderGroup;
                 }
 
-                group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale,obj.Anchor, obj.Color,obj.IsVerticalFlip,obj.IsHorizonFlip);
+                group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale, obj.Anchor, obj.Color, obj.IsVerticalFlip, obj.IsHorizonFlip);
             }
-            
-            if (group?.CurrentPostCount!=0)
+
+            if (group?.CurrentPostCount != 0)
                 group?.FlushDraw();
-            
+
             void ChangeAdditiveStatus(bool is_additive_blend)
             {
                 additive_trigger = is_additive_blend;
@@ -431,7 +423,7 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        #endregion
+        #endregion Storyboard Rendering
 
         ~StoryBoardInstance()
         {

@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
 
 namespace ReOsuStoryBoardPlayer
 {
-
     public class EasingInterpolator : IInterpolator
     {
-        float _end, _start;
+        private float _end, _start;
 
         public float end { get { return _end; } set { _end = value; } }
 
         public float start { get { return _start; } set { _start = value; } }
 
-        delegate float EasingFunc(float t, float b, float c, float d);
+        private delegate float EasingFunc(float t, float b, float c, float d);
 
-        EasingFunc _easingfunc = Linear;
+        private EasingFunc _easingfunc = Linear;
 
-        EaseType _type = EaseType.Linear;
+        private EaseType _type = EaseType.Linear;
 
         public EasingInterpolator(EaseType type = EaseType.Linear)
         {
@@ -73,12 +68,12 @@ namespace ReOsuStoryBoardPlayer
             return c * t / d + b;
         }
 
-        #endregion
+        #endregion Linear
 
         #region Expo
 
         /// <summary>
-        /// Easing equation function for an exponential (2^t) easing out: 
+        /// Easing equation function for an exponential (2^t) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -92,7 +87,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for an exponential (2^t) easing in: 
+        /// Easing equation function for an exponential (2^t) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -106,7 +101,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for an exponential (2^t) easing in/out: 
+        /// Easing equation function for an exponential (2^t) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -129,7 +124,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for an exponential (2^t) easing out/in: 
+        /// Easing equation function for an exponential (2^t) easing out/in:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -145,12 +140,12 @@ namespace ReOsuStoryBoardPlayer
             return ExpoEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Expo
 
         #region Circular
 
         /// <summary>
-        /// Easing equation function for a circular (sqrt(1-t^2)) easing out: 
+        /// Easing equation function for a circular (sqrt(1-t^2)) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -164,7 +159,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a circular (sqrt(1-t^2)) easing in: 
+        /// Easing equation function for a circular (sqrt(1-t^2)) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -178,7 +173,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a circular (sqrt(1-t^2)) easing in/out: 
+        /// Easing equation function for a circular (sqrt(1-t^2)) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -195,7 +190,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a circular (sqrt(1-t^2)) easing in/out: 
+        /// Easing equation function for a circular (sqrt(1-t^2)) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -211,12 +206,12 @@ namespace ReOsuStoryBoardPlayer
             return CircEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Circular
 
         #region Quad
 
         /// <summary>
-        /// Easing equation function for a quadratic (t^2) easing out: 
+        /// Easing equation function for a quadratic (t^2) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -230,7 +225,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quadratic (t^2) easing in: 
+        /// Easing equation function for a quadratic (t^2) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -244,7 +239,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quadratic (t^2) easing in/out: 
+        /// Easing equation function for a quadratic (t^2) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -261,7 +256,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quadratic (t^2) easing out/in: 
+        /// Easing equation function for a quadratic (t^2) easing out/in:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -277,12 +272,12 @@ namespace ReOsuStoryBoardPlayer
             return QuadEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Quad
 
         #region Sine
 
         /// <summary>
-        /// Easing equation function for a sinusoidal (sin(t)) easing out: 
+        /// Easing equation function for a sinusoidal (sin(t)) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -296,7 +291,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a sinusoidal (sin(t)) easing in: 
+        /// Easing equation function for a sinusoidal (sin(t)) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -310,7 +305,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a sinusoidal (sin(t)) easing in/out: 
+        /// Easing equation function for a sinusoidal (sin(t)) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -327,7 +322,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a sinusoidal (sin(t)) easing in/out: 
+        /// Easing equation function for a sinusoidal (sin(t)) easing in/out:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -343,12 +338,12 @@ namespace ReOsuStoryBoardPlayer
             return SineEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Sine
 
         #region Cubic
 
         /// <summary>
-        /// Easing equation function for a cubic (t^3) easing out: 
+        /// Easing equation function for a cubic (t^3) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -362,7 +357,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a cubic (t^3) easing in: 
+        /// Easing equation function for a cubic (t^3) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -376,7 +371,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a cubic (t^3) easing in/out: 
+        /// Easing equation function for a cubic (t^3) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -393,7 +388,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a cubic (t^3) easing out/in: 
+        /// Easing equation function for a cubic (t^3) easing out/in:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -409,12 +404,12 @@ namespace ReOsuStoryBoardPlayer
             return CubicEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Cubic
 
         #region Quartic
 
         /// <summary>
-        /// Easing equation function for a quartic (t^4) easing out: 
+        /// Easing equation function for a quartic (t^4) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -428,7 +423,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quartic (t^4) easing in: 
+        /// Easing equation function for a quartic (t^4) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -442,7 +437,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quartic (t^4) easing in/out: 
+        /// Easing equation function for a quartic (t^4) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -459,7 +454,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quartic (t^4) easing out/in: 
+        /// Easing equation function for a quartic (t^4) easing out/in:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -475,12 +470,12 @@ namespace ReOsuStoryBoardPlayer
             return QuartEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Quartic
 
         #region Quintic
 
         /// <summary>
-        /// Easing equation function for a quintic (t^5) easing out: 
+        /// Easing equation function for a quintic (t^5) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -494,7 +489,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quintic (t^5) easing in: 
+        /// Easing equation function for a quintic (t^5) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -508,7 +503,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quintic (t^5) easing in/out: 
+        /// Easing equation function for a quintic (t^5) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -524,7 +519,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a quintic (t^5) easing in/out: 
+        /// Easing equation function for a quintic (t^5) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -539,12 +534,12 @@ namespace ReOsuStoryBoardPlayer
             return QuintEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Quintic
 
         #region Elastic
 
         /// <summary>
-        /// Easing equation function for an elastic (exponentially decaying sine wave) easing out: 
+        /// Easing equation function for an elastic (exponentially decaying sine wave) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -564,7 +559,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for an elastic (exponentially decaying sine wave) easing in: 
+        /// Easing equation function for an elastic (exponentially decaying sine wave) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -584,7 +579,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for an elastic (exponentially decaying sine wave) easing in/out: 
+        /// Easing equation function for an elastic (exponentially decaying sine wave) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -606,7 +601,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for an elastic (exponentially decaying sine wave) easing out/in: 
+        /// Easing equation function for an elastic (exponentially decaying sine wave) easing out/in:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -638,12 +633,13 @@ namespace ReOsuStoryBoardPlayer
             var s = p / (2 * Math.PI) * Math.Asin(1);
             return (float)(Math.Pow(2, -10 * t) * Math.Sin((0.25f * t * d - s) * (2 * Math.PI) / p) + 1);
         }
-        #endregion
+
+        #endregion Elastic
 
         #region Bounce
 
         /// <summary>
-        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing out: 
+        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -664,7 +660,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing in: 
+        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -678,7 +674,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing in/out: 
+        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -695,7 +691,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing out/in: 
+        /// Easing equation function for a bounce (exponentially decaying parabolic bounce) easing out/in:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -710,12 +706,12 @@ namespace ReOsuStoryBoardPlayer
             return BounceEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
 
-        #endregion
+        #endregion Bounce
 
         #region Back
 
         /// <summary>
-        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing out: 
+        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing out:
         /// decelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -729,7 +725,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing in: 
+        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing in:
         /// accelerating from zero velocity.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -743,7 +739,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing in/out: 
+        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing in/out:
         /// acceleration until halfway, then deceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -760,7 +756,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         /// <summary>
-        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing out/in: 
+        /// Easing equation function for a back (overshooting cubic easing: (s+1)*t^3 - s*t^2) easing out/in:
         /// deceleration until halfway, then acceleration.
         /// </summary>
         /// <param name="t">Current time in seconds.</param>
@@ -774,7 +770,8 @@ namespace ReOsuStoryBoardPlayer
                 return BackEaseOut(t * 2, b, c / 2, d);
             return BackEaseIn((t * 2) - d, b + c / 2, c / 2, d);
         }
-        #endregion
+
+        #endregion Back
 
         public float calculate(float value)
         {
@@ -800,15 +797,19 @@ namespace ReOsuStoryBoardPlayer
                 case "InOut":
                     suffix = "OutIn";
                     break;
+
                 case "OutIn":
                     suffix = "InOut";
                     break;
+
                 case "In":
                     suffix = "Out";
                     break;
+
                 case "Out":
                     suffix = "In";
                     break;
+
                 default:
                     break;
             }

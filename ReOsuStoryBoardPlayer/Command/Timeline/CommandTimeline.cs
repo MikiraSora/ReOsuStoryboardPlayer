@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public class CommandTimeline:List<Command>
+    public class CommandTimeline : List<Command>
     {
         public int StartTime => this.Min(c => c.StartTime);
         public int EndTime => this.Max(c => c.EndTime);
 
-        public Event Event => this.FirstOrDefault()?.Event ?? Event.Move; 
+        public Event Event => this.FirstOrDefault()?.Event ?? Event.Move;
 
         public virtual IEnumerable<Command> PickCommands(float time)
         {
@@ -21,15 +18,15 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public new void Add(Command command)
         {
-            Debug.Assert(Count==0 || command.Event == this.First().Event);
+            Debug.Assert(Count == 0 || command.Event == this.First().Event);
             base.Add(command);
         }
 
-        Command selected_command;
+        private Command selected_command;
 
         public Command PickCommand(float current_time)
         {
-            Debug.Assert(!float.IsNaN(current_time),$"current_time is not a number");
+            Debug.Assert(!float.IsNaN(current_time), $"current_time is not a number");
 
             Command command = null;
 
@@ -37,9 +34,9 @@ namespace ReOsuStoryBoardPlayer.Commands
                 return selected_command;
 
             if (current_time < this.First().StartTime)
-                return selected_command=this.First();
+                return selected_command = this.First();
             else if (current_time > this.Last().EndTime)
-                return selected_command=this.Last();
+                return selected_command = this.Last();
 
             //尝试选取在时间范围内的命令
             if (command == null)
@@ -48,7 +45,7 @@ namespace ReOsuStoryBoardPlayer.Commands
                 {
                     if (current_time >= cmd.StartTime && current_time <= cmd.EndTime)
                     {
-                        return selected_command=cmd;
+                        return selected_command = cmd;
                     }
                 }
             }
@@ -63,12 +60,12 @@ namespace ReOsuStoryBoardPlayer.Commands
 
                     if (current_time >= cur_cmd.EndTime && current_time <= next_cmd.StartTime)
                     {
-                        return selected_command=cur_cmd;
+                        return selected_command = cur_cmd;
                     }
                 }
             }
 
-            return selected_command=null;
+            return selected_command = null;
         }
     }
 

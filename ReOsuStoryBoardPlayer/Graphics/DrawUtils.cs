@@ -1,27 +1,22 @@
 ﻿using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Graphics
 {
     //from https://github.com/MikiraSora/SimpleRenderFramework/blob/redesign/SimpleRenderFramework/Graphics/Drawing.cs
     public static class DrawUtils
     {
-        static int texture_vao, texture_vbo_pos, texture_vbo_tex;
+        private static int texture_vao, texture_vbo_pos, texture_vbo_tex;
 
-        static Shader texture_shader;
+        private static Shader texture_shader;
 
-        static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
+        private static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
 
         public static void Init()
         {
             #region Texture
+
             texture_vao = GL.GenVertexArray();
             texture_vbo_pos = GL.GenBuffer();
             texture_vbo_tex = GL.GenBuffer();
@@ -68,7 +63,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
 								#version 330
 out vec4 varying_color;
 out vec2 varying_texPos;
-uniform mat4 ViewProjection; 
+uniform mat4 ViewProjection;
 uniform vec2 in_anchor;
 uniform vec2 in_bound;
 uniform mat4 in_model;
@@ -92,7 +87,8 @@ void main(){
 "
             };
             texture_shader.Compile();
-            #endregion
+
+            #endregion Texture
         }
 
         public static void DrawTexture(Texture texture, Vector position, Vector norAnchor, Vector scale, int angle, int width, int height, Vec4 color)

@@ -1,9 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
@@ -13,7 +9,7 @@ namespace ReOsuStoryBoardPlayer.Commands
     /// </summary>
     public class CommandConflictChecker
     {
-        class RegisterData
+        private class RegisterData
         {
             public Command command { get; set; }
             public int StartTime { get; set; }
@@ -22,11 +18,11 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         private RegisterData[] ExecutedCommandRegisterMap { get; } = new RegisterData[Enum.GetValues(typeof(Event)).Length];
 
-        public bool CheckIfConflict(Command command,float current_playing_time)
+        public bool CheckIfConflict(Command command, float current_playing_time)
         {
             var reg_cmd_info = ExecutedCommandRegisterMap[(int)command.Event];
-                
-            if (reg_cmd_info==null)
+
+            if (reg_cmd_info == null)
                 return true;
 
             /*
@@ -49,7 +45,7 @@ namespace ReOsuStoryBoardPlayer.Commands
                     (reg_cmd_info.command.StartTime < command.StartTime && current_playing_time < command.StartTime)
                 ))
                 return false;//不给执行
-            
+
             return true;
         }
 
@@ -84,7 +80,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             foreach (var data in ExecutedCommandRegisterMap)
                 ObjectPool<RegisterData>.Instance.PutObject(data);
 
-            Array.Clear(ExecutedCommandRegisterMap,0, ExecutedCommandRegisterMap.Length);
+            Array.Clear(ExecutedCommandRegisterMap, 0, ExecutedCommandRegisterMap.Length);
         }
     }
 }

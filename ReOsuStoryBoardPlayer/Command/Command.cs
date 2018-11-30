@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class Command:IComparable<Command>
+    public abstract class Command : IComparable<Command>
     {
 #if DEBUG
         internal bool IsExecuted = false;

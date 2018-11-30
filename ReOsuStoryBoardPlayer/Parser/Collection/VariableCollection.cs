@@ -1,18 +1,12 @@
-﻿using ReOsuStoryBoardPlayer.Parser.Collection;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser.Collection
 {
     public class VariableCollection : CharPatternCollectionBase<StoryboardVariable>
     {
-        public VariableCollection(IEnumerable<StoryboardVariable> variables=null) : base(v=>v.Name, StoryboardVariable.Empty, variables??new List<StoryboardVariable>())
+        public VariableCollection(IEnumerable<StoryboardVariable> variables = null) : base(v => v.Name, StoryboardVariable.Empty, variables ?? new List<StoryboardVariable>())
         {
-
         }
 
         #region Match Variables
@@ -49,9 +43,9 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
                 variable = cur_item.Val;
             }
 
-            return variable!=StoryboardVariable.Empty;
+            return variable != StoryboardVariable.Empty;
         }
 
-        #endregion
+        #endregion Match Variables
     }
 }

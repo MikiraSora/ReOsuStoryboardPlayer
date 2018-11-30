@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    class ColorCommand : ValueCommand<Vec4>
+    internal class ColorCommand : ValueCommand<Vec4>
     {
         public ColorCommand() => Event = Event.Color;
 

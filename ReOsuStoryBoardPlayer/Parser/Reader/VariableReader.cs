@@ -1,10 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Parser.Stream;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
@@ -14,7 +11,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         public VariableReader(OsuFileReader reader)
         {
-            this.reader = new SectionReader(Section.Variables,reader);
+            this.reader = new SectionReader(Section.Variables, reader);
         }
 
         public IEnumerable<StoryboardVariable> EnumValues()

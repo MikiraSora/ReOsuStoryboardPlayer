@@ -1,26 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
-using System.Threading;
-using System.Text;
 
 namespace ReOsuStoryBoardPlayer
 {
     public static class Log
     {
-        static long _currentTime = 0;
+        private static long _currentTime = 0;
 
-        static bool _outPutWithColor = true;
+        private static bool _outPutWithColor = true;
 
-        public static bool AbleLog { get;
-            set; } = true;
+        public static bool AbleLog
+        {
+            get;
+            set;
+        } = true;
 
         public static bool AbleDebugLog { get; set; } = false;
 
         public static bool IsColorOutput { get { return _outPutWithColor; } set { _outPutWithColor = value; } }
 
-        static ConsoleColor[] colors =
+        private static ConsoleColor[] colors =
         {
             ConsoleColor.Yellow,ConsoleColor.Black,//Warn
             ConsoleColor.Red,ConsoleColor.Black,//Error
@@ -42,7 +41,7 @@ namespace ReOsuStoryBoardPlayer
             AbleLog = true;
         }
 
-        static string _getTimeStr()
+        private static string _getTimeStr()
         {
             long timePass = Environment.TickCount - _currentTime;
             long min = timePass / (60 * 1000), sec = (timePass - min * (60 * 1000)) / 1000, ms = timePass - min * 60000 - sec * 1000;
@@ -50,7 +49,7 @@ namespace ReOsuStoryBoardPlayer
             return string.Format("{0:D2}:{1:D2}.{2:D3}", min, sec, ms);
         }
 
-        static string _buildLogMessage(string message, LogLevel level)
+        private static string _buildLogMessage(string message, LogLevel level)
         {
             var stack = new StackTrace();
             int logMethodPosition = /*stack.FrameCount-*/6;
@@ -66,7 +65,7 @@ namespace ReOsuStoryBoardPlayer
             return outPut;
         }
 
-        static void _renderColor(ref string message, LogLevel level)
+        private static void _renderColor(ref string message, LogLevel level)
         {
             int index = (int)level;
             Console.ForegroundColor = colors[(index) * 2 + 0];
@@ -75,7 +74,7 @@ namespace ReOsuStoryBoardPlayer
             Console.ResetColor();
         }
 
-        static void _log(string message, LogLevel level)
+        private static void _log(string message, LogLevel level)
         {
             if (!AbleLog)
                 return;

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer
+﻿namespace ReOsuStoryBoardPlayer
 {
-    class BatchShader : Shader
+    internal class BatchShader : Shader
     {
         public BatchShader()
         {
@@ -16,7 +10,7 @@ namespace ReOsuStoryBoardPlayer
                 out vec2 varying_texPos;
                 out vec2 varying_flip;
 
-                uniform mat4 ViewProjection; 
+                uniform mat4 ViewProjection;
 
                 layout(location=0) in vec2 in_texPos;
                 layout(location=1) in vec2 in_pos;
@@ -54,7 +48,7 @@ namespace ReOsuStoryBoardPlayer
         }
     }
 
-    class DebugBatchShader : Shader
+    internal class DebugBatchShader : Shader
     {
         public DebugBatchShader()
         {
@@ -63,7 +57,7 @@ namespace ReOsuStoryBoardPlayer
 out vec4 varying_color;
 out vec2 varying_texPos;
 
-uniform mat4 ViewProjection; 
+uniform mat4 ViewProjection;
 
 layout(location=0) in vec2 in_texPos;
 layout(location=1) in vec2 in_pos;
@@ -101,4 +95,3 @@ void main(){
         }
     }
 }
-

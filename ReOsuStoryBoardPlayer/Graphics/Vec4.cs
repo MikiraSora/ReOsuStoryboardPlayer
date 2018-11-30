@@ -1,10 +1,4 @@
-﻿using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.ComponentModel;
-
-namespace ReOsuStoryBoardPlayer
+﻿namespace ReOsuStoryBoardPlayer
 {
     public struct Vec4
     {
@@ -61,7 +55,7 @@ namespace ReOsuStoryBoardPlayer
             return x + ", " + y + ", " + z + ", " + w;
         }
 
-        public static Vec4 operator -(Vec4 a,Vec4 b)
+        public static Vec4 operator -(Vec4 a, Vec4 b)
         {
             return new Vec4(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
         }

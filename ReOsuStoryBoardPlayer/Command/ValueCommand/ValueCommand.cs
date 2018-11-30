@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer.Commands
+﻿namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class ValueCommand<VALUE_TYPE>:Command
+    public abstract class ValueCommand<VALUE_TYPE> : Command
     {
         public abstract void ApplyValue(StoryBoardObject @object, VALUE_TYPE value);
 

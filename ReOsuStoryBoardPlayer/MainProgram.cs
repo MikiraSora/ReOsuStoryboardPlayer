@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -17,7 +13,7 @@ namespace ReOsuStoryBoardPlayer
             Log.AbleDebugLog = false;
 #endif
 
-            string beatmap_folder =string.Empty;
+            string beatmap_folder = string.Empty;
 
             if (argv.Length == 0)
             {
@@ -25,18 +21,17 @@ namespace ReOsuStoryBoardPlayer
             }
             else
                 beatmap_folder = argv[0];
-            
+
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
-            StoryboardWindow window = new StoryboardWindow(747,960);
+            StoryboardWindow window = new StoryboardWindow(747, 960);
 
             window.LoadStoryboardInstance(instance);
-
 
             window.Run();
         }
 
-        static StoryBoardInstance GetInstance(string beatmap_folder)
+        private static StoryBoardInstance GetInstance(string beatmap_folder)
         {
             if (string.IsNullOrWhiteSpace(beatmap_folder))
             {
@@ -54,13 +49,13 @@ namespace ReOsuStoryBoardPlayer
             }
             catch (Exception e)
             {
-               Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
+                Exit($"Parse beatmap folder and load storyboard failed! {e.Message}");
             }
 
             return null;
         }
 
-        static void Exit(string reason)
+        private static void Exit(string reason)
         {
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.Yellow;

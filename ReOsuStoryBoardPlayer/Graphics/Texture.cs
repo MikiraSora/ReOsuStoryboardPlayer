@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OpenTK.Graphics.OpenGL;
+using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
-using OpenTK.Graphics.OpenGL;
-using System.ComponentModel;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace ReOsuStoryBoardPlayer
 {
     [Serializable]
-    public class Texture :IDisposable
+    public class Texture : IDisposable
     {
         protected int _id;
 
@@ -29,11 +25,12 @@ namespace ReOsuStoryBoardPlayer
 
         [Browsable(false)]
         public int ID { get { return _id; } }
+
         public string filePath { get { return _filename; } set { LoadFromFile(value); } }
 
-        Vector _textureSize;
+        private Vector _textureSize;
 
-        string name;
+        private string name;
 
         public int Width { get { return (int)_textureSize.x; } }
         public int Height { get { return (int)_textureSize.y; } }
@@ -100,15 +97,15 @@ namespace ReOsuStoryBoardPlayer
                     OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data);
             }
         }
-        
+
         public override string ToString()
         {
             return name;
         }
-        
+
         public void Dispose()
         {
             GL.DeleteTexture(_id);
-        }   
+        }
     }
 }

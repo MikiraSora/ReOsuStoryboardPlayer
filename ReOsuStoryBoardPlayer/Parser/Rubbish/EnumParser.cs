@@ -1,9 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Parser.Collection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser.Rubbish
 {
@@ -29,14 +25,14 @@ namespace ReOsuStoryBoardPlayer.Parser.Rubbish
             private set { }
         }
 
-        CharPatternCollectionBase<EnumWrapper> map;
+        private CharPatternCollectionBase<EnumWrapper> map;
 
-        readonly struct EnumWrapper:IComparable<EnumWrapper>
+        private readonly struct EnumWrapper : IComparable<EnumWrapper>
         {
             public readonly T val;
             public readonly int iv;
 
-            public EnumWrapper(T val,int iv)
+            public EnumWrapper(T val, int iv)
             {
                 this.val = val;
                 this.iv = iv;
@@ -52,7 +48,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Rubbish
             foreach (T val in Enum.GetValues(typeof(T)))
             {
                 int iv = CalculateEnumValue(val);
-                EnumWrapper enumWrapper = new EnumWrapper(val,iv);
+                EnumWrapper enumWrapper = new EnumWrapper(val, iv);
 
                 map[iv.ToString()] = enumWrapper;
                 map[val.ToString()] = enumWrapper;

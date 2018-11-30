@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Buffers;
-using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser.Extension
 {
@@ -53,7 +49,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Extension
             return line.Slice(index);
         }
 
-        public static ReadOnlyMemory<byte> TrimStart(this ReadOnlyMemory<byte> line,params byte[] filter)
+        public static ReadOnlyMemory<byte> TrimStart(this ReadOnlyMemory<byte> line, params byte[] filter)
         {
             int index = 0;
 
@@ -90,13 +86,13 @@ namespace ReOsuStoryBoardPlayer.Parser.Extension
 
         public static int ToInt(this string chars) => int.Parse(chars);
 
-        public static bool StartsWith(this ReadOnlyMemory<byte> buffer,byte[] content)
+        public static bool StartsWith(this ReadOnlyMemory<byte> buffer, byte[] content)
         {
             if (buffer.Length < content.Length)
                 return false;
 
             for (int i = 0; i < content.Length; i++)
-                if (buffer.Span[i]!=content[i])
+                if (buffer.Span[i] != content[i])
                     return false;
 
             return true;

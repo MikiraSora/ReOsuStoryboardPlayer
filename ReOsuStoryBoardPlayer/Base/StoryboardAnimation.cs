@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -18,7 +14,7 @@ namespace ReOsuStoryBoardPlayer
 
         public SpriteInstanceGroup[] backup_group;
 
-        int prev_frame_index=-2857;
+        private int prev_frame_index = -2857;
 
         public override void Update(float current_time)
         {
@@ -28,9 +24,9 @@ namespace ReOsuStoryBoardPlayer
 
             current_frame_index = (int)(LoopType == LoopType.LoopForever ? (current_frame_index % FrameCount) : Math.Min(current_frame_index, FrameCount - 1));
 
-            int result = Math.Max(0,(int)current_frame_index);
+            int result = Math.Max(0, (int)current_frame_index);
 
-            if (prev_frame_index!= result)
+            if (prev_frame_index != result)
             {
                 ImageFilePath = FrameBaseImagePath + result + FrameFileExtension;
                 this.RenderGroup = backup_group[result];

@@ -1,25 +1,19 @@
 ﻿using OpenTK;
 using ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer
 {
     public class DebugToolInstance
     {
-        StoryBoardInstance refInstance;
+        private StoryBoardInstance refInstance;
 
-        DebugController.ControllerWindow ControllerWindow;
+        private DebugController.ControllerWindow ControllerWindow;
 
-        ObjectInfoVisualizerWindow VisualizerWindow;
+        private ObjectInfoVisualizerWindow VisualizerWindow;
 
-        string debug_break_storyboard_image;
+        private string debug_break_storyboard_image;
 
-        Event debug_break_event;
+        private Event debug_break_event;
 
         public DebugToolInstance(StoryBoardInstance instance)
         {
@@ -83,9 +77,9 @@ namespace ReOsuStoryBoardPlayer
 
         public void SelectObjectIntoVisualizer(float x, float y)
         {
-            int last_order_index = VisualizerWindow?.obj?.Z??-1;
+            int last_order_index = VisualizerWindow?.obj?.Z ?? -1;
 
-            StoryBoardObject obj=null;
+            StoryBoardObject obj = null;
 
             foreach (var list in refInstance._UpdatingStoryBoard.Values)
             {
@@ -103,24 +97,24 @@ namespace ReOsuStoryBoardPlayer
             VisualizerWindow.obj = obj;
         }
 
-        static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
+        private static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
 
-        static readonly float[] _cacheBaseVertex = new float[] {
+        private static readonly float[] _cacheBaseVertex = new float[] {
                 0,0,
                 0,-1,
                 1,-1,
                 1,0,
             };
 
-        bool IsPointInObjectArea(StoryBoardObject sb_obj, float x, float y)
+        private bool IsPointInObjectArea(StoryBoardObject sb_obj, float x, float y)
         {
             var mouse_point = new Vector2(x, y);
             Vector3[] points = new Vector3[4];
 
             Vector2 in_anchor = new Vector2(sb_obj.Anchor.x, -sb_obj.Anchor.y);
 
-            float w = sb_obj.RenderGroup.Texture.Width ;
-            float h = sb_obj.RenderGroup.Texture.Height ;
+            float w = sb_obj.RenderGroup.Texture.Width;
+            float h = sb_obj.RenderGroup.Texture.Height;
 
             Vector2 in_bound = new Vector2(w, h);
 
@@ -144,14 +138,14 @@ namespace ReOsuStoryBoardPlayer
 
             mouse_point.X = mouse_point.X - StoryboardWindow.CurrentWindow.Width / 2;
             mouse_point.Y = StoryboardWindow.CurrentWindow.Height / 2 - mouse_point.Y;
-            
+
             for (int i = 0; i < 4; i++)
             {
                 var vertex = new Vector2(_cacheBaseVertex[i * 2 + 0], _cacheBaseVertex[i * 2 + 1]);
                 var temp = (vertex - in_anchor) * in_bound;
                 var transform = new Vector4(temp.X, temp.Y, 0, 1) * StoryboardWindow.CameraViewMatrix * in_model;
 
-                points[i] = new Vector3(mouse_point-new Vector2(transform.X, transform.Y) );
+                points[i] = new Vector3(mouse_point - new Vector2(transform.X, transform.Y));
             }
 
             Vector3 v1 = Vector3.Cross(points[0], points[1]).Normalized();
@@ -163,13 +157,11 @@ namespace ReOsuStoryBoardPlayer
                 Vector3.Dot(v3, v4) > 0.9999f && Vector3.Dot(v4, v1) > 0.9999f)
                 return true;
             return false;
-
         }
 
         public void CannelSelectObject()
         {
             VisualizerWindow.obj = null;
         }
-
     }
 }

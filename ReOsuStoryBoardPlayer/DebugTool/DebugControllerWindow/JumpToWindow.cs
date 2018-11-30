@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ReOsuStoryBoardPlayer.DebugController
 {
     public partial class JumpToWindow : Form
     {
-        StoryBoardInstance instance;
+        private StoryBoardInstance instance;
 
         public JumpToWindow(StoryBoardInstance instance)
         {

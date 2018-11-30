@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Parser
+namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
-    interface IReader<T>
+    internal interface IReader<T>
     {
         IEnumerable<T> EnumValues();
     }

@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ReOsuStoryBoardPlayer.DebugController
 {
     public partial class ControllerWindow : Form
     {
-        StoryBoardInstance CurrentStoryboardIntance;
+        private StoryBoardInstance CurrentStoryboardIntance;
 
         public ControllerWindow(StoryBoardInstance instance)
         {
@@ -38,10 +31,9 @@ namespace ReOsuStoryBoardPlayer.DebugController
 
         private void button4_Click(object sender, EventArgs e)
         {
-
 #if DEBUG
             CurrentStoryboardIntance.DebugToolInstance.DumpCurrentStoryboardStatus();
-            
+
 #endif
         }
 
@@ -56,7 +48,7 @@ namespace ReOsuStoryBoardPlayer.DebugController
 #if DEBUG
             CurrentStoryboardIntance.DebugToolInstance.ClearBreakpoint();
             MessageBox.Show("Clear braekpoints!");
-            
+
 #endif
         }
 
@@ -64,7 +56,7 @@ namespace ReOsuStoryBoardPlayer.DebugController
         {
             label2.Text = CurrentStoryboardIntance.folder_path;
             progressBar1.Value = (int)CurrentStoryboardIntance.player.CurrentPlayback;
-            label1.Text = CurrentStoryboardIntance.player.PlaybackSpeed+"x";
+            label1.Text = CurrentStoryboardIntance.player.PlaybackSpeed + "x";
             label3.Text = $"Time:{CurrentStoryboardIntance.player.CurrentPlayback}({CurrentStoryboardIntance.player.CurrentFixedTime})/{CurrentStoryboardIntance.player.Length}";
             label5.Text = $"{CurrentStoryboardIntance.RenderCastTime + CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.RenderCastTime}";
 
@@ -83,7 +75,6 @@ namespace ReOsuStoryBoardPlayer.DebugController
 
         private void ControllerWindow_Load(object sender, EventArgs e)
         {
-
         }
 
         private void ControllerWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -109,7 +100,7 @@ namespace ReOsuStoryBoardPlayer.DebugController
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.Volume = ((TrackBar)sender).Value/100.0f;
+            CurrentStoryboardIntance.player.Volume = ((TrackBar)sender).Value / 100.0f;
         }
     }
 }

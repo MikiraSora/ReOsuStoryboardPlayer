@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
-    class LoopCommand : GroupCommand
+    internal class LoopCommand : GroupCommand
     {
         public LoopCommand() => Event = Event.Loop;
 
         public int CostTime { get; private set; }
 
         public int LoopCount { get; set; }
-        
+
         public void AddSubCommandsAndUpdate(IEnumerable<Command> commands)
         {
             AddSubCommand(commands);
@@ -53,9 +50,9 @@ namespace ReOsuStoryBoardPlayer.Commands
             }
             */
 
-            CostTime = SubCommands.SelectMany(l=>l.Value).Max(c=>c.EndTime) - SubCommands.SelectMany(l => l.Value).Min(c => c.StartTime);
+            CostTime = SubCommands.SelectMany(l => l.Value).Max(c => c.EndTime) - SubCommands.SelectMany(l => l.Value).Min(c => c.StartTime);
             var total_cast_time = CostTime * LoopCount;
-            
+
             EndTime = StartTime + total_cast_time;
 
             foreach (var list in SubCommands.Values)

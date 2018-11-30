@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Parser.Stream
+namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
-    class SectionReader : IReader<string>
+    internal class SectionReader : IReader<string>
     {
         private readonly Section section;
         private readonly OsuFileReader reader;
 
-        public SectionReader(Section section,OsuFileReader reader)
+        public SectionReader(Section section, OsuFileReader reader)
         {
             this.section = section;
             this.reader = reader;

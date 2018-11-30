@@ -1,20 +1,17 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 {
     public partial class ObjectInfoVisualizerWindow : Form
     {
-        StoryBoardObject last_obj;
+        private StoryBoardObject last_obj;
 
         public StoryBoardObject obj { get; set; }
         public StoryBoardInstance Instance { get; }
@@ -31,7 +28,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
         {
             if (obj != null)
             {
-                if (obj!=last_obj)
+                if (obj != last_obj)
                 {
                     //这里是物件装载一次的
 
@@ -47,7 +44,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                         var path = Path.Combine(Instance.folder_path, obj.ImageFilePath);
                         var img = Bitmap.FromFile(path);
 
-                        if (img!=null)
+                        if (img != null)
                         {
                             var prev_imgae = pictureBox1.Image;
                             pictureBox1.Image = img;
@@ -56,7 +53,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                     }
                     catch (Exception e)
                     {
-                        Log.Error("[ObjectInfoVisualizer]Can't load bitmap:"+e.Message);
+                        Log.Error("[ObjectInfoVisualizer]Can't load bitmap:" + e.Message);
                     }
                 }
 
@@ -64,10 +61,10 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                 PositionLabel.Text = obj.Postion.ToString();
 
-                int r=(int)(obj.Color.x * 255), g=(int)(obj.Color.y * 255), b=(int)(obj.Color.z * 255);
+                int r = (int)(obj.Color.x * 255), g = (int)(obj.Color.y * 255), b = (int)(obj.Color.z * 255);
                 ColorLabel.Text = $"{r},{g},{b}";
-                ColorLabel.ForeColor = Color.FromArgb(r,g,b);
-                ColorLabel.BackColor = Color.FromArgb(255-r, 255 - g, 255 - b);
+                ColorLabel.ForeColor = Color.FromArgb(r, g, b);
+                ColorLabel.BackColor = Color.FromArgb(255 - r, 255 - g, 255 - b);
 
                 AngleLabel.Text = (obj.Rotate * 180 / Math.PI).ToString();
                 AlphaLabel.Text = obj.Color.w.ToString();
@@ -114,13 +111,13 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
         private void ShowCommandList()
         {
-            if (obj!=last_obj)
+            if (obj != last_obj)
             {
                 CommandTreeViewer.Nodes.Clear();
 
-                if (obj!=null)
+                if (obj != null)
                 {
-                    var root=CommandTreeViewer.Nodes.Add(obj.ToString());
+                    var root = CommandTreeViewer.Nodes.Add(obj.ToString());
 
                     foreach (var command_list in obj.CommandMap)
                     {
@@ -130,10 +127,10 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                         foreach (var cmd in command_list.Value)
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
-                                    
+
                             if (cmd is LoopCommand loop_command)
                             {
-                                foreach (var loop_sub_command in loop_command.SubCommands.SelectMany(l=>l.Value).OrderBy(c=>c.StartTime))
+                                foreach (var loop_sub_command in loop_command.SubCommands.SelectMany(l => l.Value).OrderBy(c => c.StartTime))
                                 {
                                     var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
                                     BindCommandNode(loop_sub_command, loop_sub_note);
@@ -148,7 +145,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                 }
             }
 
-            void BindCommandNode(Command command,TreeNode node)
+            void BindCommandNode(Command command, TreeNode node)
             {
                 command_node_map[command] = node;
             }
@@ -173,7 +170,6 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
                 if (obj != null)
                 {
-
                 }
             }
         }*/
