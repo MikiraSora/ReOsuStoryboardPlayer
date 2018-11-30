@@ -151,7 +151,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         
         private Dictionary<Event, CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<byte>> lines)
         {
-            var list = ParallelParseCommand(lines);
+            var list = lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommand(lines) : ParallelParseCommand(lines);
 
             Dictionary<Event, CommandTimeline> map = new Dictionary<Event, CommandTimeline>();
 
