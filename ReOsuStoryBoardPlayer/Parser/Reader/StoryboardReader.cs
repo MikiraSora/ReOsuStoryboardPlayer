@@ -62,65 +62,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         }
 
         #region Packet Parse
-
-        /*
-        public StoryBoardObject ParseObjectLine(string line)
-        {
-            StoryBoardObject obj = null;
-
-            var data_arr = line.Split(',');
-
-            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0].ToString(), true, out var obj_type)) || !(obj_type == StoryboardObjectType.Background||obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
-                throw new Exception($"Unknown/Unsupport storyboard object type:" + data_arr[0]);
-
-            switch (obj_type)
-            {
-                case StoryboardObjectType.Background:
-                    obj = new StoryboardBackgroundObject();
-                    break;
-
-                case StoryboardObjectType.Sprite:
-                    obj = new StoryBoardObject();
-                    break;
-
-                case StoryboardObjectType.Animation:
-                    obj = new StoryboardAnimation();
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (!(obj is StoryboardBackgroundObject))
-            {
-                obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1].ToString());
-
-                obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2].ToString()));
-
-                obj.ImageFilePath = data_arr[3].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
-
-                obj.Postion = new Vector(float.Parse(data_arr[4].ToString()), float.Parse(data_arr[5].ToString()));
-
-                if (obj is StoryboardAnimation animation)
-                    ParseStoryboardAnimation(animation, data_arr);
-            }
-            else
-            {
-                //For background object
-                obj.ImageFilePath = data_arr[2].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
-
-                obj.Z = -1;
-
-                var position= data_arr.Length>4? new Vector(float.Parse(data_arr[3].ToString()), float.Parse(data_arr[4].ToString())):Vector.Zero;
-
-                if (position != Vector.One)
-                    obj.Postion = position + new Vector(320, 240);
-            }
-
-            return obj;
-        }
-        */
-
+        
         private readonly static byte[] SPLIT = new byte[] { 0x2c };
         
         public StoryBoardObject ParseObjectLine(ReadOnlyMemory<byte> line)
@@ -209,7 +151,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         
         private Dictionary<Event, CommandTimeline> BuildCommandMap(List<ReadOnlyMemory<byte>> lines)
         {
-            var list = ParseCommand(lines);
+            var list = ParallelParseCommand(lines);
 
             Dictionary<Event, CommandTimeline> map = new Dictionary<Event, CommandTimeline>();
 
@@ -224,6 +166,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
         }
 
         private readonly static byte[][] CMD_PREFIX = new[] { Encoding.UTF8.GetBytes("__"), Encoding.UTF8.GetBytes("  ") };
+
         public List<Command> ParseCommand(List<ReadOnlyMemory<byte>> lines)
         {
             List<Command> commands = new List<Command>(), temp = ObjectPool<List<Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
@@ -269,6 +212,84 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             ObjectPool<List<Command>>.Instance.PutObject(cur_group_cmds);
 
             return commands;
+        }
+        
+        public IEnumerable<Command> ParallelParseCommand(List<ReadOnlyMemory<byte>> lines)
+        {
+            System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)> result_list = new System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)>();
+
+            Parallel.For(0, lines.Count,i => {
+                var line = lines[i];
+                var temp_list = ObjectPool<List<Command>>.Instance.GetObject();
+                temp_list.Clear();
+                var data_arr = line.Split(SPLIT);
+                var is_sub_cmds = data_arr.First().StartsWith(CMD_PREFIX[0]) || data_arr.First().StartsWith(CMD_PREFIX[1]);
+
+                CommandParserIntance.Parse(data_arr, temp_list);
+
+                result_list.Add((i,temp_list.ToArray(),is_sub_cmds));
+
+                ObjectPool<List<Command>>.Instance.PutObject(temp_list);
+            });
+
+            var result=result_list.SelectMany(p=>p.cmds.Select(cmd=>(p.index,cmd,p.is_sub))).OrderBy(z=>z.index);
+            var sub_cmds = result.Where(x => x.is_sub);
+            var fin_list = result.Except(sub_cmds.Where(sub_cmd=> {
+                var r = result.FirstOrDefault(z => z.index == sub_cmd.index - 1);
+
+                if (r.cmd is GroupCommand group)
+                    group.AddSubCommand(sub_cmd.cmd);
+
+                return true;
+            })).Select(p=>p.cmd);
+
+            return fin_list;
+
+            /*
+            List<Command> commands = new List<Command>(), temp = ObjectPool<List<Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
+
+            GroupCommand current_group_command = null;
+
+            foreach (var line in lines)
+            {
+                var data_arr = line.Split(SPLIT);
+
+                var is_sub_cmd = data_arr.First().StartsWith(CMD_PREFIX[0]) || data_arr.First().StartsWith(CMD_PREFIX[1]);
+
+                foreach (var cmd in CommandParserIntance.Parse(data_arr, temp))
+                {
+                    if (is_sub_cmd)
+                    {
+                        //如果是子命令的话就要添加到当前Group
+                        if (current_group_command != null)
+                            current_group_command.AddSubCommand(cmd);
+                    }
+                    else
+                    {
+                        var prev_group = current_group_command;
+                        current_group_command = cmd as GroupCommand;
+
+                        if (current_group_command != prev_group &&
+                            prev_group is LoopCommand loopc)
+                        {
+                            loopc.UpdateParam();
+                        }
+
+                        commands.Add(cmd);
+                    }
+                }
+
+                temp.Clear();
+            }
+
+            if (current_group_command is LoopCommand loop)
+                loop.UpdateParam();
+
+            ObjectPool<List<Command>>.Instance.PutObject(temp);
+            ObjectPool<List<Command>>.Instance.PutObject(cur_group_cmds);
+
+            return commands;
+            */
         }
 
         #endregion Packet Parse

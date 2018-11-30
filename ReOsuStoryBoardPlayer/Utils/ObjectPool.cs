@@ -3,17 +3,29 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Utils
 {
-    public class ObjectPool<T> where T : class , new()
+    public abstract class ObjectPool
     {
-        private ConcurrentBag<T> _objects;
+        public abstract void Clean();
+    }
 
-        private ObjectPool()
+    public class ObjectPool<T> : ObjectPool where T : class, new()
+    {
+        private ConcurrentBag<T> _objects = new ConcurrentBag<T>();
+
+        private static ConcurrentBag<ObjectPool> _pool_objects = new ConcurrentBag<ObjectPool>();
+        private static Timer _t;
+
+        static ObjectPool()
         {
-            _objects = new ConcurrentBag<T>();
+            _t = new Timer(_=> {
+                foreach (var x in _pool_objects)
+                    x.Clean();
+            }, null, 0, 10_000);
         }
 
         public T GetObject()
@@ -25,8 +37,14 @@ namespace ReOsuStoryBoardPlayer.Utils
 
         public void PutObject(T item)
         {
-            if (item!=null)
+            if (item != null)
                 _objects.Add(item);
+        }
+
+        public override void Clean()
+        {
+            while (_objects.Count != 0)
+                _objects.TryTake(out _);
         }
 
         private static ObjectPool<T> _instance;
@@ -36,7 +54,10 @@ namespace ReOsuStoryBoardPlayer.Utils
             get
             {
                 if (_instance == null)
+                {
                     _instance = new ObjectPool<T>();
+                    _pool_objects.Add(_instance);
+                }
                 return _instance;
             }
         }

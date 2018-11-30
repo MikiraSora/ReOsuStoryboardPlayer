@@ -21,7 +21,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\470977 Mili - worldexecute(me);";
+                beatmap_folder = @"G:\SBTest\[mahua] - reol - asymmetry";
             }
             else
                 beatmap_folder = argv[0];

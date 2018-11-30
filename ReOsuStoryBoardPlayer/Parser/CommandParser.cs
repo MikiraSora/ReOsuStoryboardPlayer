@@ -140,9 +140,9 @@ namespace ReOsuStoryBoardPlayer.Parser
 
     public class CommandParserIntance
     {
-        private readonly static byte[] TRIM_CMD = new byte[] {0x5f,0x20};
+        private readonly static byte[] TRIM_CMD = new byte[] { 0x5f, 0x20 };
 
-            public static List<Command> Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr, List<Command> result)
+        public static List<Command> Parse(IEnumerable<ReadOnlyMemory<byte>> data_arr, List<Command> result)
         {
             var command_event = data_arr.First().TrimStart(TRIM_CMD).GetContentString();
 
