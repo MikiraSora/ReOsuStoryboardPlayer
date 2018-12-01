@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder =@"G:\SBTest\46216 Watarirouka Hashiritai7 - Valentine Kiss";
+                beatmap_folder =@"G:\SBTest\46268 Ryu_ - Sakura Reflection";
             }
             else
                 beatmap_folder = argv[0];

@@ -102,7 +102,6 @@
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
     <Compile Include="Base\StoryboardBackgroundObject.cs" />
-    <Compile Include="Command\CommandConflictChecker.cs" />
     <Compile Include="Command\Timeline\CommandTimeline.cs" />
     <Compile Include="Command\Group\GroupCommand.cs" />
     <Compile Include="Command\Group\LoopCommand.cs" />

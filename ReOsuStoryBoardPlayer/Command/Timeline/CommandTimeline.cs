@@ -9,8 +9,6 @@ namespace ReOsuStoryBoardPlayer.Commands
         public int StartTime => this.Min(c => c.StartTime);
         public int EndTime => this.Max(c => c.EndTime);
 
-        public Event Event => this.FirstOrDefault()?.Event ?? Event.Move;
-
         public virtual IEnumerable<Command> PickCommands(float time)
         {
             yield return PickCommand(time);
@@ -18,7 +16,6 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public new void Add(Command command)
         {
-            //Debug.Assert(Count == 0 || command.Event == this.First().Event);
             base.Add(command);
         }
 

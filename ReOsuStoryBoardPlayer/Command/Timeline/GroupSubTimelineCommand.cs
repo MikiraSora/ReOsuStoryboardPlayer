@@ -39,7 +39,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             if (command != null)
             {
                 //store command start/end time
-                var offset_time = loop_command.StartTime + current_loop_index * timeline_cost_time;
+                var offset_time = loop_command.StartTime + (current_loop_index-1) * timeline_cost_time;
                 command.StartTime += offset_time;
                 command.EndTime += offset_time;
 

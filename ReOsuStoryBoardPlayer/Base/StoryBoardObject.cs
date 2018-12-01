@@ -21,8 +21,6 @@ namespace ReOsuStoryBoardPlayer
 
         public int Z = -1;
 
-        public CommandConflictChecker CommandConflictChecker { get; } = new CommandConflictChecker();
-
         #region Transform
 
         public Vector Postion = new Vector(320, 240), Scale = new Vector(1, 1);
@@ -44,6 +42,11 @@ namespace ReOsuStoryBoardPlayer
                 AddCommand(loop);
                 //这里不用return是因为还要再Visualizer显示这个Loop命令，方便调试，Loop::Execute(...)已被架空
             }
+
+            /*
+             这里因为Move/MoveX/MoveY是不同时间轴的执行，会导致MoveX执行后又被执行MoveY之类导致命令冲突，
+             所以干脆直接将几个命令和其变种都放置在同一个时间轴上
+             */
 
             var cmd_event = command.Event;
 
@@ -76,14 +79,6 @@ namespace ReOsuStoryBoardPlayer
                 var sub_command_wrapper = new LoopSubTimelineCommand(loop_command, @event);
                 AddCommand(sub_command_wrapper);
             }
-        }
-
-        public void AddCommand(CommandTimeline timeline)
-        {
-            timeline.ForEach(c =>
-            {
-                AddCommand(c);
-            });
         }
 
         public void SortCommands()
