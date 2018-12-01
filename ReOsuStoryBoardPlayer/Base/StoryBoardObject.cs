@@ -46,6 +46,8 @@ namespace ReOsuStoryBoardPlayer
             /*
              这里因为Move/MoveX/MoveY是不同时间轴的执行，会导致MoveX执行后又被执行MoveY之类导致命令冲突，
              所以干脆直接将几个命令和其变种都放置在同一个时间轴上
+
+             cnm,脑力跑不了:https://puu.sh/CaHLu/4654dad23f.png
              */
 
             var cmd_event = command.Event;
