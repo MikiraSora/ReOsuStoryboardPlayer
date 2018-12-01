@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Extension;
+using ReOsuStoryBoardPlayer.Parser.Stream;
 using System;
 using System.Collections.Generic;
 
@@ -69,11 +70,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         public IEnumerable<StoryboardPacket> EnumValues()
         {
-            var FileLine = 0;
-
             foreach (var line in reader.EnumValues())
             {
-                switch (CheckLineType(line))
+                var decode_line = LineProcessVariable(line);
+
+                switch (CheckLineType(decode_line))
                 {
                     case LineType.Object:
                         //return current object
@@ -81,8 +82,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                         packet = new StoryboardPacket();
                         packet.CommandLines = new List<string>();
-                        packet.ObjectFileLine = FileLine - 1;
-                        packet.ObjectLine = line;
+                        packet.ObjectFileLine =reader.FileLine;
+                        packet.ObjectLine =decode_line;
 
                         if (t != StoryboardPacket.Empty)
                             yield return t;
@@ -90,7 +91,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                         break;
 
                     case LineType.Command:
-                        packet.CommandLines.Add(line);
+                        packet.CommandLines.Add(decode_line);
                         break;
 
                     //ignore comment/space only
@@ -124,19 +125,15 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             packet = StoryboardPacket.Empty;
         }
 
-        public ReadOnlyMemory<char> LineProcessVariable(ReadOnlyMemory<char> line)
+        public string LineProcessVariable(string line)
         {
             //get replacable variables
-            var var_list = Variables.MatchReplacableVariables(line.ToString())/*.ToDictionary(p=>p.Name)*/;
-
-            var result = line.ToString();
+            var var_list = Variables.MatchReplacableVariables(line);
 
             foreach (var var in var_list)
-                result = result.Replace(var.Name, var.Value);
+                line=line.Replace(var.Name, var.Value);
 
-            var chars = result.ToCharArray();
-
-            return chars;
+            return line;
         }
     }
 }

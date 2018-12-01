@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder = @"G:\SBTest\[mahua] - reol - asymmetry";
+                beatmap_folder =@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion";
             }
             else
                 beatmap_folder = argv[0];

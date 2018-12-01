@@ -14,7 +14,6 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
         public IEnumerable<StoryboardVariable> MatchReplacableVariables(string line)
         {
             int cur_pos = 0;
-            var span = line.AsMemory();
 
             while (!(cur_pos < 0 || cur_pos >= line.Length - 1))
             {
@@ -22,19 +21,19 @@ namespace ReOsuStoryBoardPlayer.Parser.Collection
                 if (cur_pos < 0 || cur_pos >= line.Length - 1)
                     break;
 
-                if (TryGetReplacableVariable(span.Slice(cur_pos), out var variable))
+                if (TryGetReplacableVariable(line.Substring(cur_pos), out var variable))
                     yield return variable;
 
                 cur_pos++;
             }
         }
 
-        private bool TryGetReplacableVariable(ReadOnlyMemory<char> line, out StoryboardVariable variable)
+        private bool TryGetReplacableVariable(string line, out StoryboardVariable variable)
         {
             var cur_item = root;
             variable = StoryboardVariable.Empty;
 
-            foreach (var ch in line.Span)
+            foreach (var ch in line)
             {
                 if (!cur_item.NextMap.TryGetValue(ch, out var item))
                     break;

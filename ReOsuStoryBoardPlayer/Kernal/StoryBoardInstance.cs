@@ -413,6 +413,8 @@ namespace ReOsuStoryBoardPlayer
                 group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale, obj.Anchor, obj.Color, obj.IsVerticalFlip, obj.IsHorizonFlip);
             }
 
+            //ChangeAdditiveStatus(false);
+
             if (group?.CurrentPostCount != 0)
                 group?.FlushDraw();
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ReOsuStoryBoardPlayer.Parser.Stream;
+using System.Collections.Generic;
 
 namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
@@ -6,6 +7,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
     {
         private readonly Section section;
         private readonly OsuFileReader reader;
+
+        public int FileLine => reader.FileLine;
 
         public SectionReader(Section section, OsuFileReader reader)
         {

@@ -177,6 +177,9 @@ namespace ReOsuStoryBoardPlayer.Parser
                 case "C":
                     return CommandParserIntance<ColorCommand>.Instance.Parse(data_arr, result);
 
+                case "T"://Not support yet >///<
+                    return result;
+
                 default:
                     throw new Exception("Unknown command event:" + command_event);
             }
