@@ -429,7 +429,7 @@ namespace ReOsuStoryBoardPlayer
 
         ~StoryBoardInstance()
         {
-            player.Term();
+            player?.Term();
         }
     }
 }

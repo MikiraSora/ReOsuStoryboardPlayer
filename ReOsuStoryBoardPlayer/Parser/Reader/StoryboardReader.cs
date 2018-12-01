@@ -138,13 +138,13 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         private void BuildCommandMapAndSetup(StoryBoardObject obj, List<string> lines)
         {
-            var list = lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommand(lines) : ParallelParseCommand(lines);
+            var list = lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : ParseCommands(lines);
 
             foreach (var cmd in list)
                 obj.AddCommand(cmd);
         }
 
-        public List<Command> ParseCommand(List<string> lines)
+        public List<Command> ParseCommands(List<string> lines)
         {
             List<Command> commands = new List<Command>(), temp = ObjectPool<List<Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
 
@@ -191,7 +191,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             return commands;
         }
 
-        public IEnumerable<Command> ParallelParseCommand(List<string> lines)
+        public IEnumerable<Command> ParallelParseCommands(List<string> lines)
         {
             System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)> result_list = new System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)>();
 

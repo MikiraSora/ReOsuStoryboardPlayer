@@ -18,7 +18,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public new void Add(Command command)
         {
-            Debug.Assert(Count == 0 || command.Event == this.First().Event);
+            //Debug.Assert(Count == 0 || command.Event == this.First().Event);
             base.Add(command);
         }
 

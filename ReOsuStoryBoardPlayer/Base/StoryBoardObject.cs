@@ -45,8 +45,25 @@ namespace ReOsuStoryBoardPlayer
                 //这里不用return是因为还要再Visualizer显示这个Loop命令，方便调试，Loop::Execute(...)已被架空
             }
 
-            if (!CommandMap.TryGetValue(command.Event, out var timeline))
-                timeline = CommandMap[command.Event] = new CommandTimeline();
+            var cmd_event = command.Event;
+
+            switch (cmd_event)
+            {
+                case Event.MoveX:
+                case Event.MoveY:
+                case Event.Move:
+                    cmd_event=Event.Move;
+                    break;
+                case Event.Scale:
+                case Event.VectorScale:
+                    cmd_event=Event.VectorScale;
+                    break;
+                default:
+                    break;
+            }
+
+            if (!CommandMap.TryGetValue(cmd_event, out var timeline))
+                timeline = CommandMap[cmd_event] = new CommandTimeline();
             timeline.Add(command);
         }
 
