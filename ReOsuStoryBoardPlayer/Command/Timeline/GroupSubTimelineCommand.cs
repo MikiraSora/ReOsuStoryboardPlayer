@@ -9,6 +9,8 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         private CommandTimeline timeline;
 
+        private readonly int Sub_CostTime;
+
         public LoopSubTimelineCommand(LoopCommand loop_command, Event bind_event)
         {
             this.loop_command = loop_command;
@@ -16,14 +18,30 @@ namespace ReOsuStoryBoardPlayer.Commands
             timeline = loop_command.SubCommands[bind_event];
             timeline.Sort();
 
-            var start_time_offset = loop_command.SubCommands[bind_event].Min(c => c.StartTime);
+            Sub_CostTime =timeline.Max(c => c.EndTime);
 
-            StartTime = loop_command.StartTime + start_time_offset;
-            EndTime = StartTime + loop_command.SubCommands[bind_event].Max(c => c.EndTime) * loop_command.LoopCount - start_time_offset;
+            StartTime = loop_command.StartTime;
+            EndTime =loop_command.EndTime;
         }
 
         public override void Execute(StoryBoardObject @object, float current_value)
         {
+            int relative_time = (int)current_value;
+
+            if (StartTime<=current_value && current_value<=EndTime&&Sub_CostTime!=0)
+                relative_time=(int)(current_value-loop_command.StartTime)%loop_command.CostTime;
+            
+            var command = timeline.PickCommand(relative_time);
+
+            if (command!=null)
+            {
+                command.Execute(@object, relative_time);
+#if DEBUG
+                @object.MarkCommandExecuted(command);
+#endif
+            }
+
+            /*
             int relative_time = (int)(current_value - loop_command.StartTime);
 
             int timeline_cost_time = timeline.EndTime - timeline.StartTime;
@@ -40,7 +58,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             if (command != null)
             {
                 //store command start/end time
-                var offset_time = loop_command.StartTime + (current_loop_index) * timeline_cost_time;
+                var offset_time = loop_command.StartTime + current_loop_index * timeline_cost_time;
                 command.StartTime += offset_time;
                 command.EndTime += offset_time;
 
@@ -54,6 +72,7 @@ namespace ReOsuStoryBoardPlayer.Commands
                 command.StartTime -= offset_time;
                 command.EndTime -= offset_time;
             }
+            */
         }
 
         public override string ToString() => $"{base.ToString()} --> ({loop_command.ToString()})";

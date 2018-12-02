@@ -108,12 +108,6 @@ namespace ReOsuStoryBoardPlayer
             ExecutedCommands.ForEach(c => c.IsExecuted = false);
             ExecutedCommands.Clear();
 #endif
-
-            if (FrameStartTime==2658&&FrameEndTime==4824&&current_time-FrameStartTime>200)
-            {
-
-            }
-
             foreach (var timeline in CommandMap.Values)
             {
                 foreach (var command in timeline.PickCommands(current_time))

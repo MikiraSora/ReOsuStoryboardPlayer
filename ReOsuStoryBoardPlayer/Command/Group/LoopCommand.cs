@@ -50,7 +50,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             }
             */
 
-            CostTime = SubCommands.SelectMany(l => l.Value).Max(c => c.EndTime) - SubCommands.SelectMany(l => l.Value).Min(c => c.StartTime);
+            CostTime = SubCommands.SelectMany(l => l.Value).Max(c => c.EndTime);
             var total_cast_time = CostTime * LoopCount;
 
             EndTime = StartTime + total_cast_time;
