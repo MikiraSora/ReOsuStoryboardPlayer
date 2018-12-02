@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Parser.Base;
+using ReOsuStoryBoardPlayer.Parser.CommandParser;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Utils;
@@ -146,7 +147,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         public List<Command> ParseCommands(List<string> lines)
         {
-            List<Command> commands = new List<Command>(), temp = ObjectPool<List<Command>>.Instance.GetObject(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
+            List<Command> commands = new List<Command>(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
 
             GroupCommand current_group_command = null;
 
@@ -154,22 +155,22 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             {
                 var data_arr = line.Split(',');
 
-                var is_sub_cmd = data_arr.First().StartsWith("  ") || data_arr.First().StartsWith("__");
+                var is_sub_cmd = data_arr.First().StartsWith("  ")||data_arr.First().StartsWith("__");
 
-                foreach (var cmd in CommandParserIntance.Parse(data_arr, temp))
+                foreach (var cmd in CommandParserIntance.Parse(data_arr))
                 {
                     if (is_sub_cmd)
                     {
                         //如果是子命令的话就要添加到当前Group
-                        if (current_group_command != null)
+                        if (current_group_command!=null)
                             current_group_command.AddSubCommand(cmd);
                     }
                     else
                     {
                         var prev_group = current_group_command;
-                        current_group_command = cmd as GroupCommand;
+                        current_group_command=cmd as GroupCommand;
 
-                        if (current_group_command != prev_group &&
+                        if (current_group_command!=prev_group&&
                             prev_group is LoopCommand loopc)
                         {
                             loopc.UpdateParam();
@@ -178,14 +179,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                         commands.Add(cmd);
                     }
                 }
-
-                temp.Clear();
             }
 
             if (current_group_command is LoopCommand loop)
                 loop.UpdateParam();
 
-            ObjectPool<List<Command>>.Instance.PutObject(temp);
             ObjectPool<List<Command>>.Instance.PutObject(cur_group_cmds);
 
             return commands;
@@ -198,16 +196,12 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             Parallel.For(0, lines.Count, i =>
             {
                 var line = lines[i];
-                var temp_list = ObjectPool<List<Command>>.Instance.GetObject();
-                temp_list.Clear();
                 var data_arr = line.Split(',');
                 var is_sub_cmds = data_arr.First().StartsWith("  ") || data_arr.First().StartsWith("__");
 
-                CommandParserIntance.Parse(data_arr, temp_list);
+                var temp_list = CommandParserIntance.Parse(data_arr);
 
                 result_list.Add((i, temp_list.ToArray(), is_sub_cmds));
-
-                ObjectPool<List<Command>>.Instance.PutObject(temp_list);
             });
 
             var result = result_list.SelectMany(p => p.cmds.Select(cmd => (p.index, cmd, p.is_sub))).OrderBy(z => z.index);

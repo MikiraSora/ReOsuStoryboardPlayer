@@ -150,7 +150,14 @@
     <Compile Include="Kernal\MusicPlayer.cs" />
     <Compile Include="Parser\Base\StoryboardObjectType.cs" />
     <Compile Include="Parser\Collection\CharPatternCollection.cs" />
-    <Compile Include="Parser\CommandParser.cs" />
+    <Compile Include="Parser\CommandParser\CommandParserIntance.cs" />
+    <Compile Include="Parser\CommandParser\ValueCommandParser\FloatCommandParser.cs" />
+    <Compile Include="Parser\CommandParser\ICommandParser.cs" />
+    <Compile Include="Parser\CommandParser\IValueCommandParser.cs" />
+    <Compile Include="Parser\CommandParser\LoopCommandParser.cs" />
+    <Compile Include="Parser\CommandParser\ParameterCommandParser.cs" />
+    <Compile Include="Parser\CommandParser\ValueCommandParser\Vec4CommandParser.cs" />
+    <Compile Include="Parser\CommandParser\ValueCommandParser\VectorCommandParser.cs" />
     <Compile Include="Parser\Rubbish\EnumParser.cs" />
     <Compile Include="Parser\Extension\BufferMethodExtension.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />

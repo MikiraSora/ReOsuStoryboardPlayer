@@ -27,6 +27,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             Command command = null;
 
+            //cache
             if (selected_command != null && (selected_command.StartTime <= current_time && current_time <= selected_command.EndTime))
                 return selected_command;
 
@@ -37,19 +38,12 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             //尝试选取在时间范围内的命令
             if (command == null)
-            {
                 foreach (var cmd in this)
-                {
                     if (current_time >= cmd.StartTime && current_time <= cmd.EndTime)
-                    {
                         return selected_command = cmd;
-                    }
-                }
-            }
 
             //尝试选取在命令之间的前者
             if (command == null)
-            {
                 for (int i = 0; i < Count - 1; i++)
                 {
                     var cur_cmd = this[i];
@@ -60,7 +54,6 @@ namespace ReOsuStoryBoardPlayer.Commands
                         return selected_command = cur_cmd;
                     }
                 }
-            }
 
             return selected_command = null;
         }

@@ -53,6 +53,7 @@ namespace ReOsuStoryBoardPlayer
             timeline.Add(command);
         }
 
+        
         private void SplitAddCommand(Command command)
         {
             if (command is MoveCommand move)
@@ -85,6 +86,7 @@ namespace ReOsuStoryBoardPlayer
                 };
             }
         }
+        
 
         private void AddLoopCommand(LoopCommand loop_command)
         {
