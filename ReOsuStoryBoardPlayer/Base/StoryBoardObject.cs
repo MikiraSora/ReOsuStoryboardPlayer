@@ -113,7 +113,6 @@ namespace ReOsuStoryBoardPlayer
                 foreach (var command in timeline.PickCommands(current_time))
                 {
                     command.Execute(this, current_time);
-
 #if DEBUG
                     MarkCommandExecuted(command);
 #endif

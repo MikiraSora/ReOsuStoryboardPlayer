@@ -9,27 +9,25 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         private CommandTimeline timeline;
 
-        private readonly int Sub_CostTime;
+        private readonly int CostTime;
 
         public LoopSubTimelineCommand(LoopCommand loop_command, Event bind_event)
         {
             this.loop_command = loop_command;
             Event = bind_event;
             timeline = loop_command.SubCommands[bind_event];
-            timeline.Sort();
 
-            Sub_CostTime =timeline.Max(c => c.EndTime);
-
+            CostTime=loop_command.CostTime;
             StartTime = loop_command.StartTime;
             EndTime =loop_command.EndTime;
         }
 
         public override void Execute(StoryBoardObject @object, float current_value)
         {
-            int relative_time = (int)current_value;
+            float relative_time = current_value;
 
-            if (StartTime<=current_value && current_value<=EndTime&&Sub_CostTime!=0)
-                relative_time=(int)(current_value-loop_command.StartTime)%loop_command.CostTime;
+            if (StartTime<=current_value&&current_value<=EndTime&&CostTime!=0)
+                relative_time=(current_value-StartTime)%CostTime;
             
             var command = timeline.PickCommand(relative_time);
 

@@ -105,7 +105,7 @@
     <Compile Include="Command\Timeline\CommandTimeline.cs" />
     <Compile Include="Command\Group\GroupCommand.cs" />
     <Compile Include="Command\Group\LoopCommand.cs" />
-    <Compile Include="Command\Timeline\GroupSubTimelineCommand.cs" />
+    <Compile Include="Command\Timeline\LoopSubTimelineCommand.cs" />
     <Compile Include="Command\ParameterCommand\ParameterCommand.cs" />
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\ValueCommand\FloatValueCommand.cs" />

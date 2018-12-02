@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder =@"G:\SBTest\432822 NOMA - Brain Power Long Version";
+                beatmap_folder =@"G:\SBTest\470977 Mili - worldexecute(me);";
             }
             else
                 beatmap_folder = argv[0];
