@@ -42,9 +42,10 @@ namespace ReOsuStoryBoardPlayer
                 AddLoopCommand(loop);
                 //这里不用return是因为还要再Visualizer显示这个Loop命令，方便调试，Loop::Execute(...)已被架空
             }
-            else if (command.Event==Event.Move||command.Event==Event.Scale)
+            else if (command.Event==Event.Move || command.Event==Event.Scale)
             {
                 SplitAddCommand(command);
+                return;
             }
 
             if (!CommandMap.TryGetValue(command.Event, out var timeline))
