@@ -40,39 +40,6 @@ namespace ReOsuStoryBoardPlayer.Commands
                 @object.MarkCommandExecuted(command);
 #endif
             }
-
-            /*
-            int relative_time = (int)(current_value - loop_command.StartTime);
-
-            int timeline_cost_time = timeline.EndTime - timeline.StartTime;
-
-            int current_time = timeline_cost_time == 0 ? relative_time : relative_time % timeline_cost_time;
-
-            int current_loop_index = timeline_cost_time==0 ? 0 : Math.Min((relative_time-timeline.StartTime)/timeline_cost_time, this.loop_command.LoopCount);
-
-            //一个时间轴上只有一个 0 duration的命令
-            var mapped_time = timeline_cost_time == 0 ? timeline.StartTime : (current_value - StartTime) % timeline_cost_time + timeline.StartTime;
-
-            var command = timeline.PickCommand(mapped_time);
-
-            if (command != null)
-            {
-                //store command start/end time
-                var offset_time = loop_command.StartTime + current_loop_index * timeline_cost_time;
-                command.StartTime += offset_time;
-                command.EndTime += offset_time;
-
-                command.Execute(@object, current_value);
-
-#if DEBUG
-                @object.MarkCommandExecuted(command);
-#endif
-
-                //restore command
-                command.StartTime -= offset_time;
-                command.EndTime -= offset_time;
-            }
-            */
         }
 
         public override string ToString() => $"{base.ToString()} --> ({loop_command.ToString()})";
