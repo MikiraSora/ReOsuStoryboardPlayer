@@ -1,10 +1,13 @@
 ﻿namespace ReOsuStoryBoardPlayer.Commands
 {
-    public abstract class ValueCommand<VALUE_TYPE> : Command
+    public abstract class ValueCommand : Command
+    {
+        public EasingInterpolator Easing { get; set; }
+    }
+
+    public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
     {
         public abstract void ApplyValue(StoryBoardObject @object, VALUE_TYPE value);
-
-        public EasingInterpolator Easing { get; set; }
 
         public VALUE_TYPE StartValue { get; set; }
 

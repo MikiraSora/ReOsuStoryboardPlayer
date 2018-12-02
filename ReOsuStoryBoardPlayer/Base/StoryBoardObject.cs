@@ -39,40 +39,53 @@ namespace ReOsuStoryBoardPlayer
         {
             if (command is LoopCommand loop)
             {
-                AddCommand(loop);
+                AddLoopCommand(loop);
                 //这里不用return是因为还要再Visualizer显示这个Loop命令，方便调试，Loop::Execute(...)已被架空
             }
-
-            /*
-             这里因为Move/MoveX/MoveY是不同时间轴的执行，会导致MoveX执行后又被执行MoveY之类导致命令冲突，
-             所以干脆直接将几个命令和其变种都放置在同一个时间轴上
-
-             cnm,脑力跑不了:https://puu.sh/CaHLu/4654dad23f.png
-             */
-
-            var cmd_event = command.Event;
-
-            switch (cmd_event)
+            else if (command.Event==Event.Move||command.Event==Event.Scale)
             {
-                case Event.MoveX:
-                case Event.MoveY:
-                case Event.Move:
-                    cmd_event=Event.Move;
-                    break;
-                case Event.Scale:
-                case Event.VectorScale:
-                    cmd_event=Event.VectorScale;
-                    break;
-                default:
-                    break;
+                SplitAddCommand(command);
             }
 
-            if (!CommandMap.TryGetValue(cmd_event, out var timeline))
-                timeline = CommandMap[cmd_event] = new CommandTimeline();
+            if (!CommandMap.TryGetValue(command.Event, out var timeline))
+                timeline = CommandMap[command.Event] = new CommandTimeline();
             timeline.Add(command);
         }
 
-        private void AddCommand(LoopCommand loop_command)
+        private void SplitAddCommand(Command command)
+        {
+            if (command is MoveCommand move)
+            {
+                var x = _get<MoveXCommand>(move);
+                x.StartValue=move.StartValue.x;
+                x.EndValue=move.EndValue.x;
+                AddCommand(x);
+
+                var y = _get<MoveYCommand>(move);
+                y.StartValue=move.StartValue.y;
+                y.EndValue=move.EndValue.y;
+                AddCommand(y);
+            }
+            else if(command is ScaleCommand scale)
+            {
+                var w = _get<VectorScaleCommand>(scale);
+                w.StartValue=new Vector(scale.StartValue,scale.StartValue);
+                w.EndValue=new Vector(scale.EndValue, scale.EndValue);
+                AddCommand(w);
+            }
+
+            T _get<T>(ValueCommand c) where T:ValueCommand,new()
+            {
+                return new T()
+                {
+                    StartTime=c.StartTime,
+                    EndTime=c.EndTime,
+                    Easing=c.Easing,
+                };
+            }
+        }
+
+        private void AddLoopCommand(LoopCommand loop_command)
         {
             //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
 
@@ -95,6 +108,11 @@ namespace ReOsuStoryBoardPlayer
             ExecutedCommands.ForEach(c => c.IsExecuted = false);
             ExecutedCommands.Clear();
 #endif
+
+            if (FrameStartTime==2658&&FrameEndTime==4824&&current_time-FrameStartTime>200)
+            {
+
+            }
 
             foreach (var timeline in CommandMap.Values)
             {

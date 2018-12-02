@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
@@ -23,13 +24,13 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public override void Execute(StoryBoardObject @object, float current_value)
         {
-            int recovery_time = (int)(current_value - loop_command.StartTime);
+            int relative_time = (int)(current_value - loop_command.StartTime);
 
             int timeline_cost_time = timeline.EndTime - timeline.StartTime;
 
-            int current_time = timeline_cost_time == 0 ? recovery_time : recovery_time % timeline_cost_time;
+            int current_time = timeline_cost_time == 0 ? relative_time : relative_time % timeline_cost_time;
 
-            int current_loop_index = timeline_cost_time == 0 ? 0 : (recovery_time - timeline.StartTime) / timeline_cost_time;
+            int current_loop_index = timeline_cost_time==0 ? 0 : Math.Min((relative_time-timeline.StartTime)/timeline_cost_time, this.loop_command.LoopCount);
 
             //一个时间轴上只有一个 0 duration的命令
             var mapped_time = timeline_cost_time == 0 ? timeline.StartTime : (current_value - StartTime) % timeline_cost_time + timeline.StartTime;
@@ -39,7 +40,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             if (command != null)
             {
                 //store command start/end time
-                var offset_time = loop_command.StartTime + (current_loop_index-1) * timeline_cost_time;
+                var offset_time = loop_command.StartTime + (current_loop_index) * timeline_cost_time;
                 command.StartTime += offset_time;
                 command.EndTime += offset_time;
 
