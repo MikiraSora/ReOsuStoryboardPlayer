@@ -17,9 +17,11 @@ namespace ReOsuStoryBoardPlayer.Commands
             Event = bind_event;
             timeline = loop_command.SubCommands[bind_event];
 
-            CostTime=loop_command.CostTime;
-            StartTime = loop_command.StartTime;
-            EndTime =loop_command.EndTime;
+            var offset = timeline.FirstOrDefault()?.StartTime??0;
+
+            CostTime=loop_command.CostTime-offset;
+            StartTime = loop_command.StartTime+offset;
+            EndTime=StartTime+CostTime*loop_command.LoopCount;
         }
 
         public override void Execute(StoryBoardObject @object, float current_value)
