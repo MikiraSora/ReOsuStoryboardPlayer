@@ -101,10 +101,10 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
                     return new FloatCommandParser<RotateCommand>();
 
                 case "ScaleCommand":
-                    return new FloatCommandParser<ScaleCommand>();
+                    return new /*FloatCommandParser<ScaleCommand>()*/SplitableScaleCommandParser();
 
                 case "MoveCommand":
-                    return new VectorCommandParser<MoveCommand>();
+                    return new /*VectorCommandParser<MoveCommand>()*/SplitableMoveCommandParser();
 
                 case "VectorScaleCommand":
                     return new VectorCommandParser<VectorScaleCommand>();

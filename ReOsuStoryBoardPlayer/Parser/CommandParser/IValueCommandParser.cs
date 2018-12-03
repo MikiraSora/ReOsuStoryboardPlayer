@@ -12,7 +12,7 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
     {
         public abstract int ParamCount { get; }
 
-        public virtual Command Parse(IEnumerable<string> data_arr, int StartTime, int EndTime, T StartValue, T EndValue)
+        public Command Parse(IEnumerable<string> data_arr, int StartTime, int EndTime, T StartValue, T EndValue)
         {
             CMD command = new CMD();
 
@@ -37,7 +37,7 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
 
         public abstract T ConvertValue(IEnumerable<string> p);
 
-        public IEnumerable<Command> Parse(IEnumerable<string> data_arr)
+        public virtual IEnumerable<Command> Parse(IEnumerable<string> data_arr)
         {
             int start_time = data_arr.ElementAt(2).ToInt();
             int end_time = string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? start_time : data_arr.ElementAt(3).ToInt();

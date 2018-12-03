@@ -156,6 +156,8 @@
     <Compile Include="Parser\CommandParser\IValueCommandParser.cs" />
     <Compile Include="Parser\CommandParser\LoopCommandParser.cs" />
     <Compile Include="Parser\CommandParser\ParameterCommandParser.cs" />
+    <Compile Include="Parser\CommandParser\ValueCommandParser\SplitableMoveParser.cs" />
+    <Compile Include="Parser\CommandParser\ValueCommandParser\SplitableScaleCommandParser.cs" />
     <Compile Include="Parser\CommandParser\ValueCommandParser\Vec4CommandParser.cs" />
     <Compile Include="Parser\CommandParser\ValueCommandParser\VectorCommandParser.cs" />
     <Compile Include="Parser\Rubbish\EnumParser.cs" />

@@ -42,51 +42,11 @@ namespace ReOsuStoryBoardPlayer
                 AddLoopCommand(loop);
                 //这里不用return是因为还要再Visualizer显示这个Loop命令，方便调试，Loop::Execute(...)已被架空
             }
-            else if (command.Event==Event.Move || command.Event==Event.Scale)
-            {
-                SplitAddCommand(command);
-                return;
-            }
 
             if (!CommandMap.TryGetValue(command.Event, out var timeline))
                 timeline = CommandMap[command.Event] = new CommandTimeline();
             timeline.Add(command);
         }
-
-        
-        private void SplitAddCommand(Command command)
-        {
-            if (command is MoveCommand move)
-            {
-                var x = _get<MoveXCommand>(move);
-                x.StartValue=move.StartValue.x;
-                x.EndValue=move.EndValue.x;
-                AddCommand(x);
-
-                var y = _get<MoveYCommand>(move);
-                y.StartValue=move.StartValue.y;
-                y.EndValue=move.EndValue.y;
-                AddCommand(y);
-            }
-            else if(command is ScaleCommand scale)
-            {
-                var w = _get<VectorScaleCommand>(scale);
-                w.StartValue=new Vector(scale.StartValue,scale.StartValue);
-                w.EndValue=new Vector(scale.EndValue, scale.EndValue);
-                AddCommand(w);
-            }
-
-            T _get<T>(ValueCommand c) where T:ValueCommand,new()
-            {
-                return new T()
-                {
-                    StartTime=c.StartTime,
-                    EndTime=c.EndTime,
-                    Easing=c.Easing,
-                };
-            }
-        }
-        
 
         private void AddLoopCommand(LoopCommand loop_command)
         {
