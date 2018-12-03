@@ -1,6 +1,6 @@
-﻿namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
+﻿namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 {
-    partial class ObjectInfoVisualizerWindow
+    partial class ObjectVisualizerWindow
     {
         /// <summary>
         /// Required designer variable.

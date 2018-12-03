@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
@@ -38,11 +39,12 @@ namespace ReOsuStoryBoardPlayer
 
         public bool IsWideScreen { get; set; } = false;
 
-        private DebugToolInstance debug_instance;
-        public DebugToolInstance DebugToolInstance { get => debug_instance; }
+        public static StoryBoardInstance Instance { get;private set; }
 
         public StoryBoardInstance(string folder_path)
         {
+            Instance=this;
+
             if (!folder_path.EndsWith(@"\"))
             {
                 folder_path += @"\";
@@ -154,8 +156,6 @@ namespace ReOsuStoryBoardPlayer
             player = new MusicPlayer(audio_file_path);
 
             player.OnJumpCurrentPlayingTime += Player_OnJumpCurrentPlayingTime;
-
-            debug_instance = new DebugToolInstance(this);
 
             void AdjustZ(List<StoryBoardObject> list, int base_z)
             {
@@ -355,12 +355,6 @@ namespace ReOsuStoryBoardPlayer
                     return true;
                 });
             }
-
-#if DEBUG
-
-            debug_instance.Update();
-
-#endif
 
             UpdateCastTime = runTimer.ElapsedMilliseconds - t;
         }

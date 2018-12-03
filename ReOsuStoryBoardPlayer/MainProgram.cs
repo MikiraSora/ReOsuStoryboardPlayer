@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+using System;
 using System.IO;
 
 namespace ReOsuStoryBoardPlayer
@@ -27,6 +30,9 @@ namespace ReOsuStoryBoardPlayer
             StoryboardWindow window = new StoryboardWindow(1280, 720);
 
             window.LoadStoryboardInstance(instance);
+
+            DebuggerManager.AddDebugger(new ControlPanelDebugger());
+            DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
 
             window.Run();
         }

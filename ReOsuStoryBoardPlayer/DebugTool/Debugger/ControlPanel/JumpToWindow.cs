@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ReOsuStoryBoardPlayer.DebugController
+namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 {
     public partial class JumpToWindow : Form
     {

@@ -113,32 +113,31 @@
     <Compile Include="Command\ValueCommand\ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\Vec4ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\VectorValueCommand.cs" />
-    <Compile Include="DebugTool\DebugControllerWindow\ControllerWindow.cs">
+    <Compile Include="DebugTool\Debugger\ControlPanel\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\DebugControllerWindow\ControllerWindow.Designer.cs">
+    <Compile Include="DebugTool\Debugger\ControlPanel\ControllerWindow.Designer.cs">
       <DependentUpon>ControllerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugTool\DebugControllerWindow\CreateBreakpointDialog.cs">
+    <Compile Include="DebugTool\Debugger\ControlPanel\ControlPanelDebugger.cs" />
+    <Compile Include="DebugTool\Debugger\ControlPanel\JumpToWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\DebugControllerWindow\CreateBreakpointDialog.Designer.cs">
-      <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DebugTool\DebugControllerWindow\JumpToWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DebugTool\DebugControllerWindow\JumpToWindow.Designer.cs">
+    <Compile Include="DebugTool\Debugger\ControlPanel\JumpToWindow.Designer.cs">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugTool\DebugControllerWindow\Log.cs" />
-    <Compile Include="DebugTool\DebugToolInstance.cs" />
-    <Compile Include="DebugTool\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.cs">
+    <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectVisualizerDebugger.cs" />
+    <Compile Include="DebugTool\MouseInput.cs" />
+    <Compile Include="Utils\Log.cs" />
+    <Compile Include="DebugTool\DebuggerManager.cs" />
+    <Compile Include="DebugTool\DebuggerBase.cs" />
+    <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.Designer.cs">
+    <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.Designer.cs">
       <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugTool\UpdatePriority.cs" />
     <Compile Include="Graphics\BatchShader.cs" />
     <Compile Include="Graphics\DrawUtils.cs" />
     <Compile Include="Graphics\Shader.cs" />
@@ -186,16 +185,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DebugTool\DebugControllerWindow\ControllerWindow.resx">
+    <EmbeddedResource Include="DebugTool\Debugger\ControlPanel\ControllerWindow.resx">
       <DependentUpon>ControllerWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugTool\DebugControllerWindow\CreateBreakpointDialog.resx">
-      <DependentUpon>CreateBreakpointDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DebugTool\DebugControllerWindow\JumpToWindow.resx">
+    <EmbeddedResource Include="DebugTool\Debugger\ControlPanel\JumpToWindow.resx">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugTool\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.resx">
+    <EmbeddedResource Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.resx">
       <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
+namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 {
-    public partial class ObjectInfoVisualizerWindow : Form
+    public partial class ObjectVisualizerWindow : Form
     {
         private StoryBoardObject last_obj;
 
@@ -18,7 +18,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
 
         private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
 
-        public ObjectInfoVisualizerWindow(StoryBoardInstance instance)
+        public ObjectVisualizerWindow(StoryBoardInstance instance)
         {
             InitializeComponent();
             Instance = instance;

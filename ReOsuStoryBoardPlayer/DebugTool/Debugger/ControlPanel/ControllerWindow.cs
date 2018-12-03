@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.DebugTool;
+using System;
 using System.Windows.Forms;
 
-namespace ReOsuStoryBoardPlayer.DebugController
+namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 {
     public partial class ControllerWindow : Form
     {
@@ -27,28 +28,6 @@ namespace ReOsuStoryBoardPlayer.DebugController
         private void button3_Click(object sender, EventArgs e)
         {
             CurrentStoryboardIntance.player.Jump(0);
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-#if DEBUG
-            CurrentStoryboardIntance.DebugToolInstance.DumpCurrentStoryboardStatus();
-
-#endif
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            CreateBreakpointDialog dialog = new CreateBreakpointDialog(CurrentStoryboardIntance);
-            dialog.ShowDialog(this);
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-#if DEBUG
-            CurrentStoryboardIntance.DebugToolInstance.ClearBreakpoint();
-            MessageBox.Show("Clear braekpoints!");
-#endif
         }
 
         public void UpdateInfo()
@@ -83,12 +62,12 @@ namespace ReOsuStoryBoardPlayer.DebugController
 
         private void button5_Click(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.PlaybackSpeed -= 0.25f;
+            CurrentStoryboardIntance.player.PlaybackSpeed -= 0.125f;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.PlaybackSpeed += 0.25f;
+            CurrentStoryboardIntance.player.PlaybackSpeed += 0.125f;
         }
 
         private void button9_Click(object sender, EventArgs e)
