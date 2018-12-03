@@ -36,6 +36,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                     AnchorLabel.Text = obj.Anchor.ToString();
                     OrderLabel.Text = obj.Z.ToString();
                     TimeLabel.Text = $"{obj.FrameStartTime}~{obj.FrameEndTime}";
+                    checkBox1.Checked=obj.DebugShow;
 
                     command_node_map.Clear();
 
@@ -60,6 +61,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                 //这里是要实时更新的
 
                 PositionLabel.Text = obj.Postion.ToString();
+
+                obj.DebugShow=checkBox1.Checked;
 
                 int r = (int)(obj.Color.x * 255), g = (int)(obj.Color.y * 255), b = (int)(obj.Color.z * 255);
                 ColorLabel.Text = $"{r},{g},{b}";
@@ -159,6 +162,11 @@ namespace ReOsuStoryBoardPlayer.DebugTool.ObjectInfoVisualizer
                 pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
             }
 #endif
+        }
+
+        private void IsShowRawCommand_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
 
         /*

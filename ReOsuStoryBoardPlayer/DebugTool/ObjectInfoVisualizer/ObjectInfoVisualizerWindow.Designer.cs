@@ -51,6 +51,7 @@
             this.OrderLabel = new System.Windows.Forms.Label();
             this.ScaleLabel = new System.Windows.Forms.Label();
             this.asd = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -170,6 +171,7 @@
             this.IsShowRawCommand.TabIndex = 12;
             this.IsShowRawCommand.Text = "ShowRawCommand";
             this.IsShowRawCommand.UseVisualStyleBackColor = true;
+            this.IsShowRawCommand.CheckedChanged += new System.EventHandler(this.IsShowRawCommand_CheckedChanged);
             // 
             // PositionLabel
             // 
@@ -291,11 +293,22 @@
             this.asd.TabIndex = 22;
             this.asd.Text = "Scale:";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(16, 154);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(66, 16);
+            this.checkBox1.TabIndex = 24;
+            this.checkBox1.Text = "Visible";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // ObjectInfoVisualizerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 641);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.ScaleLabel);
             this.Controls.Add(this.asd);
             this.Controls.Add(this.OrderLabel);
@@ -356,5 +369,6 @@
         private System.Windows.Forms.Label OrderLabel;
         private System.Windows.Forms.Label ScaleLabel;
         private System.Windows.Forms.Label asd;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

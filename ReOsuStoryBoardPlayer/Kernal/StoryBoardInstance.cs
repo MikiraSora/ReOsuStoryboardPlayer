@@ -399,7 +399,10 @@ namespace ReOsuStoryBoardPlayer
 
                 if (obj.Color.w <= 0)
                     continue;//skip
-
+#if DEBUG
+                if (!obj.DebugShow)
+                    continue;//skip
+#endif
                 if (group != obj.RenderGroup || additive_trigger != obj.IsAdditive)
                 {
                     group?.FlushDraw();

@@ -87,6 +87,8 @@ namespace ReOsuStoryBoardPlayer
 #if DEBUG
         internal List<Command> ExecutedCommands = new List<Command>();
 
+        internal bool DebugShow = true;
+
         internal void MarkCommandExecuted(Command command, bool is_exec = true)
         {
             if (is_exec)

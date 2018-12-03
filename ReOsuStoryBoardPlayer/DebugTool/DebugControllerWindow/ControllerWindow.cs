@@ -48,7 +48,6 @@ namespace ReOsuStoryBoardPlayer.DebugController
 #if DEBUG
             CurrentStoryboardIntance.DebugToolInstance.ClearBreakpoint();
             MessageBox.Show("Clear braekpoints!");
-
 #endif
         }
 

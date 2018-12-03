@@ -17,14 +17,14 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length == 0)
             {
-                beatmap_folder =@"G:\SBTest\364401 Shiena Nishizawa - Meaning";
+                beatmap_folder =@"G:\SBTest\404658 Giga - -BWW SCREAM-";
             }
             else
                 beatmap_folder = argv[0];
 
             StoryBoardInstance instance = GetInstance(beatmap_folder);
 
-            StoryboardWindow window = new StoryboardWindow(1980, 1080);
+            StoryboardWindow window = new StoryboardWindow(1280, 720);
 
             window.LoadStoryboardInstance(instance);
 
