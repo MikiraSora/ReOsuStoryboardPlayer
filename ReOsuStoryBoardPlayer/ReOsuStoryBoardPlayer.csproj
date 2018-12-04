@@ -178,7 +178,7 @@
     <Compile Include="Parser\Reader\SectionReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\StoryBoardObject.cs" />
-    <Compile Include="Kernal\StoryBoardInstance.cs" />
+    <Compile Include="Kernel\StoryBoardInstance.cs" />
     <Compile Include="Graphics\StoryboardWindow.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Utils\ObjectPool.cs" />

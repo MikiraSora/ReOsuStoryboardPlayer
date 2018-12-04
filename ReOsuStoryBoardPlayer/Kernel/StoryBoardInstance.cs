@@ -14,23 +14,25 @@ using System.Text.RegularExpressions;
 
 namespace ReOsuStoryBoardPlayer
 {
+    /// <summary>
+    /// SB更新物件的核心，通过Update来更新物件
+    /// </summary>
     public class StoryBoardInstance
     {
+        /// <summary>
+        /// 已加载的物件集合
+        /// </summary>
         public LinkedList<StoryBoardObject> StoryboardObjectList { get; private set; }
 
         private LinkedListNode<StoryBoardObject> CurrentScanNode;
 
-        private List<StoryBoardObject> DrawSplitList = new List<StoryBoardObject>();
-
+        /// <summary>
+        /// 正在执行的物件集合
+        /// </summary>
         public Dictionary<Layout, List<StoryBoardObject>> UpdatingStoryboardObjects { get; private set; } = new Dictionary<Layout, List<StoryBoardObject>>();
         
-        private Stopwatch runTimer = new Stopwatch();
-
-        public long UpdateCastTime { get; private set; }
-
-        public long RenderCastTime { get; private set; }
-
         public static StoryBoardInstance Instance { get;private set; }
+
         public BeatmapFolderInfo Info { get; }
 
         public StoryBoardInstance(BeatmapFolderInfo info)
@@ -129,14 +131,9 @@ namespace ReOsuStoryBoardPlayer
             return result;
         }
 
-        private void Player_OnJumpCurrentPlayingTime(uint new_time)
-        {
-            //fast seek? tan 90°
-            Flush();
-
-            //update_current_time = new_time;
-        }
-
+        /// <summary>
+        /// 重置物件的时间轴状态
+        /// </summary>
         public void Flush()
         {
             foreach (var pair in UpdatingStoryboardObjects)
@@ -148,7 +145,7 @@ namespace ReOsuStoryBoardPlayer
 
             StoryboardObjectList.AsParallel().ForAll((obj) => obj.markDone = false);
         }
-
+        
         private bool Scan(float current_time)
         {
             LinkedListNode<StoryBoardObject> LastAddNode = null;
@@ -178,6 +175,10 @@ namespace ReOsuStoryBoardPlayer
             return /*isAdd*/LastAddNode != null;
         }
 
+        /// <summary>
+        /// 更新物件，如果逆向执行必须先Flush()后Update()
+        /// </summary>
+        /// <param name="current_time"></param>
         public void Update(float current_time)
         {
             var t = runTimer.ElapsedMilliseconds;
