@@ -181,8 +181,6 @@ namespace ReOsuStoryBoardPlayer
         /// <param name="current_time"></param>
         public void Update(float current_time)
         {
-            var t = runTimer.ElapsedMilliseconds;
-
             bool hasAdded = Scan(current_time);
 
             foreach (var objs in UpdatingStoryboardObjects.Values)
@@ -215,8 +213,6 @@ namespace ReOsuStoryBoardPlayer
                     return true;
                 });
             }
-
-            UpdateCastTime = runTimer.ElapsedMilliseconds - t;
         }
 
         ~StoryBoardInstance()

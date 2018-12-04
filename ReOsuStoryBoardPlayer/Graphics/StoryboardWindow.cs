@@ -24,6 +24,10 @@ namespace ReOsuStoryBoardPlayer
 
         private StoryBoardInstance instance;
 
+        private bool ready = false;
+
+        private List<SpriteInstanceGroup> register_sprites = new List<SpriteInstanceGroup>();
+
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
 
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
@@ -93,7 +97,7 @@ namespace ReOsuStoryBoardPlayer
 
                         if (background.RenderGroup!=null)
                         {
-                            var scale = StoryboardWindow.SB_HEIGHT/background.RenderGroup.Texture.Height;
+                            var scale = SB_HEIGHT/background.RenderGroup.Texture.Height;
                             background.AddCommand(new ScaleCommand()
                             {
                                 Easing=EasingConverter.CacheEasingInterpolatorMap[Easing.Linear],
@@ -131,9 +135,19 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
+        /// <summary>
+        /// 将SB实例加载到Window上，后者将会自动调用instance.Update()并渲染
+        /// </summary>
+        /// <param name="instance"></param>
         public void LoadStoryboardInstance(StoryBoardInstance instance)
         {
-            this.instance = instance;
+            ready=false;
+
+            if (this.instance!=null)
+                Clean();
+
+            this.instance=instance;
+
             InitWindowRenderSize();
 
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
@@ -141,7 +155,21 @@ namespace ReOsuStoryBoardPlayer
                 BuildCacheDrawSpriteBatch(instance.StoryboardObjectList, instance.Info.folder_path);
             }
 
-            //InitBackgroundDrawing(instance);
+            instance.Flush();
+
+            ready=true;
+        }
+
+        /// <summary>
+        /// 清理资源
+        /// </summary>
+        private void Clean()
+        {
+            foreach (var sprite in register_sprites)
+                sprite.Dispose();
+
+            foreach (var obj in instance?.StoryboardObjectList)
+                obj.RenderGroup=null;
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -152,7 +180,8 @@ namespace ReOsuStoryBoardPlayer
 
             GL.ClearColor(Color.Black);
 
-            PostDrawStoryBoard();
+            if (ready)
+                PostDrawStoryBoard();
 
             SwapBuffers();
         }
@@ -160,6 +189,10 @@ namespace ReOsuStoryBoardPlayer
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+
+
+            if (!ready)
+                return;
 
             var current_time = MusicPlayerManager.ActivityPlayer.CurrentTime;
 
@@ -174,11 +207,10 @@ namespace ReOsuStoryBoardPlayer
 
             Environment.Exit(0);
         }
-
-
+        
         #region Storyboard Rendering
 
-        public void PostDrawStoryBoard()
+        private void PostDrawStoryBoard()
         {
             foreach (var layout_list in instance.UpdatingStoryboardObjects)
             {
@@ -238,7 +270,6 @@ namespace ReOsuStoryBoardPlayer
         #endregion Storyboard Rendering
 
 #if DEBUG
-
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -252,7 +283,6 @@ namespace ReOsuStoryBoardPlayer
             base.OnMouseMove(e);
             DebuggerManager.TrigMove(e.X, e.Y);
         }
-
 #endif
     }
 }

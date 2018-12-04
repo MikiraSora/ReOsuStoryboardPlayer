@@ -27,10 +27,6 @@
 
         public override void Execute(StoryBoardObject @object, float time)
         {
-            /*
-            if (!@object.CommandConflictChecker.CheckIfConflictThenUpdate(this,time))
-                return;
-                */
             var val = CalculateValue(CalculateNormalizeValue(time));
 
             ApplyValue(@object, val);

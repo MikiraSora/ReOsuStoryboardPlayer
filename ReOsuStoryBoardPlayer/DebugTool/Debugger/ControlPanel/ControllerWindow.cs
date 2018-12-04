@@ -37,7 +37,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             progressBar1.Value = (int)MusicPlayerManager.ActivityPlayer.CurrentTime;
             label1.Text = MusicPlayerManager.ActivityPlayer.PlaybackSpeed + "x";
             label3.Text = $"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
-            label5.Text = $"{CurrentStoryboardIntance.RenderCastTime + CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.RenderCastTime}";
+            //label5.Text = $"{CurrentStoryboardIntance.RenderCastTime + CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.RenderCastTime}";
 
             button1.Enabled = !MusicPlayerManager.ActivityPlayer.IsPlaying;
             button2.Enabled = MusicPlayerManager.ActivityPlayer.IsPlaying;

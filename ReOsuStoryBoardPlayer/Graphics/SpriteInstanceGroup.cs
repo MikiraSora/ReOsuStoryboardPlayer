@@ -4,7 +4,7 @@ using System;
 
 namespace ReOsuStoryBoardPlayer
 {
-    public class SpriteInstanceGroup
+    public class SpriteInstanceGroup:IDisposable
     {
         public uint Capacity { get; protected set; } = 0;
 
@@ -21,6 +21,7 @@ namespace ReOsuStoryBoardPlayer
 
         private SpriteInstanceGroup()
         {
+
         }
 
         private Texture texture;
@@ -225,7 +226,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
 
-        private void _draw()
+        private void Draw()
         {
             _shader.Begin();
             var VP = Projection * (View);
@@ -252,11 +253,11 @@ namespace ReOsuStoryBoardPlayer
 
         public void FlushDraw()
         {
-            _draw();
+            Draw();
             Clear();
         }
 
-        public void Clear()
+        private void Clear()
         {
             _currentPostCount = 0;
         }
@@ -274,5 +275,28 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                    texture.Dispose();
+
+                GL.DeleteBuffer(_vbo);
+                GL.DeleteVertexArray(_vao);
+
+                disposedValue=true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }

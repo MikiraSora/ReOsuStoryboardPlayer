@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
 using System;
@@ -29,18 +30,23 @@ namespace ReOsuStoryBoardPlayer
             else
                 beatmap_folder=argv[0];
 
+            //get folder info
             var info=BeatmapFolderInfo.Parse(beatmap_folder);
 
+            //init audio
             MusicPlayer player = new MusicPlayer();
             player.Load(info.audio_file_path);
             MusicPlayerManager.ApplyPlayer(player);
 
+            //load storyboard objects
             StoryBoardInstance instance = new StoryBoardInstance(info);
+            StoryboardInstanceManager.ApplyInstance(instance);
 
+            //init window
             StoryboardWindow window = new StoryboardWindow(1280, 720);
-
             window.LoadStoryboardInstance(instance);
 
+            //init control panel and debuggers
 #if DEBUG
             DebuggerHelper.SetupDebugEnvironment();
 #else

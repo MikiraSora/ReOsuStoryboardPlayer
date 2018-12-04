@@ -1,4 +1,5 @@
 ﻿using IrrKlang;
+using ReOsuStoryBoardPlayer.Kernel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,6 +52,10 @@ namespace ReOsuStoryBoardPlayer.Player
             Pause();
             sound.PlayPosition=time;
             offset_watch.Reset();
+
+            prev_mp3_time=time-sound.PlayPosition;
+
+            StoryboardInstanceManager.ActivityInstance.Flush();
         }
 
         public override void Play()
