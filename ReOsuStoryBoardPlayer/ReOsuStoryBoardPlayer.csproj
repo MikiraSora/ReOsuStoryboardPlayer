@@ -113,6 +113,7 @@
     <Compile Include="Command\ValueCommand\ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\Vec4ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\VectorValueCommand.cs" />
+    <Compile Include="DebugTool\DebuggerHelper.cs" />
     <Compile Include="DebugTool\Debugger\ControlPanel\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -31,8 +31,11 @@ namespace ReOsuStoryBoardPlayer
 
             window.LoadStoryboardInstance(instance);
 
-            DebuggerManager.AddDebugger(new ControlPanelDebugger());
-            DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
+#if DEBUG
+            DebuggerHelper.SetupDebugEnvironment();
+#else
+            DebuggerHelper.SetupReleaseEnvironment();
+#endif
 
             window.Run();
         }
