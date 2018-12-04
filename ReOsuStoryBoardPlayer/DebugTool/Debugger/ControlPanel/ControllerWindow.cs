@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Windows.Forms;
 
@@ -17,29 +18,29 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.Play();
+            MusicPlayerManager.ActivityPlayer.Play();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.Pause();
+            MusicPlayerManager.ActivityPlayer.Pause();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.Jump(0);
+            MusicPlayerManager.ActivityPlayer.Jump(0);
         }
 
         public void UpdateInfo()
         {
-            label2.Text = CurrentStoryboardIntance.folder_path;
-            progressBar1.Value = (int)CurrentStoryboardIntance.player.CurrentPlayback;
-            label1.Text = CurrentStoryboardIntance.player.PlaybackSpeed + "x";
-            label3.Text = $"Time:{CurrentStoryboardIntance.player.CurrentPlayback}({CurrentStoryboardIntance.player.CurrentFixedTime})/{CurrentStoryboardIntance.player.Length}";
+            label2.Text = CurrentStoryboardIntance.Info.folder_path;
+            progressBar1.Value = (int)MusicPlayerManager.ActivityPlayer.CurrentTime;
+            label1.Text = MusicPlayerManager.ActivityPlayer.PlaybackSpeed + "x";
+            label3.Text = $"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
             label5.Text = $"{CurrentStoryboardIntance.RenderCastTime + CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.RenderCastTime}";
 
-            button1.Enabled = !CurrentStoryboardIntance.player.IsPlaying;
-            button2.Enabled = CurrentStoryboardIntance.player.IsPlaying;
+            button1.Enabled = !MusicPlayerManager.ActivityPlayer.IsPlaying;
+            button2.Enabled = MusicPlayerManager.ActivityPlayer.IsPlaying;
         }
 
         private void progressBar1_Click(object sender, EventArgs e)
@@ -48,7 +49,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             var normalize_pos = ((e as MouseEventArgs).X /*- bar.Bounds.X*/ * 1.0f) / bar.Bounds.Width;
             var jump_pos = (uint)(normalize_pos * bar.Maximum);
 
-            CurrentStoryboardIntance.player.Jump(jump_pos);
+            MusicPlayerManager.ActivityPlayer.Jump(jump_pos);
         }
 
         private void ControllerWindow_Load(object sender, EventArgs e)
@@ -62,12 +63,12 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 
         private void button5_Click(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.PlaybackSpeed -= 0.125f;
+            MusicPlayerManager.ActivityPlayer.PlaybackSpeed -= 0.125f;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.PlaybackSpeed += 0.125f;
+            MusicPlayerManager.ActivityPlayer.PlaybackSpeed += 0.125f;
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -78,7 +79,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-            CurrentStoryboardIntance.player.Volume = ((TrackBar)sender).Value / 100.0f;
+            MusicPlayerManager.ActivityPlayer.Volume = ((TrackBar)sender).Value / 100.0f;
         }
     }
 }

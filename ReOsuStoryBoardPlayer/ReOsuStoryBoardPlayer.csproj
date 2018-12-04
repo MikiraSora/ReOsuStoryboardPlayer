@@ -129,6 +129,11 @@
     </Compile>
     <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectVisualizerDebugger.cs" />
     <Compile Include="DebugTool\MouseInput.cs" />
+    <Compile Include="Parser\BeatmapFolderInfo.cs" />
+    <Compile Include="Player\MusicPlayer.cs" />
+    <Compile Include="Player\MusicPlayerHelper.cs" />
+    <Compile Include="Player\PlayerBase.cs" />
+    <Compile Include="Player\MusicPlayerManager.cs" />
     <Compile Include="Utils\Log.cs" />
     <Compile Include="DebugTool\DebuggerManager.cs" />
     <Compile Include="DebugTool\DebuggerBase.cs" />
@@ -147,7 +152,6 @@
     <Compile Include="Graphics\Vec4.cs" />
     <Compile Include="Graphics\Vector.cs" />
     <Compile Include="MainProgram.cs" />
-    <Compile Include="Kernal\MusicPlayer.cs" />
     <Compile Include="Parser\Base\StoryboardObjectType.cs" />
     <Compile Include="Parser\Collection\CharPatternCollection.cs" />
     <Compile Include="Parser\CommandParser\CommandParserIntance.cs" />

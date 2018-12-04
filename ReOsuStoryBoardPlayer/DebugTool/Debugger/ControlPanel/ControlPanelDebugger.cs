@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
         {
             window=new ControllerWindow(StoryBoardInstance.Instance);
             window.Show();
-            window.progressBar1.Maximum=(int)StoryBoardInstance.Instance.player.Length;
+            window.progressBar1.Maximum=(int)MusicPlayerManager.ActivityPlayer.Length;
         }
 
         public override void Term()

@@ -42,7 +42,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
                     try
                     {
-                        var path = Path.Combine(Instance.folder_path, obj.ImageFilePath);
+                        var path = Path.Combine(Instance.Info.folder_path, obj.ImageFilePath);
                         var img = Bitmap.FromFile(path);
 
                         if (img != null)

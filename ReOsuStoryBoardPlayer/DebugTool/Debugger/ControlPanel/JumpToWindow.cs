@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Player;
+using System;
 using System.Windows.Forms;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
@@ -29,10 +30,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             if (!uint.TryParse(textBox1.Text, out jump))
                 return;
 
-            jump = jump >= instance.player.Length ? instance.player.Length : jump;
+            jump = jump >=MusicPlayerManager.ActivityPlayer.Length ? MusicPlayerManager.ActivityPlayer.Length : jump;
 
-            instance.player.Jump(jump);
-            instance.player.Pause();
+            MusicPlayerManager.ActivityPlayer.Jump(jump);
 
             Close();
         }
