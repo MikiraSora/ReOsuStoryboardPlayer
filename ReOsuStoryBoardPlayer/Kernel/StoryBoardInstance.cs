@@ -219,5 +219,7 @@ namespace ReOsuStoryBoardPlayer
         {
 
         }
+
+        public override string ToString() => $"{Info.folder_path}";
     }
 }

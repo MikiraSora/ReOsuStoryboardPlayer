@@ -12,6 +12,11 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public static void ApplyPlayer(PlayerBase player)
         {
+            if (ActivityPlayer!=null)
+            {
+                ActivityPlayer.Pause();
+            }
+
             ActivityPlayer=player;
         }
     }

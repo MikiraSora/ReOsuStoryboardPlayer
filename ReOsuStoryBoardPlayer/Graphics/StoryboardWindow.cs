@@ -6,6 +6,7 @@ using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Graphics;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
@@ -147,6 +148,7 @@ namespace ReOsuStoryBoardPlayer
                 Clean();
 
             this.instance=instance;
+            StoryboardInstanceManager.ApplyInstance(instance);
 
             InitWindowRenderSize();
 

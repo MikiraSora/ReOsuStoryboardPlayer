@@ -31,16 +31,16 @@ namespace ReOsuStoryBoardPlayer
                 beatmap_folder=argv[0];
 
             //get folder info
-            var info=BeatmapFolderInfo.Parse(beatmap_folder);
+            var info =BeatmapFolderInfo.Parse(beatmap_folder);
 
             //init audio
-            MusicPlayer player = new MusicPlayer();
+            var player = new MusicPlayer();
             player.Load(info.audio_file_path);
+
             MusicPlayerManager.ApplyPlayer(player);
 
             //load storyboard objects
-            StoryBoardInstance instance = new StoryBoardInstance(info);
-            StoryboardInstanceManager.ApplyInstance(instance);
+            var instance= new StoryBoardInstance(info);
 
             //init window
             StoryboardWindow window = new StoryboardWindow(1280, 720);

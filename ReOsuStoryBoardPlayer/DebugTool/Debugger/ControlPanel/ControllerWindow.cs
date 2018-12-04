@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Windows.Forms;
