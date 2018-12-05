@@ -42,13 +42,20 @@ namespace ReOsuStoryBoardPlayer
             {
                 Task.Run(() =>
                 {
-                    while (true)
+                    bool someContition = true; //一些逻辑
+                    while (someContition)
                     {
-                        Console.WriteLine(instance.player.CurrentPlayback);
-                        Thread.Sleep(100);
+                        //加载时输出 Loading
+                        //加载完输出load finished这样
+                        while (true)
+                        {
+                            Console.WriteLine(instance.player.CurrentPlayback);
+                            Thread.Sleep(100);
+                        }
+                        //播完完输出finished这样
                     }
                 });
-                    Task.Run(() =>
+                Task.Run(() =>
                 {
                     while (true)
                     {
@@ -58,6 +65,9 @@ namespace ReOsuStoryBoardPlayer
                         var cmd = new CommandParser(new ParamParserV2('-', '\"', '\'')).Parse(input, out var cmdName);
                         switch (cmdName)
                         {
+                            case "file":
+                                //load a file
+                                break;
                             case "play":
                                 instance.player.Play();
                                 break;
@@ -77,7 +87,7 @@ namespace ReOsuStoryBoardPlayer
                             case "moveTo": //x,y坐标
                                 throw new NotImplementedException();
                             case "scale": //1.0为基准这样
-                            //case "sizeTo": //或者具体到分辨率
+                                //case "sizeTo": //或者具体到分辨率
                                 throw new NotImplementedException();
                             default:
                                 break;
