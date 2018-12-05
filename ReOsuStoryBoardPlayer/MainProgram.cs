@@ -70,6 +70,15 @@ namespace ReOsuStoryBoardPlayer
                                 var num = uint.Parse(str);
                                 instance.player.Jump(num);
                                 break;
+                            case "exit":
+                            case "quit":
+                                window.Close();
+                                break;
+                            case "moveTo": //x,y坐标
+                                throw new NotImplementedException();
+                            case "scale": //1.0为基准这样
+                            //case "sizeTo": //或者具体到分辨率
+                                throw new NotImplementedException();
                             default:
                                 break;
                         }
