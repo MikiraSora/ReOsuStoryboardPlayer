@@ -71,29 +71,15 @@ namespace ReOsuStoryBoardPlayer
         
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
         {
-            List<string> pic_list = new List<string>();
-            pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.png", SearchOption.AllDirectories));
-            pic_list.AddRange(Directory.EnumerateFiles(folder_path, "*.jpg", SearchOption.AllDirectories));
 
             Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
-
-            pic_list.ForEach((path) =>
-            {
-                Texture tex = new Texture(path);
-                string absolute_path = path.Replace(folder_path, string.Empty).Trim().TrimStart('/','\\');
-
-                CacheDrawSpriteInstanceMap[absolute_path.ToLower()]=new SpriteInstanceGroup(DrawCallInstanceCountMax, absolute_path, tex);
-
-                Log.Debug($"Created storyboard sprite instance from image file :{path}");
-            });
-
 
             foreach (var obj in StoryboardObjectList)
             {
                 switch (obj)
                 {
                     case StoryboardBackgroundObject background:
-                        if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
+                        if (!_get(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
                             Log.Warn($"not found image:{obj.ImageFilePath}");
 
                         if (background.RenderGroup!=null)
@@ -117,7 +103,7 @@ namespace ReOsuStoryBoardPlayer
                         {
                             SpriteInstanceGroup group;
                             string path = animation.FrameBaseImagePath+index+animation.FrameFileExtension;
-                            if (!CacheDrawSpriteInstanceMap.TryGetValue(path, out group))
+                            if (!_get(path, out group))
                             {
                                 Log.Warn($"not found image:{path}");
                                 continue;
@@ -129,10 +115,31 @@ namespace ReOsuStoryBoardPlayer
                         break;
 
                     default:
-                        if (!CacheDrawSpriteInstanceMap.TryGetValue(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
+                        if (!_get(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
                             Log.Warn($"not found image:{obj.ImageFilePath}");
                         break;
                 }
+            }
+
+
+            bool _get(string image_name,out SpriteInstanceGroup group)
+            {
+                //for Flex
+                if (string.IsNullOrWhiteSpace(Path.GetExtension(image_name)))
+                    image_name+=".png";
+                
+                if (CacheDrawSpriteInstanceMap.TryGetValue(image_name, out group))
+                    return true;
+
+                //load
+                string file_path = Path.Combine(folder_path, image_name);
+                Texture tex = new Texture(file_path);
+
+                group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup(DrawCallInstanceCountMax, file_path, tex);
+
+                Log.Debug($"Created storyboard sprite instance from image file :{file_path}");
+
+                return group!=null;
             }
         }
 

@@ -1,4 +1,6 @@
-﻿namespace ReOsuStoryBoardPlayer.Commands
+﻿using System;
+
+namespace ReOsuStoryBoardPlayer.Commands
 {
     public abstract class FloatValueCommand : ValueCommand<float>
     {

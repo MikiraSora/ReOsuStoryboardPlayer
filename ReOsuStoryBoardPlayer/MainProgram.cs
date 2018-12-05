@@ -23,7 +23,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (argv.Length==0)
             {
-                beatmap_folder=@"G:\SBTest\404658 Giga - -BWW SCREAM-";
+                beatmap_folder=@"G:\SBTest\839266 Jeremy Blake - Flex";
             }
             else if (string.IsNullOrWhiteSpace(argv[0]))
                 Exit("Please drag beatmap folder to this program.");
@@ -52,7 +52,7 @@ namespace ReOsuStoryBoardPlayer
 #else
             DebuggerHelper.SetupReleaseEnvironment();
 #endif
-
+            player.Play();
             window.Run();
         }
 
