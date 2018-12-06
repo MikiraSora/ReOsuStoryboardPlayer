@@ -258,6 +258,7 @@ namespace ReOsuStoryBoardPlayer
                     //应该是现在设置Blend否则Group自动渲染来不及钦定
                     ChangeAdditiveStatus(obj.IsAdditive);
 
+
                     group=obj.RenderGroup;
                 }
 

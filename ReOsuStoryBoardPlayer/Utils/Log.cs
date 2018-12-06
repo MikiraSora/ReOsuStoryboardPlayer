@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -9,12 +14,17 @@ namespace ReOsuStoryBoardPlayer
 
         private static bool _outPutWithColor = true;
 
+
+        private static bool _ableLog = true;
+
+        public static bool MiniMode { get; set; }
+
         public static bool AbleLog
         {
-            get;
-            set;
-        } = true;
-
+            get => !MiniMode && _ableLog;
+            set => _ableLog = value;
+        }
+        
         public static bool AbleDebugLog { get; set; } = false;
 
         public static bool IsColorOutput { get { return _outPutWithColor; } set { _outPutWithColor = value; } }
@@ -32,7 +42,8 @@ namespace ReOsuStoryBoardPlayer
             Warn = 0,
             Error = 1,
             Debug = 2,
-            User = 3
+            User = 3,
+            None = 4
         }
 
         internal static void Init()
@@ -110,6 +121,11 @@ namespace ReOsuStoryBoardPlayer
             if (!AbleDebugLog)
                 return;
             _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.Debug);
+        }
+
+        public static void Write(string message, params object[] paramsArr)
+        {
+            _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.None);
         }
     }
 }
