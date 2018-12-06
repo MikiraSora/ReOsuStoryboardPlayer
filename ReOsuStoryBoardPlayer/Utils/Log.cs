@@ -17,11 +17,9 @@ namespace ReOsuStoryBoardPlayer
 
         private static bool _ableLog = true;
 
-        public static bool MiniMode { get; set; }
-
         public static bool AbleLog
         {
-            get => !MiniMode && _ableLog;
+            get => !Setting.MiniMode && _ableLog;
             set => _ableLog = value;
         }
         

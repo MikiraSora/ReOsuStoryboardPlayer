@@ -11,5 +11,7 @@
         /// 对指定以上的数量的物件进行并行更新
         /// </summary>
         public static int ParallelUpdateObjectsLimitCount = 100;
+
+        public static bool MiniMode;
     }
 }

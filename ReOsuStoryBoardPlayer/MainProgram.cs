@@ -21,23 +21,7 @@ namespace ReOsuStoryBoardPlayer
     {
         public static void Main(string[] argv)
         {
-            string beatmap_folder = @"G:\SBTest\237977 marina - Towa yori Towa ni";
-            int w = (int)(854), h = (int)(480);
-            var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
-            var args = sb.Parse(argv);
-            if (args != null)
-            {
-                if (args.FreeArgs != null)
-                    beatmap_folder = args.FreeArgs.First();
-                if (args.Switches.Any(k => k == "mini"))
-                {
-                    Log.MiniMode = true;
-                    if (args.TryGetArg("w", out var valW))
-                        w = int.Parse(valW);
-                    if (args.TryGetArg("h", out var valH))
-                        w = int.Parse(valH);
-                }
-            }
+            ParseProgramCommands(argv, out var w, out var h, out var beatmap_folder);
 
             var info = BeatmapFolderInfo.Parse(beatmap_folder);
 
@@ -55,16 +39,15 @@ namespace ReOsuStoryBoardPlayer
             window.LoadStoryboardInstance(instance);
             //init control panel and debuggers
 
-
-
             #region CLI Control
 
             //Log.AbleDebugLog = false;
-            if (Log.MiniMode)
+            if (Setting.MiniMode)
             {
                 Task.Run(() =>
                 {
                     bool someContition = true; //一些逻辑
+
                     while (someContition)
                     {
                         //加载时输出 Loading
@@ -77,6 +60,7 @@ namespace ReOsuStoryBoardPlayer
                         //播完完输出finished这样
                     }
                 });
+
                 Task.Run(() =>
                 {
                     while (true)
@@ -124,9 +108,38 @@ namespace ReOsuStoryBoardPlayer
             window.Run();
         }
 
+        private static void ParseProgramCommands(string[] argv, out int w, out int h,out string beatmap_folder)
+        {
+            //default 
+            w=1600;
+            h=900;
+            beatmap_folder = @"G:\SBTest\237977 marina - Towa yori Towa ni";
+
+            var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
+            var args = sb.Parse(argv);
+
+            if (args!=null)
+            {
+                if (args.FreeArgs!=null)
+                    beatmap_folder=args.FreeArgs.FirstOrDefault()??beatmap_folder;
+
+                if (args.Switches.Any(k => k=="mini"))
+                    Setting.MiniMode=true;
+
+                if (args.TryGetArg(out var valW, "width", "w"))
+                    w=int.Parse(valW);
+
+                if (args.TryGetArg(out var valH, "height", "h"))
+                    h=int.Parse(valH);
+
+                if (args.TryGetArg(out var folder, "folder"))
+                    beatmap_folder=folder;
+            }
+        }
+
         private static void Exit(string reason)
         {
-            if (!Log.MiniMode)
+            if (!Setting.MiniMode)
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -134,6 +147,7 @@ namespace ReOsuStoryBoardPlayer
                 Console.ResetColor();
                 Console.ReadKey();
             }
+
             Environment.Exit(0);
         }
     }

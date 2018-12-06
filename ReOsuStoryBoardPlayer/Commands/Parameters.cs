@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
@@ -35,6 +36,15 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             value = null;
             return false;
+        }
+
+        public bool TryGetArg(out string value, params string[] keys)
+        {
+            var x = Args.FirstOrDefault(pair => keys.Any(key => key==pair.Key));
+
+            value=x.Value;
+
+            return !string.IsNullOrWhiteSpace(x.Key);
         }
     }
 }
