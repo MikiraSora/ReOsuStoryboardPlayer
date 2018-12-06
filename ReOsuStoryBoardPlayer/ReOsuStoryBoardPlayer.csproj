@@ -114,13 +114,13 @@
     <Compile Include="Command\ValueCommand\Vec4ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\VectorValueCommand.cs" />
     <Compile Include="DebugTool\DebuggerHelper.cs" />
-    <Compile Include="Commands\ArgParser.cs" />
-    <Compile Include="Commands\CommandParser.cs" />
-    <Compile Include="Commands\IParamParser.cs" />
-    <Compile Include="Commands\IParameters.cs" />
-    <Compile Include="Commands\ParametersWithCommand.cs" />
-    <Compile Include="Commands\ParamParserV2.cs" />
-    <Compile Include="Commands\Parameters.cs" />
+    <Compile Include="ProgramCommandParser\ArgParser.cs" />
+    <Compile Include="ProgramCommandParser\CommandParser.cs" />
+    <Compile Include="ProgramCommandParser\IParamParser.cs" />
+    <Compile Include="ProgramCommandParser\IParameters.cs" />
+    <Compile Include="ProgramCommandParser\ParametersWithCommand.cs" />
+    <Compile Include="ProgramCommandParser\ParamParserV2.cs" />
+    <Compile Include="ProgramCommandParser\Parameters.cs" />
     <Compile Include="DebugTool\Debugger\CLIController\CLIControllerDebugger.cs" />
     <Compile Include="DebugTool\Debugger\ControlPanel\ControllerWindow.cs">
       <SubType>Form</SubType>

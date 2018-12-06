@@ -3,7 +3,7 @@ using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
 using System;
-using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.ProgramCommandParser;
 using System.Linq;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
 using ReOsuStoryBoardPlayer.Parser.Extension;

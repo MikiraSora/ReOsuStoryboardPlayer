@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Commands
+namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 {
     public class ParamParserV2 : IParamParser
     {

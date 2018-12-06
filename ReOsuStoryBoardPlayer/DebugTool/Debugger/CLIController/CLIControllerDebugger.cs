@@ -1,4 +1,4 @@
-﻿using ReOsuStoryBoardPlayer.Commands;
+﻿using ReOsuStoryBoardPlayer.ProgramCommandParser;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Player;

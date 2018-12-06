@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Commands
+﻿namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 {
     public interface IParamParser
     {

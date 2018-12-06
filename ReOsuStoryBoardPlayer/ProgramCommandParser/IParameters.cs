@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Commands
+namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 {
     public interface IParameters
     {

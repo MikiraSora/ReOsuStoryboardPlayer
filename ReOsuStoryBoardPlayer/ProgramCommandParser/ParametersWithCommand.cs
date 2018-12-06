@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Commands
+namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 {
-    public class Parameters : IParameters
+    class ParametersWithCommand : IParameters
     {
+        public string CommandName { get; }
         public string ArgString { get; }
 
         public Dictionary<string, string> Args { get; } = new Dictionary<string, string>();
@@ -12,12 +12,12 @@ namespace ReOsuStoryBoardPlayer.Commands
         public List<string> Switches { get; } = new List<string>();
         public List<string> SimpleArgs { get; } = new List<string>();
 
-        public Parameters()
+        public ParametersWithCommand()
         {
 
         }
 
-        public Parameters(IParameters p)
+        public ParametersWithCommand(IParameters p)
         {
             ArgString = p.ArgString;
             Args = p.Args;
@@ -36,15 +36,6 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             value = null;
             return false;
-        }
-
-        public bool TryGetArg(out string value, params string[] keys)
-        {
-            var x = Args.FirstOrDefault(pair => keys.Any(key => key==pair.Key));
-
-            value=x.Value;
-
-            return !string.IsNullOrWhiteSpace(x.Key);
         }
     }
 }
