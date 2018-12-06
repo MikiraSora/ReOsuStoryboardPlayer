@@ -49,13 +49,16 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public override void Jump(uint time)
         {
-            Pause();
-            sound.PlayPosition=time;
-            offset_watch.Reset();
+            lock (MusicPlayerManager.SyncLocker)
+            {
+                Pause();
+                sound.PlayPosition=time;
+                offset_watch.Reset();
 
-            prev_mp3_time=time-sound.PlayPosition;
+                prev_mp3_time=time-sound.PlayPosition;
 
-            StoryboardInstanceManager.ActivityInstance.Flush();
+                StoryboardInstanceManager.ActivityInstance.Flush();
+            }
         }
 
         public override void Play()

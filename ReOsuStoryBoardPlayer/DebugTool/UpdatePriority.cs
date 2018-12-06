@@ -16,6 +16,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool
         /// <summary>
         /// 每秒调用
         /// </summary>
-        PerSecond
+        PerSecond,
+        
+        None
     }
 }

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -44,62 +45,15 @@ namespace ReOsuStoryBoardPlayer
             //Log.AbleDebugLog = false;
             if (Setting.MiniMode)
             {
-                Task.Run(() =>
-                {
-                    bool someContition = true; //一些逻辑
-
-                    while (someContition)
-                    {
-                        //加载时输出 Loading
-                        //加载完输出load finished这样
-                        while (true)
-                        {
-                            Console.WriteLine(MusicPlayerManager.ActivityPlayer.CurrentTime);
-                            Thread.Sleep(100);
-                        }
-                        //播完完输出finished这样
-                    }
-                });
-
-                Task.Run(() =>
-                {
-                    while (true)
-                    {
-                        string input = Console.ReadLine();
-                        if (string.IsNullOrEmpty(input))
-                            continue;
-                        var cmd = new CommandParser(new ParamParserV2('-', '\"', '\'')).Parse(input, out var cmdName);
-                        switch (cmdName)
-                        {
-                            case "file":
-                                //load a file
-                                break;
-                            case "play":
-                                MusicPlayerManager.ActivityPlayer.Play();
-                                break;
-                            case "pause":
-                                MusicPlayerManager.ActivityPlayer.Pause();
-                                break;
-                            case "jump":
-                                var str = cmd.FreeArgs.FirstOrDefault();
-                                if (str==null) break;
-                                var num = uint.Parse(str);
-                                MusicPlayerManager.ActivityPlayer.Jump(num);
-                                break;
-                            case "exit":
-                            case "quit":
-                                window.Close();
-                                break;
-                            case "moveTo": //x,y坐标
-                                throw new NotImplementedException();
-                            case "scale": //1.0为基准这样
-                                //case "sizeTo": //或者具体到分辨率
-                                throw new NotImplementedException();
-                            default:
-                                break;
-                        }
-                    }
-                });
+                DebuggerManager.AddDebugger(new CLIControllerDebugger());
+            }
+            else
+            {
+#if DEBUG
+                DebuggerHelper.SetupDebugEnvironment();
+#else
+                DebuggerHelper.SetupReleaseEnvironment();
+#endif
             }
 
             #endregion

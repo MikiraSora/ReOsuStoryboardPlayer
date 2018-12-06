@@ -49,6 +49,7 @@ namespace ReOsuStoryBoardPlayer
         {
             base.OnResize(e);
             GL.Viewport(0, 0, Width, Height);
+            ApplyWindowRenderSize();
             Title = $"Esu!StoryBoardPlayer ({Width}x{Height}) OpenGL:{GL.GetInteger(GetPName.MajorVersion)}.{GL.GetInteger(GetPName.MinorVersion)}";
         }
 
@@ -58,7 +59,7 @@ namespace ReOsuStoryBoardPlayer
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
-        public void InitWindowRenderSize()
+        public void ApplyWindowRenderSize()
         {
             CameraViewMatrix = Matrix4.Identity;
 
@@ -157,7 +158,7 @@ namespace ReOsuStoryBoardPlayer
             this.instance=instance;
             StoryboardInstanceManager.ApplyInstance(instance);
 
-            InitWindowRenderSize();
+            ApplyWindowRenderSize();
 
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
             {
@@ -205,7 +206,10 @@ namespace ReOsuStoryBoardPlayer
 
             var current_time = MusicPlayerManager.ActivityPlayer.CurrentTime;
 
-            instance.Update(current_time);
+            lock (MusicPlayerManager.SyncLocker)
+            {
+                instance.Update(current_time);
+            }
 
             DebuggerManager.FrameUpdate();
         }

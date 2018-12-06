@@ -121,6 +121,7 @@
     <Compile Include="Commands\ParametersWithCommand.cs" />
     <Compile Include="Commands\ParamParserV2.cs" />
     <Compile Include="Commands\Parameters.cs" />
+    <Compile Include="DebugTool\Debugger\CLIController\CLIControllerDebugger.cs" />
     <Compile Include="DebugTool\Debugger\ControlPanel\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>

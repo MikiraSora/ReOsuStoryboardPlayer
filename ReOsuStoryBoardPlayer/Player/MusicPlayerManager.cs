@@ -10,6 +10,8 @@ namespace ReOsuStoryBoardPlayer.Player
     {
         public static PlayerBase ActivityPlayer { get; private set; }
 
+        public static object SyncLocker { get; } = new object();
+
         public static void ApplyPlayer(PlayerBase player)
         {
             if (ActivityPlayer!=null)
