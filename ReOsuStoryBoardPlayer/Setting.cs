@@ -22,11 +22,11 @@ namespace ReOsuStoryBoardPlayer
         /// <summary>
         /// 最小化
         /// </summary>
-        public static bool MiniMode { get; set; }
-        
-        public static bool EnableSplitMoveScaleCommand { get; set; }
-        
-        public static bool EnableRuntimeOptimzeObjects { get; set; }
+        public static bool MiniMode { get; set; } = false;
+
+        public static bool EnableSplitMoveScaleCommand { get; set; } = true;
+
+        public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
 
         #region Extendsion
 
@@ -45,6 +45,9 @@ namespace ReOsuStoryBoardPlayer
             sb.AppendLine("================");
         }
 
+        /// <summary>
+        /// 配置文件仅仅只读
+        /// </summary>
         private const string config_file = @"./config.ini";
 
         internal static void Init()
