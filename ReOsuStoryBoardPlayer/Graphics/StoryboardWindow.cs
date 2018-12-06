@@ -191,7 +191,11 @@ namespace ReOsuStoryBoardPlayer
             GL.ClearColor(Color.Black);
 
             if (ready)
+            {
+                DebuggerManager.TrigBeforeRender();
                 PostDrawStoryBoard();
+                DebuggerManager.TrigAfterRender();
+            }
 
             SwapBuffers();
         }

@@ -1,19 +1,10 @@
 using ReOsuStoryBoardPlayer.DebugTool;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
 using System;
-using System.IO;
 using ReOsuStoryBoardPlayer.Commands;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
 
 namespace ReOsuStoryBoardPlayer
