@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Player;
 using System;
@@ -49,7 +50,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
                         var str = cmd.FreeArgs.FirstOrDefault();
                         if (str==null) break;
                         var num = uint.Parse(str);
-                        MusicPlayerManager.ActivityPlayer.Jump(num);
+
+                        ExecutorSync.PostTask(() => MusicPlayerManager.ActivityPlayer.Jump(num)).Wait();
                         break;
                     case "exit":
                     case "quit":

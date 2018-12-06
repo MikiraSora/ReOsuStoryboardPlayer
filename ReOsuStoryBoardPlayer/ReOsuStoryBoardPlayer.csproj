@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectVisualizerDebugger.cs" />
     <Compile Include="DebugTool\MouseInput.cs" />
+    <Compile Include="Kernel\ExecutorSync.cs" />
     <Compile Include="Kernel\StoryboardInstanceManager.cs" />
     <Compile Include="Parser\BeatmapFolderInfo.cs" />
     <Compile Include="Player\MusicPlayer.cs" />

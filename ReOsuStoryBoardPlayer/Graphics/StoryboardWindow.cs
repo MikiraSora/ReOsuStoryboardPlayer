@@ -200,16 +200,12 @@ namespace ReOsuStoryBoardPlayer
         {
             base.OnUpdateFrame(e);
 
-
             if (!ready)
                 return;
 
             var current_time = MusicPlayerManager.ActivityPlayer.CurrentTime;
 
-            lock (MusicPlayerManager.SyncLocker)
-            {
-                instance.Update(current_time);
-            }
+            instance.Update(current_time);
 
             DebuggerManager.FrameUpdate();
         }

@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using ReOsuStoryBoardPlayer.Kernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         public override void Init()
         {
-            window=new ObjectVisualizerWindow(StoryBoardInstance.Instance);
+            window=new ObjectVisualizerWindow(StoryboardInstanceManager.ActivityInstance);
             window.Show();
 
             DebuggerManager.MouseClick+=DebuggerManager_MouseClick;

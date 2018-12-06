@@ -2,6 +2,7 @@
 using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
 using ReOsuStoryBoardPlayer.Utils;
@@ -12,7 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryBoardPlayer.Kernel
 {
     /// <summary>
     /// SB更新物件的核心，通过Update来更新物件
@@ -181,6 +182,8 @@ namespace ReOsuStoryBoardPlayer
         /// <param name="current_time"></param>
         public void Update(float current_time)
         {
+            ExecutorSync.ClearTask();
+
             bool hasAdded = Scan(current_time);
 
             foreach (var objs in UpdatingStoryboardObjects.Values)
