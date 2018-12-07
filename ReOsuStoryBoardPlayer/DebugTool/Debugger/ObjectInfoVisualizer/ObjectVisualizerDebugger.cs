@@ -22,10 +22,41 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             Window=new ObjectVisualizerWindow(StoryboardInstanceManager.ActivityInstance);
             Window.Show();
 
-            DebuggerManager.MouseClick+=DebuggerManager_MouseClick;
+            DebuggerManager.MouseClick+=OnMouseClick;
+            DebuggerManager.BeforeRender+=OnBeforeRender;
+            DebuggerManager.AfterRender+=OnAfterRender;
         }
 
-        private void DebuggerManager_MouseClick(int x, int y, MouseInput input)
+        private void OnAfterRender()
+        {
+            var select_object = Window.SelectObject;
+
+            if (select_object==null)
+                return;
+
+            select_object.Color.w=backup_alpha;
+        }
+
+        float backup_alpha;
+        float count;
+
+        private void OnBeforeRender()
+        {
+            var select_object = Window.SelectObject;
+
+            if (select_object==null)
+            {
+                count=0;
+                return;
+            }
+
+            count+=0.00045f*DateTime.Now.Second;
+
+            backup_alpha=select_object.Color.w;
+            select_object.Color.w=Math.Min(1, (float)Math.Cos(count)+0.2f);
+        }
+
+        private void OnMouseClick(int x, int y, MouseInput input)
         {
             switch (input)
             {
@@ -131,7 +162,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
         public override void Term()
         {
             Window.Close();
-            DebuggerManager.MouseClick-=DebuggerManager_MouseClick;
+            DebuggerManager.MouseClick-=OnMouseClick;
         }
 
         public override void Update()
