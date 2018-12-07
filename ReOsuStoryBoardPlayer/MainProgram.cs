@@ -64,9 +64,9 @@ namespace ReOsuStoryBoardPlayer
         private static void ParseProgramCommands(string[] argv, out int w, out int h, out string beatmap_folder)
         {
             //default 
-            w=1600;
-            h=900;
-            beatmap_folder=@"G:\SBTest\839266 Jeremy Blake - Flex";
+            w=640;
+            h=480;
+            beatmap_folder=@"G:\SBTest\17154 IOSYS feat 3L - Miracle-Hinacle";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

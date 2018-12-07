@@ -14,36 +14,34 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
     {
         private StoryBoardObject last_obj;
 
-        public StoryBoardObject obj { get; set; }
-        public StoryBoardInstance Instance { get; }
+        public StoryBoardObject SelectObject { get; set; }
 
         private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
 
         public ObjectVisualizerWindow(StoryBoardInstance instance)
         {
             InitializeComponent();
-            Instance = instance;
         }
 
         public void UpdateCurrentStoryboardObject()
         {
-            if (obj != null)
+            if (SelectObject != null)
             {
-                if (obj != last_obj)
+                if (SelectObject != last_obj)
                 {
                     //这里是物件装载一次的
 
-                    Text = obj.ImageFilePath;
-                    AnchorLabel.Text = obj.Anchor.ToString();
-                    OrderLabel.Text = obj.Z.ToString();
-                    TimeLabel.Text = $"{obj.FrameStartTime}~{obj.FrameEndTime}";
-                    checkBox1.Checked=obj.DebugShow;
+                    Text = SelectObject.ImageFilePath;
+                    AnchorLabel.Text = SelectObject.Anchor.ToString();
+                    OrderLabel.Text = SelectObject.Z.ToString();
+                    TimeLabel.Text = $"{SelectObject.FrameStartTime}~{SelectObject.FrameEndTime}";
+                    checkBox1.Checked=SelectObject.DebugShow;
 
                     command_node_map.Clear();
 
                     try
                     {
-                        var path = Path.Combine(Instance.Info.folder_path, obj.ImageFilePath);
+                        var path = Path.Combine(StoryboardInstanceManager.ActivityInstance.Info.folder_path, SelectObject.ImageFilePath);
                         var img = Bitmap.FromFile(path);
 
                         if (img != null)
@@ -61,11 +59,11 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
                 //这里是要实时更新的
 
-                PositionLabel.Text = obj.Postion.ToString();
+                PositionLabel.Text = SelectObject.Postion.ToString();
 
-                obj.DebugShow=checkBox1.Checked;
+                SelectObject.DebugShow=checkBox1.Checked;
 
-                int r = (int)(obj.Color.x * 255), g = (int)(obj.Color.y * 255), b = (int)(obj.Color.z * 255);
+                int r = (int)(SelectObject.Color.x * 255), g = (int)(SelectObject.Color.y * 255), b = (int)(SelectObject.Color.z * 255);
                 ColorLabel.Text = $"{r},{g},{b}";
                 
                 try
@@ -78,18 +76,18 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                     Log.Error(e.Message);
                 }
 
-                AngleLabel.Text = (obj.Rotate * 180 / Math.PI).ToString();
-                AlphaLabel.Text = obj.Color.w.ToString();
-                ScaleLabel.Text = obj.Scale.ToString();
+                AngleLabel.Text = (SelectObject.Rotate * 180 / Math.PI).ToString();
+                AlphaLabel.Text = SelectObject.Color.w.ToString();
+                ScaleLabel.Text = SelectObject.Scale.ToString();
 
-                ParameterLabel.Text = $"{(obj.IsAdditive ? "A" : " ")}{(obj.IsHorizonFlip ? "H" : " ")}{(obj.IsVerticalFlip ? "V" : " ")}";
-                MarkdoneLabel.Text = obj.markDone.ToString();
+                ParameterLabel.Text = $"{(SelectObject.IsAdditive ? "A" : " ")}{(SelectObject.IsHorizonFlip ? "H" : " ")}{(SelectObject.IsVerticalFlip ? "V" : " ")}";
+                MarkdoneLabel.Text = SelectObject.markDone.ToString();
 
                 UpdateCommandNode();
             }
             else
             {
-                if (obj != last_obj)
+                if (SelectObject != last_obj)
                 {
                     PositionLabel.Text = string.Empty;
                     ColorLabel.Text = string.Empty;
@@ -118,20 +116,20 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 ShowCommandList();
             }
 
-            last_obj = obj;
+            last_obj = SelectObject;
         }
 
         private void ShowCommandList()
         {
-            if (obj != last_obj)
+            if (SelectObject != last_obj)
             {
                 CommandTreeViewer.Nodes.Clear();
 
-                if (obj != null)
+                if (SelectObject != null)
                 {
-                    var root = CommandTreeViewer.Nodes.Add(obj.ToString());
+                    var root = CommandTreeViewer.Nodes.Add(SelectObject.ToString());
 
-                    foreach (var command_list in obj.CommandMap)
+                    foreach (var command_list in SelectObject.CommandMap)
                     {
                         var cmd_root = root.Nodes.Add(command_list.Key.ToString());
                         cmd_root.ForeColor = Color.AliceBlue;

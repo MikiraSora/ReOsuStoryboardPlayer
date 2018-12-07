@@ -10,7 +10,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 {
     class ObjectVisualizerDebugger : DebuggerBase
     {
-        ObjectVisualizerWindow window;
+        public ObjectVisualizerWindow Window { get; private set; }
 
         public ObjectVisualizerDebugger()
         {
@@ -19,8 +19,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         public override void Init()
         {
-            window=new ObjectVisualizerWindow(StoryboardInstanceManager.ActivityInstance);
-            window.Show();
+            Window=new ObjectVisualizerWindow(StoryboardInstanceManager.ActivityInstance);
+            Window.Show();
 
             DebuggerManager.MouseClick+=DebuggerManager_MouseClick;
         }
@@ -30,7 +30,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             switch (input)
             {
                 case MouseInput.Right:
-                    window.obj=null;
+                    Window.SelectObject=null;
                     break;
                 case MouseInput.Left:
                     PickObject(x, y);
@@ -44,7 +44,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         private void PickObject(float x,float y)
         {
-            int last_order_index = window?.obj?.Z??-1;
+            int last_order_index = Window?.SelectObject?.Z??-1;
 
             StoryBoardObject obj = null;
 
@@ -61,7 +61,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 }
             }
 
-            window.obj=obj;
+            Window.SelectObject=obj;
         }
 
         private static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
@@ -130,13 +130,13 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         public override void Term()
         {
-            window.Close();
+            Window.Close();
             DebuggerManager.MouseClick-=DebuggerManager_MouseClick;
         }
 
         public override void Update()
         {
-            window.UpdateCurrentStoryboardObject();
+            Window.UpdateCurrentStoryboardObject();
         }
     }
 }

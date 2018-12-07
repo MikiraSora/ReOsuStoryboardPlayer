@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool
         {
             DebuggerManager.AddDebugger(new ControlPanelDebugger());
             DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
+            DebuggerManager.AddDebugger(new ObjectsSequenceViewerDebugger());
         }
 
         public static void SetupReleaseEnvironment()

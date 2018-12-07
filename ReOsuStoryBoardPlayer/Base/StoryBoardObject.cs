@@ -122,6 +122,6 @@ namespace ReOsuStoryBoardPlayer
 
         public long FileLine { get; set; }
 
-        public override string ToString() => $"line {FileLine} (index {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
+        public override string ToString() => $"line {FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
     }
 }

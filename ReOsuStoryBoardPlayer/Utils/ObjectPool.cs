@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace ReOsuStoryBoardPlayer.Utils
@@ -35,6 +37,12 @@ namespace ReOsuStoryBoardPlayer.Utils
         {
             if (item != null)
                 _objects.Add(item);
+        }
+
+        public void PutObjects(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                PutObject(item);
         }
 
         public override void Clean()

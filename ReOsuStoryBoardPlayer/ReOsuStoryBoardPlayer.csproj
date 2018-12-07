@@ -114,6 +114,13 @@
     <Compile Include="Command\ValueCommand\Vec4ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\VectorValueCommand.cs" />
     <Compile Include="DebugTool\DebuggerHelper.cs" />
+    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerDebugger.cs" />
+    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.Designer.cs">
+      <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />
@@ -208,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.resx">
       <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.resx">
+      <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
