@@ -64,9 +64,9 @@ namespace ReOsuStoryBoardPlayer
         private static void ParseProgramCommands(string[] argv, out int w, out int h, out string beatmap_folder)
         {
             //default 
-            w=640;
-            h=480;
-            beatmap_folder=@"G:\SBTest\17154 IOSYS feat 3L - Miracle-Hinacle";
+            w=1600;
+            h=900;
+            beatmap_folder=@"G:\SBTest\839266 Jeremy Blake - Flex";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -85,11 +85,13 @@ namespace ReOsuStoryBoardPlayer
                 if (args.TryGetArg(out var folder, "folder", "f"))
                     beatmap_folder=folder;
 
-                if (args.TryGetArg(out var p_update_limit, "-parallel_update_limit", "-pu"))
+                if (args.TryGetArg(out var p_update_limit, "-parallel_update_limit", "pu"))
                     Setting.ParallelUpdateObjectsLimitCount=p_update_limit.ToInt();
 
-                if (args.TryGetArg(out var p_parse_limit, "-parallel_parse_limit", "-pp"))
+                /*
+                if (args.TryGetArg(out var p_parse_limit, "-parallel_parse_limit", "pp"))
                     Setting.ParallelParseCommandLimitCount=p_parse_limit.ToInt();
+                */
 
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=args.Switches.Any(k => k=="enable_split");

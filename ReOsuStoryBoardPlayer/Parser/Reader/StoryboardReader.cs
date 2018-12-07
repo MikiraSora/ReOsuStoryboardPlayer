@@ -139,7 +139,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         private void BuildCommandMapAndSetup(StoryBoardObject obj, List<string> lines)
         {
-            var list = lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : ParseCommands(lines);
+            var list = /*lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : */ ParseCommands(lines);
 
             foreach (var cmd in list)
                 obj.AddCommand(cmd);
