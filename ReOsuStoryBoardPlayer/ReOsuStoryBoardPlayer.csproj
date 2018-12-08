@@ -121,6 +121,7 @@
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.Designer.cs">
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\Range.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />

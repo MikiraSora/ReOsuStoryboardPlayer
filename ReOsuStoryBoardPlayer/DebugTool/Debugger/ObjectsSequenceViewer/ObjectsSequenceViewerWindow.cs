@@ -18,13 +18,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 {
     public partial class ObjectsSequenceViewer : Form
     {
-        public struct Range
-        {
-            public int End;
-            public int Start;
+        Dictionary<ListViewItem, StoryBoardObject> registed_map = new Dictionary<ListViewItem, StoryBoardObject>();
 
-            public bool InRange(int cur) => cur>=Start&&cur<=End;
-        }
+        Regex current_filter = null;
 
         public ObjectsSequenceViewer()
         {
@@ -47,17 +43,18 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
             listView1.Alignment=ListViewAlignment.Left;
         }
 
-        Dictionary<ListViewItem, StoryBoardObject> registed_map = new Dictionary<ListViewItem, StoryBoardObject>();
+        IEnumerable<StoryBoardObject> RangeObjects;
 
         public void ApplyRangeFlush(Range range)
         {
             var objects = StoryboardInstanceManager.ActivityInstance.StoryboardObjectList
                 .Where(o => range.InRange(o.FrameStartTime)||range.InRange(o.FrameEndTime));
 
-            ApplyObjectsFlush(objects);
+            RangeObjects=objects;
+            ApplyObjectsFlush();
         }
 
-        public void ApplyObjectsFlush(IEnumerable<StoryBoardObject> objects)
+        public void ApplyObjectsFlush()
         {
             foreach (ListViewItem item in listView1.Items)
                 ObjectPool<ListViewItem>.Instance.PutObject(item);
@@ -65,7 +62,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
             listView1.Items.Clear();
             registed_map.Clear();
 
-            var items = objects
+            var items = RangeObjects
+                .Where(o=>current_filter?.IsMatch(o.ToString())??true)
                 .Select(o => {
                     ListViewItem item = ObjectPool<ListViewItem>.Instance.GetObject();
 
@@ -163,7 +161,26 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ApplyObjectsFlush(StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects.SelectMany(l=>l.Value).OrderBy(c=>c.Z));
+            RangeObjects=StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects.SelectMany(l => l.Value).OrderBy(c => c.Z);
+            ApplyObjectsFlush();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                current_filter=new Regex(textBox2.Text);
+                ApplyObjectsFlush();
+            }
+            catch 
+            {
+                textBox2.ForeColor=Color.Red;
+            }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            textBox2.ForeColor=Color.Black;
         }
     }
 }
