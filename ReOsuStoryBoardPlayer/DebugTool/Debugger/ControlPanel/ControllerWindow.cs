@@ -35,7 +35,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
         public void UpdateInfo()
         {
             label2.Text = CurrentStoryboardIntance.Info.folder_path;
-            progressBar1.Value = (int)MusicPlayerManager.ActivityPlayer.CurrentTime;
+            progressBar1.Value = (int)(MusicPlayerManager.ActivityPlayer.CurrentTime*1.0f/MusicPlayerManager.ActivityPlayer.Length*progressBar1.Maximum);
             label1.Text = MusicPlayerManager.ActivityPlayer.PlaybackSpeed + "x";
             label3.Text = $"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
             //label5.Text = $"{CurrentStoryboardIntance.RenderCastTime + CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.RenderCastTime}";
@@ -48,7 +48,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
         {
             var bar = sender as ProgressBar;
             var normalize_pos = ((e as MouseEventArgs).X /*- bar.Bounds.X*/ * 1.0f) / bar.Bounds.Width;
-            var jump_pos = (uint)(normalize_pos * bar.Maximum);
+            var jump_pos = (uint)(normalize_pos *MusicPlayerManager.ActivityPlayer.Length);
 
             MusicPlayerManager.ActivityPlayer.Jump(jump_pos);
         }
