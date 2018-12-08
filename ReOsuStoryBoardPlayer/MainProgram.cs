@@ -66,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
             //default 
             w=1600;
             h=900;
-            beatmap_folder=@"G:\SBTest\839266 Jeremy Blake - Flex";
+            beatmap_folder=@"G:\SBTest\46216 Watarirouka Hashiritai7 - Valentine Kiss";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -94,7 +94,7 @@ namespace ReOsuStoryBoardPlayer
                 */
 
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
-                Setting.EnableSplitMoveScaleCommand=args.Switches.Any(k => k=="enable_split");
+                Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
                 Setting.EnableRuntimeOptimzeObjects=args.Switches.Any(k => k=="enable_runtime_optimze");
 
                 //¶îÍâ¹¦ÄÜ
