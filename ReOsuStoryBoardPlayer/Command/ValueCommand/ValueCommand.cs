@@ -17,9 +17,9 @@
 
         private float CalculateNormalizeValue(float time)
         {
-            if (time < StartTime)
+            if (time <= StartTime)
                 return 0;
-            else if (time > EndTime)
+            else if (time >= EndTime)
                 return 1;
             else
                 return Easing.calculate(time - StartTime, StartTime, EndTime);
