@@ -14,6 +14,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
     public class CLIControllerDebugger : DebuggerBase
     {
         Thread thread;
+        CommandParser parser = new CommandParser(new ParamParserV2('-', '\"', '\''));
 
         public override void Init()
         {
@@ -24,16 +25,23 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
 
         private void ConsoleReader()
         {
-            var parser = new CommandParser(new ParamParserV2('-', '\"', '\''));
-
             while (true)
             {
                 var line = Console.ReadLine();
 
-                if (string.IsNullOrWhiteSpace(line))
-                    continue;
+                ExecuteCommand(line);
+            }
+        }
 
-                var cmd = parser.Parse(line, out var cmdName);
+        public void ExecuteCommand(string command)
+        {
+            //考虑到还有其他玩意用CLI接口
+            lock (this)
+            {
+                if (string.IsNullOrWhiteSpace(command))
+                    return;
+
+                var cmd = parser.Parse(command, out var cmdName);
 
                 switch (cmdName)
                 {
