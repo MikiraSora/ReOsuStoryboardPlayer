@@ -66,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
             //default 
             w=1600;
             h=900;
-            beatmap_folder=@"G:\SBTest\46216 Watarirouka Hashiritai7 - Valentine Kiss";
+            beatmap_folder=@"G:\SBTest\839266 Jeremy Blake - Flex";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

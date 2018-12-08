@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser.Extension;
+using ReOsuStoryBoardPlayer.Player;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
@@ -82,7 +83,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
             listView1.EndUpdate();
         }
 
-        static Regex reg = new Regex(@"^(\d+)(([+-]{1,2})(\d+))*$");
+        static Regex reg = new Regex(@"^([\w\(\)]+)(([+-]{1,2})(\d+))*$");
 
         private void ParseFlush()
         {
@@ -98,26 +99,33 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
             textBox1.ForeColor=Color.Black;
 
-            var base_time = match.Groups[1].Value.ToInt();
-
-            if (!string.IsNullOrWhiteSpace(match.Groups[2].Value))
+            try
             {
-                var sign = match.Groups[3].Value;
-                var offset= match.Groups[4].Value.ToInt();
+                var base_time = match.Groups[1].Value.Replace("now()", MusicPlayerManager.ActivityPlayer.CurrentTime.ToString()).ToInt();
 
-                Range range = new Range() { Start=base_time, End=base_time };
-
-                if ((!sign.All(c => c=='+'||c=='-'))||sign.Distinct().Count()!=sign.Length)
+                if (!string.IsNullOrWhiteSpace(match.Groups[2].Value))
                 {
-                    textBox1.ForeColor=Color.Red;
-                    return;
-                }
-                else if (sign.Contains('+'))
-                    range.End+=offset;
-                else if (sign.Contains('-'))
-                    range.Start-=offset;
+                    var sign = match.Groups[3].Value;
+                    var offset = match.Groups[4].Value.ToInt();
 
-                ApplyRangeFlush(range);
+                    Range range = new Range() { Start=base_time, End=base_time };
+
+                    if ((!sign.All(c => c=='+'||c=='-'))||sign.Distinct().Count()!=sign.Length)
+                    {
+                        textBox1.ForeColor=Color.Red;
+                        return;
+                    }
+                    else if (sign.Contains('+'))
+                        range.End+=offset;
+                    else if (sign.Contains('-'))
+                        range.Start-=offset;
+
+                    ApplyRangeFlush(range);
+                }
+            }
+            catch
+            {
+                textBox1.ForeColor=Color.Red;
             }
         }
 
