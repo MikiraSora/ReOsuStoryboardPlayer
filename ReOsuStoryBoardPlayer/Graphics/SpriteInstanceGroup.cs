@@ -76,10 +76,10 @@ namespace ReOsuStoryBoardPlayer
         };
 
         private static float[] _cacheBaseTexPos = new float[] {
-                 0,1,
-                 1,1,
+                 0,0,
                  1,0,
-                 0,0
+                 1,1,
+                 0,1
         };
 
         private void _buildBuffer()
