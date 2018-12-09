@@ -61,8 +61,10 @@ namespace ReOsuStoryBoardPlayer
 
                     GL.BindTexture(TextureTarget.Texture2D, _id);
 
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 
                     Bitmap bmp = new Bitmap(filename);
 
@@ -82,7 +84,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void LoadFromData(IntPtr data, int width, int height)
         {
-            if (data != null)
+            if (data != IntPtr.Zero)
             {
                 GL.GenTextures(1, out _id);
 

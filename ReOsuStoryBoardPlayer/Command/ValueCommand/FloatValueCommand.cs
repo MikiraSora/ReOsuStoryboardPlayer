@@ -32,7 +32,7 @@ namespace ReOsuStoryBoardPlayer.Commands
     {
         public RotateCommand() => Event = Event.Rotate;
 
-        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Rotate = -value;
+        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Rotate = value;
     }
 
     public class ScaleCommand : FloatValueCommand

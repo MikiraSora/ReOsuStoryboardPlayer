@@ -69,17 +69,17 @@ namespace ReOsuStoryBoardPlayer
         private Vector _bound;
 
         private static float[] _cacheBaseVertex = new float[] {
-                0,0,
-                0,-1,
-                1,-1,
-                1,0,
+                -0.5f, 0.5f,
+                 0.5f, 0.5f,
+                 0.5f, -0.5f,
+                -0.5f, -0.5f,
         };
 
         private static float[] _cacheBaseTexPos = new float[] {
                  0,1,
-                 0,0,
+                 1,1,
                  1,0,
-                 1,1
+                 0,0
         };
 
         private void _buildBuffer()
@@ -167,7 +167,7 @@ namespace ReOsuStoryBoardPlayer
             //GL.DeleteVertexArray(_vao);
         }
 
-        private Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
+        private Vector3 _staticCacheAxis = new Vector3(0, 0, -1);
 
         private float[] PostData;
 
@@ -185,7 +185,7 @@ namespace ReOsuStoryBoardPlayer
 
             //Anchor write
             PostData[base_index + 1] = anchor.x;
-            PostData[base_index + 2] = -anchor.y;
+            PostData[base_index + 2] = anchor.y;
 
             //Color write
             PostData[base_index + 3] = color.x;
@@ -204,9 +204,9 @@ namespace ReOsuStoryBoardPlayer
             //ModelMatrix write
             Matrix4 model =
                 Matrix4.Identity *
-            Matrix4.CreateScale(scale.x, scale.y, 1) *
-            Matrix4.CreateFromAxisAngle(_staticCacheAxis, rotate) *
-            Matrix4.CreateTranslation(position.x - StoryboardWindow.SB_WIDTH / 2f, -position.y + StoryboardWindow.SB_HEIGHT / 2f, 0);
+                Matrix4.CreateScale(scale.x, scale.y, 1) *
+                Matrix4.CreateFromAxisAngle(_staticCacheAxis, rotate) *
+                Matrix4.CreateTranslation(position.x - StoryboardWindow.SB_WIDTH / 2f, -position.y + StoryboardWindow.SB_HEIGHT / 2f, 0);
             //model.Transpose();
 
             int i = 0;
