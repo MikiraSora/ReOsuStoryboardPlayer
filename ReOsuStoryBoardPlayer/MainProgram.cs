@@ -66,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
             //default 
             w=1600;
             h=900;
-            beatmap_folder=@"G:\SBTest\94790 Hatsuki Yura - Fuuga";
+            beatmap_folder=@"G:\SBTest\315799 Madotsuki@ - Ikanaide";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

@@ -122,6 +122,7 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
 
+            register_sprites=CacheDrawSpriteInstanceMap.Values.ToList();
 
             bool _get(string image_name,out SpriteInstanceGroup group)
             {
@@ -158,8 +159,6 @@ namespace ReOsuStoryBoardPlayer
             this.instance=instance;
             StoryboardInstanceManager.ApplyInstance(instance);
 
-            ApplyWindowRenderSize();
-
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
             {
                 BuildCacheDrawSpriteBatch(instance.StoryboardObjectList, instance.Info.folder_path);
@@ -177,6 +176,8 @@ namespace ReOsuStoryBoardPlayer
         {
             foreach (var sprite in register_sprites)
                 sprite.Dispose();
+
+            register_sprites.Clear();
 
             foreach (var obj in instance?.StoryboardObjectList)
                 obj.RenderGroup=null;

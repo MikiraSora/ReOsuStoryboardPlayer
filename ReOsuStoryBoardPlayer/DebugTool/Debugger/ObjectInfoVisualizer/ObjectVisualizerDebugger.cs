@@ -79,7 +79,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             StoryBoardObject obj = null;
 
-            foreach (var list in StoryBoardInstance.Instance.UpdatingStoryboardObjects.Values)
+            foreach (var list in StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects.Values)
             {
                 foreach (var temp in list)
                 {

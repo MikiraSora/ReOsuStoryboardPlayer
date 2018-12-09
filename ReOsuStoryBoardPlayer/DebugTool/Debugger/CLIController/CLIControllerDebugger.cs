@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
+using ReOsuStoryBoardPlayer.Parser;
+using ReOsuStoryBoardPlayer.Utils;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
 {
@@ -46,7 +49,12 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
                 switch (cmdName)
                 {
                     case "file":
-                        //load a file
+                        var folder_path = cmd.FreeArgs.FirstOrDefault();
+                        if ((!string.IsNullOrWhiteSpace(folder_path))&&Directory.Exists(folder_path))
+                        {
+                            var info = BeatmapFolderInfo.Parse(folder_path);
+                            StoryboardPlayerHelper.PlayStoryboard(info);
+                        }
                         break;
                     case "play":
                         MusicPlayerManager.ActivityPlayer.Play();

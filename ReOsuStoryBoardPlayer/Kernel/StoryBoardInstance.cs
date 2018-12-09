@@ -31,15 +31,11 @@ namespace ReOsuStoryBoardPlayer.Kernel
         /// 正在执行的物件集合
         /// </summary>
         public Dictionary<Layout, List<StoryBoardObject>> UpdatingStoryboardObjects { get; private set; } = new Dictionary<Layout, List<StoryBoardObject>>();
-        
-        public static StoryBoardInstance Instance { get;private set; }
 
         public BeatmapFolderInfo Info { get; }
 
         public StoryBoardInstance(BeatmapFolderInfo info)
         {
-            Instance=this;
-
             Info=info;
 
             StoryboardObjectList = new LinkedList<StoryBoardObject>();
@@ -78,11 +74,16 @@ namespace ReOsuStoryBoardPlayer.Kernel
                         background_obj.Z = -1;
                 }
 
+                temp_objs_list.Sort((a, b) =>
+                {
+                    return a.FrameStartTime-b.FrameStartTime;
+                });
+
                 foreach (var obj in temp_objs_list)
                     StoryboardObjectList.AddLast(obj);
 
                 StoryboardObjectList.AsParallel().ForAll(c => c.SortCommands());
-                
+
                 CurrentScanNode=StoryboardObjectList.First;
             }
 
@@ -124,11 +125,6 @@ namespace ReOsuStoryBoardPlayer.Kernel
             List<StoryBoardObject> result = new List<StoryBoardObject>(osb_list);
             result.AddRange(osu_list);
 
-            result.Sort((a, b) =>
-            {
-                return a.FrameStartTime - b.FrameStartTime;
-            });
-
             return result;
         }
 
@@ -143,6 +139,12 @@ namespace ReOsuStoryBoardPlayer.Kernel
             }
 
             CurrentScanNode = StoryboardObjectList.First;
+
+            Console.WriteLine("===============");
+            foreach (var item in StoryboardObjectList)
+            {
+                Console.WriteLine(item);
+            }
 
             StoryboardObjectList.AsParallel().ForAll((obj) => obj.markDone = false);
         }

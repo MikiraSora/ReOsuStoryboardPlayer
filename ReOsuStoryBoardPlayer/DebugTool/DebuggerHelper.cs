@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
+﻿using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer;
 using System;
@@ -16,6 +17,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool
             DebuggerManager.AddDebugger(new ControlPanelDebugger());
             DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
             DebuggerManager.AddDebugger(new ObjectsSequenceViewerDebugger());
+            DebuggerManager.AddDebugger(new CLIControllerDebugger());
         }
 
         public static void SetupReleaseEnvironment()
