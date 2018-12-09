@@ -10,7 +10,9 @@ using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -34,6 +36,8 @@ namespace ReOsuStoryBoardPlayer
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
         public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
+
+        private ConcurrentQueue<Action> other_thread_action = new ConcurrentQueue<Action>();
 
         public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
@@ -145,6 +149,11 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
+        public void PushDelegate(Action action)
+        {
+            other_thread_action.Enqueue(action);
+        }
+
         /// <summary>
         /// 将SB实例加载到Window上，后者将会自动调用instance.Update()并渲染
         /// </summary>
@@ -204,6 +213,13 @@ namespace ReOsuStoryBoardPlayer
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+
+            Debug.Assert(other_thread_action != null, nameof(other_thread_action) + " != null");
+            while (!other_thread_action.IsEmpty)
+            {
+                other_thread_action.TryDequeue(out var action);
+                action();
+            }
 
             if (!ready)
                 return;

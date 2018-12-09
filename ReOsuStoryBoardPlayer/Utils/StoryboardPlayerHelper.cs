@@ -23,7 +23,7 @@ namespace ReOsuStoryBoardPlayer.Utils
             //load storyboard objects
             var instance = new StoryBoardInstance(info);
 
-            StoryboardWindow.CurrentWindow.LoadStoryboardInstance(instance);
+            StoryboardWindow.CurrentWindow.PushDelegate(()=>StoryboardWindow.CurrentWindow.LoadStoryboardInstance(instance));
 
             MusicPlayerManager.ActivityPlayer?.Play();
         }
