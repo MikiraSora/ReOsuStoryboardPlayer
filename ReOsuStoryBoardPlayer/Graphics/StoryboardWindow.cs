@@ -11,6 +11,7 @@ using ReOsuStoryBoardPlayer.Player;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -200,16 +201,50 @@ namespace ReOsuStoryBoardPlayer
             SwapBuffers();
         }
 
+        private double SYNC_THRESHOLD_MIN = 10;
+        private double SYNC_THRESHOLD_MAX = 100;
+
+        private double _timestamp = 0;
+        private Stopwatch _stopwatch = new Stopwatch();
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
             if (!ready)
                 return;
+            
+            var audioTime = MusicPlayerManager.ActivityPlayer.CurrentTime;
 
-            var current_time = MusicPlayerManager.ActivityPlayer.CurrentTime;
+            _stopwatch.Stop();
+            if (MusicPlayerManager.ActivityPlayer.IsPlaying)
+            {
+                double step = _stopwatch.ElapsedMilliseconds;
+                double time = _timestamp + step;
 
-            instance.Update(current_time);
+                double diffAbs = Math.Abs(_timestamp - audioTime);
+                if (diffAbs < SYNC_THRESHOLD_MAX && diffAbs > SYNC_THRESHOLD_MIN)//不同步
+                {
+                    if (audioTime > _timestamp)//音频快
+                    {
+                        time = _timestamp + diffAbs*0.5;//SB快速接近音频
+                    }
+                    else//SB快
+                    {
+                        time = _timestamp;//SB不动
+                    }
+                }
+
+                _timestamp = time;
+            }
+            else
+            {
+                _timestamp = MusicPlayerManager.ActivityPlayer.CurrentTime;
+            }
+            _stopwatch.Reset();
+            _stopwatch.Start();
+
+            instance.Update((float)_timestamp);
 
             DebuggerManager.FrameUpdate();
         }
