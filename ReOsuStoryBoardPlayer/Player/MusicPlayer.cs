@@ -14,6 +14,8 @@ namespace ReOsuStoryBoardPlayer.Player
         private static ISoundEngine engine;
         private ISound sound;
 
+        private string loaded_path;
+
         public override uint Length { get => sound.PlayLength; }
 
         public override uint CurrentTime { get => (uint)GetTime(); }
@@ -45,6 +47,8 @@ namespace ReOsuStoryBoardPlayer.Player
 
             CurrentFixedTime=0;
             offset_watch.Reset();
+
+            loaded_path=audio_file;
         }
 
         public override void Jump(uint time)

@@ -201,6 +201,7 @@
     <Compile Include="Setting.cs" />
     <Compile Include="Utils\ObjectPool.cs" />
     <Compile Include="Utils\StopwatchRun.cs" />
+    <Compile Include="Utils\StoryboardPlayerHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
