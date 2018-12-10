@@ -66,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
             //default 
             w=1600;
             h=900;
-            beatmap_folder=@"G:\SBTest\463479 Nanahira - Bassdrop Freaks (Long Ver)";
+            beatmap_folder=@"G:\SBTest\470977 Mili - worldexecute(me);";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -78,6 +78,9 @@ namespace ReOsuStoryBoardPlayer
 
                 if (args.TryGetArg(out var valW, "width", "w"))
                     w=int.Parse(valW);
+
+                if (args.TryGetArg(out var draw_count, "multi_instance_render", "mtr"))
+                    Setting.DrawCallInstanceCountMax=int.Parse(draw_count);
 
                 if (args.TryGetArg(out var valH, "height", "h"))
                     h=int.Parse(valH);

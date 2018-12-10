@@ -28,6 +28,11 @@ namespace ReOsuStoryBoardPlayer
 
         public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
 
+        /// <summary>
+        /// 一次渲染同贴图同Blend的物件数量
+        /// </summary>
+        public static int DrawCallInstanceCountMax { get; set; } = 50;
+
         #region Extendsion
 
         public static void PrintSettings()

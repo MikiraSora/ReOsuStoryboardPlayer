@@ -21,8 +21,6 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryboardWindow : GameWindow
     {
-        private static readonly uint DrawCallInstanceCountMax = 50;
-
         public static StoryboardWindow CurrentWindow { get; set; }
 
         private StoryBoardInstance instance;
@@ -141,7 +139,7 @@ namespace ReOsuStoryBoardPlayer
                 string file_path = Path.Combine(folder_path, image_name);
                 Texture tex = new Texture(file_path);
 
-                group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup(DrawCallInstanceCountMax, file_path, tex);
+                group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)Setting.DrawCallInstanceCountMax, file_path, tex);
 
                 Log.Debug($"Created storyboard sprite instance from image file :{file_path}");
 
@@ -151,7 +149,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void PushDelegate(Action action)
         {
-            other_thread_action.Enqueue(action);
+            ExecutorSync.PostTask(action);
         }
 
         /// <summary>
@@ -218,24 +216,18 @@ namespace ReOsuStoryBoardPlayer
 
         private double GetSyncTime()
         {
-            Debug.Assert(other_thread_action!=null, nameof(other_thread_action)+" != null");
-            while (!other_thread_action.IsEmpty)
-            {
-                other_thread_action.TryDequeue(out var action);
-                action();
-            }
-
             var audioTime = MusicPlayerManager.ActivityPlayer.CurrentTime;
+            var playbackRate = MusicPlayerManager.ActivityPlayer.PlaybackSpeed;
 
-            double step = _stopwatch.ElapsedMilliseconds;
+            double step = _stopwatch.ElapsedMilliseconds*playbackRate;
             _stopwatch.Restart();
 
             if (MusicPlayerManager.ActivityPlayer.IsPlaying)
             {
                 double time = _timestamp+step;
 
-                double diffAbs = Math.Abs(_timestamp-audioTime);
-                if (diffAbs<SYNC_THRESHOLD_MAX&&diffAbs>SYNC_THRESHOLD_MIN)//不同步
+                double diffAbs = Math.Abs(_timestamp-audioTime)*playbackRate;
+                if (diffAbs>SYNC_THRESHOLD_MIN)//不同步
                 {
                     if (audioTime>_timestamp)//音频快
                     {
@@ -253,11 +245,14 @@ namespace ReOsuStoryBoardPlayer
             {
                 return _timestamp=MusicPlayerManager.ActivityPlayer.CurrentTime;
             }
+
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+
+            ExecutorSync.ClearTask();
 
             var time = GetSyncTime();
 

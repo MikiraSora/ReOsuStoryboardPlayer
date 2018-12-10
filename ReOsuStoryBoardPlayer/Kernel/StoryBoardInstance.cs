@@ -178,8 +178,6 @@ namespace ReOsuStoryBoardPlayer.Kernel
         /// <param name="current_time"></param>
         public void Update(float current_time)
         {
-            ExecutorSync.ClearTask();
-
             bool hasAdded = Scan(current_time);
 
             foreach (var objs in UpdatingStoryboardObjects.Values)
