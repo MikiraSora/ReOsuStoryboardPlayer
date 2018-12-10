@@ -73,13 +73,12 @@ namespace ReOsuStoryBoardPlayer
 #endif
             foreach (var timeline in CommandMap.Values)
             {
-                foreach (var command in timeline.PickCommands(current_time))
-                {
-                    command.Execute(this, current_time);
+                var command = timeline.PickCommand(current_time);
+
+                command.Execute(this, current_time);
 #if DEBUG
-                    MarkCommandExecuted(command);
+                MarkCommandExecuted(command);
 #endif
-                }
             }
         }
 

@@ -9,11 +9,6 @@ namespace ReOsuStoryBoardPlayer.Commands
         public int StartTime => this.Min(c => c.StartTime);
         public int EndTime => this.Max(c => c.EndTime);
 
-        public virtual IEnumerable<Command> PickCommands(float time)
-        {
-            yield return PickCommand(time);
-        }
-
         public new void Add(Command command)
         {
             base.Add(command);
@@ -56,16 +51,6 @@ namespace ReOsuStoryBoardPlayer.Commands
                 }
 
             return selected_command = null;
-        }
-    }
-
-    public class LoopCommandTimeline : CommandTimeline
-    {
-        public override IEnumerable<Command> PickCommands(float time)
-        {
-            //每个物件可能有多个Loop,全都执行了，至于命令先后循序，交给DispatchCommandExecute()判断
-            foreach (var x in this)
-                yield return x;
         }
     }
 }

@@ -66,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
             //default 
             w=1600;
             h=900;
-            beatmap_folder=@"G:\SBTest\470977 Mili - worldexecute(me);";
+            beatmap_folder=@"G:\SBTest\483606 NOMA - LOUDER MACHINE";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
