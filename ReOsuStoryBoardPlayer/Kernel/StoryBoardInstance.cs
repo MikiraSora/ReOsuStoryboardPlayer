@@ -140,12 +140,6 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
             CurrentScanNode = StoryboardObjectList.First;
 
-            Console.WriteLine("===============");
-            foreach (var item in StoryboardObjectList)
-            {
-                Console.WriteLine(item);
-            }
-
             StoryboardObjectList.AsParallel().ForAll((obj) => obj.markDone = false);
         }
         

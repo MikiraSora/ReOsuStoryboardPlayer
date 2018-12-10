@@ -23,7 +23,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             StartTime = loop_command.StartTime+offset;
             EndTime=StartTime+CostTime*loop_command.LoopCount;
         }
-
+        
         public override void Execute(StoryBoardObject @object, float current_value)
         {
             float relative_time = current_value;
