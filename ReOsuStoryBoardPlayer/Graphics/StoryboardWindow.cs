@@ -210,57 +210,61 @@ namespace ReOsuStoryBoardPlayer
             SwapBuffers();
         }
 
-        private double SYNC_THRESHOLD_MIN = 10;
-        private double SYNC_THRESHOLD_MAX = 100;
+        private const double SYNC_THRESHOLD_MIN = 10;
+        private const double SYNC_THRESHOLD_MAX = 100;
 
         private double _timestamp = 0;
         private Stopwatch _stopwatch = new Stopwatch();
 
-        protected override void OnUpdateFrame(FrameEventArgs e)
+        private double GetSyncTime()
         {
-            base.OnUpdateFrame(e);
-
-            Debug.Assert(other_thread_action != null, nameof(other_thread_action) + " != null");
+            Debug.Assert(other_thread_action!=null, nameof(other_thread_action)+" != null");
             while (!other_thread_action.IsEmpty)
             {
                 other_thread_action.TryDequeue(out var action);
                 action();
             }
 
-            if (!ready)
-                return;
-            
             var audioTime = MusicPlayerManager.ActivityPlayer.CurrentTime;
 
-            _stopwatch.Stop();
+            double step = _stopwatch.ElapsedMilliseconds;
+            _stopwatch.Restart();
+
             if (MusicPlayerManager.ActivityPlayer.IsPlaying)
             {
-                double step = _stopwatch.ElapsedMilliseconds;
-                double time = _timestamp + step;
+                double time = _timestamp+step;
 
-                double diffAbs = Math.Abs(_timestamp - audioTime);
-                if (diffAbs < SYNC_THRESHOLD_MAX && diffAbs > SYNC_THRESHOLD_MIN)//不同步
+                double diffAbs = Math.Abs(_timestamp-audioTime);
+                if (diffAbs<SYNC_THRESHOLD_MAX&&diffAbs>SYNC_THRESHOLD_MIN)//不同步
                 {
-                    if (audioTime > _timestamp)//音频快
+                    if (audioTime>_timestamp)//音频快
                     {
-                        time = _timestamp + diffAbs*0.5;//SB快速接近音频
+                        time=_timestamp+diffAbs*0.5;//SB快速接近音频
                     }
                     else//SB快
                     {
-                        time = _timestamp;//SB不动
+                        time=_timestamp;//SB不动
                     }
                 }
 
-                _timestamp = time;
+                return _timestamp=time;
             }
             else
             {
-                _timestamp = MusicPlayerManager.ActivityPlayer.CurrentTime;
+                return _timestamp=MusicPlayerManager.ActivityPlayer.CurrentTime;
             }
-            _stopwatch.Reset();
-            _stopwatch.Start();
+        }
 
-            instance.Update((float)_timestamp);
+        protected override void OnUpdateFrame(FrameEventArgs e)
+        {
+            base.OnUpdateFrame(e);
+
+            var time = GetSyncTime();
+
+            if (!ready)
+                return;
+
+            instance.Update((float)time);
 
             DebuggerManager.FrameUpdate();
         }
