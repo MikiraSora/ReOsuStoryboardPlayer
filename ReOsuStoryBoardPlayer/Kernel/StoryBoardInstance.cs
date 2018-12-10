@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Kernel
 {
@@ -190,13 +191,13 @@ namespace ReOsuStoryBoardPlayer.Kernel
                     });
                 }
 
-                foreach (var obj in objs)
+                Parallel.ForEach(objs, obj =>
                 {
                     if (current_time < obj.FrameStartTime || current_time > obj.FrameEndTime)
                         obj.markDone = true;
                     else
                         obj.Update(current_time);
-                }
+                });
             }
 
             //remove unused objects
