@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -6,12 +7,16 @@ namespace ReOsuStoryBoardPlayer.Commands
 {
     public class CommandTimeline : List<Command>
     {
-        public int StartTime => this.Min(c => c.StartTime);
-        public int EndTime => this.Max(c => c.EndTime);
+        public int StartTime;
+        public int EndTime;
 
         public new void Add(Command command)
         {
             base.Add(command);
+
+            //update StartTime/EndTime
+            StartTime=Math.Min(StartTime, command.StartTime);
+            EndTime=Math.Max(EndTime, command.StartTime);
         }
 
         private Command selected_command;
