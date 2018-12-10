@@ -222,7 +222,7 @@ namespace ReOsuStoryBoardPlayer
             double step = _stopwatch.ElapsedMilliseconds*playbackRate;
             _stopwatch.Restart();
 
-            if (MusicPlayerManager.ActivityPlayer.IsPlaying)
+            if (MusicPlayerManager.ActivityPlayer.IsPlaying&&Setting.EnableTimestamp)
             {
                 double time = _timestamp+step;
 
@@ -245,7 +245,6 @@ namespace ReOsuStoryBoardPlayer
             {
                 return _timestamp=MusicPlayerManager.ActivityPlayer.CurrentTime;
             }
-
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)

@@ -96,6 +96,7 @@ namespace ReOsuStoryBoardPlayer
                     Setting.ParallelParseCommandLimitCount=p_parse_limit.ToInt();
                 */
 
+                Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
                 Setting.EnableRuntimeOptimzeObjects=args.Switches.Any(k => k=="enable_runtime_optimze");

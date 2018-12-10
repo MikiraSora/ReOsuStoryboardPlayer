@@ -33,6 +33,11 @@ namespace ReOsuStoryBoardPlayer
         /// </summary>
         public static int DrawCallInstanceCountMax { get; set; } = 50;
 
+        /// <summary>
+        /// 支持时间插值，但对于低帧率会有延迟出现
+        /// </summary>
+        public static bool EnableTimestamp { get; set; } = false;
+
         #region Extendsion
 
         public static void PrintSettings()
