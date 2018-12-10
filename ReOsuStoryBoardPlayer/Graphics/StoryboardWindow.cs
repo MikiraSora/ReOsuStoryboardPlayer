@@ -208,8 +208,7 @@ namespace ReOsuStoryBoardPlayer
             SwapBuffers();
         }
 
-        private const double SYNC_THRESHOLD_MIN = 10;
-        private const double SYNC_THRESHOLD_MAX = 100;
+        private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
 
         private double _timestamp = 0;
         private Stopwatch _stopwatch = new Stopwatch();
@@ -231,7 +230,7 @@ namespace ReOsuStoryBoardPlayer
                 {
                     if (audioTime>_timestamp)//音频快
                     {
-                        time=_timestamp+diffAbs*0.5;//SB快速接近音频
+                        time=_timestamp+diffAbs*0.6;//SB快速接近音频
                     }
                     else//SB快
                     {
