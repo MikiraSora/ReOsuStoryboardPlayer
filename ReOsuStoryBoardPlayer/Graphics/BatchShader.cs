@@ -8,7 +8,6 @@
                 #version 330
                 out vec4 varying_color;
                 out vec2 varying_texPos;
-                out vec2 varying_flip;
 
                 uniform mat4 ViewProjection;
 
@@ -21,12 +20,13 @@
                 layout(location=5) in vec2 in_bound;
                 layout(location=6) in vec2 in_flip;
                 layout(location=7) in mat4 in_model;
+                
+                #define UV_FLIP_ORIGIN vec2(0.5,0.5)
 
                 void main(){
 	                gl_Position=ViewProjection*in_model*vec4((in_pos-in_anchor)*in_bound,in_Z,1.0);
 	                varying_color=in_color;
-                    varying_flip=in_flip;
-	                varying_texPos=in_texPos;
+	                varying_texPos=(in_texPos-UV_FLIP_ORIGIN)*in_flip+UV_FLIP_ORIGIN;
                 }
                 ";
             this.FragmentProgram = @"
@@ -36,12 +36,11 @@
 
                 in vec4 varying_color;
                 in vec2 varying_texPos;
-                in vec2 varying_flip;
 
                 out vec4 out_color;
 
                 void main(){
-	                vec4 texColor=texture(diffuse,vec2(varying_texPos.x,-varying_texPos.y)*varying_flip);
+	                vec4 texColor=texture(diffuse,varying_texPos);
 	                out_color=(varying_color*texColor);
                 }
                 ";

@@ -124,15 +124,15 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         private readonly static Dictionary<Anchor, Vector> AnchorVectorMap = new Dictionary<Anchor, Vector>()
         {
-            {Anchor.TopLeft,new Vector(0,0)},
-            {Anchor.TopCentre,new Vector(0.5f, 0.0f)},
-            {Anchor.TopRight,new Vector(1.0f, 0.0f)},
-            {Anchor.CentreLeft,new Vector(0.0f, 0.5f)},
-            {Anchor.Centre,new Vector(0.5f, 0.5f)},
-            {Anchor.CentreRight,new Vector(1.0f, 0.5f)},
-            {Anchor.BottomLeft,new Vector(0.0f, 1.0f)},
-            {Anchor.BottomCentre,new Vector(0.5f, 1.0f)},
-            {Anchor.BottomRight,new Vector(1.0f, 1.0f)}
+            {Anchor.TopLeft,new Vector(-0.5f,0.5f)},
+            {Anchor.TopCentre,new Vector(0.0f, 0.5f)},
+            {Anchor.TopRight,new Vector(0.5f, 0.5f)},
+            {Anchor.CentreLeft,new Vector(-0.5f, 0.0f)},
+            {Anchor.Centre,new Vector(0.0f, 0.0f)},
+            {Anchor.CentreRight,new Vector(0.5f, 0.0f)},
+            {Anchor.BottomLeft,new Vector(-0.5f, -0.5f)},
+            {Anchor.BottomCentre,new Vector(0.0f, -0.5f)},
+            {Anchor.BottomRight,new Vector(0.5f, -0.5f)}
         };
 
         public static Vector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
