@@ -66,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
             //default 
             w=1600;
             h=900;
-            beatmap_folder=@"G:\SBTest\432822 NOMA - Brain Power Long Version";
+            beatmap_folder=@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

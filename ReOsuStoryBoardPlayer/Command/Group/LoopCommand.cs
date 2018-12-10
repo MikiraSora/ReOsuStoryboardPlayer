@@ -11,15 +11,18 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public int LoopCount { get; set; }
 
-        public void AddSubCommandsAndUpdate(IEnumerable<Command> commands)
+        public void UpdateSubCommand()
         {
-            AddSubCommand(commands);
-            UpdateParam();
-        }
+            var commands = SubCommands.SelectMany(l => l.Value);
+            var offset = commands.Min(x => x.StartTime);
+            StartTime+=offset;
+            foreach (var command in commands)
+            {
+                command.StartTime-=offset;
+                command.EndTime-=offset;
+            }
 
-        public void UpdateParam()
-        {
-            CostTime = SubCommands.SelectMany(l => l.Value).Max(c => c.EndTime);
+            CostTime =commands.Max(c => c.EndTime);
             var total_cast_time = CostTime * LoopCount;
 
             EndTime = StartTime + total_cast_time;

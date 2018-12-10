@@ -173,7 +173,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                         if (current_group_command!=prev_group&&
                             prev_group is LoopCommand loopc)
                         {
-                            loopc.UpdateParam();
+                            loopc.UpdateSubCommand();
                         }
 
                         commands.Add(cmd);
@@ -182,7 +182,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             }
 
             if (current_group_command is LoopCommand loop)
-                loop.UpdateParam();
+                loop.UpdateSubCommand();
 
             ObjectPool<List<Command>>.Instance.PutObject(cur_group_cmds);
 
