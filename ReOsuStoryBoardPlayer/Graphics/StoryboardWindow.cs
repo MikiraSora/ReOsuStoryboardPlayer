@@ -223,22 +223,22 @@ namespace ReOsuStoryBoardPlayer
 
             if (MusicPlayerManager.ActivityPlayer.IsPlaying&&Setting.EnableTimestamp)
             {
-                double time = _timestamp+step;
+                double nextTime = _timestamp + step;
 
-                double diffAbs = Math.Abs(_timestamp-audioTime)*playbackRate;
-                if (diffAbs>SYNC_THRESHOLD_MIN)//不同步
+                double diffAbs = Math.Abs(nextTime-audioTime)*playbackRate;
+                if (diffAbs>SYNC_THRESHOLD_MIN*playbackRate)//不同步
                 {
                     if (audioTime>_timestamp)//音频快
                     {
-                        time=_timestamp+diffAbs*0.6;//SB快速接近音频
+                        nextTime+=diffAbs*0.6;//SB快速接近音频
                     }
                     else//SB快
                     {
-                        time=_timestamp;//SB不动
+                        nextTime=_timestamp;//SB不动
                     }
                 }
 
-                return _timestamp=time;
+                return _timestamp=nextTime;
             }
             else
             {
