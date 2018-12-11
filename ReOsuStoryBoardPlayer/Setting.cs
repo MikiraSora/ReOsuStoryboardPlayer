@@ -28,6 +28,8 @@ namespace ReOsuStoryBoardPlayer
 
         public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
 
+        public static bool FunReverseEasing { get; set; } = false;
+
         /// <summary>
         /// 一次渲染同贴图同Blend的物件数量
         /// </summary>

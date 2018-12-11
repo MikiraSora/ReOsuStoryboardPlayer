@@ -66,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
             //default 
             w=1600;
             h=900;
-            beatmap_folder=@"G:\SBTest\483606 NOMA - LOUDER MACHINE";
+            beatmap_folder=@"G:\SBTest\470977 Mili - worldexecute(me);";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -90,15 +90,11 @@ namespace ReOsuStoryBoardPlayer
 
                 if (args.TryGetArg(out var p_update_limit, "-parallel_update_limit", "pu"))
                     Setting.ParallelUpdateObjectsLimitCount=p_update_limit.ToInt();
-
-                /*
-                if (args.TryGetArg(out var p_parse_limit, "-parallel_parse_limit", "pp"))
-                    Setting.ParallelParseCommandLimitCount=p_parse_limit.ToInt();
-                */
-
+                
                 Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
+                Setting.FunReverseEasing=args.Switches.Any(k => k=="fun_reverse_easing");
                 Setting.EnableRuntimeOptimzeObjects=args.Switches.Any(k => k=="enable_runtime_optimze");
 
                 //¶îÍâ¹¦ÄÜ

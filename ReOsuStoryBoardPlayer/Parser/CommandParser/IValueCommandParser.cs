@@ -26,6 +26,9 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
             else
                 command.Easing=EasingConverter.CacheEasingInterpolatorMap[easingID];
 
+            if (Setting.FunReverseEasing)
+                command.Easing=(EasingInterpolator)command.Easing.reverse();
+
             command.StartTime=StartTime;
             command.EndTime=EndTime;
 
