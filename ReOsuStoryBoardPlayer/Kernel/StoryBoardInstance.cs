@@ -30,7 +30,7 @@ namespace ReOsuStoryBoardPlayer.Kernel
         /// <summary>
         /// 正在执行的物件集合
         /// </summary>
-        public Dictionary<Layout, List<StoryBoardObject>> UpdatingStoryboardObjects { get; private set; } = new Dictionary<Layout, List<StoryBoardObject>>();
+        public List<StoryBoardObject> UpdatingStoryboardObjects { get; private set; }
 
         public BeatmapFolderInfo Info { get; }
 
@@ -38,10 +38,10 @@ namespace ReOsuStoryBoardPlayer.Kernel
         {
             Info=info;
 
-            StoryboardObjectList = new LinkedList<StoryBoardObject>();
+            StoryboardObjectList=new LinkedList<StoryBoardObject>();
 
             //int audioLeadIn = 0;
-            
+
             #region Load and Parse osb/osu file
 
             using (StopwatchRun.Count("Load and Parse osb/osu file"))
@@ -52,26 +52,26 @@ namespace ReOsuStoryBoardPlayer.Kernel
                 List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(info.osu_file_path);
                 AdjustZ(parse_osu_storyboard_objs, 0);
 
-                if ((!string.IsNullOrWhiteSpace(info.osb_file_path)) && File.Exists(info.osb_file_path))
+                if ((!string.IsNullOrWhiteSpace(info.osb_file_path))&&File.Exists(info.osb_file_path))
                 {
-                    parse_osb_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(info.osb_file_path);
+                    parse_osb_storyboard_objs=StoryboardParserHelper.GetStoryBoardObjects(info.osb_file_path);
                     AdjustZ(parse_osb_storyboard_objs, parse_osu_storyboard_objs?.Count()??0);
                 }
 
 
-                temp_objs_list = CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
+                temp_objs_list=CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
 
                 //delete Background object if there is a normal storyboard object which is same image file.
                 var background_obj = temp_objs_list.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
-                if (temp_objs_list.Any(c => c.ImageFilePath == background_obj?.ImageFilePath && (!(c is StoryboardBackgroundObject))))
+                if (temp_objs_list.Any(c => c.ImageFilePath==background_obj?.ImageFilePath&&(!(c is StoryboardBackgroundObject))))
                 {
                     Log.User($"Found another same background image object and delete background object.");
                     temp_objs_list.Remove(background_obj);
                 }
                 else
                 {
-                    if (background_obj != null)
-                        background_obj.Z = -1;
+                    if (background_obj!=null)
+                        background_obj.Z=-1;
                 }
 
                 temp_objs_list.Sort((a, b) =>
@@ -89,20 +89,14 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
             #endregion Load and Parse osb/osu file
 
-            #region Create LayoutListMap
-
-            foreach (Layout item in Enum.GetValues(typeof(Layout)))
-            {
-                UpdatingStoryboardObjects.Add(item, new List<StoryBoardObject>());
-            }
-
-            #endregion Create LayoutListMap
+            var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
+            UpdatingStoryboardObjects=new List<StoryBoardObject>(limit_update_count);
 
             void AdjustZ(List<StoryBoardObject> list, int base_z)
             {
-                list.Sort((a, b) => (int)(a.FileLine - b.FileLine));
-                for (int i = 0; i < list.Count; i++)
-                    list[i].Z = base_z + i;
+                list.Sort((a, b) => (int)(a.FileLine-b.FileLine));
+                for (int i = 0; i<list.Count; i++)
+                    list[i].Z=base_z+i;
             }
         }
 
@@ -110,14 +104,14 @@ namespace ReOsuStoryBoardPlayer.Kernel
         {
             #region Safe Check
 
-            if (osb_list == null)
+            if (osb_list==null)
             {
-                osb_list = new List<StoryBoardObject>();
+                osb_list=new List<StoryBoardObject>();
             }
 
-            if (osu_list == null)
+            if (osu_list==null)
             {
-                osu_list = new List<StoryBoardObject>();
+                osu_list=new List<StoryBoardObject>();
             }
 
             #endregion Safe Check
@@ -133,43 +127,40 @@ namespace ReOsuStoryBoardPlayer.Kernel
         /// </summary>
         public void Flush()
         {
-            foreach (var pair in UpdatingStoryboardObjects)
-            {
-                pair.Value.Clear();
-            }
+            UpdatingStoryboardObjects.Clear();
 
-            CurrentScanNode = StoryboardObjectList.First;
+            CurrentScanNode=StoryboardObjectList.First;
 
-            StoryboardObjectList.AsParallel().ForAll((obj) => obj.markDone = false);
+            StoryboardObjectList.AsParallel().ForAll((obj) => obj.markDone=false);
         }
-        
+
         private bool Scan(float current_time)
         {
             LinkedListNode<StoryBoardObject> LastAddNode = null;
 
-            while (CurrentScanNode != null && CurrentScanNode.Value.FrameStartTime <= current_time/* && current_time <= CurrentScanNode.Value.FrameEndTime*/ )
+            while (CurrentScanNode!=null&&CurrentScanNode.Value.FrameStartTime<=current_time/* && current_time <= CurrentScanNode.Value.FrameEndTime*/ )
             {
                 var obj = CurrentScanNode.Value;
-                if (current_time > obj.FrameEndTime)
+                if (current_time>obj.FrameEndTime)
                 {
-                    CurrentScanNode = CurrentScanNode.Next;
+                    CurrentScanNode=CurrentScanNode.Next;
                     continue;
                 }
 
-                obj.markDone = false;
-                UpdatingStoryboardObjects[obj.layout].Add(obj);
+                obj.markDone=false;
+                UpdatingStoryboardObjects.Add(obj);
 
-                LastAddNode = CurrentScanNode;
+                LastAddNode=CurrentScanNode;
 
-                CurrentScanNode = CurrentScanNode.Next;
+                CurrentScanNode=CurrentScanNode.Next;
             }
 
-            if (LastAddNode != null)
+            if (LastAddNode!=null)
             {
-                CurrentScanNode = LastAddNode.Next;
+                CurrentScanNode=LastAddNode.Next;
             }
 
-            return /*isAdd*/LastAddNode != null;
+            return /*isAdd*/LastAddNode!=null;
         }
 
         /// <summary>
@@ -178,37 +169,21 @@ namespace ReOsuStoryBoardPlayer.Kernel
         /// <param name="current_time"></param>
         public void Update(float current_time)
         {
+            UpdatingStoryboardObjects.RemoveAll((obj) => current_time>obj.FrameEndTime||current_time<obj.FrameStartTime);
+
             bool hasAdded = Scan(current_time);
-
-            foreach (var objs in UpdatingStoryboardObjects.Values)
+            
+            if (hasAdded)
             {
-                if (hasAdded)
+                UpdatingStoryboardObjects.Sort((a, b) =>
                 {
-                    objs.Sort((a, b) =>
-                    {
-                        return a.Z - b.Z;
-                    });
-                }
-
-                foreach (var obj in objs)
-                {
-                    if (current_time < obj.FrameStartTime || current_time > obj.FrameEndTime)
-                        obj.markDone = true;
-                    else
-                        obj.Update(current_time);
-                }
+                    return a.Z-b.Z;
+                });
             }
 
-            //remove unused objects
-            foreach (var objs in UpdatingStoryboardObjects.Values)
+            foreach (var obj in UpdatingStoryboardObjects)
             {
-                objs.RemoveAll((obj) =>
-                {
-                    if (!obj.markDone)
-                        return false;
-
-                    return true;
-                });
+                obj.Update(current_time);
             }
         }
 

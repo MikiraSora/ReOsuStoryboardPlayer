@@ -161,7 +161,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            RangeObjects=StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects.SelectMany(l => l.Value).OrderBy(c => c.Z);
+            RangeObjects=StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects.OrderBy(c => c.Z);
             ApplyObjectsFlush();
         }
 

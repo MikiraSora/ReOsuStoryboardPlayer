@@ -79,17 +79,15 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             StoryBoardObject obj = null;
 
-            foreach (var list in StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects.Values)
+            foreach (var temp in StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects)
             {
-                foreach (var temp in list)
+                if (temp.Z>last_order_index&&
+                    (obj==null ? true : (temp.Z<obj.Z))&&
+                    IsPointInObjectArea(temp, x, y))
                 {
-                    if (temp.Z>last_order_index&&
-                        (obj==null ? true : (temp.Z<obj.Z))&&
-                        IsPointInObjectArea(temp, x, y))
-                    {
-                        obj=temp;
-                    }
+                    obj=temp;
                 }
+
             }
 
             Window.SelectObject=obj;

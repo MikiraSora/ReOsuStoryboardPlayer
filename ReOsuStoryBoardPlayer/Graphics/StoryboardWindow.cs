@@ -273,15 +273,10 @@ namespace ReOsuStoryBoardPlayer
 
         private void PostDrawStoryBoard()
         {
-            foreach (var layout_list in instance.UpdatingStoryboardObjects)
-            {
-                if (layout_list.Value.Count==0)
-                {
-                    continue;
-                }
+            if (instance.UpdatingStoryboardObjects.Count==0)
+                return;
 
-                DrawStoryBoardObjects(layout_list.Value);
-            }
+            DrawStoryBoardObjects(instance.UpdatingStoryboardObjects);
 
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
