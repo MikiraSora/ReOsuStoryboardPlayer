@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Kernel
 {
@@ -181,9 +182,14 @@ namespace ReOsuStoryBoardPlayer.Kernel
                 });
             }
 
-            foreach (var obj in UpdatingStoryboardObjects)
+            if (UpdatingStoryboardObjects.Count>=Setting.ParallelUpdateObjectsLimitCount)
             {
-                obj.Update(current_time);
+                Parallel.ForEach(UpdatingStoryboardObjects, obj => obj.Update(current_time));
+            }
+            else
+            {
+                foreach (var obj in UpdatingStoryboardObjects)
+                    obj.Update(current_time);
             }
         }
 
