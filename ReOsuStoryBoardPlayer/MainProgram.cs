@@ -73,6 +73,12 @@ namespace ReOsuStoryBoardPlayer
 
             if (args!=null)
             {
+                if (args.Switches.Any(k => k=="help"))
+                {
+                    Console.WriteLine("please visit here: https://github.com/MikiraSora/OsuStoryBoardPlayer/wiki/Program-command-options");
+                    Exit("");
+                }
+
                 if (args.FreeArgs!=null)
                     beatmap_folder=args.FreeArgs.FirstOrDefault()??beatmap_folder;
 
