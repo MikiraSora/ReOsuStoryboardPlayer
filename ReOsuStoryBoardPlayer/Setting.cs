@@ -28,6 +28,8 @@ namespace ReOsuStoryBoardPlayer
 
         public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
 
+        public static bool EnableLoopCommandExpand { get; set; } = false;
+
         public static bool FunReverseEasing { get; set; } = false;
 
         public static int Width { get; set; } = 854;

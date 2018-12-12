@@ -26,7 +26,10 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         {
             foreach (var obj in storyboard_objects)
             {
-                if (obj==null || !obj.CommandMap.TryGetValue(Event.Fade, out var fade_list)||fade_list.Count==0)
+                if (obj==null 
+                    || obj is StoryboardAnimation  //qnmd
+                    || !obj.CommandMap.TryGetValue(Event.Fade, out var fade_list)
+                    ||fade_list.Count==0)
                     continue;
 
                 var first_fade = fade_list.First() as FadeCommand;

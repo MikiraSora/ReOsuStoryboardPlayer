@@ -50,18 +50,22 @@ namespace ReOsuStoryBoardPlayer
 
         private void AddLoopCommand(LoopCommand loop_command)
         {
-            /*
-            //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
-            foreach (var @event in loop_command.SubCommands.Keys)
+            if (Setting.EnableLoopCommandExpand)
             {
-                var sub_command_wrapper = new LoopSubTimelineCommand(loop_command, @event);
-                AddCommand(sub_command_wrapper);
-            }*/
-
-            foreach (var cmd in loop_command.SubCommandExpand())
-            {
-                AddCommand(cmd);
+                //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
+                foreach (var cmd in loop_command.SubCommandExpand())
+                    AddCommand(cmd);
             }
+            else
+            {
+                //将Loop命令里面的子命令展开
+                foreach (var @event in loop_command.SubCommands.Keys)
+                {
+                    var sub_command_wrapper = new LoopSubTimelineCommand(loop_command, @event);
+                    AddCommand(sub_command_wrapper);
+                }
+            }
+
         }
 
         public void SortCommands()

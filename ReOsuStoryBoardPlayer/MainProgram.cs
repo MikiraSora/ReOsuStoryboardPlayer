@@ -100,6 +100,7 @@ namespace ReOsuStoryBoardPlayer
                     Setting.UpdateThreadCount = update_thread_count.ToInt();
 
                 Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
+                Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
                 Setting.FunReverseEasing=args.Switches.Any(k => k=="fun_reverse_easing");
