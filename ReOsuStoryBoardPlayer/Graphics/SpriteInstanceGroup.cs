@@ -2,6 +2,7 @@
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Runtime.CompilerServices;
+using ReOsuStoryBoardPlayer.Kernel;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -210,7 +211,7 @@ namespace ReOsuStoryBoardPlayer
             model.Row2.Y = -position.y + StoryboardWindow.SB_HEIGHT / 2f;
 
             //Z float
-            PostData[base_index + 0] = 0;
+            PostData[base_index + 0] = z_other;
 
             unsafe
             {
@@ -266,6 +267,7 @@ namespace ReOsuStoryBoardPlayer
 
             _shader.PassUniform("diffuse", texture);
             _shader.PassUniform("ViewProjection", VP);
+            _shader.PassUniform("MaxZ",(float)StoryboardWindow.CurrentWindow.StoryBoardInstance.MaxZ);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbos[_current_buffer_index]);
             {

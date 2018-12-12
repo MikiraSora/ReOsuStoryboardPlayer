@@ -35,6 +35,8 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
         public BeatmapFolderInfo Info { get; }
 
+        public int MaxZ { get; private set; }
+
         public StoryBoardInstance(BeatmapFolderInfo info)
         {
             Info=info;
@@ -96,8 +98,11 @@ namespace ReOsuStoryBoardPlayer.Kernel
             void AdjustZ(List<StoryBoardObject> list, int base_z)
             {
                 list.Sort((a, b) => (int)(a.FileLine-b.FileLine));
-                for (int i = 0; i<list.Count; i++)
-                    list[i].Z=base_z+i;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].Z = base_z + i;
+                    MaxZ = Math.Max(MaxZ, list[i].Z);
+                }
             }
         }
 

@@ -26,6 +26,7 @@ namespace ReOsuStoryBoardPlayer
         public static StoryboardWindow CurrentWindow { get; set; }
 
         private StoryBoardInstance instance;
+        public StoryBoardInstance StoryBoardInstance => instance;
 
         private bool ready = false;
 
@@ -64,13 +65,15 @@ namespace ReOsuStoryBoardPlayer
 
         public void ApplyWindowRenderSize()
         {
-            CameraViewMatrix = Matrix4.Identity;
-
             //裁剪View
             float radio = (float)Width / (float)Height;
 
             ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, 0, 100);
-            CameraViewMatrix = CameraViewMatrix;
+
+            var _cameraViewMatrix = Matrix4.Identity * Matrix4.CreateRotationY((float)Math.PI)*Matrix4.CreateRotationZ((float)Math.PI);
+            _cameraViewMatrix.Row1 = -_cameraViewMatrix.Row1;//Y轴翻转
+            _cameraViewMatrix.Row3.Z = -1;//Z轴移动-1单位
+            CameraViewMatrix = _cameraViewMatrix;
         }
         
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
