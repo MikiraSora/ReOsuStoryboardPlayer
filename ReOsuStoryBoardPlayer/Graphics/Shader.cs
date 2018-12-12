@@ -100,119 +100,58 @@ namespace ReOsuStoryBoardPlayer
                 return;
             }
 
-            int l = GL.GetUniformLocation(program, name);
-            GL.ActiveTexture(TextureUnit.Texture0 + tex.ID);
             GL.BindTexture(TextureTarget.Texture2D, tex.ID);
-            GL.Uniform1(l, tex.ID);
-            GL.ActiveTexture(TextureUnit.Texture0);
-
-            AddPassRecord(name, "Texture");
         }
 
         public void PassNullTexUniform(string name)
         {
-            int l = GL.GetUniformLocation(program, name);
-            GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.Uniform1(l, 0);
         }
 
         public void PassUniform(string name, Vec4 vec)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform4(l, vec.x, vec.y, vec.z, vec.w);
-
-            AddPassRecord(name, "Vec4");
         }
 
         public void PassUniform(string name, float val)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform1(l, val);
-
-            AddPassRecord(name, "Float");
         }
 
         public void PassUniform(string name, int val)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform1(l, val);
-
-            AddPassRecord(name, "Int");
         }
 
         public void PassUniform(string name, Vector2 val)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform2(l, val);
-
-            AddPassRecord(name, "Vector2");
         }
 
         public void PassUniform(string name, OpenTK.Matrix4 matrix4)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.UniformMatrix4(l, false, ref matrix4);
-
-            AddPassRecord(name, "Matrix4");
         }
 
-        internal void AddPassRecord(string name, string value)
-        {
-            recordPassHistory[name] = value;
-        }
+        private Dictionary<string,int> _uniformDictionary = new Dictionary<string, int>();
 
-        public void ClearUniform(string key, string typeName)
+        private int GetUniformLocation(string name)
         {
-            switch (typeName)
+            if (_uniformDictionary.ContainsKey(name))
             {
-                case "Sampler2D":
-                    PassNullTexUniform(key);
-                    break;
-
-                case "Texture":
-                    PassNullTexUniform(key);
-                    break;
-
-                case "Vec4":
-                    PassUniform(key, Vec4.zero);
-                    break;
-
-                case "Float":
-                    PassUniform(key, (float)0);
-                    break;
-
-                case "Int":
-                    PassUniform(key, (int)0);
-                    break;
-
-                case "Int32":
-                    PassUniform(key, (Int32)0);
-                    break;
-
-                case "Single":
-                    PassUniform(key, (Single)0);
-                    break;
-
-                case "Vector2":
-                    PassUniform(key, (Vector2.Zero));
-                    break;
+                return _uniformDictionary[name];
             }
+            int l = GL.GetUniformLocation(program, name);
+            _uniformDictionary.Add(name,l);
+
+            return l;
         }
-
-        private System.Collections.Concurrent.ConcurrentDictionary<string, string> recordPassHistory = new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
-
-        public void Clear()
-        {
-            foreach (var history in recordPassHistory)
-            {
-                ClearUniform(history.Key, history.Value);
-            }
-
-            recordPassHistory.Clear();
-            GL.UseProgram(0);
-        }
-
+        
         public int ShaderProgram => program;
     }
 }

@@ -1,4 +1,4 @@
-﻿using OpenTK;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -21,6 +21,8 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryboardWindow : GameWindow
     {
+        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4:F0}ms Render: {5:F0}ms FPS: {6:F2}";
+
         public static StoryboardWindow CurrentWindow { get; set; }
 
         private StoryBoardInstance instance;
@@ -52,7 +54,6 @@ namespace ReOsuStoryBoardPlayer
             base.OnResize(e);
             GL.Viewport(0, 0, Width, Height);
             ApplyWindowRenderSize();
-            Title = $"Esu!StoryBoardPlayer ({Width}x{Height}) OpenGL:{GL.GetInteger(GetPName.MajorVersion)}.{GL.GetInteger(GetPName.MinorVersion)}";
         }
 
         private void InitGraphics()
@@ -246,11 +247,22 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
+        private double title_update_timer = 0;
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-
+            
             ExecutorSync.ClearTask();
+            if (title_update_timer > 0.1)
+            {
+                Title = string.Format(TITLE, Width, Height, GL.GetInteger(GetPName.MajorVersion),
+                    GL.GetInteger(GetPName.MinorVersion), UpdateTime * 1000, RenderTime * 1000,
+                    1.0 / (RenderTime + UpdateTime));
+                title_update_timer = 0;
+            }
+
+            title_update_timer += (RenderTime + UpdateTime);
 
             var time = GetSyncTime();
 
