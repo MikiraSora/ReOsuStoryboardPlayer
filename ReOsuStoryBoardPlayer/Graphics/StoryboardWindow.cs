@@ -251,30 +251,32 @@ namespace ReOsuStoryBoardPlayer
         }
 
         private double title_update_timer = 0;
+        private int frame_counter = 0;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
             
             ExecutorSync.ClearTask();
-            if (title_update_timer > 0.1)
-            {
-                Title = string.Format(TITLE, Width, Height, GL.GetInteger(GetPName.MajorVersion),
-                    GL.GetInteger(GetPName.MinorVersion), UpdateTime * 1000, RenderTime * 1000,
-                    1.0 / (RenderTime + UpdateTime));
-                title_update_timer = 0;
-            }
-
-            title_update_timer += (RenderTime + UpdateTime);
-
             var time = GetSyncTime();
 
             if (!ready)
                 return;
 
             instance.Update((float)time);
-
             DebuggerManager.FrameUpdate();
+
+            if (title_update_timer > 0.2)
+            {
+                Title = string.Format(TITLE, Width, Height, GL.GetInteger(GetPName.MajorVersion),
+                    GL.GetInteger(GetPName.MinorVersion), UpdateTime * 1000, RenderTime * 1000,
+                    frame_counter/title_update_timer);
+                title_update_timer = 0;
+                frame_counter = 0;
+            }
+
+            frame_counter++;
+            title_update_timer += (RenderTime + UpdateTime);
         }
 
         protected override void OnClosed(EventArgs e)
