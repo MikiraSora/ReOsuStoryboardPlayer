@@ -63,6 +63,28 @@ namespace ReOsuStoryBoardPlayer
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
+        private int WindowedWidth, WindowedHeight;
+
+        public void SwitchFullscreen()
+        {
+            if (WindowState != WindowState.Fullscreen)
+            {
+                WindowedWidth = Width;
+                WindowedHeight = Height;
+                WindowState = WindowState.Fullscreen;
+                Width = DisplayDevice.Default.Width;
+                Height = DisplayDevice.Default.Height;
+                ApplyWindowRenderSize();
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
+                Width = WindowedWidth;
+                Height = WindowedHeight;
+                ApplyWindowRenderSize();
+            }
+        }
+
         public void ApplyWindowRenderSize()
         {
             //裁剪View
@@ -341,6 +363,16 @@ namespace ReOsuStoryBoardPlayer
         #endregion Storyboard Rendering
 
         protected override void OnFocusedChanged(EventArgs e) { }
+
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.F:
+                    SwitchFullscreen();
+                    break;
+            }
+        }
 
 #if DEBUG
         protected override void OnMouseDown(MouseButtonEventArgs e)
