@@ -101,8 +101,6 @@ namespace ReOsuStoryBoardPlayer
             }
 
             GL.BindTexture(TextureTarget.Texture2D, tex.ID);
-
-            AddPassRecord(name, "Texture");
         }
 
         public void PassNullTexUniform(string name)
@@ -114,40 +112,30 @@ namespace ReOsuStoryBoardPlayer
         {
             int l = GetUniformLocation(name);
             GL.Uniform4(l, vec.x, vec.y, vec.z, vec.w);
-
-            AddPassRecord(name, "Vec4");
         }
 
         public void PassUniform(string name, float val)
         {
             int l = GetUniformLocation(name);
             GL.Uniform1(l, val);
-
-            AddPassRecord(name, "Float");
         }
 
         public void PassUniform(string name, int val)
         {
             int l = GetUniformLocation(name);
             GL.Uniform1(l, val);
-
-            AddPassRecord(name, "Int");
         }
 
         public void PassUniform(string name, Vector2 val)
         {
             int l = GetUniformLocation(name);
             GL.Uniform2(l, val);
-
-            AddPassRecord(name, "Vector2");
         }
 
         public void PassUniform(string name, OpenTK.Matrix4 matrix4)
         {
             int l = GetUniformLocation(name);
             GL.UniformMatrix4(l, false, ref matrix4);
-
-            AddPassRecord(name, "Matrix4");
         }
 
         private Dictionary<string,int> _uniformDictionary = new Dictionary<string, int>();
@@ -163,63 +151,7 @@ namespace ReOsuStoryBoardPlayer
 
             return l;
         }
-
-        internal void AddPassRecord(string name, string value)
-        {
-            recordPassHistory[name] = value;
-        }
-
-        public void ClearUniform(string key, string typeName)
-        {
-            switch (typeName)
-            {
-                case "Sampler2D":
-                    PassNullTexUniform(key);
-                    break;
-
-                case "Texture":
-                    PassNullTexUniform(key);
-                    break;
-
-                case "Vec4":
-                    PassUniform(key, Vec4.zero);
-                    break;
-
-                case "Float":
-                    PassUniform(key, (float)0);
-                    break;
-
-                case "Int":
-                    PassUniform(key, (int)0);
-                    break;
-
-                case "Int32":
-                    PassUniform(key, (Int32)0);
-                    break;
-
-                case "Single":
-                    PassUniform(key, (Single)0);
-                    break;
-
-                case "Vector2":
-                    PassUniform(key, (Vector2.Zero));
-                    break;
-            }
-        }
-
-        private System.Collections.Concurrent.ConcurrentDictionary<string, string> recordPassHistory = new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
-
-        public void Clear()
-        {
-            foreach (var history in recordPassHistory)
-            {
-                ClearUniform(history.Key, history.Value);
-            }
-
-            recordPassHistory.Clear();
-            GL.UseProgram(0);
-        }
-
+        
         public int ShaderProgram => program;
     }
 }

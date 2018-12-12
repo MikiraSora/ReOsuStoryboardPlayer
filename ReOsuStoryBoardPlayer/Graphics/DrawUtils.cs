@@ -119,7 +119,6 @@ void main(){
             }
             GL.BindVertexArray(0);
 
-            texture_shader.Clear();
             texture_shader.End();
         }
     }
