@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,6 +39,11 @@ namespace ReOsuStoryBoardPlayer
         /// 支持时间插值，但对于低帧率会有延迟出现
         /// </summary>
         public static bool EnableTimestamp { get; set; } = false;
+
+        /// <summary>
+        /// Update线程数量
+        /// </summary>
+        public static int UpdateThreadCount { get; set; } = 1;
 
         #region Extendsion
 

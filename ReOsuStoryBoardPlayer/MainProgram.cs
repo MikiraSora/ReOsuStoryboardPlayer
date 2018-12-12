@@ -96,14 +96,17 @@ namespace ReOsuStoryBoardPlayer
 
                 if (args.TryGetArg(out var p_update_limit, "-parallel_update_limit", "pu"))
                     Setting.ParallelUpdateObjectsLimitCount=p_update_limit.ToInt();
-                
+
+                if (args.TryGetArg(out var update_thread_count, "-update_thread_count", "ut"))
+                    Setting.UpdateThreadCount = update_thread_count.ToInt();
+
                 Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
                 Setting.FunReverseEasing=args.Switches.Any(k => k=="fun_reverse_easing");
                 Setting.EnableRuntimeOptimzeObjects=args.Switches.Any(k => k=="enable_runtime_optimze");
 
-                //¶îÍâ¹¦ÄÜ
+                //ï¿½ï¿½ï¿½â¹¦ï¿½ï¿½
                 if (args.TryGetArg(out var parse_type, "parse"))
                 {
                     var parse_osb = parse_type=="osb";
@@ -115,7 +118,7 @@ namespace ReOsuStoryBoardPlayer
 
         #region ProgramCommands
 
-        //½«½âÎöºÃµÄÄÚÈÝÔÙÐòÁÐ»¯³ÉosbÎÄ¼þ¸ñÊ½µÄÎÄ±¾ÄÚÈÝ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½osbï¿½Ä¼ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
         private static void SerializeDecodeStoryboardContent(string beatmap_folder,bool parse_osb,string output_path)
         {
             try
@@ -127,7 +130,7 @@ namespace ReOsuStoryBoardPlayer
                 Log.User($"Start serialize {input_file} ....");
                 using (var writer = new StreamWriter(File.OpenWrite(output_path)))
                 {
-                    //ÏÈÈû¸öÍ·
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·
                     writer.WriteLine($"[{Section.Events.ToString()}]");
 
                     OsuFileReader reader = new OsuFileReader(input_file);
