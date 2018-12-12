@@ -74,7 +74,6 @@ namespace ReOsuStoryBoardPlayer
         {
             try
             {
-
                 if (!File.Exists(config_file))
                     CreateConfigFile();
 

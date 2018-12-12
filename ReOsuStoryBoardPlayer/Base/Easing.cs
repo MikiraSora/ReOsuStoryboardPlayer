@@ -52,7 +52,9 @@ namespace ReOsuStoryBoardPlayer
 
         BounceIn = 32,
         BounceOut = 33,
-        BounceInOut = 34
+        BounceInOut = 34,
+
+        Unknown = 35
     }
 
     public enum EasingTypes
