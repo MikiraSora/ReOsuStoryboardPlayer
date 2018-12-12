@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Parser.Collection;
+﻿using ReOsuStoryBoardPlayer.Optimzer.Runtime;
+using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Utils;
@@ -24,9 +25,15 @@ namespace ReOsuStoryBoardPlayer.Parser
 
                 List<StoryBoardObject> list;
 
-                using (StopwatchRun.Count($"Parse Storyboard Objects/Commands from {path}"))
+                using (StopwatchRun.Count($"Parse&Optimze Storyboard Objects/Commands from {path}"))
                 {
                     list = storyboardReader.EnumValues().ToList();
+
+                    if (Setting.EnableRuntimeOptimzeObjects)
+                    {
+                        var optimzer = new RuntimeStoryboardOptimzer();
+                        optimzer.Optimze(list); 
+                    }
                 }
 
                 list.RemoveAll(c => c == null);

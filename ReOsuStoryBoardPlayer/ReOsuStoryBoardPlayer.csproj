@@ -122,6 +122,8 @@
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\Range.cs" />
+    <Compile Include="Optimzer\OptimzerBase.cs" />
+    <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />
