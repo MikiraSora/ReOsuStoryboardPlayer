@@ -65,7 +65,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\470977 Mili - worldexecute(me);";
+            beatmap_folder=@"591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -130,7 +130,6 @@ namespace ReOsuStoryBoardPlayer
                 Log.User($"Start serialize {input_file} ....");
                 using (var writer = new StreamWriter(File.OpenWrite(output_path)))
                 {
-                    //������ͷ
                     writer.WriteLine($"[{Section.Events.ToString()}]");
 
                     OsuFileReader reader = new OsuFileReader(input_file);

@@ -38,7 +38,7 @@ namespace ReOsuStoryBoardPlayer
         /// <summary>
         /// 一次渲染同贴图同Blend的物件数量
         /// </summary>
-        public static int DrawCallInstanceCountMax { get; set; } = 50;
+        public static int DrawCallInstanceCountMax { get; set; } = 1000;
 
         /// <summary>
         /// 支持时间插值，但对于低帧率会有延迟出现
