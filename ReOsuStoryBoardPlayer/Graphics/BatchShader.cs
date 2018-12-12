@@ -17,12 +17,12 @@
                 layout(location=2) in float in_Z;
                 layout(location=3) in vec2 in_anchor;
                 layout(location=4) in vec4 in_color;
-                layout(location=5) in vec2 in_bound;
-                layout(location=6) in vec2 in_flip;
-                layout(location=7) in mat4 in_model;
+                layout(location=5) in vec2 in_flip;
+                layout(location=6) in mat3x2 in_model;
 
                 void main(){
-	                gl_Position=ViewProjection*in_model*vec4((in_pos*in_flip-in_anchor)*in_bound,in_Z,1.0);
+                    vec2 v = in_model*vec3((in_pos*in_flip-in_anchor),1.0);
+	                gl_Position=ViewProjection*vec4(v.x,v.y,in_Z,1.0);
 	                varying_color=in_color;
 	                varying_texPos=in_texPos;
                 }

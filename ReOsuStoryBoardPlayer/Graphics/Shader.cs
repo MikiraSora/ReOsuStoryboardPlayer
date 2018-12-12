@@ -100,21 +100,14 @@ namespace ReOsuStoryBoardPlayer
                 return;
             }
 
-            int l = GL.GetUniformLocation(program, name);
-            GL.ActiveTexture(TextureUnit.Texture0 + tex.ID);
             GL.BindTexture(TextureTarget.Texture2D, tex.ID);
-            GL.Uniform1(l, tex.ID);
-            GL.ActiveTexture(TextureUnit.Texture0);
 
             AddPassRecord(name, "Texture");
         }
 
         public void PassNullTexUniform(string name)
         {
-            int l = GL.GetUniformLocation(program, name);
-            GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.Uniform1(l, 0);
         }
 
         public void PassUniform(string name, Vec4 vec)
