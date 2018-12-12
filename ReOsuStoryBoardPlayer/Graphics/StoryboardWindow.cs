@@ -338,6 +338,8 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion Storyboard Rendering
 
+        protected override void OnFocusedChanged(EventArgs e) { }
+
 #if DEBUG
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
