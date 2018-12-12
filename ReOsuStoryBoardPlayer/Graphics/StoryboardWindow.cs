@@ -47,6 +47,7 @@ namespace ReOsuStoryBoardPlayer
             VSync = VSyncMode.Off;
             Log.Init();
             CurrentWindow = this;
+            WindowBorder = WindowBorder.Hidden;
         }
 
         protected override void OnResize(EventArgs e)
@@ -338,19 +339,43 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion Storyboard Rendering
 
+        private int downX, downY;
+        private bool mouseDown = false;
+
+        protected override void OnFocusedChanged(EventArgs e)
+        {
+        }
+
 #if DEBUG
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-
             DebuggerManager.TrigClick(e.X, e.Y, 
                 e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
+
+            if (WindowBorder == WindowBorder.Hidden)
+            {
+                downX = e.X;
+                downY = e.Y;
+            }
+            mouseDown = true;
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+            mouseDown = false;
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
             DebuggerManager.TrigMove(e.X, e.Y);
+            if (mouseDown&&WindowBorder == WindowBorder.Hidden)
+            {
+                Location = new Point(e.X-downX,e.Y-downY);
+                //Log.User($"X: ${e.X} Y:${e.Y}");
+            }
         }
 #endif
     }
