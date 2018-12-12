@@ -21,7 +21,7 @@ namespace ReOsuStoryBoardPlayer
         {
             Setting.Init();
 
-            ParseProgramCommands(argv, out var w, out var h, out var beatmap_folder);
+            ParseProgramCommands(argv, out var beatmap_folder);
 
             var info = BeatmapFolderInfo.Parse(beatmap_folder);
 
@@ -35,7 +35,7 @@ namespace ReOsuStoryBoardPlayer
             var instance = new StoryBoardInstance(info);
 
             //init window
-            StoryboardWindow window = new StoryboardWindow(w, h);
+            StoryboardWindow window = new StoryboardWindow(Setting.Width, Setting.Height);
             window.LoadStoryboardInstance(instance);
             //init control panel and debuggers
 
@@ -61,11 +61,8 @@ namespace ReOsuStoryBoardPlayer
             window.Run();
         }
 
-        private static void ParseProgramCommands(string[] argv, out int w, out int h, out string beatmap_folder)
+        private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            //default 
-            w=1600;
-            h=900;
             beatmap_folder=@"G:\SBTest\470977 Mili - worldexecute(me);";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
@@ -83,13 +80,13 @@ namespace ReOsuStoryBoardPlayer
                     beatmap_folder=args.FreeArgs.FirstOrDefault()??beatmap_folder;
 
                 if (args.TryGetArg(out var valW, "width", "w"))
-                    w=int.Parse(valW);
+                    Setting.Width=int.Parse(valW);
 
                 if (args.TryGetArg(out var draw_count, "multi_instance_render", "mtr"))
                     Setting.DrawCallInstanceCountMax=int.Parse(draw_count);
 
                 if (args.TryGetArg(out var valH, "height", "h"))
-                    h=int.Parse(valH);
+                    Setting.Height=int.Parse(valH);
 
                 if (args.TryGetArg(out var folder, "folder", "f"))
                     beatmap_folder=folder;

@@ -30,6 +30,9 @@ namespace ReOsuStoryBoardPlayer
 
         public static bool FunReverseEasing { get; set; } = false;
 
+        public static int Width { get; set; } = 854;
+        public static int Height { get; set; } = 480;
+
         /// <summary>
         /// 一次渲染同贴图同Blend的物件数量
         /// </summary>
