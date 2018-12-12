@@ -112,7 +112,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void PassUniform(string name, Vec4 vec)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform4(l, vec.x, vec.y, vec.z, vec.w);
 
             AddPassRecord(name, "Vec4");
@@ -120,7 +120,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void PassUniform(string name, float val)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform1(l, val);
 
             AddPassRecord(name, "Float");
@@ -128,7 +128,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void PassUniform(string name, int val)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform1(l, val);
 
             AddPassRecord(name, "Int");
@@ -136,7 +136,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void PassUniform(string name, Vector2 val)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.Uniform2(l, val);
 
             AddPassRecord(name, "Vector2");
@@ -144,10 +144,24 @@ namespace ReOsuStoryBoardPlayer
 
         public void PassUniform(string name, OpenTK.Matrix4 matrix4)
         {
-            int l = GL.GetUniformLocation(program, name);
+            int l = GetUniformLocation(name);
             GL.UniformMatrix4(l, false, ref matrix4);
 
             AddPassRecord(name, "Matrix4");
+        }
+
+        private Dictionary<string,int> _uniformDictionary = new Dictionary<string, int>();
+
+        private int GetUniformLocation(string name)
+        {
+            if (_uniformDictionary.ContainsKey(name))
+            {
+                return _uniformDictionary[name];
+            }
+            int l = GL.GetUniformLocation(program, name);
+            _uniformDictionary.Add(name,l);
+
+            return l;
         }
 
         internal void AddPassRecord(string name, string value)

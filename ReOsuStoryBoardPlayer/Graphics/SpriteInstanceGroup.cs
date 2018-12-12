@@ -262,7 +262,7 @@ namespace ReOsuStoryBoardPlayer
 
             GL.BindVertexArray(0);
 
-            _shader.Clear();
+            //_shader.Clear();
             _shader.End();
         }
 
@@ -275,20 +275,6 @@ namespace ReOsuStoryBoardPlayer
         private void Clear()
         {
             _currentPostCount = 0;
-        }
-
-        private static float[] _cacheMatrix = new float[3 * 2];
-
-        private static void _Matrix4ToFloatArray(ref Matrix3x2 matrix)
-        {
-            unsafe
-            {
-                fixed (float* m_ptr = &matrix.Row0.X)
-                {
-                    for (int i = 0; i < _cacheMatrix.Length; i++)
-                        _cacheMatrix[i] = *(m_ptr + i);
-                }
-            }
         }
 
         #region IDisposable Support
