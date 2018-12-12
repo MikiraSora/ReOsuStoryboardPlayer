@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Commands
@@ -34,6 +35,39 @@ namespace ReOsuStoryBoardPlayer.Commands
         public override void Execute(StoryBoardObject @object, float current_value)
         {
             //咕咕哒
+        }
+
+        public IEnumerable<Command> SubCommandExpand()
+        {
+            foreach (var list in SubCommands.Values)
+            {
+                var cost = list.Max(x => x.EndTime)-list.Min(x => x.StartTime);
+
+                for (int i = 0; i<LoopCount; i++)
+                {
+                    foreach (var cmd in list)
+                    {
+                        if (!(cmd is ValueCommand value_cmd))
+                            throw new Exception("SubCommand is not value command");
+
+                        var type = value_cmd.GetType();
+                        var start_value_prop = type.GetProperty("StartValue");
+                        var end_value_prop = type.GetProperty("EndValue");
+
+                        var new_cmd = (ValueCommand)type.Assembly.CreateInstance(type.FullName);
+
+                        new_cmd.Easing=value_cmd.Easing;
+                        end_value_prop.SetValue(new_cmd, end_value_prop.GetValue(value_cmd));
+                        start_value_prop.SetValue(new_cmd, start_value_prop.GetValue(value_cmd));
+
+                        //calculate time
+                        new_cmd.StartTime=StartTime+(cost*i)+value_cmd.StartTime;
+                        new_cmd.EndTime=StartTime+(cost*i)+value_cmd.EndTime;
+
+                        yield return new_cmd;
+                    }
+                }
+            }
         }
 
         public override string ToString() => $"{base.ToString()} (Times:{LoopCount} CostPerLoop:{CostTime})";
