@@ -184,7 +184,9 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
             if (UpdatingStoryboardObjects.Count>=Setting.ParallelUpdateObjectsLimitCount)
             {
-                Parallel.ForEach(UpdatingStoryboardObjects, obj => obj.Update(current_time));
+                Parallel.ForEach(UpdatingStoryboardObjects,
+                    new ParallelOptions(){MaxDegreeOfParallelism = Setting.UpdateThreadCount} , 
+                    obj => obj.Update(current_time));
             }
             else
             {
