@@ -306,9 +306,6 @@ namespace ReOsuStoryBoardPlayer
             for (int i = 0; i<draw_list.Count; i++)
             {
                 var obj = draw_list[i];
-
-                if (obj.Color.w<=0)
-                    continue;//skip
 #if DEBUG
                 if (!obj.DebugShow)
                     continue;//skip

@@ -2,6 +2,7 @@
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Runtime.CompilerServices;
+using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
 
 namespace ReOsuStoryBoardPlayer
@@ -25,9 +26,11 @@ namespace ReOsuStoryBoardPlayer
 
         private int _current_buffer_index = 0;
 
+        private bool _window_resized = true;
+
         private SpriteInstanceGroup()
         {
-
+            StoryboardWindow.CurrentWindow.Resize += (s, e) => _window_resized = true;
         }
 
         private Texture texture;
@@ -182,11 +185,11 @@ namespace ReOsuStoryBoardPlayer
             //GL.DeleteVertexArray(_vao);
         }
 
-        private Vector3 _staticCacheAxis = new Vector3(0, 0, -1);
-
         private float[] PostData;
+        private readonly Half HalfNegativeOne = new Half(-1f);
+        private readonly Half HalfOne = new Half(1f);
 
-        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip)
+        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, HalfVector anchor, Vec4 color, bool vertical_flip, bool horizon_flip)
         {
             /*-----------------CURRENT VERSION------------------ -
 			*orther		anchor(Hlaf)	    color(byte)         modelMatrix
@@ -219,8 +222,8 @@ namespace ReOsuStoryBoardPlayer
                 fixed (float* ptr = &PostData[base_index + 1])
                 {
                     Half* p = (Half*)ptr;
-                    p[0] = (Half)anchor.x;
-                    p[1] = (Half)anchor.y;
+                    p[0] = anchor.x;
+                    p[1] = anchor.y;
                 }
 
                 //Color write
@@ -237,8 +240,8 @@ namespace ReOsuStoryBoardPlayer
                 fixed (float* ptr = &PostData[base_index + 3])
                 {
                     Half* p = (Half*) ptr;
-                    p[0] =(Half)(horizon_flip ? -1 : 1);
-                    p[1] =(Half)(vertical_flip ? -1 : 1);
+                    p[0] = horizon_flip ? HalfNegativeOne : HalfOne;
+                    p[1] = vertical_flip ? HalfNegativeOne : HalfOne;
                 }
 
                 //ModelMatrix Write 
@@ -258,15 +261,19 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
+        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, HalfVector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
 
         private void Draw()
         {
             _shader.Begin();
-            var VP = Projection * (View);
 
+            if (_window_resized)
+            {
+                var VP = Projection * (View);
+                _shader.PassUniform("ViewProjection", VP);
+                _window_resized = false;
+            }
             _shader.PassUniform("diffuse", texture);
-            _shader.PassUniform("ViewProjection", VP);
             _shader.PassUniform("MaxZ",(float)StoryboardWindow.CurrentWindow.StoryBoardInstance.MaxZ);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbos[_current_buffer_index]);

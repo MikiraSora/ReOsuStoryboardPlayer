@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ReOsuStoryBoardPlayer.Graphics;
 
 namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
@@ -122,20 +123,20 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
             animation.LoopType = (LoopType)Enum.Parse(typeof(LoopType), sprite_param[8]);
         }
 
-        private readonly static Dictionary<Anchor, Vector> AnchorVectorMap = new Dictionary<Anchor, Vector>()
+        private readonly static Dictionary<Anchor, HalfVector> AnchorVectorMap = new Dictionary<Anchor, HalfVector>()
         {
-            {Anchor.TopLeft,new Vector(-0.5f,0.5f)},
-            {Anchor.TopCentre,new Vector(0.0f, 0.5f)},
-            {Anchor.TopRight,new Vector(0.5f, 0.5f)},
-            {Anchor.CentreLeft,new Vector(-0.5f, 0.0f)},
-            {Anchor.Centre,new Vector(0.0f, 0.0f)},
-            {Anchor.CentreRight,new Vector(0.5f, 0.0f)},
-            {Anchor.BottomLeft,new Vector(-0.5f, -0.5f)},
-            {Anchor.BottomCentre,new Vector(0.0f, -0.5f)},
-            {Anchor.BottomRight,new Vector(0.5f, -0.5f)}
+            {Anchor.TopLeft,new HalfVector(-0.5f,0.5f)},
+            {Anchor.TopCentre,new HalfVector(0.0f, 0.5f)},
+            {Anchor.TopRight,new HalfVector(0.5f, 0.5f)},
+            {Anchor.CentreLeft,new HalfVector(-0.5f, 0.0f)},
+            {Anchor.Centre,new HalfVector(0.0f, 0.0f)},
+            {Anchor.CentreRight,new HalfVector(0.5f, 0.0f)},
+            {Anchor.BottomLeft,new HalfVector(-0.5f, -0.5f)},
+            {Anchor.BottomCentre,new HalfVector(0.0f, -0.5f)},
+            {Anchor.BottomRight,new HalfVector(0.5f, -0.5f)}
         };
 
-        public static Vector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
+        public static HalfVector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
 
         private void BuildCommandMapAndSetup(StoryBoardObject obj, List<string> lines)
         {

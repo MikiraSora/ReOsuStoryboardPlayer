@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReOsuStoryBoardPlayer.Graphics;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -29,7 +30,7 @@ namespace ReOsuStoryBoardPlayer
 
         public float Rotate = 0;
 
-        public Vector Anchor = new Vector(0.5f, 0.5f);
+        public HalfVector Anchor = new HalfVector(0.5f, 0.5f);
 
         public bool IsAdditive = false, IsHorizonFlip = false, IsVerticalFlip = false;
 

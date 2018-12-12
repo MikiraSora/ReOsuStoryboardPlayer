@@ -122,6 +122,7 @@
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\Range.cs" />
+    <Compile Include="Graphics\HalfVector.cs" />
     <Compile Include="Optimzer\OptimzerBase.cs" />
     <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
