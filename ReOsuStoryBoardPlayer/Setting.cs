@@ -115,7 +115,7 @@ namespace ReOsuStoryBoardPlayer
                                 prop.SetValue(null, Convert.ToDouble(value));
                                 break;
                             case "string":
-                                prop.SetValue(null, value);
+                                prop.SetValue(null, value.ToString());
                                 break;
                             default:
                                 break;
