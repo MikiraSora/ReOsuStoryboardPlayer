@@ -13,7 +13,7 @@ namespace ReOsuStoryBoardPlayer.Parser
     {
         public static List<StoryBoardObject> GetStoryBoardObjects(string path)
         {
-            try
+            //try
             {
                 OsuFileReader reader = new OsuFileReader(path);
 
@@ -40,11 +40,13 @@ namespace ReOsuStoryBoardPlayer.Parser
 
                 return list;
             }
+            /*
             catch (Exception e)
             {
                 Log.Error($"Parse \"{path}\" error! " + e.Message);
                 return null;
             }
+            */
         }
     }
 }

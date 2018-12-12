@@ -35,7 +35,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                     AnchorLabel.Text = SelectObject.Anchor.ToString();
                     OrderLabel.Text = SelectObject.Z.ToString();
                     TimeLabel.Text = $"{SelectObject.FrameStartTime}~{SelectObject.FrameEndTime}";
+#if DEBUG
                     checkBox1.Checked=SelectObject.DebugShow;
+#endif
 
                     command_node_map.Clear();
 
@@ -60,9 +62,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 //这里是要实时更新的
 
                 PositionLabel.Text = SelectObject.Postion.ToString();
-
+#if DEBUG
                 SelectObject.DebugShow=checkBox1.Checked;
-
+#endif
                 int r = (int)(SelectObject.Color.x * 255), g = (int)(SelectObject.Color.y * 255), b = (int)(SelectObject.Color.z * 255);
                 ColorLabel.Text = $"{r},{g},{b}";
                 

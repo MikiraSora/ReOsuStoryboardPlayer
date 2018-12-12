@@ -23,6 +23,8 @@ namespace ReOsuStoryBoardPlayer
 
             ParseProgramCommands(argv, out var beatmap_folder);
 
+            Setting.PrintSettings();
+
             var info = BeatmapFolderInfo.Parse(beatmap_folder);
 
             //init audio
@@ -63,7 +65,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion";
+            beatmap_folder=@"G:\SBTest\470977 Mili - worldexecute(me);";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -103,7 +105,7 @@ namespace ReOsuStoryBoardPlayer
                 Setting.FunReverseEasing=args.Switches.Any(k => k=="fun_reverse_easing");
                 Setting.EnableRuntimeOptimzeObjects=args.Switches.Any(k => k=="enable_runtime_optimze");
 
-                //���⹦��
+                //额外功能
                 if (args.TryGetArg(out var parse_type, "parse"))
                 {
                     var parse_osb = parse_type=="osb";
@@ -115,7 +117,7 @@ namespace ReOsuStoryBoardPlayer
 
         #region ProgramCommands
 
-        //�������õ����������л���osb�ļ���ʽ���ı�����
+        //将解析好的内容再序列化成osb文件格式的文本内容
         private static void SerializeDecodeStoryboardContent(string beatmap_folder,bool parse_osb,string output_path)
         {
             try

@@ -52,6 +52,9 @@ namespace ReOsuStoryBoardPlayer
 
         public static void PrintSettings()
         {
+            if (MiniMode)
+                return;
+
             var props = typeof(Setting).GetProperties();
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("=======Setting=======");
@@ -63,6 +66,8 @@ namespace ReOsuStoryBoardPlayer
             }
 
             sb.AppendLine("================");
+
+            Log.User($"\n{sb.ToString()}");
         }
 
         /// <summary>
@@ -97,13 +102,13 @@ namespace ReOsuStoryBoardPlayer
                     {
                         switch (prop.PropertyType.Name.ToLower())
                         {
-                            case "bool":
+                            case "boolean":
                                 prop.SetValue(null, Convert.ToBoolean(value));
                                 break;
-                            case "int":
+                            case "int32":
                                 prop.SetValue(null, Convert.ToInt32(value));
                                 break;
-                            case "float":
+                            case "single":
                                 prop.SetValue(null, Convert.ToSingle(value));
                                 break;
                             case "double":
