@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,6 +49,9 @@ namespace ReOsuStoryBoardPlayer
         /// Update线程数量
         /// </summary>
         public static int UpdateThreadCount { get; set; } = 1;
+
+        public static int MaxFPS { get; set; } = 0;
+        public static bool EnableHighPrecisionFPSLimit { get; set; } = false;
 
         #region Extendsion
 

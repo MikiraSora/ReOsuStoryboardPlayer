@@ -99,12 +99,16 @@ namespace ReOsuStoryBoardPlayer
                 if (args.TryGetArg(out var update_thread_count, "update_thread_count", "ut"))
                     Setting.UpdateThreadCount = update_thread_count.ToInt();
 
+                if (args.TryGetArg(out var max_fps, "fps"))
+                    Setting.MaxFPS = max_fps.ToInt();
+
                 Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
                 Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
                 Setting.FunReverseEasing=args.Switches.Any(k => k=="fun_reverse_easing");
                 Setting.EnableRuntimeOptimzeObjects=!args.Switches.Any(k => k=="disable_runtime_optimze");
+                Setting.EnableHighPrecisionFPSLimit = !args.Switches.Any(k => k == "disable_hp_fps_limit");
 
                 //额外功能
                 if (args.TryGetArg(out var parse_type, "parse"))

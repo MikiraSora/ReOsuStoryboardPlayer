@@ -16,12 +16,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace ReOsuStoryBoardPlayer
 {
     public class StoryboardWindow : GameWindow
     {
-        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4:F0}ms Render: {5:F0}ms FPS: {6:F2}";
+        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
 
@@ -216,36 +217,18 @@ namespace ReOsuStoryBoardPlayer
                 obj.RenderGroup=null;
         }
 
-        protected override void OnRenderFrame(FrameEventArgs e)
-        {
-            base.OnRenderFrame(e);
-
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-
-            GL.ClearColor(Color.Black);
-
-            if (ready)
-            {
-                DebuggerManager.TrigBeforeRender();
-                PostDrawStoryBoard();
-                DebuggerManager.TrigAfterRender();
-            }
-
-            SwapBuffers();
-        }
-
         private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
 
         private double _timestamp = 0;
-        private Stopwatch _stopwatch = new Stopwatch();
+        private Stopwatch _timestamp_stopwatch = new Stopwatch();
 
         private double GetSyncTime()
         {
             var audioTime = MusicPlayerManager.ActivityPlayer.CurrentTime;
             var playbackRate = MusicPlayerManager.ActivityPlayer.PlaybackSpeed;
 
-            double step = _stopwatch.ElapsedMilliseconds*playbackRate;
-            _stopwatch.Restart();
+            double step = _timestamp_stopwatch.ElapsedMilliseconds*playbackRate;
+            _timestamp_stopwatch.Restart();
 
             if (MusicPlayerManager.ActivityPlayer.IsPlaying&&Setting.EnableTimestamp)
             {
@@ -272,13 +255,18 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
+        private const float THOUSANDTH = 1.0f / 1000.0f;
+        private Stopwatch _title_update_stopwatch = new Stopwatch();
+        private Stopwatch _update_stopwatch = new Stopwatch();
+        private Stopwatch _render_stopwatch = new Stopwatch();
         private double title_update_timer = 0;
-        private int frame_counter = 0;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            
+
+            _update_stopwatch.Restart();
+
             ExecutorSync.ClearTask();
             var time = GetSyncTime();
 
@@ -288,17 +276,74 @@ namespace ReOsuStoryBoardPlayer
             instance.Update((float)time);
             DebuggerManager.FrameUpdate();
 
-            if (title_update_timer > 0.2)
+            _update_stopwatch.Stop();
+        }
+
+        protected override void OnRenderFrame(FrameEventArgs e)
+        {
+            base.OnRenderFrame(e);
+
+            _render_stopwatch.Restart();
+
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            GL.ClearColor(Color.Black);
+
+            if (ready)
             {
-                Title = string.Format(TITLE, Width, Height, GL.GetInteger(GetPName.MajorVersion),
-                    GL.GetInteger(GetPName.MinorVersion), UpdateTime * 1000, RenderTime * 1000,
-                    frame_counter/title_update_timer);
-                title_update_timer = 0;
-                frame_counter = 0;
+                DebuggerManager.TrigBeforeRender();
+                PostDrawStoryBoard();
+                DebuggerManager.TrigAfterRender();
             }
 
-            frame_counter++;
-            title_update_timer += (RenderTime + UpdateTime);
+            SwapBuffers();
+
+            _render_stopwatch.Stop();
+            FrameRateLimit();
+        }
+
+        private void FrameRateLimit()
+        {
+            _title_update_stopwatch.Stop();
+
+            title_update_timer += _title_update_stopwatch.ElapsedMilliseconds * THOUSANDTH;
+
+            //UpdateTitle
+            if (title_update_timer > 0.2)
+            {
+                Title = string.Format(TITLE, Width, Height,
+                    GL.GetInteger(GetPName.MajorVersion),
+                    GL.GetInteger(GetPName.MinorVersion),
+                    _update_stopwatch.ElapsedMilliseconds,
+                    _render_stopwatch.ElapsedMilliseconds,
+                    (_title_update_stopwatch.ElapsedMilliseconds - _update_stopwatch.ElapsedMilliseconds - _render_stopwatch.ElapsedMilliseconds)
+                    , RenderFrequency);
+                title_update_timer = 0;
+            }
+
+            if (Setting.EnableHighPrecisionFPSLimit)
+            {
+                if (Math.Abs(TargetUpdateFrequency - Setting.MaxFPS) > 10e-5)
+                {
+                    TargetUpdateFrequency = Setting.MaxFPS;
+                    TargetRenderFrequency = Setting.MaxFPS;
+                }
+            }
+            else
+            {
+                float total_time = (_update_stopwatch.ElapsedMilliseconds + _render_stopwatch.ElapsedMilliseconds) * THOUSANDTH;
+                if (Setting.MaxFPS != 0)
+                {
+                    float period = 1.0f / Setting.MaxFPS;
+                    if (period > total_time)
+                    {
+                        int sleep = (int) ((period - total_time) * 1000);
+                        sleep = Math.Max(0, sleep - 1);
+                        Thread.Sleep(sleep);
+                    }
+                }
+            }
+            _title_update_stopwatch.Restart();
         }
 
         protected override void OnClosed(EventArgs e)
