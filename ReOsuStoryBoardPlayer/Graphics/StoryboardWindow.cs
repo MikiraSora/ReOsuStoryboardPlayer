@@ -91,12 +91,8 @@ namespace ReOsuStoryBoardPlayer
             //裁剪View
             float radio = (float)Width / (float)Height;
 
-            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, 0, 100);
-
-            var _cameraViewMatrix = Matrix4.Identity * Matrix4.CreateRotationY((float)Math.PI)*Matrix4.CreateRotationZ((float)Math.PI);
-            _cameraViewMatrix.Row1 = -_cameraViewMatrix.Row1;//Y轴翻转
-            _cameraViewMatrix.Row3.Z = -1;//Z轴移动-1单位
-            CameraViewMatrix = _cameraViewMatrix;
+            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, -1, 1);
+            CameraViewMatrix = Matrix4.Identity;
         }
         
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
@@ -304,9 +300,8 @@ namespace ReOsuStoryBoardPlayer
 
         private void FrameRateLimit()
         {
-            _title_update_stopwatch.Stop();
-
-            title_update_timer += _title_update_stopwatch.ElapsedMilliseconds * THOUSANDTH;
+            long total_time = _title_update_stopwatch.ElapsedMilliseconds;
+            _title_update_stopwatch.Restart();
 
             //UpdateTitle
             if (title_update_timer > 0.2)
@@ -316,10 +311,12 @@ namespace ReOsuStoryBoardPlayer
                     GL.GetInteger(GetPName.MinorVersion),
                     _update_stopwatch.ElapsedMilliseconds,
                     _render_stopwatch.ElapsedMilliseconds,
-                    (_title_update_stopwatch.ElapsedMilliseconds - _update_stopwatch.ElapsedMilliseconds - _render_stopwatch.ElapsedMilliseconds)
+                    (total_time - _update_stopwatch.ElapsedMilliseconds - _render_stopwatch.ElapsedMilliseconds)
                     , RenderFrequency);
                 title_update_timer = 0;
             }
+
+            title_update_timer += total_time * THOUSANDTH;
 
             if (Setting.EnableHighPrecisionFPSLimit)
             {
@@ -331,19 +328,19 @@ namespace ReOsuStoryBoardPlayer
             }
             else
             {
-                float total_time = (_update_stopwatch.ElapsedMilliseconds + _render_stopwatch.ElapsedMilliseconds) * THOUSANDTH;
+                float time = (_update_stopwatch.ElapsedMilliseconds + _render_stopwatch.ElapsedMilliseconds) * THOUSANDTH;
                 if (Setting.MaxFPS != 0)
                 {
                     float period = 1.0f / Setting.MaxFPS;
-                    if (period > total_time)
+                    if (period > time)
                     {
-                        int sleep = (int) ((period - total_time) * 1000);
+                        int sleep = (int) ((period - time) * 1000);
                         sleep = Math.Max(0, sleep - 1);
                         Thread.Sleep(sleep);
                     }
                 }
             }
-            _title_update_stopwatch.Restart();
+            
         }
 
         protected override void OnClosed(EventArgs e)

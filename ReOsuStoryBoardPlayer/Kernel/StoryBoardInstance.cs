@@ -101,8 +101,8 @@ namespace ReOsuStoryBoardPlayer.Kernel
                 for (int i = 0; i < list.Count; i++)
                 {
                     list[i].Z = base_z + i;
-                    MaxZ = Math.Max(MaxZ, list[i].Z);
                 }
+                MaxZ = Math.Max(MaxZ, list[list.Count-1].Z);
             }
         }
 
