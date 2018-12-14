@@ -12,6 +12,9 @@ using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using System.IO;
+using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryBoardPlayer.OutputEncoding;
+using ReOsuStoryBoardPlayer.OutputEncoding.Player;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -21,7 +24,7 @@ namespace ReOsuStoryBoardPlayer
         {
             Setting.Init();
 
-            ParseProgramCommands(argv, out var beatmap_folder);
+            var args=ParseProgramCommands(argv, out var beatmap_folder);
 
             Setting.PrintSettings();
 
@@ -59,13 +62,25 @@ namespace ReOsuStoryBoardPlayer
 
             #endregion
 
+            if (Setting.EncodingEnvironment)
+            {
+                //init encoding environment
+                var encoding_opt = new EncoderOption(args);
+                EncodingKernel encoding_kernel = new EncodingKernel(encoding_opt);
+                EncodingProcessPlayer encoding_player = new EncodingProcessPlayer(MusicPlayerManager.ActivityPlayer.Length, encoding_opt.FPS);
+                MusicPlayerManager.ActivityPlayer.Stop();
+                MusicPlayerManager.ApplyPlayer(encoding_player);
+                DebuggerManager.AddDebugger(encoding_kernel);
+                encoding_kernel.Start();
+            }
+
             player.Play();
             window.Run();
         }
 
-        private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
+        private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
+            beatmap_folder=@"G:\SBTest\179323 Sakamoto Maaya - Okaerinasai (tomatomerde Remix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -97,7 +112,7 @@ namespace ReOsuStoryBoardPlayer
                     Setting.ParallelUpdateObjectsLimitCount=p_update_limit.ToInt();
 
                 if (args.TryGetArg(out var update_thread_count, "update_thread_count", "ut"))
-                    Setting.UpdateThreadCount = update_thread_count.ToInt();
+                    Setting.UpdateThreadCount=update_thread_count.ToInt();
 
                 Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
                 Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
@@ -113,7 +128,11 @@ namespace ReOsuStoryBoardPlayer
                     args.TryGetArg(out var output_path, "parse_output");
                     SerializeDecodeStoryboardContent(beatmap_folder, parse_osb, output_path);
                 }
+
+                Setting.EncodingEnvironment=args.Switches.Any(x => x=="encode");
             }
+
+            return args;
         }
 
         #region ProgramCommands

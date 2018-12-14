@@ -7,6 +7,7 @@ using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
@@ -14,8 +15,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -203,10 +208,14 @@ namespace ReOsuStoryBoardPlayer
             {
                 DebuggerManager.TrigBeforeRender();
                 PostDrawStoryBoard();
-                DebuggerManager.TrigAfterRender();
             }
 
             SwapBuffers();
+            /*
+            if (ready)
+                DebuggerManager.TrigAfterRender();
+                */
+            DebuggerManager.GetDebugger<EncodingKernel>().OnAfterRender();
         }
 
         private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
@@ -337,6 +346,44 @@ namespace ReOsuStoryBoardPlayer
         }
 
         #endregion Storyboard Rendering
+
+        protected unsafe override void OnKeyPress(KeyPressEventArgs e)
+        {
+            base.OnKeyPress(e);
+
+            if (e.KeyChar=='q')
+                DebuggerManager.GetDebugger<EncodingKernel>().Abort();
+
+            /*
+            if (e.KeyChar=='q')
+            {
+                Bitmap map = new Bitmap(Width, Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                BitmapData data = map.LockBits(new Rectangle(0, 0, Width, Height),ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                GL.ReadPixels(0, 0, Width, Height, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                var ptr =(byte*)data.Scan0.ToPointer();
+
+                for (int i = 0; i<Height/2; i++)
+                {
+                    var l = Height-i-1;
+
+                    var src = ptr+i*Width*4;
+                    var dist = ptr+l*Width*4;
+
+                    for (int x = 0; x<Width*4; x++)
+                    {
+                        var z = src[x];
+                        src[x]=dist[x];
+                        dist[x]=z;
+                    }
+                }
+
+                map.UnlockBits(data);
+
+                map.Save(@"h:\zz.png");
+            }
+            */
+        }
 
 #if DEBUG
         protected override void OnMouseDown(MouseButtonEventArgs e)

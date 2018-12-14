@@ -24,6 +24,8 @@ namespace ReOsuStoryBoardPlayer
         /// </summary>
         public static bool MiniMode { get; set; } = false;
 
+        public static bool EncodingEnvironment { get; set; } = false;
+
         public static bool EnableSplitMoveScaleCommand { get; set; } = true;
 
         public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
