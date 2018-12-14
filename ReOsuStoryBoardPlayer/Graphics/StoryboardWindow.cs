@@ -61,6 +61,8 @@ namespace ReOsuStoryBoardPlayer
         private void InitGraphics()
         {
             GL.Enable(EnableCap.Blend);
+            GL.Enable(EnableCap.DepthTest);
+            GL.DepthFunc(DepthFunction.Less);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
@@ -281,7 +283,7 @@ namespace ReOsuStoryBoardPlayer
 
             _render_stopwatch.Restart();
 
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit|ClearBufferMask.DepthBufferBit);
 
             GL.ClearColor(Color.Black);
 
