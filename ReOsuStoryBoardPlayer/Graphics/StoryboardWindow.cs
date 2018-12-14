@@ -208,14 +208,10 @@ namespace ReOsuStoryBoardPlayer
             {
                 DebuggerManager.TrigBeforeRender();
                 PostDrawStoryBoard();
-            }
-
-            SwapBuffers();
-            /*
-            if (ready)
+                SwapBuffers();
                 DebuggerManager.TrigAfterRender();
-                */
-            DebuggerManager.GetDebugger<EncodingKernel>().OnAfterRender();
+            }else
+                SwapBuffers();
         }
 
         private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps

@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer
                 var encoding_opt = new EncoderOption(args);
                 EncodingKernel encoding_kernel = new EncodingKernel(encoding_opt);
                 EncodingProcessPlayer encoding_player = new EncodingProcessPlayer(MusicPlayerManager.ActivityPlayer.Length, encoding_opt.FPS);
-                MusicPlayerManager.ActivityPlayer.Stop();
+                MusicPlayerManager.ActivityPlayer.Pause();
                 MusicPlayerManager.ApplyPlayer(encoding_player);
                 DebuggerManager.AddDebugger(encoding_kernel);
                 encoding_kernel.Start();
@@ -80,7 +80,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\179323 Sakamoto Maaya - Okaerinasai (tomatomerde Remix)";
+            beatmap_folder=@"G:\SBTest\511637 solfa featChata - I will";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

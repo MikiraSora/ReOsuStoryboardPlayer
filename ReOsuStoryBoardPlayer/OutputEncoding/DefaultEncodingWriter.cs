@@ -12,6 +12,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
     {
         MediaWriter writer;
         VideoFrame frame;
+        Saar.FFmpeg.CSharp.Encoder encoder;
 
         private void Clean()
         {
@@ -34,24 +35,29 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
 
         public override void OnNextFrame(byte[] buffer, int width, int height)
         {
-            System.Diagnostics.Debug.Assert(width==frame.Format.Width&&height==frame.Format.Height);
+            if (writer==null)
+                return;
+
+            System.Diagnostics.Debug.Assert(buffer.Length==frame.Format.Bytes);
             frame.Update(buffer);
+
+            Log.User($"{encoder.FullName} ---> ({encoder.InputFrames}) {encoder.InputTimestamp}");
             writer.Write(frame);
         }
 
         public override void OnStart(EncoderOption option)
         {
-            var format = new VideoFormat(option.Width, option.Height, AVPixelFormat.Rgba);
-            var encoder = new VideoEncoder(AVCodecID.H264, format, 
-                new VideoEncoderParameters() { FrameRate=new Fraction(option.FPS),BitRate=option.BitRate });
+            var format = new VideoFormat(option.Width, option.Height, AVPixelFormat.Bgra);
+            var param = new VideoEncoderParameters() { FrameRate=new Fraction(option.FPS), BitRate=option.BitRate };
 
-            writer=new MediaWriter(option.OutputPath,true);
-            writer.AddEncoder(encoder);
-            writer.Initialize();
+            var audioFormat = new AudioFormat(44100, AVChannelLayout.LayoutStereo, AVSampleFormat.FloatPlanar);
 
-            Log.User($"Format :{format.ToString()}\nEncoder :{encoder.ToString()}");
+            writer=new MediaWriter(option.OutputPath, false).AddVideo(format, param)/*.AddAudio(audioFormat)*/.Initialize();
+
+            Log.User($"Format :{format.ToString()}\nVideo Encoder :{writer.Encoders.First().ToString()}");
 
             frame=new VideoFrame(format);
+            encoder=writer.Encoders.OfType<VideoEncoder>().FirstOrDefault();
         }
     }
 }

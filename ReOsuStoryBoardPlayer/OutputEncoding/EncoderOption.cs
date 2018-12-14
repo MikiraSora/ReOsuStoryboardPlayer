@@ -22,10 +22,10 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
             Width=Setting.Width;
             Height=Setting.Height;
 
-            FPS=args.TryGetArg(out var fps, "encoding_fps") ? fps.ToInt() : 60;
-            BitRate=args.TryGetArg(out var bit_rate, "encoding_bitrate") ? bit_rate.ToInt() : 6000;
+            FPS=args.TryGetArg(out var fps, "encoding_fps") ? fps.ToInt() : 120;
+            BitRate=args.TryGetArg(out var bit_rate, "encoding_bitrate") ? bit_rate.ToInt() : 12_0000*1024;
 
-            OutputPath=args.TryGetArg(out var output_path, "encoding_output_path") ? output_path : "output.h264";
+            OutputPath=args.TryGetArg(out var output_path, "encoding_output_path") ? output_path : "output.mp4";
         }
     }
 }
