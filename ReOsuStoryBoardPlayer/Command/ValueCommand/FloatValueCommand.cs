@@ -11,7 +11,7 @@ namespace ReOsuStoryBoardPlayer.Commands
     {
         public FadeCommand() => Event = Event.Fade;
 
-        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Color.w = value;
+        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Color.w = (byte)(value*255);
     }
 
     public class MoveXCommand : FloatValueCommand

@@ -110,7 +110,7 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
                     return new VectorCommandParser<VectorScaleCommand>();
 
                 case "ColorCommand":
-                    return new Vec4CommandParser<ColorCommand>();
+                    return new ByteVec4CommandParser<ColorCommand>();
 
                 case "LoopCommand":
                     return new LoopCommandParser();

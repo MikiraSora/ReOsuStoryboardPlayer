@@ -79,10 +79,10 @@ namespace ReOsuStoryBoardPlayer
         private int _calculateCapacitySize()
         {
             /*-----------------CURRENT VERSION------------------ -
-					*orther		anchor(Hlaf)    color(byte)     modelMatrix(float)      flip(Hlaf)
-					*float(1)	vec2(2)		    vec4(4)         Matrix3x2(6)            vec2(2)
+					anchor(Hlaf)    color(byte)     modelMatrix(float)      flip(Hlaf)
+					vec2(2)		    vec4(4)         Matrix3x2(6)            vec2(2)
 			*/
-            return (1 + 6) * sizeof(float) + (2 + 2) * 2/*Hlaf*/ + 4 * sizeof(byte) ;
+            return (2 + 2) * 2/*Hlaf*/ * 6 * sizeof(float) + 4 * sizeof(byte) ;
         }
 
         private Vector _bound;
@@ -140,39 +140,34 @@ namespace ReOsuStoryBoardPlayer
                 {
                     GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_calculateCapacitySize() * Capacity), IntPtr.Zero, BufferUsageHint.DynamicDraw);
 
-                    //orther
+                    //Anchor
                     GL.EnableVertexAttribArray(2);
-                    GL.VertexAttribPointer(2, 1, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 0);//THIS: 最后一个参数是字节数
+                    GL.VertexAttribPointer(2, 2, VertexAttribPointerType.HalfFloat, false, _calculateCapacitySize(), 0);
                     GL.VertexAttribDivisor(2, 1);
 
-                    //Anchor
+                    //Color
                     GL.EnableVertexAttribArray(3);
-                    GL.VertexAttribPointer(3, 2, VertexAttribPointerType.HalfFloat, false, _calculateCapacitySize(), 4);
+                    GL.VertexAttribPointer(3, 4, VertexAttribPointerType.UnsignedByte, true, _calculateCapacitySize(), 4);
                     GL.VertexAttribDivisor(3, 1);
 
-                    //Color
+                    //filp
                     GL.EnableVertexAttribArray(4);
-                    GL.VertexAttribPointer(4, 4, VertexAttribPointerType.UnsignedByte, true, _calculateCapacitySize(), 8);
+                    GL.VertexAttribPointer(4, 2, VertexAttribPointerType.HalfFloat, false, _calculateCapacitySize(), 8);
                     GL.VertexAttribDivisor(4, 1);
 
-                    //filp
-                    GL.EnableVertexAttribArray(5);
-                    GL.VertexAttribPointer(5, 2, VertexAttribPointerType.HalfFloat, false, _calculateCapacitySize(), 12);
-                    GL.VertexAttribDivisor(5, 1);
-
                     //ModelMatrix
+                    GL.EnableVertexAttribArray(5);
+                    GL.VertexAttribPointer(5, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 12);
+                    GL.VertexAttribDivisor(5, 1);
                     GL.EnableVertexAttribArray(6);
-                    GL.VertexAttribPointer(6, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 16);
+                    GL.VertexAttribPointer(6, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 20);
                     GL.VertexAttribDivisor(6, 1);
                     GL.EnableVertexAttribArray(7);
-                    GL.VertexAttribPointer(7, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 24);
+                    GL.VertexAttribPointer(7, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 28);
                     GL.VertexAttribDivisor(7, 1);
                     GL.EnableVertexAttribArray(8);
-                    GL.VertexAttribPointer(8, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 32);
+                    GL.VertexAttribPointer(8, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 36);
                     GL.VertexAttribDivisor(8, 1);
-                    GL.EnableVertexAttribArray(9);
-                    GL.VertexAttribPointer(9, 2, VertexAttribPointerType.Float, false, _calculateCapacitySize(), 40);
-                    GL.VertexAttribDivisor(9, 1);
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             }
@@ -189,11 +184,11 @@ namespace ReOsuStoryBoardPlayer
         private readonly Half HalfNegativeOne = new Half(-1f);
         private readonly Half HalfOne = new Half(1f);
 
-        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, HalfVector anchor, Vec4 color, bool vertical_flip, bool horizon_flip)
+        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, HalfVector anchor, ByteVec4 color, bool vertical_flip, bool horizon_flip)
         {
             /*-----------------CURRENT VERSION------------------ -
-			*orther		anchor(Hlaf)	    color(byte)         modelMatrix
-			*float(1)	vec2(2)		        vec4(4)             Matrix3x2(6)
+			*   anchor(Hlaf)	    color(byte)         modelMatrix
+			*   vec2(2)		        vec4(4)             Matrix3x2(6)
 			*/
 
             int base_index = _currentPostCount * _calculateCapacitySize() / sizeof(float);
@@ -213,13 +208,10 @@ namespace ReOsuStoryBoardPlayer
             model.Row2.X = position.x - StoryboardWindow.SB_WIDTH / 2f;
             model.Row2.Y = -position.y + StoryboardWindow.SB_HEIGHT / 2f;
 
-            //Z float
-            PostData[base_index + 0] = z_other;
-
             unsafe
             {
                 //Anchor write
-                fixed (float* ptr = &PostData[base_index + 1])
+                fixed (float* ptr = &PostData[base_index + 0])
                 {
                     Half* p = (Half*)ptr;
                     p[0] = anchor.x;
@@ -227,17 +219,14 @@ namespace ReOsuStoryBoardPlayer
                 }
 
                 //Color write
-                fixed (float* ptr = &PostData[base_index + 2])
+                fixed (float* ptr = &PostData[base_index + 1])
                 {
-                    byte* p = (byte*) ptr;
-                    p[0] = (byte)(color.x * 255f);
-                    p[1] = (byte)(color.y * 255f);
-                    p[2] = (byte)(color.z * 255f);
-                    p[3] = (byte)(color.w * 255f);
+                    int* p = (int*) ptr;
+                    *p = *(int*)&color;
                 }
 
                 //flip write
-                fixed (float* ptr = &PostData[base_index + 3])
+                fixed (float* ptr = &PostData[base_index + 2])
                 {
                     Half* p = (Half*) ptr;
                     p[0] = horizon_flip ? HalfNegativeOne : HalfOne;
@@ -245,12 +234,9 @@ namespace ReOsuStoryBoardPlayer
                 }
 
                 //ModelMatrix Write 
-                unsafe
+                fixed (void* ptr = &PostData[base_index + 3])
                 {
-                    fixed (void* ptr = &PostData[base_index + 4])
-                    {
-                        Unsafe.CopyBlock(ptr, &model.Row0.X, 2 * 3 * sizeof(float));
-                    }
+                    Unsafe.CopyBlock(ptr, &model.Row0.X, 2 * 3 * sizeof(float));
                 }
             }
 
@@ -261,7 +247,7 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, HalfVector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
+        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, HalfVector anchor, ByteVec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
 
         private void Draw()
         {
@@ -274,7 +260,6 @@ namespace ReOsuStoryBoardPlayer
                 _window_resized = false;
             }
             _shader.PassUniform("diffuse", texture);
-            _shader.PassUniform("MaxZ",(float)StoryboardWindow.CurrentWindow.StoryBoardInstance.MaxZ);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbos[_current_buffer_index]);
             {

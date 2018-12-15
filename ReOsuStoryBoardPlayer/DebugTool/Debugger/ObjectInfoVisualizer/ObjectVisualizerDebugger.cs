@@ -37,7 +37,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             select_object.Color.w=backup_alpha;
         }
 
-        float backup_alpha;
+        byte backup_alpha;
         float count;
 
         private void OnBeforeRender()
@@ -53,7 +53,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             count+=0.00045f*DateTime.Now.Second;
 
             backup_alpha=select_object.Color.w;
-            select_object.Color.w=Math.Min(1, (float)Math.Cos(count)+0.2f);
+            select_object.Color.w=(byte)Math.Min(255, Math.Abs(255*Math.Cos(count)));
         }
 
         private void OnMouseClick(int x, int y, MouseInput input)

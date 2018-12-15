@@ -10,20 +10,18 @@
                 out vec2 varying_texPos;
 
                 uniform mat4 ViewProjection;
-                uniform float MaxZ;
 
                 layout(location=0) in vec2 in_texPos;
                 layout(location=1) in vec2 in_pos;
 
-                layout(location=2) in float in_Z;
-                layout(location=3) in vec2 in_anchor;
-                layout(location=4) in vec4 in_color;
-                layout(location=5) in vec2 in_flip;
-                layout(location=6) in mat3x2 in_model;
+                layout(location=2) in vec2 in_anchor;
+                layout(location=3) in vec4 in_color;
+                layout(location=4) in vec2 in_flip;
+                layout(location=5) in mat3x2 in_model;
 
                 void main(){
                     vec2 v = in_model*vec3((in_pos*in_flip-in_anchor),1.0);
-	                gl_Position=ViewProjection*vec4(v.x,v.y,in_Z/MaxZ,1.0);
+	                gl_Position=ViewProjection*vec4(v.x,v.y,0.0,1.0);
 	                varying_color=in_color;
 	                varying_texPos=in_texPos;
                 }

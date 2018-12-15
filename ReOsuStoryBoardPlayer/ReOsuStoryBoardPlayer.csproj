@@ -111,7 +111,7 @@
     <Compile Include="Command\ValueCommand\FloatValueCommand.cs" />
     <Compile Include="Command\ParameterCommand\StateCommand.cs" />
     <Compile Include="Command\ValueCommand\ValueCommand.cs" />
-    <Compile Include="Command\ValueCommand\Vec4ValueCommand.cs" />
+    <Compile Include="Command\ValueCommand\ByteVec4ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\VectorValueCommand.cs" />
     <Compile Include="DebugTool\DebuggerHelper.cs" />
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerDebugger.cs" />
@@ -122,9 +122,11 @@
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\Range.cs" />
+    <Compile Include="Graphics\ByteVec4.cs" />
     <Compile Include="Graphics\HalfVector.cs" />
     <Compile Include="Optimzer\OptimzerBase.cs" />
     <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
+    <Compile Include="Parser\CommandParser\ValueCommandParser\ByteVec4CommandParser.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />
