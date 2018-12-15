@@ -20,7 +20,7 @@
                 layout(location=5) in mat3x2 in_model;
 
                 void main(){
-                    vec2 v = in_model*vec3((in_pos*in_flip-in_anchor),1.0);
+                    vec2 v = in_model*vec3(in_pos*in_flip-in_anchor,1.0);
 	                gl_Position=ViewProjection*vec4(v.x,v.y,0.0,1.0);
 	                varying_color=in_color;
 	                varying_texPos=in_texPos;

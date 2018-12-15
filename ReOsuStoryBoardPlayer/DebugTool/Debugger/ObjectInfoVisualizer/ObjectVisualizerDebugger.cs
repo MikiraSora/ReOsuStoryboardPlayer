@@ -93,21 +93,21 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             Window.SelectObject=obj;
         }
 
-        private static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, 1);
+        private static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, -1);
 
-        private static readonly float[] _cacheBaseVertex = new float[] {
-                0,0,
-                0,-1,
-                1,-1,
-                1,0,
-            };
+        private static float[] _cacheBaseVertex = new float[] {
+            -0.5f, 0.5f,
+            0.5f, 0.5f,
+            0.5f, -0.5f,
+            -0.5f, -0.5f,
+        };
 
         private bool IsPointInObjectArea(StoryBoardObject sb_obj, float x, float y)
         {
             var mouse_point = new Vector2(x, y);
             Vector3[] points = new Vector3[4];
 
-            Vector2 in_anchor = new Vector2(sb_obj.Anchor.x, -sb_obj.Anchor.y);
+            Vector2 in_anchor = new Vector2(sb_obj.Anchor.x, sb_obj.Anchor.y);
 
             float w = sb_obj.RenderGroup.Texture.Width;
             float h = sb_obj.RenderGroup.Texture.Height;
@@ -132,14 +132,14 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             Matrix4.CreateFromAxisAngle(_staticCacheAxis, sb_obj.Rotate/180.0f*3.1415926f)*
             Matrix4.CreateTranslation(fix_obj_pos.x-StoryboardWindow.CurrentWindow.Width/2, -fix_obj_pos.y+StoryboardWindow.CurrentWindow.Height/2, 0);
 
-            mouse_point.X=mouse_point.X-StoryboardWindow.CurrentWindow.Width/2;
-            mouse_point.Y=StoryboardWindow.CurrentWindow.Height/2-mouse_point.Y;
+            mouse_point.X = mouse_point.X - StoryboardWindow.CurrentWindow.Width / 2;
+            mouse_point.Y = StoryboardWindow.CurrentWindow.Height / 2 - mouse_point.Y;
 
             for (int i = 0; i<4; i++)
             {
                 var vertex = new Vector2(_cacheBaseVertex[i*2+0], _cacheBaseVertex[i*2+1]);
                 var temp = (vertex-in_anchor)*in_bound;
-                var transform = new Vector4(temp.X, temp.Y, 0, 1)*StoryboardWindow.CameraViewMatrix*in_model;
+                var transform = new Vector4(temp.X, temp.Y, 0, 1)*in_model;
 
                 points[i]=new Vector3(mouse_point-new Vector2(transform.X, transform.Y));
             }
