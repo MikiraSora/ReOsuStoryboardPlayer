@@ -373,7 +373,7 @@ namespace ReOsuStoryBoardPlayer
             DebuggerManager.TrigMove(e.X, e.Y);
             if (mouseDown&&WindowBorder == WindowBorder.Hidden)
             {
-                Location = new Point(e.X-downX,e.Y-downY);
+                Location = new Point(e.X+Location.X-downX,e.Y+Location.Y-downY);
                 //Log.User($"X: ${e.X} Y:${e.Y}");
             }
         }
