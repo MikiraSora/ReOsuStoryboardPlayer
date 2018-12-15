@@ -185,7 +185,7 @@ namespace ReOsuStoryBoardPlayer
 
         private float[] PostData;
 
-        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip)
+        public void PostRenderCommand(Vector position, float z_other, Vector bound, float rotate, Vector scale, Vector anchor, ByteVec4 color, bool vertical_flip, bool horizon_flip)
         {
             /*-----------------CURRENT VERSION------------------ -
 			*orther		anchor(Hlaf)	    color(byte)         modelMatrix
@@ -226,10 +226,12 @@ namespace ReOsuStoryBoardPlayer
                 fixed (float* ptr = &PostData[base_index + 2])
                 {
                     byte* p = (byte*) ptr;
-                    p[0] = (byte)(color.x * 255f);
-                    p[1] = (byte)(color.y * 255f);
-                    p[2] = (byte)(color.z * 255f);
-                    p[3] = (byte)(color.w * 255f);
+                    
+                    p[0] = color.x;
+                    p[1] = color.y;
+                    p[2] = color.z;
+                    p[3] = color.w;
+                    
                 }
 
                 //flip write
@@ -257,7 +259,7 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, Vector anchor, Vec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
+        public void PostRenderCommand(Vector position, float z_orther, float rotate, Vector scale, Vector anchor, ByteVec4 color, bool vertical_flip, bool horizon_flip) => PostRenderCommand(position, z_orther, _bound, rotate, scale, anchor, color, vertical_flip, horizon_flip);
 
         private void Draw()
         {

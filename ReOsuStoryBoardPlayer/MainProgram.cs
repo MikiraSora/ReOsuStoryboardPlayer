@@ -65,7 +65,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"591442 S3RL feat Harri Rush - Nostalgic (Nightcore Mix)";
+            beatmap_folder=@"G:\SBTest\432822 NOMA - Brain Power Long Version";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

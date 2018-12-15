@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace ReOsuStoryBoardPlayer
@@ -25,7 +26,7 @@ namespace ReOsuStoryBoardPlayer
 
         public Vector Postion = new Vector(320, 240), Scale = new Vector(1, 1);
 
-        public Vec4 Color = new Vec4(1, 1, 1, 1);
+        public ByteVec4 Color = new ByteVec4(255,255,255,255);
 
         public float Rotate = 0;
 
