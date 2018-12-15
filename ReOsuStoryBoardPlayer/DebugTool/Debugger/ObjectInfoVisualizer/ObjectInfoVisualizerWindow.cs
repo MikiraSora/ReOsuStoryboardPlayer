@@ -65,7 +65,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 #if DEBUG
                 SelectObject.DebugShow=checkBox1.Checked;
 #endif
-                int r = (int)(SelectObject.Color.x * 255), g = (int)(SelectObject.Color.y * 255), b = (int)(SelectObject.Color.z * 255);
+                int r = SelectObject.Color.x, g = SelectObject.Color.y, b = SelectObject.Color.z;
                 ColorLabel.Text = $"{r},{g},{b}";
                 
                 try
