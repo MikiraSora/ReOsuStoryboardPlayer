@@ -11,7 +11,7 @@ namespace ReOsuStoryBoardPlayer
         public byte w { get; set; }
 
         public static ByteVec4 Zero { get { return new ByteVec4(0,0,0,0); } }
-        public static ByteVec4 One { get { return new ByteVec4(1,1,1,1); } }
+        public static ByteVec4 Full { get { return new ByteVec4(255,255,255,255); } }
 
         public ByteVec4(byte x, byte y,byte z,byte w)
         {
