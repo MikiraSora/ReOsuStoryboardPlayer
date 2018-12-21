@@ -3,6 +3,7 @@ using ReOsuStoryBoardPlayer.Kernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -93,55 +94,55 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             Window.SelectObject=obj;
         }
 
-        private static readonly Vector3 _staticCacheAxis = new Vector3(0, 0, -1);
+        private const float DEG2RAD = 0.017453292519943295f;
 
-        private static float[] _cacheBaseVertex = new float[] {
-            -0.5f, 0.5f,
-            0.5f, 0.5f,
-            0.5f, -0.5f,
-            -0.5f, -0.5f,
-        };
-
-        private bool IsPointInObjectArea(StoryBoardObject sb_obj, float x, float y)
+        private bool IsPointInObjectArea(StoryBoardObject obj, float x, float y)
         {
-            var mouse_point = new Vector2(x, y);
+            Vector2 obj_pos = new Vector2(obj.Postion.x, obj.Postion.y);
+
+            float radio = (float)StoryboardWindow.CurrentWindow.Width / (float)StoryboardWindow.CurrentWindow.Height;
+            float view_width = StoryboardWindow.SB_HEIGHT * radio;
+
+            Vector2 mouse_scale = new Vector2(view_width / StoryboardWindow.CurrentWindow.Width,
+                StoryboardWindow.SB_HEIGHT / StoryboardWindow.CurrentWindow.Height);
+
+            var mouse_point = new Vector2(x, y) * mouse_scale;
+
+            mouse_point.X -= (view_width - StoryboardWindow.SB_WIDTH) / 2.0f;
+
             Vector3[] points = new Vector3[4];
 
-            Vector2 in_anchor = new Vector2(sb_obj.Anchor.x, sb_obj.Anchor.y);
+            int w = (int)(obj.RenderGroup.Texture.Width * obj.Scale.x);
+            int h = (int)(obj.RenderGroup.Texture.Height * obj.Scale.y);
 
-            float w = sb_obj.RenderGroup.Texture.Width;
-            float h = sb_obj.RenderGroup.Texture.Height;
+            Vector2 anchor = new Vector2(obj.Anchor.x, obj.Anchor.y) + new Vector2(0.5f,0.5f);
+            anchor.X *= w;
+            anchor.Y *= h;
 
-            Vector2 in_bound = new Vector2(w, h);
+            Vector2[] vertices = new Vector2[4];
 
-            //将物件的坐标投影到当前屏幕大小
-            var fix_obj_pos = new Vector(
-                sb_obj.Postion.x/StoryboardWindow.SB_WIDTH*StoryboardWindow.CurrentWindow.Width,
-                sb_obj.Postion.y/StoryboardWindow.SB_HEIGHT*StoryboardWindow.CurrentWindow.Height
-                );
+            vertices[0].X = 0;
+            vertices[0].Y = 0;
 
-            //将物件的缩放投影到当前屏幕大小
-            var fix_obj_size = new Vector(
-                sb_obj.Scale.x/StoryboardWindow.SB_WIDTH*StoryboardWindow.CurrentWindow.Width,
-                sb_obj.Scale.y/StoryboardWindow.SB_HEIGHT*StoryboardWindow.CurrentWindow.Height
-                );
+            vertices[1].X = w;
+            vertices[1].Y = 0;
 
-            Matrix4 in_model =
-                Matrix4.Identity*
-            Matrix4.CreateScale(fix_obj_size.x, fix_obj_size.y, 1)*
-            Matrix4.CreateFromAxisAngle(_staticCacheAxis, sb_obj.Rotate/180.0f*3.1415926f)*
-            Matrix4.CreateTranslation(fix_obj_pos.x-StoryboardWindow.CurrentWindow.Width/2, -fix_obj_pos.y+StoryboardWindow.CurrentWindow.Height/2, 0);
+            vertices[2].X = w;
+            vertices[2].Y = h;
 
-            mouse_point.X = mouse_point.X - StoryboardWindow.CurrentWindow.Width / 2;
-            mouse_point.Y = StoryboardWindow.CurrentWindow.Height / 2 - mouse_point.Y;
+            vertices[3].X = 0;
+            vertices[3].Y = h;
 
-            for (int i = 0; i<4; i++)
+            float cosa = (float)Math.Cos(obj.Rotate * DEG2RAD);
+            float sina = (float) Math.Sin(obj.Rotate * DEG2RAD);
+
+            for (int i = 0; i < vertices.Length; i++)
             {
-                var vertex = new Vector2(_cacheBaseVertex[i*2+0], _cacheBaseVertex[i*2+1]);
-                var temp = (vertex-in_anchor)*in_bound;
-                var transform = new Vector4(temp.X, temp.Y, 0, 1)*in_model;
-
-                points[i]=new Vector3(mouse_point-new Vector2(transform.X, transform.Y));
+                var v = vertices[i] - anchor;
+                v.X = v.X * cosa + v.Y * sina;
+                v.Y = v.X * sina - v.Y * cosa;
+                v += obj_pos;
+                points[i] = new Vector3(mouse_point-v);
             }
 
             Vector3 v1 = Vector3.Cross(points[0], points[1]).Normalized();
@@ -149,7 +150,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             Vector3 v3 = Vector3.Cross(points[2], points[3]).Normalized();
             Vector3 v4 = Vector3.Cross(points[3], points[0]).Normalized();
 
-            if (Vector3.Dot(v1, v2)>0.99999f&&Vector3.Dot(v2, v3)>0.9999f&&
+            if (Vector3.Dot(v1, v2)>0.9999f&&Vector3.Dot(v2, v3)>0.9999f&&
                 Vector3.Dot(v3, v4)>0.9999f&&Vector3.Dot(v4, v1)>0.9999f)
                 return true;
             return false;
