@@ -65,7 +65,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\432822 NOMA - Brain Power Long Version";
+            beatmap_folder=@"G:\SBTest\499488 Kana Nishino - Sweet Dreams (11t dnb mix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
