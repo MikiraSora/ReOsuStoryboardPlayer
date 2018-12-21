@@ -26,7 +26,7 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryboardWindow : GameWindow
     {
-        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4:F0}ms Render: {5:F0}ms FPS: {6:F2}";
+        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4:F0}ms Render: {5:F0}ms FPS: {6:F2} {7}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
 
@@ -80,7 +80,6 @@ namespace ReOsuStoryBoardPlayer
         
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
         {
-
             Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
 
             foreach (var obj in StoryboardObjectList)
@@ -261,9 +260,17 @@ namespace ReOsuStoryBoardPlayer
             ExecutorSync.ClearTask();
             if (title_update_timer > 0.1)
             {
+                string title_encoding_part = string.Empty;
+
+                if (Setting.EncodingEnvironment)
+                {
+                    var kernel = DebuggerManager.GetDebugger<EncodingKernel>();
+                    title_encoding_part=$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp}";
+                }
+
                 Title = string.Format(TITLE, Width, Height, GL.GetInteger(GetPName.MajorVersion),
                     GL.GetInteger(GetPName.MinorVersion), UpdateTime * 1000, RenderTime * 1000,
-                    1.0 / (RenderTime + UpdateTime));
+                    1.0 / (RenderTime + UpdateTime), title_encoding_part);
                 title_update_timer = 0;
             }
 

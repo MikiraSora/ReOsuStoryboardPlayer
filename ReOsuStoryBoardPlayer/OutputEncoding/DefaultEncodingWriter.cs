@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.OutputEncoding
@@ -12,7 +11,11 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
     {
         MediaWriter writer;
         VideoFrame frame;
-        Saar.FFmpeg.CSharp.Encoder encoder;
+        Encoder encoder;
+
+        public override long ProcessedFrameCount => encoder.InputFrames;
+        public override TimeSpan ProcessedTimestamp => encoder.InputTimestamp;
+
 
         private void Clean()
         {
@@ -50,14 +53,13 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
             var format = new VideoFormat(option.Width, option.Height, AVPixelFormat.Bgra);
             var param = new VideoEncoderParameters() { FrameRate=new Fraction(option.FPS), BitRate=option.BitRate };
 
-            var audioFormat = new AudioFormat(44100, AVChannelLayout.LayoutStereo, AVSampleFormat.FloatPlanar);
+            encoder=new VideoEncoder("h264_nvenc", format, param);
 
-            writer=new MediaWriter(option.OutputPath, false).AddVideo(format, param)/*.AddAudio(audioFormat)*/.Initialize();
+            writer=new MediaWriter(option.OutputPath, false).AddEncoder(encoder).Initialize();
 
-            Log.User($"Format :{format.ToString()}\nVideo Encoder :{writer.Encoders.First().ToString()}");
+            Log.User($"Format :{format.ToString()}\nVideo Encoder :{encoder.ToString()}");
 
             frame=new VideoFrame(format);
-            encoder=writer.Encoders.OfType<VideoEncoder>().FirstOrDefault();
         }
     }
 }

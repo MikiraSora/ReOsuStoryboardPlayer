@@ -74,13 +74,13 @@ namespace ReOsuStoryBoardPlayer
                 encoding_kernel.Start();
             }
 
-            player.Play();
+            MusicPlayerManager.ActivityPlayer.Play();
             window.Run();
         }
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\511637 solfa featChata - I will";
+            beatmap_folder=@"G:\SBTest\483606 NOMA - LOUDER MACHINE";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

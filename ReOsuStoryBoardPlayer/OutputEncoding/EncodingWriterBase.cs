@@ -8,6 +8,9 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
 {
     public abstract class EncodingWriterBase
     {
+        public abstract long ProcessedFrameCount { get; }
+        public abstract TimeSpan ProcessedTimestamp { get; }
+
         public abstract void OnStart(EncoderOption option);
         public abstract void OnFinish();
         public abstract void OnAbort();

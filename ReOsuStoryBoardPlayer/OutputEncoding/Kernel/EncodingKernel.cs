@@ -20,7 +20,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
     {
         EncodingProcessPlayer time_control;
         //Thread thread;
-        EncodingWriterBase writer;
+        public EncodingWriterBase Writer { get; private set; }
         EncoderOption option;
 
         float prev_time;
@@ -41,8 +41,8 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
             if (time_control==null)
                 throw new Exception("Current player isn't EncodingProcessPlayer!");
 
-            writer=EncodingWriterFatory.Create();
-            writer.OnStart(option);
+            Writer=EncodingWriterFatory.Create();
+            Writer.OnStart(option);
 
             Log.User($"Start encoding....");
 
@@ -65,7 +65,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
             if ((!time_control.IsPlaying)&&is_running)
             {
                 //过时，关闭
-                writer.OnFinish();
+                Writer.OnFinish();
                 is_running=false;
                 return;
             }
@@ -92,7 +92,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
                 }
             }
 
-            writer.OnNextFrame(buffer, option.Width, option.Height);
+            Writer.OnNextFrame(buffer, option.Width, option.Height);
         }
 
         private bool CheckCondition()
@@ -104,7 +104,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
         {
             if (is_running)
             {
-                writer.OnAbort();
+                Writer.OnAbort();
                 Log.User($"Encoding abort");
             }
         }
