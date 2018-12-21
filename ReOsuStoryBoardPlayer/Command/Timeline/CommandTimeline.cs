@@ -40,7 +40,9 @@ namespace ReOsuStoryBoardPlayer.Commands
             Debug.Assert(!float.IsNaN(current_time), $"current_time is not a number");
 
             //cache
-            if (selected_command!=null&&(selected_command.StartTime<=current_time&&current_time<=selected_command.EndTime)&&(!overlay))
+            if (selected_command!=null
+                &&selected_command.StartTime<=current_time&&current_time<=selected_command.EndTime
+                &&(!overlay))
                 return selected_command;
 
             if (current_time<this.First().StartTime)
@@ -52,13 +54,12 @@ namespace ReOsuStoryBoardPlayer.Commands
             for (int i = 0; i<Count; i++)
             {
                 var cmd = this[i];
+                var next_cmd = (i<Count-1) ? this[i+1] : null;
 
                 if (TimeInCommand(cmd))
                 {
-                    if (overlay&&(i<Count-1))
+                    if (overlay&&next_cmd!=null)
                     {
-                        var next_cmd = this[i+1];
-
                         //判断下一个命令(可能是overlay command)是否也是在范围内
                         if (TimeInCommand(next_cmd))
                             return selected_command=next_cmd;
@@ -66,17 +67,8 @@ namespace ReOsuStoryBoardPlayer.Commands
 
                     return selected_command=cmd;
                 }
-            }
-                
-
-            //尝试选取在命令之间的前者
-            for (int i = 0; i<Count-1; i++)
-            {
-                var cur_cmd = this[i];
-                var next_cmd = this[i+1];
-
-                if (current_time>=cur_cmd.EndTime&&current_time<=next_cmd.StartTime)
-                    return selected_command=cur_cmd;
+                else if (next_cmd!=null&&current_time>=cmd.EndTime&&current_time<=next_cmd.StartTime)
+                    return selected_command=cmd;
             }
 
             return selected_command=null;
