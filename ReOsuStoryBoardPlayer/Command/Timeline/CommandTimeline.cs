@@ -19,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             {
                 var prev_cmd = this.Last();
 
-                if (prev_cmd.StartTime<=command.StartTime&&command.EndTime<=prev_cmd.StartTime)
+                if (prev_cmd.StartTime<=command.StartTime&&command.EndTime<=prev_cmd.EndTime)
                 {
                     overlay=true;
                     Log.Debug($"CommandTimeline exist overlay command :\"{prev_cmd}\" is overlay with \"{command}\"");
@@ -40,7 +40,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             Debug.Assert(!float.IsNaN(current_time), $"current_time is not a number");
 
             //cache
-            if (selected_command!=null&&(selected_command.StartTime<=current_time&&current_time<=selected_command.EndTime))
+            if (selected_command!=null&&(selected_command.StartTime<=current_time&&current_time<=selected_command.EndTime)&&(!overlay))
                 return selected_command;
 
             if (current_time<this.First().StartTime)
@@ -49,9 +49,25 @@ namespace ReOsuStoryBoardPlayer.Commands
                 return selected_command=this.Last();
 
             //尝试选取在时间范围内的命令
-            foreach (var cmd in this)
-                if (current_time>=cmd.StartTime&&current_time<=cmd.EndTime)
+            for (int i = 0; i<Count; i++)
+            {
+                var cmd = this[i];
+
+                if (TimeInCommand(cmd))
+                {
+                    if (overlay&&(i<Count-1))
+                    {
+                        var next_cmd = this[i+1];
+
+                        //判断下一个命令(可能是overlay command)是否也是在范围内
+                        if (TimeInCommand(next_cmd))
+                            return selected_command=next_cmd;
+                    }
+
                     return selected_command=cmd;
+                }
+            }
+                
 
             //尝试选取在命令之间的前者
             for (int i = 0; i<Count-1; i++)
@@ -64,6 +80,8 @@ namespace ReOsuStoryBoardPlayer.Commands
             }
 
             return selected_command=null;
+
+            bool TimeInCommand(Command c) => (current_time>=c.StartTime&&current_time<=c.EndTime);
         }
     }
 }
