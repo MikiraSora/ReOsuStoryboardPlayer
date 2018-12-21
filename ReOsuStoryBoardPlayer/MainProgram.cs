@@ -24,6 +24,19 @@ namespace ReOsuStoryBoardPlayer
             ParseProgramCommands(argv, out var beatmap_folder);
 
             Setting.PrintSettings();
+            
+            if (Setting.MiniMode)
+            {
+                DebuggerManager.AddDebugger(new CLIControllerDebugger());
+            }
+            else
+            {
+#if DEBUG
+                DebuggerHelper.SetupDebugEnvironment();
+#else
+                DebuggerHelper.SetupReleaseEnvironment();
+#endif
+            }
 
             var info = BeatmapFolderInfo.Parse(beatmap_folder);
 
@@ -44,18 +57,6 @@ namespace ReOsuStoryBoardPlayer
             #region CLI Control
 
             //Log.AbleDebugLog = false;
-            if (Setting.MiniMode)
-            {
-                DebuggerManager.AddDebugger(new CLIControllerDebugger());
-            }
-            else
-            {
-#if DEBUG
-                DebuggerHelper.SetupDebugEnvironment();
-#else
-                DebuggerHelper.SetupReleaseEnvironment();
-#endif
-            }
 
             #endregion
 
@@ -65,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\499488 Kana Nishino - Sweet Dreams (11t dnb mix)";
+            beatmap_folder=@"G:\SBTest\798443 Ahiru - HEARTBEAT (USAO Remix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

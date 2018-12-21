@@ -10,13 +10,27 @@ namespace ReOsuStoryBoardPlayer.Commands
         public int StartTime;
         public int EndTime;
 
+        private bool overlay;
+
         public new void Add(Command command)
         {
+            //check overlay
+            if (Count>0)
+            {
+                var prev_cmd = this.Last();
+
+                if (prev_cmd.StartTime<=command.StartTime&&command.EndTime<=prev_cmd.StartTime)
+                {
+                    overlay=true;
+                    Log.Debug($"CommandTimeline exist overlay command :\"{prev_cmd}\" is overlay with \"{command}\"");
+                }
+            }
+
             base.Add(command);
 
             //update StartTime/EndTime
             StartTime=Math.Min(StartTime, command.StartTime);
-            EndTime=Math.Max(EndTime, command.StartTime);
+            EndTime=Math.Max(EndTime, command.EndTime);
         }
 
         private Command selected_command;

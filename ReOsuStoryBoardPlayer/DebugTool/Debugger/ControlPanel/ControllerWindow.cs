@@ -34,7 +34,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 
         public void UpdateInfo()
         {
-            label2.Text = CurrentStoryboardIntance.Info.folder_path;
+            label2.Text = StoryboardInstanceManager.ActivityInstance.Info.folder_path;
             progressBar1.Value = (int)Math.Min(MusicPlayerManager.ActivityPlayer.CurrentTime*1.0f/MusicPlayerManager.ActivityPlayer.Length*progressBar1.Maximum, progressBar1.Maximum);
             label1.Text = MusicPlayerManager.ActivityPlayer.PlaybackSpeed + "x";
             label3.Text = $"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
