@@ -150,7 +150,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             Vector3 v3 = Vector3.Cross(points[2], points[3]).Normalized();
             Vector3 v4 = Vector3.Cross(points[3], points[0]).Normalized();
 
-            if (Vector3.Dot(v1, v2)>0.99999f&&Vector3.Dot(v2, v3)>0.9999f&&
+            if (Vector3.Dot(v1, v2)>0.9999f&&Vector3.Dot(v2, v3)>0.9999f&&
                 Vector3.Dot(v3, v4)>0.9999f&&Vector3.Dot(v4, v1)>0.9999f)
                 return true;
             return false;
