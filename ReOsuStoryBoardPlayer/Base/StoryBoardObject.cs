@@ -31,7 +31,7 @@ namespace ReOsuStoryBoardPlayer
 
         public float Rotate = 0;
 
-        public HalfVector Anchor = new HalfVector(0.5f, 0.5f);
+        public HalfVector Anchor = new HalfVector(0f, 0f);
 
         public bool IsAdditive = false, IsHorizonFlip = false, IsVerticalFlip = false;
 

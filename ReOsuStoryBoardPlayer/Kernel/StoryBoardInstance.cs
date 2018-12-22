@@ -65,8 +65,8 @@ namespace ReOsuStoryBoardPlayer.Kernel
                 var background_obj = temp_objs_list.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
                 if (temp_objs_list.Any(c => c.ImageFilePath==background_obj?.ImageFilePath&&(!(c is StoryboardBackgroundObject))))
                 {
-                    Log.User($"Found another same background image object and delete background object.");
-                    temp_objs_list.Remove(background_obj);
+                    Log.User($"Found another same background image object and delete all background objects.");
+                    temp_objs_list.RemoveAll(x=>x is StoryboardBackgroundObject);
                 }
                 else
                 {
