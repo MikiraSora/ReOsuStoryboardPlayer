@@ -96,9 +96,7 @@
     <Compile Include="Base\Anchor.cs" />
     <Compile Include="Base\LoopType.cs" />
     <Compile Include="Base\Easing.cs" />
-    <Compile Include="Base\EasingInterpolator.cs" />
     <Compile Include="Base\Event.cs" />
-    <Compile Include="Base\IInterpolator.cs" />
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
     <Compile Include="Base\StoryboardBackgroundObject.cs" />
