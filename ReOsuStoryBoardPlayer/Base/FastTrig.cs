@@ -13,7 +13,7 @@ namespace ReOsuStoryBoardPlayer.Base
         // 512 (perfect NT page size) = 93ms.
         // 16384 = 90ms.
         // This contradicted what I just said - so I will leave it at 16384.
-        private const int MaxCircleAngle = 16384;
+        private const int MaxCircleAngle = 8192;
         private const int MaxCircleArrayLength = MaxCircleAngle - 1;
 
         private const int HalfMaxCircleAngle = MaxCircleAngle / 2;
