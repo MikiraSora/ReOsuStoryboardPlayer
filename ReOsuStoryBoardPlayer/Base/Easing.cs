@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReOsuStoryBoardPlayer.Base;
 using static System.Math;
 
 namespace ReOsuStoryBoardPlayer
@@ -160,13 +161,13 @@ namespace ReOsuStoryBoardPlayer
                     return change / 2 * ((time -= 2) * time * time * time * time + 2) + initial;
 
                 case EasingTypes.InSine:
-                    return -change * Math.Cos(time / duration * (PI / 2)) + change + initial;
+                    return -change * FastTrig.Cos(time / duration * (PI / 2)) + change + initial;
 
                 case EasingTypes.OutSine:
-                    return change * Math.Sin(time / duration * (PI / 2)) + initial;
+                    return change * FastTrig.Sin(time / duration * (PI / 2)) + initial;
 
                 case EasingTypes.InOutSine:
-                    return -change / 2 * (Math.Cos(PI * time / duration) - 1) + initial;
+                    return -change / 2 * (FastTrig.Cos(PI * time / duration) - 1) + initial;
 
                 case EasingTypes.InExpo:
                     return change * Math.Pow(2, 10 * (time / duration - 1)) + initial;
@@ -197,7 +198,7 @@ namespace ReOsuStoryBoardPlayer
                         var s = 1.70158;
                         if (a < Math.Abs(change)) { a = change; s = p / 4; }
                         else s = p / (2 * Math.PI) * Math.Asin(change / a);
-                        return -(a * Math.Pow(2, 10 * (time -= 1)) * Math.Sin((time * duration - s) * (2 * PI) / p)) + initial;
+                        return -(a * Math.Pow(2, 10 * (time -= 1)) * FastTrig.Sin((time * duration - s) * (2 * PI) / p)) + initial;
                     }
                 case EasingTypes.OutElastic:
                     {
@@ -208,7 +209,7 @@ namespace ReOsuStoryBoardPlayer
                         var s = 1.70158;
                         if (a < Math.Abs(change)) { a = change; s = p / 4; }
                         else s = p / (2 * PI) * Math.Asin(change / a);
-                        return a * Math.Pow(2, -10 * time) * Math.Sin((time * duration - s) * (2 * PI) / p) + change + initial;
+                        return a * Math.Pow(2, -10 * time) * FastTrig.Sin((time * duration - s) * (2 * PI) / p) + change + initial;
                     }
                 case EasingTypes.OutElasticHalf:
                     {
@@ -219,7 +220,7 @@ namespace ReOsuStoryBoardPlayer
                         var s = 1.70158;
                         if (a < Math.Abs(change)) { a = change; s = p / 4; }
                         else s = p / (2 * PI) * Math.Asin(change / a);
-                        return a * Math.Pow(2, -10 * time) * Math.Sin((0.5f * time * duration - s) * (2 * PI) / p) + change + initial;
+                        return a * Math.Pow(2, -10 * time) * FastTrig.Sin((0.5f * time * duration - s) * (2 * PI) / p) + change + initial;
                     }
                 case EasingTypes.OutElasticQuarter:
                     {
@@ -230,7 +231,7 @@ namespace ReOsuStoryBoardPlayer
                         var s = 1.70158;
                         if (a < Math.Abs(change)) { a = change; s = p / 4; }
                         else s = p / (2 * PI) * Math.Asin(change / a);
-                        return a * Math.Pow(2, -10 * time) * Math.Sin((0.25f * time * duration - s) * (2 * PI) / p) + change + initial;
+                        return a * Math.Pow(2, -10 * time) * FastTrig.Sin((0.25f * time * duration - s) * (2 * PI) / p) + change + initial;
                     }
                 case EasingTypes.InOutElastic:
                     {
@@ -241,8 +242,8 @@ namespace ReOsuStoryBoardPlayer
                         var s = 1.70158;
                         if (a < Math.Abs(change)) { a = change; s = p / 4; }
                         else s = p / (2 * PI) * Math.Asin(change / a);
-                        if (time < 1) return -.5 * (a * Math.Pow(2, 10 * (time -= 1)) * Math.Sin((time * duration - s) * (2 * PI) / p)) + initial;
-                        return a * Math.Pow(2, -10 * (time -= 1)) * Math.Sin((time * duration - s) * (2 * PI) / p) * .5 + change + initial;
+                        if (time < 1) return -.5 * (a * Math.Pow(2, 10 * (time -= 1)) * FastTrig.Sin((time * duration - s) * (2 * PI) / p)) + initial;
+                        return a * Math.Pow(2, -10 * (time -= 1)) * FastTrig.Sin((time * duration - s) * (2 * PI) / p) * .5 + change + initial;
                     }
                 case EasingTypes.InBack:
                     {

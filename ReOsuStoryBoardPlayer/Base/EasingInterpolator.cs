@@ -1,4 +1,5 @@
 ﻿using System;
+using ReOsuStoryBoardPlayer.Base;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -287,7 +288,7 @@ namespace ReOsuStoryBoardPlayer
         /// <returns>The correct value.</returns>
         public static float SineEaseOut(float t, float b, float c, float d)
         {
-            return c * (float)Math.Sin(t / d * ((float)Math.PI / 2)) + b;
+            return c * (float)FastTrig.Sin(t / d * ((float)Math.PI / 2)) + b;
         }
 
         /// <summary>
@@ -301,7 +302,7 @@ namespace ReOsuStoryBoardPlayer
         /// <returns>The correct value.</returns>
         public static float SineEaseIn(float t, float b, float c, float d)
         {
-            return -c * (float)Math.Cos(t / d * ((float)Math.PI / 2)) + c + b;
+            return -c * (float)FastTrig.Cos(t / d * ((float)Math.PI / 2)) + c + b;
         }
 
         /// <summary>
@@ -316,9 +317,9 @@ namespace ReOsuStoryBoardPlayer
         public static float SineEaseInOut(float t, float b, float c, float d)
         {
             if ((t /= d / 2) < 1)
-                return c / 2 * ((float)Math.Sin((float)Math.PI * t / 2)) + b;
+                return c / 2 * ((float)FastTrig.Sin((float)Math.PI * t / 2)) + b;
 
-            return -c / 2 * ((float)Math.Cos((float)Math.PI * --t / 2) - 2) + b;
+            return -c / 2 * ((float)FastTrig.Cos((float)Math.PI * --t / 2) - 2) + b;
         }
 
         /// <summary>
@@ -555,7 +556,7 @@ namespace ReOsuStoryBoardPlayer
             float p = d * 0.3f;
             float s = p / 4;
 
-            return (c * (float)Math.Pow(2, -10 * t) * (float)Math.Sin((t * d - s) * (2 * (float)Math.PI) / p) + c + b);
+            return (c * (float)Math.Pow(2, -10 * t) * (float)FastTrig.Sin((t * d - s) * (2 * (float)Math.PI) / p) + c + b);
         }
 
         /// <summary>
@@ -575,7 +576,7 @@ namespace ReOsuStoryBoardPlayer
             float p = d * 0.3f;
             float s = p / 4;
 
-            return -(c * (float)Math.Pow(2, 10 * (t -= 1)) * (float)Math.Sin((t * d - s) * (2 * (float)Math.PI) / p)) + b;
+            return -(c * (float)Math.Pow(2, 10 * (t -= 1)) * (float)FastTrig.Sin((t * d - s) * (2 * (float)Math.PI) / p)) + b;
         }
 
         /// <summary>
@@ -596,8 +597,8 @@ namespace ReOsuStoryBoardPlayer
             float s = p / 4;
 
             if (t < 1)
-                return -0.5f * (c * (float)Math.Pow(2, 10 * (t -= 1)) * (float)Math.Sin((t * d - s) * (2 * (float)Math.PI) / p)) + b;
-            return c * (float)Math.Pow(2, -10 * (t -= 1)) * (float)Math.Sin((t * d - s) * (2 * (float)Math.PI) / p) * 0.5f + c + b;
+                return -0.5f * (c * (float)Math.Pow(2, 10 * (t -= 1)) * (float)FastTrig.Sin((t * d - s) * (2 * (float)Math.PI) / p)) + b;
+            return c * (float)Math.Pow(2, -10 * (t -= 1)) * (float)FastTrig.Sin((t * d - s) * (2 * (float)Math.PI) / p) * 0.5f + c + b;
         }
 
         /// <summary>
@@ -622,7 +623,7 @@ namespace ReOsuStoryBoardPlayer
 
             var p = d * .3;
             var s = p / (2 * Math.PI) * Math.Asin(1);
-            return (float)(Math.Pow(2, -10 * t) * Math.Sin((0.5f * t * d - s) * (2 * Math.PI) / p) + 1);
+            return (float)(Math.Pow(2, -10 * t) * FastTrig.Sin((0.5f * t * d - s) * (2 * Math.PI) / p) + 1);
         }
 
         public static float ElasticEaseQuarterOut(float t, float b, float c, float d)
@@ -631,7 +632,7 @@ namespace ReOsuStoryBoardPlayer
 
             var p = d * .3;
             var s = p / (2 * Math.PI) * Math.Asin(1);
-            return (float)(Math.Pow(2, -10 * t) * Math.Sin((0.25f * t * d - s) * (2 * Math.PI) / p) + 1);
+            return (float)(Math.Pow(2, -10 * t) * FastTrig.Sin((0.25f * t * d - s) * (2 * Math.PI) / p) + 1);
         }
 
         #endregion Elastic
