@@ -100,12 +100,11 @@ namespace ReOsuStoryBoardPlayer
                 -0.5f, -0.5f,
         };
 
-        //原[0,1]，减去0.5f，现[-0.5f,0.5f]，Shader中加回去，方便翻转
         private static float[] _cacheBaseTexPos = new float[] {
-                 -0.5f,0.5f,
-                  0.5f,0.5f,
-                  0.5f,-0.5f,
-                 -0.5f,-0.5f
+            0,0,
+            1,0,
+            1,1,
+            0,1
         };
 
         private void _InitVertexBase(int vao)
@@ -209,8 +208,8 @@ namespace ReOsuStoryBoardPlayer
             model.Row0.Y = -sina * scalex;
             model.Row1.X = sina * scaley;
             model.Row1.Y = cosa * scaley;
-            model.Row2.X = position.x;
-            model.Row2.Y = position.y;
+            model.Row2.X = position.x - StoryboardWindow.SB_WIDTH / 2f;
+            model.Row2.Y = -position.y + StoryboardWindow.SB_HEIGHT / 2f;
 
             unsafe
             {

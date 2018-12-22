@@ -92,10 +92,7 @@ namespace ReOsuStoryBoardPlayer
             //裁剪View
             float radio = (float)Width / (float)Height;
 
-            var projection  = Matrix4.CreateTranslation(-SB_WIDTH / 2.0f, SB_HEIGHT / 2.0f, 0);
-            projection.Row1.Y = -1;
-            projection *= Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, -1, 1);
-            ProjectionMatrix = projection;
+            ProjectionMatrix =  Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, -1, 1);
             CameraViewMatrix = Matrix4.Identity;
         }
         
