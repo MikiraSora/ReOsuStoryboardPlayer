@@ -48,16 +48,16 @@ namespace ReOsuStoryBoardPlayer.Kernel
             using (StopwatchRun.Count("Load and Parse osb/osu file"))
             {
                 List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs = new List<StoryBoardObject>();
-
-                //get objs from osu file
-                List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(info.osu_file_path);
-                AdjustZ(parse_osu_storyboard_objs, 0);
-
+                
                 if ((!string.IsNullOrWhiteSpace(info.osb_file_path))&&File.Exists(info.osb_file_path))
                 {
                     parse_osb_storyboard_objs=StoryboardParserHelper.GetStoryBoardObjects(info.osb_file_path);
-                    AdjustZ(parse_osb_storyboard_objs, parse_osu_storyboard_objs?.Count()??0);
+                    AdjustZ(parse_osb_storyboard_objs, 0);
                 }
+
+                //get objs from osu file
+                List<StoryBoardObject> parse_osu_storyboard_objs = StoryboardParserHelper.GetStoryBoardObjects(info.osu_file_path);
+                AdjustZ(parse_osu_storyboard_objs, parse_osb_storyboard_objs?.Count()??0);
 
 
                 temp_objs_list=CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
