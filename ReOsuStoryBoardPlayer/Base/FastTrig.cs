@@ -14,6 +14,7 @@ namespace ReOsuStoryBoardPlayer.Base
         // 16384 = 90ms.
         // This contradicted what I just said - so I will leave it at 16384.
         private const int MaxCircleAngle = 16384;
+        private const int MaxCircleArrayLength = MaxCircleAngle - 1;
 
         private const int HalfMaxCircleAngle = MaxCircleAngle / 2;
         private const int QuarterMaxCircleAngle = MaxCircleAngle / 4;
@@ -52,7 +53,7 @@ namespace ReOsuStoryBoardPlayer.Base
             var i = (int)(radians * HalfMaxCircleOverPiSingle);
             if (i < 0)
             {
-                return _singleLookup[MaxCircleAngle - ((-i) & MaskMaxCircleAngle)];
+                return _singleLookup[MaxCircleArrayLength - ((-i) & MaskMaxCircleAngle)];
             }
             else
             {
@@ -78,7 +79,7 @@ namespace ReOsuStoryBoardPlayer.Base
             var i = (int)(radians * HalfMaxCircleOverPiDouble);
             if (i < 0)
             {
-                return _doubleLookup[QuarterMaxCircleAngle - ((-i) & MaskMaxCircleAngle)];
+                return _doubleLookup[MaxCircleArrayLength - ((-i) & MaskMaxCircleAngle)];
             }
             else
             {
