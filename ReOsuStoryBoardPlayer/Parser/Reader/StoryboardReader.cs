@@ -125,15 +125,17 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         private readonly static Dictionary<Anchor, HalfVector> AnchorVectorMap = new Dictionary<Anchor, HalfVector>()
         {
-            {Anchor.TopLeft,new HalfVector(-0.5f,0.5f)},
-            {Anchor.TopCentre,new HalfVector(0.0f, 0.5f)},
-            {Anchor.TopRight,new HalfVector(0.5f, 0.5f)},
-            {Anchor.CentreLeft,new HalfVector(-0.5f, 0.0f)},
-            {Anchor.Centre,new HalfVector(0.0f, 0.0f)},
-            {Anchor.CentreRight,new HalfVector(0.5f, 0.0f)},
-            {Anchor.BottomLeft,new HalfVector(-0.5f, -0.5f)},
-            {Anchor.BottomCentre,new HalfVector(0.0f, -0.5f)},
-            {Anchor.BottomRight,new HalfVector(0.5f, -0.5f)}
+            {Anchor.TopLeft     ,new HalfVector(-0.5f, 0.5f)},
+            {Anchor.TopCentre   ,new HalfVector( 0.0f, 0.5f)},
+            {Anchor.TopRight    ,new HalfVector( 0.5f, 0.5f)},
+
+            {Anchor.CentreLeft  ,new HalfVector(-0.5f, 0.0f)},
+            {Anchor.Centre      ,new HalfVector( 0.0f, 0.0f)},
+            {Anchor.CentreRight ,new HalfVector( 0.5f, 0.0f)},
+
+            {Anchor.BottomLeft  ,new HalfVector(-0.5f,-0.5f)},
+            {Anchor.BottomCentre,new HalfVector( 0.0f,-0.5f)},
+            {Anchor.BottomRight ,new HalfVector( 0.5f,-0.5f)}
         };
 
         public static HalfVector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
