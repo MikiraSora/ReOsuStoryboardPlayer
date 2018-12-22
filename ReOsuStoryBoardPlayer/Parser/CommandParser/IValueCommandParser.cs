@@ -16,18 +16,12 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
         {
             CMD command = new CMD();
 
-            Easing easingID = (Easing)data_arr.ElementAt(1).ToInt();
-
-            if (!EasingConverter.CacheEasingInterpolatorMap.ContainsKey(easingID))
-            {
-                Log.Warn($"Cant found the easing = {easingID.ToString()} , will be set Linear");
-                command.Easing=EasingConverter.DefaultInterpolator;
-            }
-            else
-                command.Easing=EasingConverter.CacheEasingInterpolatorMap[easingID];
-
+            command.Easing = (EasingTypes)data_arr.ElementAt(1).ToInt();
+            
+            /*
             if (Setting.FunReverseEasing)
                 command.Easing=(EasingInterpolator)command.Easing.reverse();
+                */
 
             command.StartTime=StartTime;
             command.EndTime=EndTime;

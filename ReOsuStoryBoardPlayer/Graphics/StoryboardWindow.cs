@@ -114,7 +114,7 @@ namespace ReOsuStoryBoardPlayer
                             var scale = SB_HEIGHT/background.RenderGroup.Texture.Height;
                             background.AddCommand(new ScaleCommand()
                             {
-                                Easing=EasingConverter.CacheEasingInterpolatorMap[Easing.Linear],
+                                Easing=/*EasingConverter.CacheEasingInterpolatorMap[Easing.Linear]*/EasingTypes.None,
                                 StartTime=-2857,
                                 EndTime=-2857,
                                 StartValue=scale,

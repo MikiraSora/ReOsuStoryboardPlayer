@@ -99,8 +99,6 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 //For background object
                 obj.ImageFilePath = data_arr[2].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
-                obj.Z = -1;
-
                 var position = data_arr.Length > 4 ? new Vector(data_arr[3].ToSigle(), data_arr[4].ToSigle()) : Vector.Zero;
 
                 if (position != Vector.One)

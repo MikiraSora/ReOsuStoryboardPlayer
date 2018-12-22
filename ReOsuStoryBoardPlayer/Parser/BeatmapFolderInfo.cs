@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Parser.Reader;
+﻿using ReOsuStoryBoardPlayer.Parser.Extension;
+using ReOsuStoryBoardPlayer.Parser.Reader;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using System;
 using System.Collections.Generic;
@@ -32,8 +33,33 @@ namespace ReOsuStoryBoardPlayer.Parser
 
             BeatmapFolderInfo info = new BeatmapFolderInfo();
 
-            info.osu_file_path= TryGetAnyFile(".osu");
-            info.osb_file_path= TryGetAnyFile(".osb");
+            var osu_files = TryGetAnyFiles(".osu");
+
+            //优先先选std铺面的.一些图其他模式谱面会有阻挡 53925 fripSide - Hesitation Snow
+            var osu_file = osu_files.FirstOrDefault(x=> {
+                var lines = File.ReadAllLines(x);
+
+                foreach (var line in lines)
+                {
+                    if (line.StartsWith("Mode"))
+                    {
+                        try
+                        {
+                            var mode = line.Split(':').Last().ToInt();
+
+                            if (mode==0)
+                                return true;
+                        }
+                        catch{}
+                    }
+                }
+
+                return false;
+            });
+
+            info.osu_file_path = osu_file==null ? osu_files.FirstOrDefault() : osu_file;
+
+            info.osb_file_path= TryGetAnyFiles(".osb").FirstOrDefault();
 
             info.folder_path=folder_path;
 
@@ -61,9 +87,9 @@ namespace ReOsuStoryBoardPlayer.Parser
                 return (!string.IsNullOrWhiteSpace(file_path))&&File.Exists(file_path);
             }
 
-            string TryGetAnyFile(string extend_name)
+            IEnumerable<string> TryGetAnyFiles(string extend_name)
             {
-                return Directory.EnumerateFiles(folder_path, "*"+extend_name, SearchOption.AllDirectories).FirstOrDefault();
+                return Directory.EnumerateFiles(folder_path, "*"+extend_name, SearchOption.AllDirectories);
             }
         }
     }

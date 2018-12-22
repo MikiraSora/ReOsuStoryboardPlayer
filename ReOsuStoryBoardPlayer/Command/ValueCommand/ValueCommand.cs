@@ -2,7 +2,7 @@
 {
     public abstract class ValueCommand : Command
     {
-        public EasingInterpolator Easing { get; set; }
+        public EasingTypes Easing { get; set; }
     }
 
     public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
@@ -22,7 +22,7 @@
             else if (time >= EndTime)
                 return 1;
             else
-                return Easing.calculate(time - StartTime, StartTime, EndTime);
+                return (float)OsuEasingInterpolator.ApplyEasing(Easing,time-StartTime,0,1,EndTime-StartTime);
         }
 
         public override void Execute(StoryBoardObject @object, float time)

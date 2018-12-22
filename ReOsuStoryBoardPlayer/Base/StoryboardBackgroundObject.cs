@@ -6,9 +6,11 @@ namespace ReOsuStoryBoardPlayer.Base
     {
         public StoryboardBackgroundObject()
         {
+            Z=int.MaxValue;
+
             AddCommand(new FadeCommand()
             {
-                Easing = EasingConverter.GetEasingInterpolator(Easing.Linear),
+                Easing = /*EasingConverter.GetEasingInterpolator(Easing.Linear)*/EasingTypes.None,
                 StartTime = -2857,
                 EndTime = -2857,
                 StartValue = 1,
@@ -17,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Base
 
             AddCommand(new FadeCommand()
             {
-                Easing = EasingConverter.GetEasingInterpolator(Easing.Linear),
+                Easing = /*EasingConverter.GetEasingInterpolator(Easing.Linear)*/EasingTypes.None,
                 StartTime = int.MaxValue - 2857,
                 EndTime = int.MaxValue - 2857,
                 StartValue = 1,
