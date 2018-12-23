@@ -181,7 +181,7 @@ namespace ReOsuStoryBoardPlayer.Kernel
                 });
             }
 
-            if (UpdatingStoryboardObjects.Count>=Setting.ParallelUpdateObjectsLimitCount)
+            if (UpdatingStoryboardObjects.Count>=Setting.ParallelUpdateObjectsLimitCount&&Setting.ParallelUpdateObjectsLimitCount!=0)
             {
                 Parallel.ForEach(UpdatingStoryboardObjects,
                     new ParallelOptions(){MaxDegreeOfParallelism = Setting.UpdateThreadCount} , 
