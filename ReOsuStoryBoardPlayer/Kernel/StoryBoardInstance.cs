@@ -35,6 +35,8 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
         public BeatmapFolderInfo Info { get; }
 
+        private ParallelOptions parallel_options = new ParallelOptions() { MaxDegreeOfParallelism=Setting.UpdateThreadCount };
+
         public StoryBoardInstance(BeatmapFolderInfo info)
         {
             Info=info;
@@ -183,9 +185,7 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
             if (UpdatingStoryboardObjects.Count>=Setting.ParallelUpdateObjectsLimitCount&&Setting.ParallelUpdateObjectsLimitCount!=0)
             {
-                Parallel.ForEach(UpdatingStoryboardObjects,
-                    new ParallelOptions(){MaxDegreeOfParallelism = Setting.UpdateThreadCount} , 
-                    obj => obj.Update(current_time));
+                Parallel.ForEach(UpdatingStoryboardObjects, parallel_options,obj => obj.Update(current_time));
             }
             else
             {

@@ -113,7 +113,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void UpdateObjectFrameTime()
         {
-            var commands = CommandMap.Where(v => !SkipEvent.Contains(v.Key)).SelectMany(l => l.Value);
+            var commands = CommandMap.SelectMany(l => l.Value);
 
             if (commands.Count() == 0)
                 return;
@@ -121,14 +121,6 @@ namespace ReOsuStoryBoardPlayer
             FrameStartTime = commands.Where(p => !(p is GroupCommand)).Min(p => p.StartTime);
             FrameEndTime = commands.Where(p => !(p is GroupCommand)).Max(p => p.EndTime);
         }
-
-        private readonly static Event[] SkipEvent = new[]
-        {
-            Event.Parameter,
-            Event.HorizonFlip,
-            Event.AdditiveBlend,
-            Event.VerticalFlip
-        };
 
         public long FileLine { get; set; }
 
