@@ -24,7 +24,8 @@ namespace ReOsuStoryBoardPlayer
             ParseProgramCommands(argv, out var beatmap_folder);
 
             Setting.PrintSettings();
-            
+
+            //init control panel and debuggers
             if (Setting.MiniMode)
             {
                 DebuggerManager.AddDebugger(new CLIControllerDebugger());
@@ -52,13 +53,6 @@ namespace ReOsuStoryBoardPlayer
             //init window
             StoryboardWindow window = new StoryboardWindow(Setting.Width, Setting.Height);
             window.LoadStoryboardInstance(instance);
-            //init control panel and debuggers
-
-            #region CLI Control
-
-            //Log.AbleDebugLog = false;
-
-            #endregion
 
             player.Play();
             window.Run();
@@ -104,6 +98,9 @@ namespace ReOsuStoryBoardPlayer
                     Setting.MaxFPS = max_fps.ToInt();
 
                 Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
+                Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
+                Setting.EnableFullScreen=args.Switches.Any(k => k=="full_screen");
+                Setting.EnableBorderless=args.Switches.Any(k => k=="borderless");
                 Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
@@ -164,15 +161,21 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion
 
-        private static void Exit(string reason)
+        //程序退出
+        public static void Exit(string error_reason="")
         {
-            if ((!Setting.MiniMode)&&(!string.IsNullOrWhiteSpace(reason)))
+            DebuggerManager.Close();
+            StoryboardWindow.CurrentWindow?.Close();
+
+            if ((!Setting.MiniMode)&&(!string.IsNullOrWhiteSpace(error_reason)))
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(reason);
+                Console.WriteLine(error_reason);
                 Console.ResetColor();
                 Console.ReadKey();
+
+                Environment.Exit(2857);//2q1
             }
 
             Environment.Exit(0);

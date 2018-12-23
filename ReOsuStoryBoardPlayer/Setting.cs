@@ -32,6 +32,10 @@ namespace ReOsuStoryBoardPlayer
 
         public static bool FunReverseEasing { get; set; } = false;
 
+        public static bool EnableBorderless { get; set; } = false;
+
+        public static bool EnableFullScreen { get; set; } = false;
+
         public static int Width { get; set; } = 854;
         public static int Height { get; set; } = 480;
 

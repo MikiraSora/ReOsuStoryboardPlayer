@@ -26,14 +26,19 @@ namespace ReOsuStoryBoardPlayer
 
         public static StoryboardWindow CurrentWindow { get; set; }
 
-        private StoryBoardInstance instance;
-        public StoryBoardInstance StoryBoardInstance => instance;
+        public StoryBoardInstance StoryBoardInstance { get; private set; }
 
         private bool ready = false;
 
         private List<SpriteInstanceGroup> register_sprites = new List<SpriteInstanceGroup>();
 
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
+
+        private int WindowedWidth, WindowedHeight;
+
+        public bool IsFullScreen => WindowState==WindowState.Fullscreen;
+
+        public bool IsBorderless => WindowBorder==WindowBorder.Hidden;
 
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
@@ -49,7 +54,9 @@ namespace ReOsuStoryBoardPlayer
             VSync = VSyncMode.Off;
             Log.Init();
             CurrentWindow = this;
-            WindowBorder = WindowBorder.Hidden;
+
+            ApplyBorderless(Setting.EnableBorderless);
+            SwitchFullscreen(Setting.EnableFullScreen);
         }
 
         protected override void OnResize(EventArgs e)
@@ -66,11 +73,22 @@ namespace ReOsuStoryBoardPlayer
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
-        private int WindowedWidth, WindowedHeight;
+        public void ApplyBorderless(bool is_borderless)
+        {
+            WindowBorder=is_borderless ? WindowBorder.Hidden : WindowBorder.Fixed;
+        }
+
+        public void SwitchFullscreen(bool fullscreen)
+        {
+            if (fullscreen==IsFullScreen)
+                return;
+
+            SwitchFullscreen();
+        }
 
         public void SwitchFullscreen()
         {
-            if (WindowState != WindowState.Fullscreen)
+            if (!IsFullScreen)
             {
                 WindowedWidth = Width;
                 WindowedHeight = Height;
@@ -91,7 +109,7 @@ namespace ReOsuStoryBoardPlayer
         public void ApplyWindowRenderSize()
         {
             //裁剪View
-            float radio = (float)Width / (float)Height;
+            float radio = (float)Width / Height;
 
             ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, -1, 1);
             CameraViewMatrix = Matrix4.Identity;
@@ -185,10 +203,10 @@ namespace ReOsuStoryBoardPlayer
         {
             ready=false;
 
-            if (this.instance!=null)
+            if (this.StoryBoardInstance!=null)
                 Clean();
 
-            this.instance=instance;
+            this.StoryBoardInstance=instance;
             StoryboardInstanceManager.ApplyInstance(instance);
 
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
@@ -211,7 +229,7 @@ namespace ReOsuStoryBoardPlayer
 
             register_sprites.Clear();
 
-            foreach (var obj in instance?.StoryboardObjectList)
+            foreach (var obj in StoryBoardInstance?.StoryboardObjectList)
                 obj.RenderGroup=null;
         }
 
@@ -271,7 +289,7 @@ namespace ReOsuStoryBoardPlayer
             if (!ready)
                 return;
 
-            instance.Update((float)time);
+            StoryBoardInstance.Update((float)time);
             DebuggerManager.FrameUpdate();
 
             _update_stopwatch.Stop();
@@ -354,10 +372,10 @@ namespace ReOsuStoryBoardPlayer
 
         private void PostDrawStoryBoard()
         {
-            if (instance.UpdatingStoryboardObjects.Count==0)
+            if (StoryBoardInstance.UpdatingStoryboardObjects.Count==0)
                 return;
 
-            DrawStoryBoardObjects(instance.UpdatingStoryboardObjects);
+            DrawStoryBoardObjects(StoryBoardInstance.UpdatingStoryboardObjects);
 
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
@@ -410,29 +428,36 @@ namespace ReOsuStoryBoardPlayer
                 case Key.F:
                     SwitchFullscreen();
                     break;
+
+                case Key.B:
+                    ApplyBorderless(!IsBorderless);
+                    break;
+
+                case Key.Escape:
+                    MainProgram.Exit();
+                    break;
             }
         }
 
         private int downX, downY;
         private bool mouseDown = false;
 
-        protected override void OnFocusedChanged(EventArgs e)
-        {
-            
-        }
-
 #if DEBUG
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            DebuggerManager.TrigClick(e.X, e.Y, 
-                e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
 
+            //如果是无边窗就当作拖曳窗口操作
             if (WindowBorder == WindowBorder.Hidden)
             {
                 downX = e.X;
                 downY = e.Y;
             }
+            else
+            {
+                DebuggerManager.TrigClick(e.X, e.Y,e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
+            }
+
             mouseDown = true;
         }
 
@@ -445,11 +470,15 @@ namespace ReOsuStoryBoardPlayer
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
-            DebuggerManager.TrigMove(e.X, e.Y);
+
             if (mouseDown&&WindowBorder == WindowBorder.Hidden)
             {
                 Location = new Point(e.X+Location.X-downX,e.Y+Location.Y-downY);
                 //Log.User($"X: ${e.X} Y:${e.Y}");
+            }
+            else
+            {
+                DebuggerManager.TrigMove(e.X, e.Y);
             }
         }
 #endif
