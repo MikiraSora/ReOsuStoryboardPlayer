@@ -18,6 +18,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
     {
         Thread thread;
         CommandParser parser = new CommandParser(new ParamParserV2('-', '\"', '\''));
+        private static char[] size_split = new[] { 'x', '*' };
 
         public override void Init()
         {
@@ -44,7 +45,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
                 if (string.IsNullOrWhiteSpace(command))
                     return;
 
-                var cmd = parser.Parse(command, out var cmdName);
+                var cmd = parser.Parse(command, out var cmdName)
+                    ??new Parameters();//default empty
 
                 switch (cmdName)
                 {
@@ -80,8 +82,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
                         throw new NotImplementedException();
                     case "window_resize":
                         var rstr = cmd.FreeArgs.FirstOrDefault();
-                        if (rstr==null||!rstr.Contains("x")) break;
-                        var d = rstr.Split('x');
+                        if (rstr==null||!rstr.Any(x=> size_split.Contains(x))) break;
+                        var d = rstr.Split(size_split);
                         var nw = d[0].ToInt();
                         var nh = d[1].ToInt();
                         StoryboardWindow.CurrentWindow.Width=nw;
@@ -92,6 +94,22 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
                         break;
                     case "playback_speed":
                         MusicPlayerManager.ActivityPlayer.PlaybackSpeed=cmd.FreeArgs.FirstOrDefault()?.ToSigle()??MusicPlayerManager.ActivityPlayer.PlaybackSpeed;
+                        break;
+                    case "fullscreen":
+                        var fsw = cmd.FreeArgs.FirstOrDefault()??string.Empty;
+                        var window = StoryboardWindow.CurrentWindow;
+                        if (string.IsNullOrWhiteSpace(fsw))
+                            window.SwitchFullscreen(!window.IsFullScreen);
+                        else
+                            window.SwitchFullscreen(bool.Parse(fsw));
+                        break;
+                    case "borderless":
+                        var bsw = cmd.FreeArgs.FirstOrDefault()??string.Empty;
+                        window = StoryboardWindow.CurrentWindow;
+                        if (string.IsNullOrWhiteSpace(bsw))
+                            window.ApplyBorderless(!window.IsBorderless);
+                        else
+                            window.ApplyBorderless(bool.Parse(bsw));
                         break;
                     default:
                         break;
