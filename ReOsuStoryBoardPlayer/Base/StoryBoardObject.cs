@@ -118,8 +118,8 @@ namespace ReOsuStoryBoardPlayer
             if (commands.Count() == 0)
                 return;
 
-            FrameStartTime = commands.Where(p => !(p is GroupCommand)).Min(p => p.StartTime);
-            FrameEndTime = commands.Where(p => !(p is GroupCommand)).Max(p => p.EndTime);
+            FrameStartTime = commands.Min(p => p.StartTime);
+            FrameEndTime = commands.Max(p => p.EndTime);
         }
 
         public long FileLine { get; set; }
