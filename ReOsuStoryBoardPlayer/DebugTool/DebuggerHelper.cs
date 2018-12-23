@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer;
 using System;
@@ -12,20 +13,26 @@ namespace ReOsuStoryBoardPlayer.DebugTool
 {
     public static class DebuggerHelper
     {
-        public static void SetupDebugEnvironment()
+        private static void SetupCommonEnvironment()
         {
             DebuggerManager.AddDebugger(new ControlPanelDebugger());
+            DebuggerManager.AddDebugger(new InputControllerDebugger());
+        }
+
+        public static void SetupDebugEnvironment()
+        {
+            Log.AbleDebugLog=true;
+
+            SetupCommonEnvironment();
+
             DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
             DebuggerManager.AddDebugger(new ObjectsSequenceViewerDebugger());
             DebuggerManager.AddDebugger(new CLIControllerDebugger());
-
-            Log.AbleDebugLog=true;
         }
 
         public static void SetupReleaseEnvironment()
         {
-            //提供个控制器
-            DebuggerManager.AddDebugger(new ControlPanelDebugger());
+            SetupCommonEnvironment();
         }
     }
 }

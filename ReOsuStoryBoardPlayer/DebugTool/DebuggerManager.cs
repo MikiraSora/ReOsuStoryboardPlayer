@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool
 
             debugger.Init();
             register_debuggers.Add(debugger);
+            Log.Debug($"Add debugger:{debugger.GetType().Name}");
         }
 
         public static void RemoveDebugger(DebuggerBase debugger)
@@ -83,7 +85,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool
 
         public static event Action<int,int,MouseInput> MouseClick;
         public static event Action<int, int> MouseMove;
-        public static event Action<ConsoleKey> KeyBoardPress;
+        public static event Action<Key> KeyboardPress;
         public static event Action BeforeRender;
         public static event Action AfterRender;
 
@@ -91,6 +93,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool
         internal static void TrigMove(int x, int y) => MouseMove?.Invoke(x, y);
         internal static void TrigBeforeRender() => BeforeRender?.Invoke();
         internal static void TrigAfterRender() => AfterRender?.Invoke();
+        internal static void TrigKeyPress(Key key) => KeyboardPress?.Invoke(key);
 
         #endregion
     }

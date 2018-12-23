@@ -22,6 +22,8 @@ namespace ReOsuStoryBoardPlayer
 {
     public class StoryboardWindow : GameWindow
     {
+        #region Field&Property
+
         private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
@@ -33,6 +35,17 @@ namespace ReOsuStoryBoardPlayer
         private List<SpriteInstanceGroup> register_sprites = new List<SpriteInstanceGroup>();
 
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
+        
+        private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
+
+        private double _timestamp = 0;
+        private Stopwatch _timestamp_stopwatch = new Stopwatch();
+
+        private const float THOUSANDTH = 1.0f/1000.0f;
+        private Stopwatch _title_update_stopwatch = new Stopwatch();
+        private Stopwatch _update_stopwatch = new Stopwatch();
+        private Stopwatch _render_stopwatch = new Stopwatch();
+        private double title_update_timer = 0;
 
         private int WindowedWidth, WindowedHeight;
 
@@ -43,8 +56,8 @@ namespace ReOsuStoryBoardPlayer
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
         public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
-
-        private ConcurrentQueue<Action> other_thread_action = new ConcurrentQueue<Action>();
+        
+        #endregion
 
         public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.Default)
@@ -233,11 +246,6 @@ namespace ReOsuStoryBoardPlayer
                 obj.RenderGroup=null;
         }
 
-        private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
-
-        private double _timestamp = 0;
-        private Stopwatch _timestamp_stopwatch = new Stopwatch();
-
         private double GetSyncTime()
         {
             var audioTime = MusicPlayerManager.ActivityPlayer.CurrentTime;
@@ -248,7 +256,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (MusicPlayerManager.ActivityPlayer.IsPlaying&&Setting.EnableTimestamp)
             {
-                double nextTime = _timestamp + step;
+                double nextTime = _timestamp+step;
 
                 double diffAbs = Math.Abs(nextTime-audioTime)*playbackRate;
                 if (diffAbs>SYNC_THRESHOLD_MIN*playbackRate)//不同步
@@ -270,12 +278,6 @@ namespace ReOsuStoryBoardPlayer
                 return _timestamp=MusicPlayerManager.ActivityPlayer.CurrentTime;
             }
         }
-
-        private const float THOUSANDTH = 1.0f / 1000.0f;
-        private Stopwatch _title_update_stopwatch = new Stopwatch();
-        private Stopwatch _update_stopwatch = new Stopwatch();
-        private Stopwatch _render_stopwatch = new Stopwatch();
-        private double title_update_timer = 0;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -421,23 +423,10 @@ namespace ReOsuStoryBoardPlayer
         }
 
         #endregion Storyboard Rendering
-        protected override void OnKeyDown(KeyboardKeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.F:
-                    SwitchFullscreen();
-                    break;
+        
+        #region Input Process
 
-                case Key.B:
-                    ApplyBorderless(!IsBorderless);
-                    break;
-
-                case Key.Escape:
-                    MainProgram.Exit();
-                    break;
-            }
-        }
+        protected override void OnKeyDown(KeyboardKeyEventArgs e) => DebuggerManager.TrigKeyPress(e.Key);
 
         private int downX, downY;
         private bool mouseDown = false;
@@ -482,5 +471,7 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 #endif
+
+        #endregion
     }
 }

@@ -112,6 +112,7 @@
     <Compile Include="Command\ValueCommand\ByteVec4ValueCommand.cs" />
     <Compile Include="Command\ValueCommand\VectorValueCommand.cs" />
     <Compile Include="DebugTool\DebuggerHelper.cs" />
+    <Compile Include="DebugTool\Debugger\InputController\InputControllerDebugger.cs" />
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerDebugger.cs" />
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.cs">
       <SubType>Form</SubType>
