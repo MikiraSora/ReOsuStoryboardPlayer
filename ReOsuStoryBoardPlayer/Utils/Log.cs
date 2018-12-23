@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace ReOsuStoryBoardPlayer
 {
     public static class Log
     {
         private static long _currentTime = 0;
-
-        private static bool _outPutWithColor = true;
-
 
         private static bool _ableLog = true;
 
@@ -23,8 +21,6 @@ namespace ReOsuStoryBoardPlayer
         }
         
         public static bool AbleDebugLog { get; set; } = false;
-
-        public static bool IsColorOutput { get { return _outPutWithColor; } set { _outPutWithColor = value; } }
 
         private static ConsoleColor[] colors =
         {
@@ -52,25 +48,27 @@ namespace ReOsuStoryBoardPlayer
         private static string _getTimeStr()
         {
             long timePass = Environment.TickCount - _currentTime;
-            long min = timePass / (60 * 1000), sec = (timePass - min * (60 * 1000)) / 1000, ms = timePass - min * 60000 - sec * 1000;
+            long min = timePass / (60 * 1000), 
+                sec = (timePass - min * (60 * 1000)) / 1000, 
+                ms = timePass - min * 60000 - sec * 1000;
 
             return string.Format("{0:D2}:{1:D2}.{2:D3}", min, sec, ms);
         }
 
-        private static string _buildLogMessage(string message, LogLevel level)
+        private static string _buildLogMessage(string caller,string message, LogLevel level)
         {
-            var stack = new StackTrace();
-            int logMethodPosition = /*stack.FrameCount-*/6;
-            var frame = stack.GetFrame(logMethodPosition);
-            string methodName;
+            if (AbleDebugLog)
+            {
+                var result = new StackTrace().GetFrames().LastOrDefault(x=>x.GetMethod().Name==caller);
 
-            if (frame != null)
-                methodName = $"{frame.GetMethod().DeclaringType}::{frame.GetMethod().Name}";
-            else
-                methodName = "<Unknown Method>";
+                if (result!=null)
+                {
+                    var method = result.GetMethod();
+                    return string.Format("[{0}]{2}.{1}():\n>>{3}\n", _getTimeStr(), $"{method.DeclaringType.Name}.{method.Name}", level.ToString(), message);
+                }
+            }
 
-            string outPut = string.Format("[{0}]{2}.{1}():\n>>{3}\n", _getTimeStr(), methodName, level.ToString(), message);
-            return outPut;
+            return string.Format("[{0}]{1}:{2}\n", _getTimeStr(), level.ToString(), message);
         }
 
         private static void _renderColor(ref string message, LogLevel level)
@@ -82,47 +80,41 @@ namespace ReOsuStoryBoardPlayer
             Console.ResetColor();
         }
 
-        private static void _log(string message, LogLevel level)
+        private static void _log(string caller, string message, LogLevel level)
         {
             if (!AbleLog)
                 return;
 
-            string output = _buildLogMessage(message, level);
+            string output = _buildLogMessage(caller, message, level);
 
-            if (_outPutWithColor)
-            {
-                _renderColor(ref output, level);
-                return;
-            }
-
-            Console.WriteLine(output);
+            _renderColor(ref output, level);
         }
 
-        public static void User(string message, params object[] paramsArr)
+        public static void User(string message, [CallerMemberName]string caller = "<Unknown Method>")
         {
-            _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.User);
+            _log(caller,message, LogLevel.User);
         }
 
-        public static void Warn(string message, params object[] paramsArr)
+        public static void Warn(string message, [CallerMemberName]string caller = "<Unknown Method>")
         {
-            _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.Warn);
+            _log(caller,message, LogLevel.Warn);
         }
 
-        public static void Error(string message, params object[] paramsArr)
+        public static void Error(string message, [CallerMemberName]string caller = "<Unknown Method>")
         {
-            _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.Error);
+            _log(caller,message, LogLevel.Error);
         }
 
-        public static void Debug(string message, params object[] paramsArr)
+        public static void Debug(string message,[CallerMemberName]string caller= "<Unknown Method>")
         {
             if (!AbleDebugLog)
                 return;
-            _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.Debug);
+            _log(caller,message, LogLevel.Debug);
         }
 
-        public static void Write(string message, params object[] paramsArr)
+        public static void Write(string message, [CallerMemberName]string caller = "<Unknown Method>")
         {
-            _log(paramsArr.Length != 0 ? string.Format(message, paramsArr) : message, LogLevel.None);
+            _log(caller,message, LogLevel.None);
         }
     }
 }
