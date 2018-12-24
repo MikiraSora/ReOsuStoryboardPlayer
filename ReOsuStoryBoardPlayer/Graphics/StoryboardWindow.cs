@@ -203,11 +203,6 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        public void PushDelegate(Action action)
-        {
-            ExecutorSync.PostTask(action);
-        }
-
         /// <summary>
         /// 将SB实例加载到Window上，后者将会自动调用instance.Update()并渲染
         /// </summary>

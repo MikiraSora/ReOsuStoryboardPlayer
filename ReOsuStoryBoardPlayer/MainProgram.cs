@@ -108,6 +108,12 @@ namespace ReOsuStoryBoardPlayer
                 Setting.EnableRuntimeOptimzeObjects=!args.Switches.Any(k => k=="disable_runtime_optimze");
                 Setting.EnableHighPrecisionFPSLimit = !args.Switches.Any(k => k == "disable_hp_fps_limit");
 
+                if (args.Switches.Any(k => k=="cli"))
+                {
+                    Setting.MiniMode=true;
+                    DebuggerManager.AddDebugger(new CLIControllerDebugger());
+                }
+
                 //额外功能
                 if (args.TryGetArg(out var parse_type, "parse"))
                 {

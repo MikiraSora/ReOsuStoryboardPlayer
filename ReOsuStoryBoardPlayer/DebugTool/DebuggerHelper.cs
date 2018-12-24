@@ -27,7 +27,6 @@ namespace ReOsuStoryBoardPlayer.DebugTool
 
             DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
             DebuggerManager.AddDebugger(new ObjectsSequenceViewerDebugger());
-            DebuggerManager.AddDebugger(new CLIControllerDebugger());
         }
 
         public static void SetupReleaseEnvironment()
