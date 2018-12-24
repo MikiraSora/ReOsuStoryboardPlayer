@@ -76,6 +76,11 @@ namespace ReOsuStoryBoardPlayer
             SwitchFullscreen(Setting.EnableFullScreen);
         }
 
+        private void AddDefaultPostProcesses()
+        {
+            _postProcessesManager.AddPostProcess(new ClipPostProcess());
+        }
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -135,6 +140,7 @@ namespace ReOsuStoryBoardPlayer
             CameraViewMatrix = Matrix4.Identity;
 
             _postProcessesManager = new PostProcessesManager(Width,Height);
+            AddDefaultPostProcesses();
         }
         
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
