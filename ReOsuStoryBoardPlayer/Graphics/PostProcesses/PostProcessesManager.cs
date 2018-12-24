@@ -24,8 +24,6 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
             {
                 _fbos[i] = new PostProcessFrameBuffer(w,h);
             }
-
-            AddPostProcess(new ClipPostProcess());
         }
 
         public void AddPostProcess(APostProcess postProcess)
