@@ -133,8 +133,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
                     foreach (var command_list in SelectObject.CommandMap)
                     {
-                        var cmd_root = root.Nodes.Add(command_list.Key.ToString());
-                        cmd_root.ForeColor = Color.AliceBlue;
+                        var cmd_root = root.Nodes.Add($"{command_list.Value}");
 
                         foreach (var cmd in command_list.Value)
                         {

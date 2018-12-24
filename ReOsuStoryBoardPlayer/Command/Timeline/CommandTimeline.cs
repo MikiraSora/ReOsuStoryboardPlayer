@@ -7,7 +7,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 {
     public class CommandTimeline : List<Command>
     {
-        public int StartTime;
+        public int StartTime=int.MaxValue;
         public int EndTime;
 
         private bool overlay;
@@ -15,14 +15,12 @@ namespace ReOsuStoryBoardPlayer.Commands
         public new void Add(Command command)
         {
             //check overlay
-            if (Count>0)
+            if (Count>1)
             {
                 var prev_cmd = this.Last();
 
-                if (prev_cmd.StartTime<=command.StartTime&&command.EndTime<=prev_cmd.EndTime)
-                {
+                if (command.EndTime<prev_cmd.EndTime||command.StartTime<prev_cmd.EndTime)
                     overlay=true;
-                }
             }
 
             base.Add(command);
@@ -74,5 +72,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
             bool TimeInCommand(Command c) => (current_time>=c.StartTime&&current_time<=c.EndTime);
         }
+
+        public override string ToString() => $"{(this.FirstOrDefault()?.Event)?.ToString()??"Unknown"} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(overlay?"Overlay":string.Empty)}";
     }
 }
