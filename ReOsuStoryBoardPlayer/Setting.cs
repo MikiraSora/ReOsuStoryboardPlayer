@@ -82,7 +82,7 @@ namespace ReOsuStoryBoardPlayer
         /// <summary>
         /// 配置文件仅仅只读
         /// </summary>
-        private const string config_file = @"./config.ini";
+        private const string config_file = @"./player_config.ini";
 
         internal static void Init()
         {
