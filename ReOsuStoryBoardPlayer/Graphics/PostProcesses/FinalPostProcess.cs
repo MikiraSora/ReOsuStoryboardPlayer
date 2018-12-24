@@ -28,6 +28,7 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
         protected override void OnPreRender()
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer,0);
+            GL.Viewport(0, 0, StoryboardWindow.CurrentWindow.Width, StoryboardWindow.CurrentWindow.Height);
         }
 
         protected override void OnPostRender()
