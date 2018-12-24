@@ -35,7 +35,10 @@ namespace ReOsuStoryBoardPlayer
 
         private bool ready = false;
 
+        private bool _existClipPostProcess = false;
+        private ClipPostProcess _clipPostProcess;
         private PostProcessesManager _postProcessesManager;
+
         private List<SpriteInstanceGroup> register_sprites = new List<SpriteInstanceGroup>();
 
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
@@ -74,11 +77,8 @@ namespace ReOsuStoryBoardPlayer
 
             ApplyBorderless(Setting.EnableBorderless);
             SwitchFullscreen(Setting.EnableFullScreen);
-        }
 
-        private void AddDefaultPostProcesses()
-        {
-            _postProcessesManager.AddPostProcess(new ClipPostProcess());
+            _clipPostProcess = new ClipPostProcess();
         }
 
         protected override void OnResize(EventArgs e)
@@ -140,9 +140,23 @@ namespace ReOsuStoryBoardPlayer
             CameraViewMatrix = Matrix4.Identity;
 
             _postProcessesManager = new PostProcessesManager(Width,Height);
-            AddDefaultPostProcesses();
         }
-        
+
+        private void SetupClipPostProcesses()
+        {
+            if (_existClipPostProcess)
+            {
+                _postProcessesManager.RemovePostProcess(_clipPostProcess);
+                _existClipPostProcess = false;
+            }
+
+            if (StoryBoardInstance.Info.IsWidescreenStoryboard == false)
+            {
+                _postProcessesManager.AddPostProcess(_clipPostProcess);
+                _existClipPostProcess = true;
+            }
+        }
+
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
         {
 
@@ -236,6 +250,7 @@ namespace ReOsuStoryBoardPlayer
 
             this.StoryBoardInstance=instance;
             StoryboardInstanceManager.ApplyInstance(instance);
+            SetupClipPostProcesses();
 
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
             {

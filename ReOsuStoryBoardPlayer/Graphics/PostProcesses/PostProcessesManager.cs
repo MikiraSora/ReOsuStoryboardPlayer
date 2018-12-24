@@ -11,8 +11,9 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
 {
     public class PostProcessesManager
     {
-        private LinkedList<APostProcess> _postProcesses = new LinkedList<APostProcess>();
+        private SortedList<int,APostProcess> _postProcesses = new SortedList<int,APostProcess>();
         private APostProcess _finalProcess= new FinalPostProcess();
+        private int _maxOrder = 0;
 
         private int _currentIndex = 1;
         private PostProcessFrameBuffer[] _fbos = new PostProcessFrameBuffer[2];
@@ -26,9 +27,21 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
             }
         }
 
+        public void AddPostProcess(APostProcess postProcess, int order)
+        {
+            _postProcesses.Add(order, postProcess);
+            _maxOrder = Math.Max(_maxOrder, order);
+        }
+
         public void AddPostProcess(APostProcess postProcess)
         {
-            _postProcesses.AddLast(postProcess);
+            _postProcesses.Add(++_maxOrder, postProcess);
+        }
+
+        public void RemovePostProcess(APostProcess postProcess)
+        {
+            var p = _postProcesses.First(v => v.Value == postProcess);
+            _postProcesses.Remove(p.Key);
         }
 
         public void Begin()
@@ -51,8 +64,8 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
                 var fbo = _fbos[_currentIndex];
                 fbo.Bind();
 
-                postProcess.LastFrameBuffer = _lastFbo;
-                postProcess.Process();
+                postProcess.Value.LastFrameBuffer = _lastFbo;
+                postProcess.Value.Process();
 
                 _lastFbo = fbo;
                 _currentIndex = (_currentIndex + 1) % _fbos.Length;

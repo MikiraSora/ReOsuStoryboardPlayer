@@ -24,6 +24,8 @@ namespace ReOsuStoryBoardPlayer.Parser
 
         public OsuFileReader reader { get; private set; }
 
+        public bool IsWidescreenStoryboard { get; private set; }
+
         private BeatmapFolderInfo() { }
 
         public static BeatmapFolderInfo Parse(string folder_path)
@@ -74,6 +76,16 @@ namespace ReOsuStoryBoardPlayer.Parser
                 {
                     info.audio_file_path=Path.Combine(folder_path,match.Groups[1].Value);
                     Log.User($"audio file path={info.audio_file_path}");
+                    break;
+                }
+            }
+
+            foreach (var line in section.EnumValues())
+            {
+                var wideMatch = Regex.Match(line, @"WidescreenStoryboard\s*:\s*(.+)");
+                if (wideMatch.Success)
+                {
+                    info.IsWidescreenStoryboard = (wideMatch.Groups[1].Value.ToInt() == 1);
                     break;
                 }
             }
