@@ -18,15 +18,15 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses.Shaders
             uniform sampler2D tex;
             uniform float view_width;
             
-            in vec2 f_uv;
+            in vec2 uv;
 
             out vec4 out_color;
             void main(){
                 float offset = (view_width - SB_WIDTH)*0.5 / view_width;
-                if(f_uv.x < offset || f_uv.x > (1.0 - offset))
+                if(uv.x < offset || uv.x > (1.0 - offset))
                     out_color = vec4(0,0,0,1);
                 else
-                    out_color = texture(tex,f_uv);
+                    out_color = texture(tex,uv);
             }
 ";
         }

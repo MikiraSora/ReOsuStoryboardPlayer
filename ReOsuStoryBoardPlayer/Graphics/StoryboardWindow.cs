@@ -139,7 +139,16 @@ namespace ReOsuStoryBoardPlayer
             ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
             CameraViewMatrix = Matrix4.Identity;
 
-            _postProcessesManager = new PostProcessesManager(Width,Height);
+            if (Setting.SsaaLevel != 0)
+            {
+                int sample = 1 << Setting.SsaaLevel;
+                GL.Viewport(0, 0, (int) (Width * Math.Sqrt(sample)), (int) (Height * Math.Sqrt(sample)));
+                _postProcessesManager = new PostProcessesManager(Width * sample, Height * sample);
+            }
+            else
+            {
+                _postProcessesManager = new PostProcessesManager(Width, Height);
+            }
         }
 
         private void SetupClipPostProcesses()
