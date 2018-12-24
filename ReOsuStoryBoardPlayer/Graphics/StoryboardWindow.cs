@@ -17,6 +17,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using ReOsuStoryBoardPlayer.Graphics.PostProcesses;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -27,11 +28,14 @@ namespace ReOsuStoryBoardPlayer
         private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
+        public float ViewWidth { get; private set; }
+        public float ViewHeight { get; private set; }
 
         public StoryBoardInstance StoryBoardInstance { get; private set; }
 
         private bool ready = false;
 
+        private PostProcessesManager _postProcessesManager;
         private List<SpriteInstanceGroup> register_sprites = new List<SpriteInstanceGroup>();
 
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
@@ -124,8 +128,13 @@ namespace ReOsuStoryBoardPlayer
             //裁剪View
             float radio = (float)Width / Height;
 
-            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(SB_HEIGHT * radio, SB_HEIGHT, -1, 1);
+            ViewHeight = SB_HEIGHT;
+            ViewWidth = SB_HEIGHT * radio;
+
+            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
             CameraViewMatrix = Matrix4.Identity;
+
+            _postProcessesManager = new PostProcessesManager(Width,Height);
         }
         
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
@@ -308,7 +317,12 @@ namespace ReOsuStoryBoardPlayer
             if (ready)
             {
                 DebuggerManager.TrigBeforeRender();
-                PostDrawStoryBoard();
+                _postProcessesManager.Begin();
+                {
+                    PostDrawStoryBoard();
+                    _postProcessesManager.Process();
+                }
+                _postProcessesManager.End();
                 DebuggerManager.TrigAfterRender();
             }
 
@@ -423,8 +437,11 @@ namespace ReOsuStoryBoardPlayer
         }
 
         #endregion Storyboard Rendering
-        
+
         #region Input Process
+
+        //解决窗口失去/获得焦点时鼠标xjb移动
+        protected override void OnFocusedChanged(EventArgs e){}
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e) => DebuggerManager.TrigKeyPress(e.Key);
 
