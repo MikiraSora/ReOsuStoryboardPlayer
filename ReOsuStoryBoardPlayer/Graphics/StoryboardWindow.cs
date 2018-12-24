@@ -139,10 +139,11 @@ namespace ReOsuStoryBoardPlayer
             ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
             CameraViewMatrix = Matrix4.Identity;
 
-            if (Setting.EnableSsaa)
+            if (Setting.SsaaLevel != 0)
             {
-                GL.Viewport(0, 0, (int) (Width * 2), (int) (Height * 2));
-                _postProcessesManager = new PostProcessesManager(Width * 4, Height * 4);
+                int sample = 1 << Setting.SsaaLevel;
+                GL.Viewport(0, 0, (int) (Width * Math.Sqrt(sample)), (int) (Height * Math.Sqrt(sample)));
+                _postProcessesManager = new PostProcessesManager(Width * sample, Height * sample);
             }
             else
             {
