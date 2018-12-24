@@ -337,7 +337,7 @@ namespace ReOsuStoryBoardPlayer
             }
 
             title_update_timer += total_time * THOUSANDTH;
-
+            
             if (Setting.EnableHighPrecisionFPSLimit)
             {
                 if (Math.Abs(TargetUpdateFrequency - Setting.MaxFPS) > 10e-5)

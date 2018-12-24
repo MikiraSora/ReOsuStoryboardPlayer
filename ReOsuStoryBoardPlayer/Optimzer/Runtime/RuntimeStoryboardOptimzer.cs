@@ -26,7 +26,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             using (StopwatchRun.Count(() => "TrimInitalEffect() optimze count:"+effect_count))
                 TrimInitalEffect(storyboard_objects, ref effect_count);
         }
-    
+
         /// <summary>
         /// 计算Fade时间轴，优化物件的FrameStartTime/EndTime，避免不必要的计算
         /// </summary>
@@ -113,6 +113,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
         /// <summary>
         /// 将时间轴单个立即命令直接应用到物件上，减少物件执行命令频率
+        /// 点名批评 -> 181957 
         /// </summary>
         /// <param name="storyboard_objects"></param>
         /// <param name="effect_count"></param>
@@ -124,20 +125,18 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             {
                 foreach (var timeline in obj.CommandMap.Values.Where(x => x.Count==1))
                 {
-                    ValueCommand cmd = timeline.FirstOrDefault() as ValueCommand;
+                    Command cmd = timeline.FirstOrDefault();
 
-                    if (cmd==null)
-                        continue;
-
-
-                    if (cmd.StartTime==cmd.EndTime || cmd.GetEndValue()==cmd.GetStartValue())
+                    if (cmd.StartTime==cmd.EndTime && 
+                        ((cmd is ValueCommand vcmd)&&(vcmd.GetEndValue()==vcmd.GetStartValue())||
+                        cmd is StateCommand))
                     {
                         /*
                          * 时间或者初始变化值 都相同 的命令可以直接应用到物件上
                          */
                         timeline.Remove(cmd);
-
-                        cmd.Execute(obj, cmd.EndTime);
+                        
+                        cmd.Execute(obj, cmd.EndTime + 1);
 
                         effect_count++;
                     }
@@ -190,7 +189,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                             {
                                 timeline.Remove(cmd);
 
-                                //Log.Debug($"Remove unused command ({cmd}) in ({obj})，compare with ({itor})");
+                                Log.Debug($"Remove unused command ({cmd}) in ({obj})，compare with ({itor})");
 
                                 effect_count++;
                             }
