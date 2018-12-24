@@ -55,6 +55,7 @@ namespace ReOsuStoryBoardPlayer
         public static int UpdateThreadCount { get; set; } = 1;
 
         public static int MaxFPS { get; set; } = 0;
+
         public static bool EnableHighPrecisionFPSLimit { get; set; } = false;
 
         #region Extendsion

@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Player
 {
-    public class MusicPlayer : PlayerBase
+    public class MusicPlayer : PlayerBase,ISoundStopEventReceiver
     {
         private static ISoundEngine engine;
+
         private ISound sound;
 
         private string loaded_path;
@@ -38,12 +39,8 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public void Load(string audio_file)
         {
-            if (sound!=null)
-            {
-                sound.Dispose();
-            }
-
             sound=engine.Play2D(audio_file, false, true, StreamMode.AutoDetect, false);
+            sound.setSoundStopEventReceiver(this);
 
             CurrentFixedTime=0;
             offset_watch.Reset();
@@ -95,6 +92,13 @@ namespace ReOsuStoryBoardPlayer.Player
                 sound.Paused=true;
                 offset_watch.Stop();
             }
+        }
+
+        public void OnSoundStopped(ISound sound, StopEventCause reason, object userData)
+        {
+            Log.Debug($"MusicPlayer is stop,reason :{reason.ToString()}");
+            Load(loaded_path);
+            Jump(0);
         }
     }
 }
