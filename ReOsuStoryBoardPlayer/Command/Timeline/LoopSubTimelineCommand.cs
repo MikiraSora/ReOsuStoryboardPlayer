@@ -22,6 +22,8 @@ namespace ReOsuStoryBoardPlayer.Commands
             CostTime=loop_command.CostTime-offset;
             StartTime = loop_command.StartTime+offset;
             EndTime=StartTime+CostTime*loop_command.LoopCount;
+
+            RelativeLine=loop_command.RelativeLine;
         }
         
         public override void Execute(StoryBoardObject @object, float current_value)

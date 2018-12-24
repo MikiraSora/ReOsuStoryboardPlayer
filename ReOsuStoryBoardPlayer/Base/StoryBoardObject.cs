@@ -73,7 +73,15 @@ namespace ReOsuStoryBoardPlayer
         public void SortCommands()
         {
             foreach (var time in CommandMap.Values)
-                time.Sort();
+                time.Sort((x,y) => 
+                {
+                    var z = x.StartTime-y.StartTime;
+
+                    if (z!=0)
+                        return z;
+
+                    return x.EndTime-y.EndTime;
+                });
         }
 
         public virtual void Update(float current_time)
