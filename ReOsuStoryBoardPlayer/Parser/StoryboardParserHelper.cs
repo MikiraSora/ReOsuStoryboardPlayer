@@ -13,40 +13,33 @@ namespace ReOsuStoryBoardPlayer.Parser
     {
         public static List<StoryBoardObject> GetStoryBoardObjects(string path)
         {
-            //try
+            OsuFileReader reader = new OsuFileReader(path);
+
+            VariableCollection collection = new VariableCollection(new VariableReader(reader).EnumValues());
+
+            EventReader er = new EventReader(reader, collection);
+
+            StoryboardReader storyboardReader = new StoryboardReader(er);
+
+            List<StoryBoardObject> list;
+
+            using (StopwatchRun.Count($"Parse&Optimze Storyboard Objects/Commands from {path}"))
             {
-                OsuFileReader reader = new OsuFileReader(path);
+                list=storyboardReader.EnumValues().ToList();
+                list.RemoveAll(c => c==null);
 
-                VariableCollection collection = new VariableCollection(new VariableReader(reader).EnumValues());
-
-                EventReader er = new EventReader(reader, collection);
-
-                StoryboardReader storyboardReader = new StoryboardReader(er);
-
-                List<StoryBoardObject> list;
-
-                using (StopwatchRun.Count($"Parse&Optimze Storyboard Objects/Commands from {path}"))
+                if (Setting.EnableRuntimeOptimzeObjects)
                 {
-                    list = storyboardReader.EnumValues().ToList();
-
-                    if (Setting.EnableRuntimeOptimzeObjects)
-                    {
-                        var optimzer = new RuntimeStoryboardOptimzer();
-                        optimzer.Optimze(list); 
-                    }
+                    var optimzer = new RuntimeStoryboardOptimzer();
+                    optimzer.Optimze(list);
                 }
 
-                list.RemoveAll(c => c == null);
+                foreach (var obj in list)
+                    obj.UpdateObjectFrameTime();
+            }
 
-                return list;
-            }
-            /*
-            catch (Exception e)
-            {
-                Log.Error($"Parse \"{path}\" error! " + e.Message);
-                return null;
-            }
-            */
+            return list;
+
         }
     }
 }

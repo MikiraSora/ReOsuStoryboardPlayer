@@ -1,5 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,23 +14,31 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         public override void Optimze(IEnumerable<StoryBoardObject> storyboard_objects)
         {
             int effect_count = 0;
-            TrimFrameTime(storyboard_objects,ref effect_count);
-            Log.User("TrimFrameTime() optimze count:"+effect_count);
 
-            /*
+            using (StopwatchRun.Count(() => "TrimFrameTime() optimze count:"+effect_count))
+                TrimFrameTime(storyboard_objects, ref effect_count);
+
             effect_count=0;
-            CombineCommands(storyboard_objects, ref effect_count);
-            Log.User("CombineCommands() optimze count:"+effect_count);
-            */
+            using (StopwatchRun.Count(() => "RemoveUnusedCommand() optimze count:"+effect_count))
+                RemoveUnusedCommand(storyboard_objects, ref effect_count);
+            
+            effect_count=0;
+            using (StopwatchRun.Count(() => "TrimInitalEffect() optimze count:"+effect_count))
+                TrimInitalEffect(storyboard_objects, ref effect_count);
         }
-
-        public void TrimFrameTime(IEnumerable<StoryBoardObject> storyboard_objects,ref int effect_count)
+    
+        /// <summary>
+        /// 计算Fade时间轴，优化物件的FrameStartTime/EndTime，避免不必要的计算
+        /// </summary>
+        /// <param name="storyboard_objects"></param>
+        /// <param name="effect_count"></param>
+        public void TrimFrameTime(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
         {
             foreach (var obj in storyboard_objects)
             {
-                if (obj==null 
-                    || obj is StoryboardAnimation  //qnmd
-                    || !obj.CommandMap.TryGetValue(Event.Fade, out var fade_list)
+                if (obj==null
+                    ||obj is StoryboardAnimation  //qnmd
+                    ||!obj.CommandMap.TryGetValue(Event.Fade, out var fade_list)
                     ||fade_list.Count==0)
                     continue;
 
@@ -69,7 +79,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                     {
                         var cmd = normal_timeline[i];
                         var next_cmd = normal_timeline[i+1];
-                        
+
                         if ((cmd.Easing==next_cmd.Easing)
                             &&(cmd.EndTime==next_cmd.StartTime)
                             &&(end_value_prop.GetValue(cmd)==start_value_prop.GetValue(next_cmd)))
@@ -95,6 +105,95 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                             i++;
 
                             effect_count++;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将时间轴单个立即命令直接应用到物件上，减少物件执行命令频率
+        /// </summary>
+        /// <param name="storyboard_objects"></param>
+        /// <param name="effect_count"></param>
+        public void TrimInitalEffect(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
+        {
+            var events = Enum.GetValues(typeof(Event));
+
+            foreach (var obj in storyboard_objects)
+            {
+                foreach (var timeline in obj.CommandMap.Values.Where(x => x.Count==1))
+                {
+                    ValueCommand cmd = timeline.FirstOrDefault() as ValueCommand;
+
+                    if (cmd==null)
+                        continue;
+
+
+                    if (cmd.StartTime==cmd.EndTime || cmd.GetEndValue()==cmd.GetStartValue())
+                    {
+                        /*
+                         * 时间或者初始变化值 都相同 的命令可以直接应用到物件上
+                         */
+                        timeline.Remove(cmd);
+
+                        cmd.Execute(obj, cmd.EndTime);
+
+                        effect_count++;
+                    }
+                }
+
+                foreach (Event e in events)
+                    if (obj.CommandMap.TryGetValue(e, out var timeline)&&timeline.Count==0)
+                    {
+                        obj.CommandMap.Remove(e);
+                        effect_count++;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// 删除无用的命令，即理论上根本不会被执行到的命令
+        /// 点名批评 -> 381480
+        /// </summary>
+        /// <param name="storyboard_objects"></param>
+        /// <param name="effect_count"></param>
+        public void RemoveUnusedCommand(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
+        {
+            foreach (var obj in storyboard_objects)
+            {
+                foreach (var timeline in obj.CommandMap.Values)
+                {
+                    for (int i = 0; i<timeline.Count; i++)
+                    {
+                        var cmd = timeline[i];
+
+                        //立即命令就跳过
+                        if (cmd.StartTime==cmd.EndTime)
+                            continue;
+
+                        for (int x = 0; x<timeline.Count; x++)
+                        {
+                            var itor = timeline[x];
+
+                            if (itor.StartTime>cmd.StartTime)
+                                break;
+
+                            /*
+                              |---------|=======|---------|
+                             */
+                            if (itor.StartTime<=cmd.StartTime
+                                && cmd.EndTime<=itor.EndTime
+                                && itor!=cmd
+                                && itor.RelativeLine>cmd.RelativeLine
+                                )
+                            {
+                                timeline.Remove(cmd);
+
+                                //Log.Debug($"Remove unused command ({cmd}) in ({obj})，compare with ({itor})");
+
+                                effect_count++;
+                            }
                         }
                     }
                 }

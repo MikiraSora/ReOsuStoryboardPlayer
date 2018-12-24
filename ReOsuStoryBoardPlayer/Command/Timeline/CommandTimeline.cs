@@ -22,7 +22,6 @@ namespace ReOsuStoryBoardPlayer.Commands
                 if (prev_cmd.StartTime<=command.StartTime&&command.EndTime<=prev_cmd.EndTime)
                 {
                     overlay=true;
-                    Log.Debug($"CommandTimeline exist overlay command :\"{prev_cmd}\" is overlay with \"{command}\"");
                 }
             }
 

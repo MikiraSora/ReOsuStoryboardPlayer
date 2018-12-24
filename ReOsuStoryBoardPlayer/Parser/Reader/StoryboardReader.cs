@@ -35,11 +35,9 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 if (storyboard_object != null)
                 {
+                    storyboard_object.FileLine=packet.ObjectFileLine;
+
                     BuildCommandMapAndSetup(storyboard_object, packet.CommandLines);
-
-                    storyboard_object.FileLine = packet.ObjectFileLine;
-
-                    storyboard_object.UpdateObjectFrameTime();
                 }
 
                 Reader.ReturnPacket(ref packet);
@@ -138,13 +136,13 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         private void BuildCommandMapAndSetup(StoryBoardObject obj, List<string> lines)
         {
-            var list = /*lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : */ ParseCommands(lines);
+            var list = /*lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : */ ParseCommands(lines,obj.FileLine);
 
             foreach (var cmd in list)
                 obj.AddCommand(cmd);
         }
 
-        public List<Command> ParseCommands(List<string> lines)
+        public List<Command> ParseCommands(List<string> lines,long base_line)
         {
             List<Command> commands = new List<Command>(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
 
@@ -158,6 +156,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 foreach (var cmd in CommandParserIntance.Parse(data_arr))
                 {
+                    cmd.RelativeLine=base_line++;
+
                     if (is_sub_cmd)
                     {
                         //如果是子命令的话就要添加到当前Group

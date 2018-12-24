@@ -8,6 +8,8 @@ namespace ReOsuStoryBoardPlayer.Commands
         internal bool IsExecuted = false;
 #endif
 
+        internal long RelativeLine=-1;
+
         public Event Event;
 
         public int StartTime;
@@ -18,6 +20,6 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         public abstract void Execute(StoryBoardObject @object, float time);
 
-        public override string ToString() => $"{Event.ToString()} ({StartTime}~{EndTime})";
+        public override string ToString() => $"rline {RelativeLine}: {Event.ToString()} ({StartTime}~{EndTime})";
     }
 }

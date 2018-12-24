@@ -3,6 +3,16 @@
     public abstract class ValueCommand : Command
     {
         public EasingTypes Easing { get; set; }
+
+        #region Evil Methods
+
+        public object GetStartValue() => GetType().GetProperty("StartValue").GetValue(this);
+        public object GetEndValue() => GetType().GetProperty("EndValue").GetValue(this);
+
+        public T GetEndValue<T>() => (T)GetEndValue();
+        public T GetStartValue<T>() => (T)GetStartValue();
+
+        #endregion
     }
 
     public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
