@@ -14,11 +14,11 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses.Shaders
 @"          #version 330 core
             uniform sampler2D tex;
             
-            in vec2 f_uv;
+            in vec2 uv;
 
             out vec4 out_color;
             void main(){
-                out_color = texture(tex,f_uv);
+                out_color = texture(tex,uv);
             }
 ";
         }

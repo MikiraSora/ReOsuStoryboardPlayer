@@ -56,6 +56,7 @@ namespace ReOsuStoryBoardPlayer
 
         public static int MaxFPS { get; set; } = 0;
         public static bool EnableHighPrecisionFPSLimit { get; set; } = false;
+        public static bool EnableSsaa = false;
 
         #region Extendsion
 

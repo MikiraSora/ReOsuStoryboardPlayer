@@ -101,6 +101,7 @@ namespace ReOsuStoryBoardPlayer
                 Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
                 Setting.EnableFullScreen=args.Switches.Any(k => k=="full_screen");
                 Setting.EnableBorderless=args.Switches.Any(k => k=="borderless");
+                Setting.EnableSsaa = args.Switches.Any(k => k == "ssaa");
                 Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
                 Setting.MiniMode=args.Switches.Any(k => k=="mini");
                 Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
