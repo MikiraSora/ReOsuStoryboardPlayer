@@ -158,24 +158,10 @@ namespace ReOsuStoryBoardPlayer
             float maxX = vertices.Max((v) => v.X);
             float maxY = vertices.Max((v) => v.Y);
 
-            return  ((ContainPoint(xstart, 0,                          minX, minY, maxX, maxY) ||
-                      ContainPoint(xstart, StoryboardWindow.SB_HEIGHT, minX, minY, maxX, maxY) ||
-                      ContainPoint(xend,   0,                          minX, minY, maxX, maxY) ||
-                      ContainPoint(xend,   StoryboardWindow.SB_HEIGHT, minX, minY, maxX, maxY))
-                      ||
-                     (ContainPoint(minX, minY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT) ||
-                      ContainPoint(minX, maxY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT) ||
-                      ContainPoint(maxX, minY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT) ||
-                      ContainPoint(maxX, maxY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT)));
-        }
+            bool collisionX = maxX >= xstart && xend >= minX;
+            bool collisionY = maxY >= 0 && StoryboardWindow.SB_HEIGHT >= minY;
 
-        private bool ContainPoint(float px,float py,float minX,float minY,float maxX,float maxY)
-        {
-            if (px < minX) return false;
-            if (py < minY) return false;
-            if (px > maxX) return false;
-            if (py > maxY) return false;
-            return true;
+            return collisionX && collisionY;
         }
 
 #if DEBUG
