@@ -30,7 +30,13 @@ namespace ReOsuStoryBoardPlayer.Player
         public override float Volume { get => sound.Volume; set => sound.Volume=value; }
         
         public Stopwatch offset_watch = new Stopwatch();
-        public uint prev_mp3_time = 0;
+
+        private uint prev_mp3_time = 0;
+
+        /// <summary>
+        /// 表示播放器播放完当前音频文件，bool返回值表示是否默认自动重新加载
+        /// </summary>
+        public event Func<bool> FinishedPlay;
 
         static MusicPlayer()
         {
@@ -97,8 +103,12 @@ namespace ReOsuStoryBoardPlayer.Player
         public void OnSoundStopped(ISound sound, StopEventCause reason, object userData)
         {
             Log.Debug($"MusicPlayer is stop,reason :{reason.ToString()}");
-            Load(loaded_path);
-            Jump(0);
+
+            if (!FinishedPlay?.Invoke()??false)
+            {
+                Load(loaded_path);
+                Jump(0);
+            }
         }
     }
 }

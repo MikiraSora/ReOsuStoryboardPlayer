@@ -14,7 +14,9 @@ namespace ReOsuStoryBoardPlayer.Utils
         public static void PlayStoryboard(BeatmapFolderInfo info)
         {
             //init audio
-            var player = new MusicPlayer();
+            if (!(MusicPlayerManager.ActivityPlayer is MusicPlayer player))
+                throw new Exception("Player must be MusicPlayer if you want to call PlayStoryboard()");
+
             player.Load(info.audio_file_path);
 
             MusicPlayerManager.ActivityPlayer?.Stop();
@@ -23,9 +25,12 @@ namespace ReOsuStoryBoardPlayer.Utils
             //load storyboard objects
             var instance = new StoryBoardInstance(info);
 
-            ExecutorSync.PostTask(()=>StoryboardWindow.CurrentWindow.LoadStoryboardInstance(instance)).Wait();
-
-            MusicPlayerManager.ActivityPlayer?.Play();
+            ExecutorSync.PostTask(() => 
+            {
+                StoryboardWindow.CurrentWindow.LoadStoryboardInstance(instance);
+                MusicPlayerManager.ActivityPlayer?.Play();
+            }
+            );
         }
     }
 }
