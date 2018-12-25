@@ -19,7 +19,6 @@ namespace ReOsuStoryBoardPlayer
 
         public int CurrentPostCount { get => _currentPostCount; }
 
-        private static int s_refCount = 0;
         private static byte[] PostData;
         private static int s_vbo_vertexBase, s_vbo_texPosBase;
         private static int[] s_vaos = new int[3]; 
@@ -59,6 +58,14 @@ namespace ReOsuStoryBoardPlayer
                 _InitVertexBase(s_vaos[i]);
                 _InitBuffer(s_vaos[i], s_vbos[i]);
             }
+
+            StoryboardWindow.CurrentWindow.Closing += (s, e) =>
+            {
+                GL.DeleteBuffer(s_vbo_vertexBase);
+                GL.DeleteBuffer(s_vbo_texPosBase);
+                GL.DeleteBuffers(3, s_vbos);
+                GL.DeleteVertexArrays(3, s_vaos);
+            };
         }
 
         internal SpriteInstanceGroup(uint capacity, string image_path, Texture texture)
@@ -71,7 +78,6 @@ namespace ReOsuStoryBoardPlayer
             this.Capacity = capacity;
 
             this.texture = texture;
-            s_refCount++;
         }
 
         private static int _VertexSize
@@ -285,15 +291,6 @@ namespace ReOsuStoryBoardPlayer
 
         protected virtual void Dispose(bool disposing)
         {
-            s_refCount--;
-            if (s_refCount != 0)
-            {
-                GL.DeleteBuffer(s_vbo_vertexBase);
-                GL.DeleteBuffer(s_vbo_texPosBase);
-                GL.DeleteBuffers(3, s_vbos);
-                GL.DeleteVertexArrays(3, s_vaos);
-            }
-
             if (!disposedValue)
             {
                 if (disposing)
