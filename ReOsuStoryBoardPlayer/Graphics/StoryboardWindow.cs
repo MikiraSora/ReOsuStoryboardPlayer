@@ -139,16 +139,9 @@ namespace ReOsuStoryBoardPlayer
             ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
             CameraViewMatrix = Matrix4.Identity;
 
-            if (Setting.SsaaLevel != 0)
-            {
-                int sample = 1 << Setting.SsaaLevel;
-                GL.Viewport(0, 0, (int) (Width * Math.Sqrt(sample)), (int) (Height * Math.Sqrt(sample)));
-                _postProcessesManager = new PostProcessesManager(Width * sample, Height * sample);
-            }
-            else
-            {
-                _postProcessesManager = new PostProcessesManager(Width, Height);
-            }
+            int sample = 1 << Setting.SsaaLevel;
+            _postProcessesManager = new PostProcessesManager(Width * sample, Height * sample);
+            SetupClipPostProcesses();
         }
 
         private void SetupClipPostProcesses()
@@ -161,8 +154,11 @@ namespace ReOsuStoryBoardPlayer
 
             if (StoryBoardInstance.Info.IsWidescreenStoryboard == false)
             {
-                _postProcessesManager.AddPostProcess(_clipPostProcess);
-                _existClipPostProcess = true;
+                if (_postProcessesManager != null)
+                {
+                    _postProcessesManager.AddPostProcess(_clipPostProcess);
+                    _existClipPostProcess = true;
+                }
             }
         }
 
