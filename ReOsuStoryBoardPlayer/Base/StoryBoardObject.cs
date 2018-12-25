@@ -114,18 +114,19 @@ namespace ReOsuStoryBoardPlayer
         private const float DEG2RAD = 0.017453292519943295f;
         private bool CalculateVisible()
         {
-            float view_width = StoryboardWindow.CurrentWindow.ViewWidth;
-            float offset = (view_width - StoryboardWindow.SB_WIDTH) * 0.5f;
+            if (RenderGroup == null) return false;
+
+            float offset = (StoryboardWindow.CurrentWindow.ViewWidth - StoryboardWindow.SB_WIDTH) * 0.5f;
 
             float xstart = -offset;
             float xend = StoryboardWindow.SB_WIDTH + offset;
 
-            int w = (int)(RenderGroup.Texture.Width * Scale.x);
-            int h = (int)(RenderGroup.Texture.Height * Scale.y);
-
-            Vector2 anchor = new Vector2(Anchor.x, Anchor.y) + new Vector2(0.5f, 0.5f);
+            float w = RenderGroup.Texture.Width * Scale.x;
+            float h = RenderGroup.Texture.Height * Scale.y;
+            Vector2 anchor = new Vector2(Anchor.x + 0.5f, Anchor.y + 0.5f);
             anchor.X *= w;
             anchor.Y *= h;
+
             Vector2[] vertices = new Vector2[4];
 
             vertices[0].X = 0;
@@ -140,23 +141,35 @@ namespace ReOsuStoryBoardPlayer
             vertices[3].X = 0;
             vertices[3].Y = h;
 
-            float cosa = (float)Math.Cos(Rotate * DEG2RAD);
-            float sina = (float)Math.Sin(Rotate * DEG2RAD);
+            float rotate = Rotate * DEG2RAD;
+            float cosa = (float)Math.Cos(rotate);
+            float sina = (float)Math.Sin(rotate);
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                var v = vertices[i] - anchor;
-                v.X = v.X * cosa + v.Y * sina;
-                v.Y = v.X * sina - v.Y * cosa;
-                v += new Vector2(Postion.x, Postion.y);
-                vertices[i] = v;
+                vertices[i].X -= anchor.X;
+                vertices[i].Y -= anchor.Y;
+
+                vertices[i].X = vertices[i].X * cosa + vertices[i].Y * sina;
+                vertices[i].Y = vertices[i].X * sina - vertices[i].Y * cosa;
+
+                vertices[i].X += Postion.x;
+                vertices[i].Y += Postion.y;
             }
 
             //构造AABB
-            float minX = vertices.Min((v) => v.X);
-            float minY = vertices.Min((v) => v.Y);
-            float maxX = vertices.Max((v) => v.X);
-            float maxY = vertices.Max((v) => v.Y);
+            float minX = float.MaxValue;
+            float minY = float.MaxValue;
+            float maxX = float.MinValue;
+            float maxY = float.MinValue;
+
+            foreach (var v in vertices)
+            {
+                minX = v.X < minX ? v.X : minX;
+                minY = v.Y < minY ? v.Y : minY;
+                maxX = v.X > maxX ? v.X : maxX;
+                maxY = v.Y > maxY ? v.Y : maxY;
+            }
 
             bool collisionX = maxX >= xstart && xend >= minX;
             bool collisionY = maxY >= 0 && StoryboardWindow.SB_HEIGHT >= minY;
