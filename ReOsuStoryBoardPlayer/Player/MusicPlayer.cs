@@ -104,7 +104,7 @@ namespace ReOsuStoryBoardPlayer.Player
         {
             Log.Debug($"MusicPlayer is stop,reason :{reason.ToString()}");
 
-            if (!FinishedPlay?.Invoke()??false)
+            if (FinishedPlay?.Invoke()??true)
             {
                 Load(loaded_path);
                 Jump(0);

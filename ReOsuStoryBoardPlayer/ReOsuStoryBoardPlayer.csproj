@@ -161,7 +161,6 @@
     <Compile Include="Kernel\StoryboardInstanceManager.cs" />
     <Compile Include="Parser\BeatmapFolderInfo.cs" />
     <Compile Include="Player\MusicPlayer.cs" />
-    <Compile Include="Player\MusicPlayerHelper.cs" />
     <Compile Include="Player\PlayerBase.cs" />
     <Compile Include="Player\MusicPlayerManager.cs" />
     <Compile Include="Utils\Log.cs" />
