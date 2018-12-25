@@ -430,6 +430,8 @@ namespace ReOsuStoryBoardPlayer
             for (int i = 0; i<draw_list.Count; i++)
             {
                 var obj = draw_list[i];
+                if(!obj.IsVisible)
+                    continue;
 #if DEBUG
                 if (!obj.DebugShow)
                     continue;//skip

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenTK;
 using ReOsuStoryBoardPlayer.Graphics;
 
 namespace ReOsuStoryBoardPlayer
@@ -22,6 +23,8 @@ namespace ReOsuStoryBoardPlayer
         public Layout layout;
 
         public int Z = -1;
+
+        public bool IsVisible { get; set; }
 
         #region Transform
 
@@ -86,6 +89,8 @@ namespace ReOsuStoryBoardPlayer
 
         public virtual void Update(float current_time)
         {
+            IsVisible = true;
+
 #if DEBUG
             ExecutedCommands.ForEach(c => c.IsExecuted = false);
             ExecutedCommands.Clear();
@@ -99,8 +104,79 @@ namespace ReOsuStoryBoardPlayer
                 MarkCommandExecuted(command);
 #endif
             }
+
+            if (Color.w == 0 || !CalculateVisible())
+            {
+                IsVisible = false;
+            }
         }
 
+        private const float DEG2RAD = 0.017453292519943295f;
+        private bool CalculateVisible()
+        {
+            float view_width = StoryboardWindow.CurrentWindow.ViewWidth;
+            float offset = (view_width - StoryboardWindow.SB_WIDTH) * 0.5f;
+
+            float xstart = -offset;
+            float xend = StoryboardWindow.SB_WIDTH + offset;
+
+            int w = (int)(RenderGroup.Texture.Width * Scale.x);
+            int h = (int)(RenderGroup.Texture.Height * Scale.y);
+
+            Vector2 anchor = new Vector2(Anchor.x, Anchor.y) + new Vector2(0.5f, 0.5f);
+            anchor.X *= w;
+            anchor.Y *= h;
+            Vector2[] vertices = new Vector2[4];
+
+            vertices[0].X = 0;
+            vertices[0].Y = 0;
+
+            vertices[1].X = w;
+            vertices[1].Y = 0;
+
+            vertices[2].X = w;
+            vertices[2].Y = h;
+
+            vertices[3].X = 0;
+            vertices[3].Y = h;
+
+            float cosa = (float)Math.Cos(Rotate * DEG2RAD);
+            float sina = (float)Math.Sin(Rotate * DEG2RAD);
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                var v = vertices[i] - anchor;
+                v.X = v.X * cosa + v.Y * sina;
+                v.Y = v.X * sina - v.Y * cosa;
+                v += new Vector2(Postion.x, Postion.y);
+                vertices[i] = v;
+            }
+
+            //构造AABB
+            float minX = vertices.Min((v) => v.X);
+            float minY = vertices.Min((v) => v.Y);
+            float maxX = vertices.Max((v) => v.X);
+            float maxY = vertices.Max((v) => v.Y);
+
+            return  ((ContainPoint(xstart, 0,                          minX, minY, maxX, maxY) ||
+                      ContainPoint(xstart, StoryboardWindow.SB_HEIGHT, minX, minY, maxX, maxY) ||
+                      ContainPoint(xend,   0,                          minX, minY, maxX, maxY) ||
+                      ContainPoint(xend,   StoryboardWindow.SB_HEIGHT, minX, minY, maxX, maxY))
+                      ||
+                     (ContainPoint(minX, minY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT) ||
+                      ContainPoint(minX, maxY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT) ||
+                      ContainPoint(maxX, minY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT) ||
+                      ContainPoint(maxX, maxY, xstart, 0, xend, StoryboardWindow.SB_HEIGHT)));
+        }
+
+        private bool ContainPoint(float px,float py,float minX,float minY,float maxX,float maxY)
+        {
+            if (px < minX) return false;
+            if (py < minY) return false;
+            if (px > maxX) return false;
+            if (py > maxY) return false;
+            return true;
+        }
 
 #if DEBUG
         internal List<Command> ExecutedCommands = new List<Command>();
