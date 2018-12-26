@@ -107,7 +107,8 @@ namespace ReOsuStoryBoardPlayer
 #endif
             }
 
-            IsVisible=Color.w==0 /*||!CalculateVisible() 没必要了*/;
+            IsVisible = (Color.w != 0);
+            //if (IsVisible) IsVisible = CalculateVisible(); //没必要了
         }
 
         private const float DEG2RAD = 0.017453292519943295f;
@@ -210,3 +211,4 @@ namespace ReOsuStoryBoardPlayer
         public override string ToString() => $"line {FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
     }
 }
+ 
