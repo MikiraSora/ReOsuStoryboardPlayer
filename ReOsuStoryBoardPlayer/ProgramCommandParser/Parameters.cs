@@ -46,5 +46,10 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 
             return !string.IsNullOrWhiteSpace(x.Key);
         }
+
+        public bool TryGetSwitch(params string[] option_names)
+        {
+            return Switches.Any(x => option_names.Contains(x));
+        }
     }
 }

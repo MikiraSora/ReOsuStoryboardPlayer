@@ -29,6 +29,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
         /// <summary>
         /// 计算Fade时间轴，优化物件的FrameStartTime/EndTime，避免不必要的计算
+        /// 点名批评 -> 181957
         /// </summary>
         /// <param name="storyboard_objects"></param>
         /// <param name="effect_count"></param>

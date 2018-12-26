@@ -92,24 +92,40 @@ namespace ReOsuStoryBoardPlayer
                     Setting.ParallelUpdateObjectsLimitCount=p_update_limit.ToInt();
 
                 if (args.TryGetArg(out var update_thread_count, "update_thread_count", "ut"))
-                    Setting.UpdateThreadCount = update_thread_count.ToInt();
+                    Setting.UpdateThreadCount=update_thread_count.ToInt();
 
                 if (args.TryGetArg(out var max_fps, "fps"))
-                    Setting.MaxFPS = max_fps.ToInt();
+                    Setting.MaxFPS=max_fps.ToInt();
 
                 if (args.TryGetArg(out var ssaa, "ssaa"))
-                    Setting.SsaaLevel = ssaa.ToInt();
+                    Setting.SsaaLevel=ssaa.ToInt();
 
-                Setting.EnableTimestamp=args.Switches.Any(k => k=="enable_timestamp");
-                Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
-                Setting.EnableFullScreen=args.Switches.Any(k => k=="full_screen");
-                Setting.EnableBorderless=args.Switches.Any(k => k=="borderless");
-                Setting.EnableLoopCommandExpand=args.Switches.Any(k => k=="enable_loop_expand");
-                Setting.MiniMode=args.Switches.Any(k => k=="mini");
-                Setting.EnableSplitMoveScaleCommand=!args.Switches.Any(k => k=="disable_split");
-                Setting.FunReverseEasing=args.Switches.Any(k => k=="fun_reverse_easing");
-                Setting.EnableRuntimeOptimzeObjects=!args.Switches.Any(k => k=="disable_runtime_optimze");
-                Setting.EnableHighPrecisionFPSLimit = !args.Switches.Any(k => k == "disable_hp_fps_limit");
+                if (args.Switches.Any(k => k=="enable_timestamp"))
+                    Setting.EnableTimestamp=true;
+
+                if (args.Switches.Any(k => k=="full_screen"))
+                    Setting.EnableFullScreen=true;
+
+                if (args.Switches.Any(k => k=="borderless"))
+                    Setting.EnableBorderless=true;
+
+                if (args.Switches.Any(k => k=="enable_loop_expand"))
+                    Setting.EnableLoopCommandExpand=true;
+
+                if (args.Switches.Any(k => k=="mini"))
+                    Setting.MiniMode=true;
+
+                if (args.Switches.Any(k => k=="disable_split"))
+                    Setting.EnableSplitMoveScaleCommand=false;
+
+                if (args.Switches.Any(k => k=="fun_reverse_easing"))
+                    Setting.FunReverseEasing=true;
+
+                if (args.Switches.Any(k => k=="disable_runtime_optimze"))
+                    Setting.EnableRuntimeOptimzeObjects=false;
+
+                if (args.Switches.Any(k => k=="disable_hp_fps_limit"))
+                    Setting.EnableHighPrecisionFPSLimit=false;
 
                 if (args.Switches.Any(k => k=="cli"))
                 {
