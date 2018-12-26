@@ -40,6 +40,8 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion Transform
 
+        #region Add Command
+
         public void AddCommand(Command command)
         {
             if (command is LoopCommand loop)
@@ -87,12 +89,12 @@ namespace ReOsuStoryBoardPlayer
                 });
         }
 
+        #endregion
+
         public virtual void Update(float current_time)
         {
-            IsVisible = true;
-
 #if DEBUG
-            ExecutedCommands.ForEach(c => c.IsExecuted = false);
+            ExecutedCommands.ForEach(c => c.IsExecuted=false);
             ExecutedCommands.Clear();
 #endif
             foreach (var timeline in CommandMap.Values)
@@ -105,10 +107,7 @@ namespace ReOsuStoryBoardPlayer
 #endif
             }
 
-            if (Color.w == 0 || !CalculateVisible())
-            {
-                IsVisible = false;
-            }
+            IsVisible=Color.w==0 /*||!CalculateVisible() 没必要了*/;
         }
 
         private const float DEG2RAD = 0.017453292519943295f;
@@ -178,6 +177,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
 #if DEBUG
+
         internal List<Command> ExecutedCommands = new List<Command>();
 
         internal bool DebugShow = true;
