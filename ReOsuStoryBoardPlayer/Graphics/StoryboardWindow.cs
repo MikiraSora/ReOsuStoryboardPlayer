@@ -333,8 +333,6 @@ namespace ReOsuStoryBoardPlayer
 
             _render_stopwatch.Restart();
 
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-
             if (ready)
             {
                 DebuggerManager.TrigBeforeRender();

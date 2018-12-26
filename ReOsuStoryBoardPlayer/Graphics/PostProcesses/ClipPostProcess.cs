@@ -19,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
 
         protected override void OnUseShader()
         {
-            int tex = LastFrameBuffer?.ColorTexture ?? 0;
+            int tex = PrevFrameBuffer?.ColorTexture ?? 0;
             GL.BindTexture(TextureTarget.Texture2D, tex);
             _shader.Begin();
             _shader.PassUniform("view_width",StoryboardWindow.CurrentWindow.ViewWidth);

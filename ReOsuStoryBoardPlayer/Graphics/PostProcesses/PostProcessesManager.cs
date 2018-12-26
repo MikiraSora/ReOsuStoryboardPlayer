@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
 
         private int _currentIndex = 1;
         private PostProcessFrameBuffer[] _fbos = new PostProcessFrameBuffer[2];
-        private PostProcessFrameBuffer _lastFbo = null;
+        private PostProcessFrameBuffer _prevFbo = null;
 
         public PostProcessesManager(int w,int h)
         {
@@ -50,11 +50,10 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
 
         public void Begin()
         {
-            _fbos[0].Bind();
+            _prevFbo = _fbos[0];
+            _prevFbo.Bind();
             GL.Clear(ClearBufferMask.ColorBufferBit);
-
-            _lastFbo = _fbos[0];
-            _currentIndex = 1;
+            _currentIndex = (_currentIndex + 1) % _fbos.Length;
 
             int sample = 1 << Setting.SsaaLevel;
             GL.Viewport(0, 0, StoryboardWindow.CurrentWindow.Width * sample, StoryboardWindow.CurrentWindow.Height * sample);
@@ -72,10 +71,10 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
                 var fbo = _fbos[_currentIndex];
                 fbo.Bind();
 
-                postProcess.Value.LastFrameBuffer = _lastFbo;
+                postProcess.Value.PrevFrameBuffer = _prevFbo;
                 postProcess.Value.Process();
 
-                _lastFbo = fbo;
+                _prevFbo = fbo;
                 _currentIndex = (_currentIndex + 1) % _fbos.Length;
             }
         }
