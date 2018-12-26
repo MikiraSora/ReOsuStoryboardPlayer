@@ -11,18 +11,18 @@ namespace ReOsuStoryBoardPlayer
     {
         public uint Capacity { get; protected set; } = 0;
 
-        private int _currentPostCount = 0;
         private int _currentPostBaseIndex = 0;
 
-        public static Matrix4 Projection { get { return StoryboardWindow.ProjectionMatrix; } }
-        public static Matrix4 View { get { return StoryboardWindow.CameraViewMatrix; } }
+        public static Matrix4 Projection => StoryboardWindow.ProjectionMatrix;
+        public static Matrix4 View => StoryboardWindow.CameraViewMatrix;
 
-        public int CurrentPostCount { get => _currentPostCount; }
+        public int CurrentPostCount { get; private set; } = 0;
 
         private static byte[] PostData;
         private static int s_vbo_vertexBase, s_vbo_texPosBase;
-        private static int[] s_vaos = new int[3]; 
-        private static int[] s_vbos = new int[3];
+        private const int BUFFER_COUNT = 3;
+        private static int[] s_vaos = new int[BUFFER_COUNT]; 
+        private static int[] s_vbos = new int[BUFFER_COUNT];
         private static BatchShader s_shader;
 
         private int _current_buffer_index = 0;
@@ -34,11 +34,9 @@ namespace ReOsuStoryBoardPlayer
             StoryboardWindow.CurrentWindow.Resize += (s, e) => _window_resized = true;
         }
 
-        private Texture texture;
+        public string ImagePath { get; }
 
-        public string ImagePath { get; private set; }
-
-        public Texture Texture { get => texture; }
+        public Texture Texture { get; }
 
         static SpriteInstanceGroup()
         {
@@ -50,10 +48,10 @@ namespace ReOsuStoryBoardPlayer
             s_vbo_vertexBase = GL.GenBuffer();
             s_vbo_texPosBase = GL.GenBuffer();
 
-            GL.GenVertexArrays(3, s_vaos);
-            GL.GenBuffers(3, s_vbos);
+            GL.GenVertexArrays(BUFFER_COUNT, s_vaos);
+            GL.GenBuffers(BUFFER_COUNT, s_vbos);
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < BUFFER_COUNT; i++)
             {
                 _InitVertexBase(s_vaos[i]);
                 _InitBuffer(s_vaos[i], s_vbos[i]);
@@ -63,8 +61,8 @@ namespace ReOsuStoryBoardPlayer
             {
                 GL.DeleteBuffer(s_vbo_vertexBase);
                 GL.DeleteBuffer(s_vbo_texPosBase);
-                GL.DeleteBuffers(3, s_vbos);
-                GL.DeleteVertexArrays(3, s_vaos);
+                GL.DeleteBuffers(BUFFER_COUNT, s_vbos);
+                GL.DeleteVertexArrays(BUFFER_COUNT, s_vaos);
             };
         }
 
@@ -77,7 +75,7 @@ namespace ReOsuStoryBoardPlayer
 
             this.Capacity = capacity;
 
-            this.texture = texture;
+            this.Texture = texture;
         }
 
         private static int _VertexSize
@@ -238,9 +236,9 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
 
-            _currentPostCount++;
+            CurrentPostCount++;
             _currentPostBaseIndex += _VertexSize;
-            if (_currentPostCount >= Capacity)
+            if (CurrentPostCount >= Capacity)
             {
                 FlushDraw();
             }
@@ -258,7 +256,7 @@ namespace ReOsuStoryBoardPlayer
                 s_shader.PassUniform("ViewProjection", VP);
                 _window_resized = false;
             }
-            s_shader.PassUniform("diffuse", texture);
+            s_shader.PassUniform("diffuse", Texture);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, s_vbos[_current_buffer_index]);
             {
@@ -268,7 +266,7 @@ namespace ReOsuStoryBoardPlayer
 
             GL.BindVertexArray(s_vaos[_current_buffer_index]);
             {
-                GL.DrawArraysInstanced(PrimitiveType.TriangleFan, 0, 4, _currentPostCount);
+                GL.DrawArraysInstanced(PrimitiveType.TriangleFan, 0, 4, CurrentPostCount);
             }
             GL.BindVertexArray(0);
             _current_buffer_index = (_current_buffer_index + 1) % s_vbos.Length;
@@ -282,7 +280,7 @@ namespace ReOsuStoryBoardPlayer
 
         private void Clear()
         {
-            _currentPostCount = 0;
+            CurrentPostCount = 0;
             _currentPostBaseIndex = 0;
         }
 
@@ -294,7 +292,7 @@ namespace ReOsuStoryBoardPlayer
             if (!disposedValue)
             {
                 if (disposing)
-                    texture.Dispose();
+                    Texture.Dispose();
 
                 disposedValue = true;
             }

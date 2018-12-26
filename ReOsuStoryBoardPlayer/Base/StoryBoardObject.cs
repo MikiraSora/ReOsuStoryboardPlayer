@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenTK;
 using ReOsuStoryBoardPlayer.Graphics;
 
 namespace ReOsuStoryBoardPlayer
@@ -22,6 +23,8 @@ namespace ReOsuStoryBoardPlayer
         public Layout layout;
 
         public int Z = -1;
+
+        public bool IsVisible { get; set; }
 
         #region Transform
 
@@ -86,6 +89,8 @@ namespace ReOsuStoryBoardPlayer
 
         public virtual void Update(float current_time)
         {
+            IsVisible = true;
+
 #if DEBUG
             ExecutedCommands.ForEach(c => c.IsExecuted = false);
             ExecutedCommands.Clear();
@@ -99,8 +104,78 @@ namespace ReOsuStoryBoardPlayer
                 MarkCommandExecuted(command);
 #endif
             }
+
+            if (Color.w == 0 || !CalculateVisible())
+            {
+                IsVisible = false;
+            }
         }
 
+        private const float DEG2RAD = 0.017453292519943295f;
+        private bool CalculateVisible()
+        {
+            if (RenderGroup == null) return false;
+
+            float offset = (StoryboardWindow.CurrentWindow.ViewWidth - StoryboardWindow.SB_WIDTH) * 0.5f;
+
+            float xstart = -offset;
+            float xend = StoryboardWindow.SB_WIDTH + offset;
+
+            float w = RenderGroup.Texture.Width * Scale.x;
+            float h = RenderGroup.Texture.Height * Scale.y;
+            Vector2 anchor = new Vector2(Anchor.x + 0.5f, Anchor.y + 0.5f);
+            anchor.X *= w;
+            anchor.Y *= h;
+
+            Vector2[] vertices = new Vector2[4];
+
+            vertices[0].X = 0;
+            vertices[0].Y = 0;
+
+            vertices[1].X = w;
+            vertices[1].Y = 0;
+
+            vertices[2].X = w;
+            vertices[2].Y = h;
+
+            vertices[3].X = 0;
+            vertices[3].Y = h;
+
+            float rotate = Rotate * DEG2RAD;
+            float cosa = (float)Math.Cos(rotate);
+            float sina = (float)Math.Sin(rotate);
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i].X -= anchor.X;
+                vertices[i].Y -= anchor.Y;
+
+                vertices[i].X = vertices[i].X * cosa + vertices[i].Y * sina;
+                vertices[i].Y = vertices[i].X * sina - vertices[i].Y * cosa;
+
+                vertices[i].X += Postion.x;
+                vertices[i].Y += Postion.y;
+            }
+
+            //构造AABB
+            float minX = float.MaxValue;
+            float minY = float.MaxValue;
+            float maxX = float.MinValue;
+            float maxY = float.MinValue;
+
+            foreach (var v in vertices)
+            {
+                minX = v.X < minX ? v.X : minX;
+                minY = v.Y < minY ? v.Y : minY;
+                maxX = v.X > maxX ? v.X : maxX;
+                maxY = v.Y > maxY ? v.Y : maxY;
+            }
+
+            bool collisionX = maxX >= xstart && xend >= minX;
+            bool collisionY = maxY >= 0 && StoryboardWindow.SB_HEIGHT >= minY;
+
+            return collisionX && collisionY;
+        }
 
 #if DEBUG
         internal List<Command> ExecutedCommands = new List<Command>();

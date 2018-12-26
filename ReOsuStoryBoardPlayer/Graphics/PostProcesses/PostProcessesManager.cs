@@ -53,7 +53,7 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
             _prevFbo = _fbos[0];
             _prevFbo.Bind();
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            _currentIndex = (_currentIndex + 1) % _fbos.Length;
+            _currentIndex = 1;//reset to 1
 
             int sample = 1 << Setting.SsaaLevel;
             GL.Viewport(0, 0, StoryboardWindow.CurrentWindow.Width * sample, StoryboardWindow.CurrentWindow.Height * sample);
