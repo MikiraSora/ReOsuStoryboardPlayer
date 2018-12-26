@@ -53,14 +53,14 @@ namespace ReOsuStoryBoardPlayer
             //init window
             StoryboardWindow window = new StoryboardWindow(Setting.Width, Setting.Height);
             window.LoadStoryboardInstance(instance);
-
+                                                                                        
             player.Play();
             window.Run();
         }
 
         private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\17154 IOSYS feat 3L - Miracle-Hinacle";
+            beatmap_folder=@"G:\SBTest\181957 kors k - Insane Techniques (Extended)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

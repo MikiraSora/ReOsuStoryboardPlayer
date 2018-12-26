@@ -28,14 +28,14 @@ namespace ReOsuStoryBoardPlayer.Parser
                 list=storyboardReader.EnumValues().ToList();
                 list.RemoveAll(c => c==null);
 
+                foreach (var obj in list)
+                    obj.UpdateObjectFrameTime();
+
                 if (Setting.EnableRuntimeOptimzeObjects)
                 {
                     var optimzer = new RuntimeStoryboardOptimzer();
                     optimzer.Optimze(list);
                 }
-
-                foreach (var obj in list)
-                    obj.UpdateObjectFrameTime();
             }
 
             return list;
