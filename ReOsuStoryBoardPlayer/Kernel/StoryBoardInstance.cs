@@ -119,8 +119,8 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
             void Add(Layout layout)
             {
-                result.AddRange(osb_list.Where(x=>x.layout==layout));//先加osb
-                result.AddRange(osu_list.Where(x => x.layout==layout));//后加osu覆盖
+                result.AddRange(osu_list.Where(x => x.layout==layout));//先加osu
+                result.AddRange(osb_list.Where(x=>x.layout==layout));//后加osb覆盖
             }
         }
 
