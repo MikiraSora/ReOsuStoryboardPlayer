@@ -16,8 +16,6 @@ namespace ReOsuStoryBoardPlayer
 
         public int FrameStartTime, FrameEndTime;
 
-        public bool markDone = false;
-
         public SpriteInstanceGroup RenderGroup;
 
         public Layout layout;

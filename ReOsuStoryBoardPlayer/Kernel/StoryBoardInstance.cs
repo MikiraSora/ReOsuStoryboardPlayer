@@ -132,8 +132,6 @@ namespace ReOsuStoryBoardPlayer.Kernel
             UpdatingStoryboardObjects.Clear();
 
             CurrentScanNode=StoryboardObjectList.First;
-
-            StoryboardObjectList.AsParallel().ForAll((obj) => obj.markDone=false);
         }
 
         private bool Scan(float current_time)
@@ -148,8 +146,7 @@ namespace ReOsuStoryBoardPlayer.Kernel
                     CurrentScanNode=CurrentScanNode.Next;
                     continue;
                 }
-
-                obj.markDone=false;
+                
                 UpdatingStoryboardObjects.Add(obj);
 
                 LastAddNode=CurrentScanNode;

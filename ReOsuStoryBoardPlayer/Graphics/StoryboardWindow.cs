@@ -259,6 +259,8 @@ namespace ReOsuStoryBoardPlayer
 
             instance.Flush();
 
+            _timestamp=0;
+
             ready=true;
         }
 

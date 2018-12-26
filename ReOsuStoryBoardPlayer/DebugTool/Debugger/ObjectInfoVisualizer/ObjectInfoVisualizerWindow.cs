@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,6 +26,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         public void UpdateCurrentStoryboardObject()
         {
+            var time = MusicPlayerManager.ActivityPlayer.CurrentTime;
+
             if (SelectObject != null)
             {
                 if (SelectObject != last_obj)
@@ -83,7 +86,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 ScaleLabel.Text = SelectObject.Scale.ToString();
 
                 ParameterLabel.Text = $"{(SelectObject.IsAdditive ? "A" : " ")}{(SelectObject.IsHorizonFlip ? "H" : " ")}{(SelectObject.IsVerticalFlip ? "V" : " ")}";
-                MarkdoneLabel.Text = SelectObject.markDone.ToString();
+                MarkdoneLabel.Text = (SelectObject.FrameStartTime<=time&&time<=SelectObject.FrameEndTime).ToString();
 
                 UpdateCommandNode();
             }

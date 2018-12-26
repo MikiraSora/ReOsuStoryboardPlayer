@@ -56,6 +56,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         public void ApplyObjectsFlush()
         {
+            var time = MusicPlayerManager.ActivityPlayer?.CurrentTime??0;
+
             foreach (ListViewItem item in listView1.Items)
                 ObjectPool<ListViewItem>.Instance.PutObject(item);
 
@@ -67,7 +69,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
                 .Select(o => {
                     ListViewItem item = ObjectPool<ListViewItem>.Instance.GetObject();
 
-                    item.ForeColor=o.markDone ? Color.Gray : Color.Black;
+                    item.ForeColor=(o.FrameStartTime<=time&&time<=o.FrameEndTime) ? Color.Gray : Color.Black;
                     item.Text=o.ToString();
                     item.SubItems.Add(o.Z.ToString());
 
