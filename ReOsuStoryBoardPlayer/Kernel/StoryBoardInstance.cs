@@ -97,6 +97,7 @@ namespace ReOsuStoryBoardPlayer.Kernel
             #endregion Load and Parse osb/osu file
 
             var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
+
             UpdatingStoryboardObjects=new List<StoryBoardObject>(limit_update_count);
 
             void AdjustZ(List<StoryBoardObject> list, int base_z)
@@ -150,12 +151,17 @@ namespace ReOsuStoryBoardPlayer.Kernel
             while (CurrentScanNode!=null&&CurrentScanNode.Value.FrameStartTime<=current_time/* && current_time <= CurrentScanNode.Value.FrameEndTime*/ )
             {
                 var obj = CurrentScanNode.Value;
+
                 if (current_time>obj.FrameEndTime)
                 {
                     CurrentScanNode=CurrentScanNode.Next;
                     continue;
                 }
-                
+
+                //重置物件变换初始值
+                obj.ResetTransform();
+
+                //添加到更新列表
                 UpdatingStoryboardObjects.Add(obj);
 
                 LastAddNode=CurrentScanNode;
@@ -168,11 +174,11 @@ namespace ReOsuStoryBoardPlayer.Kernel
                 CurrentScanNode=LastAddNode.Next;
             }
 
-            return /*isAdd*/LastAddNode!=null;
+            return LastAddNode!=null;
         }
 
         /// <summary>
-        /// 更新物件，如果逆向执行必须先Flush()后Update()
+        /// 更新物件，因为是增量更新维护，所以current_time递减或变小时，必须先Flush()后Update().
         /// </summary>
         /// <param name="current_time"></param>
         public void Update(float current_time)

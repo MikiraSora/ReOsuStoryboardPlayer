@@ -16,6 +16,11 @@ namespace ReOsuStoryBoardPlayer
 
         public bool FromOsbFile;
 
+        /// <summary>
+        /// 钦定这个物件的最初变换值，通过委托链可以覆盖初始值
+        /// </summary>
+        public Action<StoryBoardObject> BaseTransformResetAction;
+
         public int FrameStartTime, FrameEndTime;
 
         public SpriteInstanceGroup RenderGroup;
@@ -28,15 +33,15 @@ namespace ReOsuStoryBoardPlayer
 
         #region Transform
 
-        public Vector Postion = new Vector(320, 240), Scale = new Vector(1, 1);
+        public Vector Postion, Scale;
 
-        public ByteVec4 Color = new ByteVec4(255,255,255,255);
+        public ByteVec4 Color;
 
-        public float Rotate = 0;
+        public float Rotate;
 
         public HalfVector Anchor = new HalfVector(0f, 0f);
 
-        public bool IsAdditive = false, IsHorizonFlip = false, IsVerticalFlip = false;
+        public bool IsAdditive, IsHorizonFlip, IsVerticalFlip;
 
         #endregion Transform
 
@@ -90,6 +95,25 @@ namespace ReOsuStoryBoardPlayer
         }
 
         #endregion
+
+        public StoryBoardObject()
+        {
+            BaseTransformResetAction = (obj) =>
+           {
+               obj.Postion=new Vector(320, 240);
+               obj.Scale=new Vector(1, 1);
+
+               obj.Color=new ByteVec4(255, 255, 255, 255);
+
+               obj.Rotate=0;
+
+               obj.IsAdditive=false;
+               obj.IsHorizonFlip=false;
+               obj.IsVerticalFlip=false;
+           };
+        }
+
+        public void ResetTransform() => BaseTransformResetAction(this);
 
         public virtual void Update(float current_time)
         {

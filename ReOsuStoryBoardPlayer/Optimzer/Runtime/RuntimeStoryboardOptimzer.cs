@@ -14,7 +14,6 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         public override void Optimze(IEnumerable<StoryBoardObject> storyboard_objects)
         {
             int effect_count = 0;
-
             using (StopwatchRun.Count(() => "TrimFrameTime() optimze count:"+effect_count))
                 TrimFrameTime(storyboard_objects, ref effect_count);
 
@@ -22,16 +21,25 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             using (StopwatchRun.Count(() => "RemoveUnusedCommand() optimze count:"+effect_count))
                 RemoveUnusedCommand(storyboard_objects, ref effect_count);
             
-            /*
             effect_count=0;
             using (StopwatchRun.Count(() => "TrimInitalEffect() optimze count:"+effect_count))
                 TrimInitalEffect(storyboard_objects, ref effect_count);
-                */
         }
 
         /// <summary>
         /// 计算Fade时间轴，优化物件的FrameStartTime/EndTime，避免不必要的计算
         /// 点名批评 -> 181957
+        /// 
+        ///           
+        ///Sprite,Foreground,Centre,"sb\light.png",320,240
+        /// S,0,0,,0.22        <----Non-optimze obj.FrameStartTime
+        /// MX,0,0,,278
+        /// F,0,126739,,0            <----Kill by Optimzer
+        /// F,0,208016,,0.7,1           <----Actual obj.FrameStartTime
+        /// C,0,208016,,255,255,255
+        /// P,0,208016,,A
+        /// MY,0,208016,209286,520,-40   <----Actual obj.FrameEndTime
+        ///
         /// </summary>
         /// <param name="storyboard_objects"></param>
         /// <param name="effect_count"></param>
@@ -47,10 +55,31 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
                 var first_fade = fade_list.First() as FadeCommand;
 
-                if (first_fade!=null&&first_fade.StartValue==0)
+                if (first_fade!=null)
                 {
-                    obj.FrameStartTime=first_fade.StartTime;
-                    Suggest(obj,$"FrameTime可优化成{first_fade.StartTime}.");
+                    FadeCommand front_fade = null;
+
+
+                    if ((first_fade.EndTime==0 || first_fade.StartTime==first_fade.EndTime)
+                        &&first_fade.EndValue==0
+                        &&fade_list.Count>1)
+                    {
+                        if (fade_list.Skip(1).First() is FadeCommand second_fade)
+                        {
+                            front_fade=second_fade;
+                        }
+                    }
+                    else if (first_fade.StartValue==0)
+                    {
+                        front_fade=first_fade;
+                    }
+
+                    if (front_fade!=null&&front_fade.StartTime<=obj.FrameStartTime)
+                    {
+                        obj.FrameStartTime=front_fade.StartTime;
+                        Suggest(obj, $"FrameTime可优化成{front_fade.StartTime}");
+                        effect_count++;
+                    }
                 }
 
                 var last_fade = fade_list.Last() as FadeCommand;
@@ -59,9 +88,8 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 {
                     obj.FrameEndTime=last_fade.EndTime;
                     Suggest(obj,$"EndTime可优化成{first_fade.StartTime}.");
+                    effect_count++;
                 }
-
-                effect_count++;
             }
         }
 
@@ -123,6 +151,16 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         /// <summary>
         /// 将时间轴单个立即命令直接应用到物件上，减少物件执行命令频率
         /// 点名批评 -> 181957 
+        /// 
+        ///Sprite,Foreground,Centre,"sb\light.png",320,240
+        /// S,0,0,,0.22        <---- Set as Object.Scale inital value by Optimzer
+        /// MX,0,0,,278        <---- Set as Object.Position.X inital value by Optimzer
+        /// F,0,126739,,0            
+        /// F,0,208016,,0.7,1           
+        /// C,0,208016,,255,255,255
+        /// P,0,208016,,A             <---- Set as Object.IsAdditive value by Optimzer
+        /// MY,0,208016,209286,520,-40   
+        ///
         /// </summary>
         /// <param name="storyboard_objects"></param>
         /// <param name="effect_count"></param>
@@ -136,21 +174,25 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 {
                     Command cmd = timeline.FirstOrDefault();
 
-                    if (cmd.StartTime==cmd.EndTime && 
-                        ((cmd is ValueCommand vcmd)&&(vcmd.GetEndValue()==vcmd.GetStartValue())||
+                    if (cmd.EndTime<=obj.FrameStartTime
+                        &&cmd.StartTime==cmd.EndTime 
+                        &&((cmd is ValueCommand vcmd)&&(vcmd.GetEndValue()==vcmd.GetStartValue())||
                         cmd is StateCommand))
                     {
                         /*
                          * 时间或者初始变化值 都相同 的命令可以直接应用到物件上
                          */
                         timeline.Remove(cmd);
-                        
-                        cmd.Execute(obj, cmd.EndTime + 1);
+
+                        obj.BaseTransformResetAction += (target) => {
+                            cmd.Execute(target, cmd.EndTime+1);
+                        };
 
                         effect_count++;
                     }
                 }
 
+                //去掉没有命令的时间轴
                 foreach (Event e in events)
                     if (obj.CommandMap.TryGetValue(e, out var timeline)&&timeline.Count==0)
                     {

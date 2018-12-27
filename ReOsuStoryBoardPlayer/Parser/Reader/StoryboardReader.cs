@@ -87,7 +87,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 obj.ImageFilePath = data_arr[3].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
-                obj.Postion = new Vector(data_arr[4].ToSigle(), data_arr[5].ToSigle());
+                obj.BaseTransformResetAction+=(x) => x.Postion=new Vector(data_arr[4].ToSigle(), data_arr[5].ToSigle());
 
                 if (obj is StoryboardAnimation animation)
                     ParseStoryboardAnimation(animation, data_arr);
@@ -99,8 +99,8 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 var position = data_arr.Length > 4 ? new Vector(data_arr[3].ToSigle(), data_arr[4].ToSigle()) : Vector.Zero;
 
-                if (position != Vector.One)
-                    obj.Postion = position + new Vector(320, 240);
+                if (position!=Vector.One)
+                    obj.BaseTransformResetAction+=(x) => x.Postion=position+new Vector(320, 240);
             }
 
             return obj;
