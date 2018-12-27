@@ -87,7 +87,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 if (last_fade!=null&&last_fade.EndValue==0)
                 {
                     obj.FrameEndTime=last_fade.EndTime;
-                    Suggest(obj,$"EndTime可优化成{first_fade.StartTime}.");
+                    Suggest(obj,$"EndTime可优化成{last_fade.StartTime}.");
                     effect_count++;
                 }
             }

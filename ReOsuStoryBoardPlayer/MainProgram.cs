@@ -60,7 +60,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\381480 Halozy - Itsuka Furu Ame, Sakura";
+            beatmap_folder=@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
