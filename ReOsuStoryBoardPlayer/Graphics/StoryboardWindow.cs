@@ -25,7 +25,7 @@ namespace ReOsuStoryBoardPlayer
     {
         #region Field&Property
 
-        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2}";
+        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2} Objects: {8}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
         public float ViewWidth { get; private set; }
@@ -367,7 +367,7 @@ namespace ReOsuStoryBoardPlayer
                     _update_stopwatch.ElapsedMilliseconds,
                     _render_stopwatch.ElapsedMilliseconds,
                     (total_time - _update_stopwatch.ElapsedMilliseconds - _render_stopwatch.ElapsedMilliseconds)
-                    , RenderFrequency);
+                    , RenderFrequency,StoryBoardInstance?.UpdatingStoryboardObjects?.Count??0);
                 title_update_timer = 0;
             }
 
