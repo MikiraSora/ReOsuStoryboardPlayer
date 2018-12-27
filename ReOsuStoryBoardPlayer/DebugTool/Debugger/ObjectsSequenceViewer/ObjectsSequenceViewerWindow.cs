@@ -69,7 +69,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
                 .Select(o => {
                     ListViewItem item = ObjectPool<ListViewItem>.Instance.GetObject();
 
-                    item.ForeColor=(o.FrameStartTime<=time&&time<=o.FrameEndTime) ? Color.Gray : Color.Black;
+                    item.ForeColor=(o.FrameStartTime<=time&&time<=o.FrameEndTime) ? Color.Black : Color.Gray;
                     item.Text=o.ToString();
                     item.SubItems.Add(o.Z.ToString());
 

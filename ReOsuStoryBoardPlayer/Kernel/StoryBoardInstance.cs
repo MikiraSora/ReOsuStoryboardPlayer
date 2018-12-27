@@ -120,7 +120,11 @@ namespace ReOsuStoryBoardPlayer.Kernel
             void Add(Layout layout)
             {
                 result.AddRange(osu_list.Where(x => x.layout==layout));//先加osu
-                result.AddRange(osb_list.Where(x=>x.layout==layout));//后加osb覆盖
+                result.AddRange(osb_list.Where(x=>x.layout==layout).Select(x =>
+                {
+                    x.FromOsbFile=true;
+                    return x;
+                }));//后加osb覆盖
             }
         }
 

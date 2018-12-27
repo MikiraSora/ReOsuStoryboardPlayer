@@ -14,6 +14,8 @@ namespace ReOsuStoryBoardPlayer
 
         public string ImageFilePath;
 
+        public bool FromOsbFile;
+
         public int FrameStartTime, FrameEndTime;
 
         public SpriteInstanceGroup RenderGroup;
@@ -55,7 +57,8 @@ namespace ReOsuStoryBoardPlayer
 
         private void AddLoopCommand(LoopCommand loop_command)
         {
-            if (Setting.EnableLoopCommandExpand)
+            //todo: 修复798443 循环执行错误
+            if (Setting.EnableLoopCommandExpand||(loop_command.LoopCount==1 && Setting.EnableRuntimeOptimzeObjects))
             {
                 //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
                 foreach (var cmd in loop_command.SubCommandExpand())
@@ -206,7 +209,7 @@ namespace ReOsuStoryBoardPlayer
 
         public long FileLine { get; set; }
 
-        public override string ToString() => $"line {FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
+        public override string ToString() => $"line {(FromOsbFile?"osb":"osu")}:{FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
     }
 }
  
