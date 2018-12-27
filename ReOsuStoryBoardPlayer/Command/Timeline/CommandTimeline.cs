@@ -15,11 +15,11 @@ namespace ReOsuStoryBoardPlayer.Commands
         public new void Add(Command command)
         {
             //check overlay
-            if (Count>1)
+            if (Count>=1)
             {
                 var prev_cmd = this.Last();
 
-                if (command.EndTime<prev_cmd.EndTime||command.StartTime<prev_cmd.EndTime)
+                if (command.EndTime<=prev_cmd.EndTime||command.StartTime<prev_cmd.EndTime)
                     overlay=true;
             }
 
