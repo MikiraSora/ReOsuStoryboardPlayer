@@ -25,7 +25,7 @@ namespace ReOsuStoryBoardPlayer
         private static ConsoleColor[] colors =
         {
             ConsoleColor.Yellow,ConsoleColor.Black,//Warn
-            ConsoleColor.Red,ConsoleColor.Black,//Error
+            ConsoleColor.Yellow,ConsoleColor.Red,//Error
             ConsoleColor.White,ConsoleColor.Black,//Debug
             ConsoleColor.Green,ConsoleColor.Black//User
         };

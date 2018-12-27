@@ -22,9 +22,11 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             using (StopwatchRun.Count(() => "RemoveUnusedCommand() optimze count:"+effect_count))
                 RemoveUnusedCommand(storyboard_objects, ref effect_count);
             
+            /*
             effect_count=0;
             using (StopwatchRun.Count(() => "TrimInitalEffect() optimze count:"+effect_count))
                 TrimInitalEffect(storyboard_objects, ref effect_count);
+                */
         }
 
         /// <summary>
@@ -46,12 +48,18 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 var first_fade = fade_list.First() as FadeCommand;
 
                 if (first_fade!=null&&first_fade.StartValue==0)
+                {
                     obj.FrameStartTime=first_fade.StartTime;
+                    Suggest(obj,$"FrameTime可优化成{first_fade.StartTime}.");
+                }
 
                 var last_fade = fade_list.Last() as FadeCommand;
 
                 if (last_fade!=null&&last_fade.EndValue==0)
+                {
                     obj.FrameEndTime=last_fade.EndTime;
+                    Suggest(obj,$"EndTime可优化成{first_fade.StartTime}.");
+                }
 
                 effect_count++;
             }
@@ -191,6 +199,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                                 timeline.Remove(cmd);
 
                                 Log.Debug($"Remove unused command ({cmd}) in ({obj})，compare with ({itor})");
+                                Suggest(cmd, $"此命令被\"{itor}\"命令覆盖而不被执行到，可删除");
 
                                 effect_count++;
                             }

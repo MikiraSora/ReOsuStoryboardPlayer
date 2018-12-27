@@ -39,7 +39,6 @@ namespace ReOsuStoryBoardPlayer.Parser
             }
 
             return list;
-
         }
     }
 }

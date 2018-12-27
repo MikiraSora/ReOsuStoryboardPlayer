@@ -60,6 +60,8 @@ namespace ReOsuStoryBoardPlayer
 
         public static int SsaaLevel { get; set; } = 0;
 
+        public static bool ShowProfileSuggest { get; set; } = false;
+
         #region Extendsion
 
         public static void PrintSettings()

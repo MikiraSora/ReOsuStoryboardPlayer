@@ -133,15 +133,23 @@ namespace ReOsuStoryBoardPlayer
                     DebuggerManager.AddDebugger(new CLIControllerDebugger());
                 }
 
-                //额外功能
+                //额外功能 - 提取解析好变量的文本
                 if (args.TryGetArg(out var parse_type, "parse"))
                 {
                     var parse_osb = parse_type=="osb";
                     args.TryGetArg(out var output_path, "parse_output");
                     SerializeDecodeStoryboardContent(beatmap_folder, parse_osb, output_path);
                 }
+
+                //额外功能 - 输出优化提示
+                if (args.TryGetSwitch("show_profile_suggest"))
+                {
+                    Setting.ShowProfileSuggest=true;
+                }
             }
         }
+
+
 
         #region ProgramCommands
 

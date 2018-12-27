@@ -20,7 +20,12 @@ namespace ReOsuStoryBoardPlayer.Commands
                 var prev_cmd = this.Last();
 
                 if (command.EndTime<=prev_cmd.EndTime||command.StartTime<prev_cmd.EndTime)
+                {
                     overlay=true;
+
+                    if (Setting.ShowProfileSuggest&&(command.StartTime!=command.EndTime))
+                        Log.User($"{command} is conflict with {prev_cmd}");
+                }
             }
 
             base.Add(command);

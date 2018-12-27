@@ -89,6 +89,11 @@ namespace ReOsuStoryBoardPlayer.Kernel
                 CurrentScanNode=StoryboardObjectList.First;
             }
 
+            if (Setting.ShowProfileSuggest)
+            {
+                MainProgram.Exit();
+            }
+
             #endregion Load and Parse osb/osu file
 
             var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
