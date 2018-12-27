@@ -207,32 +207,22 @@ namespace ReOsuStoryBoardPlayer
             unsafe
             {
                 //Anchor write
-                fixed (byte* ptr = &PostData[_currentPostBaseIndex + 0])
+                fixed (byte* ptr = &PostData[_currentPostBaseIndex])
                 {
-                    Half* p = (Half*)ptr;
-                    p[0] = anchor.x;
-                    p[1] = anchor.y;
-                }
+                    //anchor
+                    int* hpv = (int*)(ptr+0);
+                    *hpv = *(int*)&anchor;
 
-                //Color write
-                fixed (byte* ptr = &PostData[_currentPostBaseIndex + 4])
-                {
-                    int* p = (int*) ptr;
-                    *p = *(int*)&color;
-                }
+                    //color
+                    int* ip = (int*)(ptr+4);
+                    *ip = *(int*)&color;
 
-                //flip write
-                fixed (byte* ptr = &PostData[_currentPostBaseIndex + 8])
-                {
-                    Half* p = (Half*) ptr;
-                    p[0] = horizon_flip ? HalfNegativeOne : HalfOne;
-                    p[1] = vertical_flip ? HalfNegativeOne : HalfOne;
-                }
+                    //flip write
+                    Half* hp = (Half*)(ptr+8);
+                    hp[0] = horizon_flip ? HalfNegativeOne : HalfOne;
+                    hp[1] = vertical_flip ? HalfNegativeOne : HalfOne;
 
-                //ModelMatrix Write 
-                fixed (void* ptr = &PostData[_currentPostBaseIndex + 12])
-                {
-                    Unsafe.CopyBlock(ptr, &model.Row0.X, 2 * 3 * sizeof(float));
+                    Unsafe.CopyBlock(ptr+12, &model.Row0.X, 2 * 3 * sizeof(float));
                 }
             }
 
@@ -252,7 +242,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (_window_resized)
             {
-                var VP = Projection * (View);
+                var VP = Projection * View;
                 s_shader.PassUniform("ViewProjection", VP);
                 _window_resized = false;
             }
