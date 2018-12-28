@@ -233,7 +233,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
                             /*
                              *line n-1 (itor): |--------------------------|
-                             *line n   (cmd) :             |--------------|       <--- Kill   
+                             *line n   (cmd) :             |--------------|       <--- Kill , biatch
                              */
                             if (cmd.EndTime<=itor.EndTime
                                 && cmd.StartTime>=itor.StartTime
