@@ -214,36 +214,40 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             {
                 foreach (var timeline in obj.CommandMap.Values)
                 {
-                    for (int i = 0; i<timeline.Count; i++)
+                    for (int i = timeline.Count-1; i>=0; i--)
                     {
-                        var cmd = timeline[i];
+                        var cmd = timeline[i]; //待检查的命令
 
                         //立即命令就跳过
                         if (cmd.StartTime==cmd.EndTime)
                             continue;
 
-                        for (int x = 0; x<timeline.Count; x++)
+                        for (int x = i; x>=0; x--)
                         {
-                            var itor = timeline[x];
-
-                            if (itor.StartTime>cmd.StartTime)
-                                break;
+                            var itor = timeline[x]; //遍历的命令
 
                             /*
-                              |---------|=======|---------|
+                            if (itor.StartTime>cmd.StartTime)
+                                break;
+                                */
+
+                            /*
+                             *line n-1 (itor): |--------------------------|
+                             *line n   (cmd) :             |--------------|       <--- Kill   
                              */
-                            if (itor.StartTime<=cmd.StartTime
-                                && cmd.EndTime<=itor.EndTime
-                                && itor!=cmd
-                                && itor.RelativeLine>cmd.RelativeLine
+                            if (cmd.EndTime<=itor.EndTime
+                                && cmd.StartTime>=itor.StartTime
+                                && itor.RelativeLine<cmd.RelativeLine
                                 )
                             {
                                 timeline.Remove(cmd);
 
                                 Log.Debug($"Remove unused command ({cmd}) in ({obj})，compare with ({itor})");
                                 Suggest(cmd, $"此命令被\"{itor}\"命令覆盖而不被执行到，可删除");
-
                                 effect_count++;
+
+                                //已被制裁
+                                break;
                             }
                         }
                     }
