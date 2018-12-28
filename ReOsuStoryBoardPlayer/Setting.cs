@@ -37,6 +37,7 @@ namespace ReOsuStoryBoardPlayer
         public static bool EnableFullScreen { get; set; } = false;
 
         public static int Width { get; set; } = 854;
+
         public static int Height { get; set; } = 480;
 
         /// <summary>
@@ -61,6 +62,8 @@ namespace ReOsuStoryBoardPlayer
         public static int SsaaLevel { get; set; } = 0;
 
         public static bool ShowProfileSuggest { get; set; } = false;
+
+        public static bool DebugMode { get; set; } = false;
 
         #region Extendsion
 

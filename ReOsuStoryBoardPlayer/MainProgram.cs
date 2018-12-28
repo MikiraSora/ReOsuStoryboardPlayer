@@ -23,21 +23,9 @@ namespace ReOsuStoryBoardPlayer
 
             ParseProgramCommands(argv, out var beatmap_folder);
 
-            Setting.PrintSettings();
+            EnvironmentHelper.SetupEnvironment();
 
-            //init control panel and debuggers
-            if (Setting.MiniMode)
-            {
-                DebuggerManager.AddDebugger(new CLIControllerDebugger());
-            }
-            else
-            {
-#if DEBUG
-                DebuggerHelper.SetupDebugEnvironment();
-#else
-                DebuggerHelper.SetupReleaseEnvironment();
-#endif
-            }
+            Setting.PrintSettings();
 
             var info = BeatmapFolderInfo.Parse(beatmap_folder);
 
@@ -126,6 +114,9 @@ namespace ReOsuStoryBoardPlayer
 
                 if (args.Switches.Any(k => k=="disable_hp_fps_limit"))
                     Setting.EnableHighPrecisionFPSLimit=false;
+                
+                if (args.Switches.Any(k => k=="debug"))
+                    Setting.DebugMode=true;
 
                 if (args.Switches.Any(k => k=="cli"))
                 {
