@@ -108,6 +108,18 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
 
         private void AudioEncoding()
         {
+            //skip start_time if IsExplicitTimeRange=true
+            if (option.IsExplicitTimeRange)
+            {
+                while (audio_reader.NextFrame(audio_frame, audio_decoder.StreamIndex))
+                {
+                    pos=audio_reader.Position.TotalMilliseconds;
+
+                    if (pos>=option.StartTime)
+                        break;
+                }
+            }
+
             while (writer!=null)
             {
                 if (pos>=MusicPlayerManager.ActivityPlayer.CurrentTime)
