@@ -1,4 +1,6 @@
-﻿using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,37 +11,35 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Player
 {
     public class EncodingProcessPlayer : PlayerBase
     {
-        #region NOT SUPPORT
-
         public override float Volume { get; set; }
 
         public override uint Length => length;
 
-        public override bool IsPlaying => CurrentTime<=Length;
+        public override bool IsPlaying => is_playing;
 
         public override float PlaybackSpeed { get => 1; set { } }
 
+        bool is_playing = false;
+
         public override void Jump(float time)
         {
-
+            current_time=Math.Min(time,Length);
         }
 
         public override void Pause()
         {
-
+            is_playing=false;
         }
 
         public override void Play()
         {
-
+            is_playing=true;
         }
 
         public override void Stop()
         {
-
+            DebuggerManager.GetDebugger<EncodingKernel>().Abort();
         }
-
-        #endregion
 
         float time_step;
         float current_time;
@@ -52,7 +52,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Player
             this.length=length;
         }
 
-        public float GetNextFrameTime() => current_time+=time_step;
+        public float GetNextFrameTime() => current_time+=is_playing?time_step:0;
 
         public override float CurrentTime => current_time;
     }

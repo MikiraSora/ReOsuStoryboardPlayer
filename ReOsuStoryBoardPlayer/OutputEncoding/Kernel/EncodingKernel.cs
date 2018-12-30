@@ -46,13 +46,13 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
 
             Log.User($"Start encoding....");
 
-            /*
-            thread=new Thread(Run);
-            thread.Start();
-            */
-
             buffer=new byte[option.Width*option.Height*4];
             is_running=true;
+
+            if (option.IsExplicitTimeRange)
+            {
+                time_control.Jump(option.StartTime);
+            }
 
             DebuggerManager.AfterRender+=OnAfterRender;
             prev_time=time_control.CurrentTime;
@@ -61,17 +61,19 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
         public void OnAfterRender()
         {
             time_control.GetNextFrameTime();
-
-            if ((!time_control.IsPlaying)&&is_running)
+            
+            //超出时间，结束
+            if (time_control.CurrentTime >= (option.IsExplicitTimeRange ? Math.Min(time_control.Length, option.EndTime) : time_control.Length))
             {
-                //过时，关闭
-                Writer.OnFinish();
-                is_running=false;
+                Abort();
                 return;
             }
 
-            if (!CheckCondition())
+            //时间轴不变，跳过
+            if (prev_time>=time_control.CurrentTime)
                 return;
+
+            prev_time=time_control.CurrentTime;
 
             Log.Debug($"Process time : {time_control.CurrentTime} ({(time_control.CurrentTime/time_control.Length*100).ToString("F2")})");
        
@@ -95,16 +97,13 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
             Writer.OnNextFrame(buffer, option.Width, option.Height);
         }
 
-        private bool CheckCondition()
-        {
-            return time_control.IsPlaying&&prev_time<time_control.CurrentTime;
-        }
-
         public void Abort()
         {
             if (is_running)
             {
-                Writer.OnAbort();
+                Writer.OnFinish();
+                is_running=false;
+                DebuggerManager.AfterRender-=OnAfterRender;
                 Log.User($"Encoding abort");
             }
         }

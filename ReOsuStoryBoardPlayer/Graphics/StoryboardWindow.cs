@@ -290,6 +290,10 @@ namespace ReOsuStoryBoardPlayer
         {
             base.OnClosed(e);
 
+            Clean();
+
+            DebuggerManager.Term();
+
             Environment.Exit(0);
         }
         

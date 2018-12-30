@@ -67,6 +67,14 @@ namespace ReOsuStoryBoardPlayer.DebugTool
                 debugger.Update();
         }
 
+        public static void Term()
+        {
+            while (register_debuggers.Count!=0)
+            {
+                register_debuggers.FirstOrDefault()?.UninstallSelf();
+            }
+        }
+
         #region Event
 
         public static event Action<int,int,MouseInput> MouseClick;

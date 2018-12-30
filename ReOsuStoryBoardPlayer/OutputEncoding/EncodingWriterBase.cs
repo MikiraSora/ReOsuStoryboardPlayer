@@ -13,7 +13,6 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
 
         public abstract void OnStart(EncoderOption option);
         public abstract void OnFinish();
-        public abstract void OnAbort();
         public unsafe abstract void OnNextFrame(byte[] buffer,int width,int height);
     }
 }
