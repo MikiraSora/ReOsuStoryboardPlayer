@@ -28,34 +28,19 @@ namespace ReOsuStoryBoardPlayer
 
             Setting.PrintSettings();
 
-            //init control panel and debuggers
-            if (Setting.MiniMode)
-            {
-                DebuggerManager.AddDebugger(new CLIControllerDebugger());
-            }
-            else
-            {
-#if DEBUG
-                DebuggerHelper.SetupDebugEnvironment();
-#else
-                DebuggerHelper.SetupReleaseEnvironment();
-#endif
-            }
-
-            var info = BeatmapFolderInfo.Parse(beatmap_folder);
-
-            //init audio
-            var player = new MusicPlayer();
-            player.Load(info.audio_file_path);
-
-            MusicPlayerManager.ApplyPlayer(player);
-
-            //load storyboard objects
-            var instance = new StoryBoardInstance(info);
-
             //init window
             StoryboardWindow window = new StoryboardWindow(Setting.Width, Setting.Height);
-            window.LoadStoryboardInstance(instance);
+
+            if (Directory.Exists(beatmap_folder))
+            {
+                var info = BeatmapFolderInfo.Parse(beatmap_folder);
+                var instance = new StoryBoardInstance(info);
+                window.LoadStoryboardInstance(instance);
+                
+                var player = new MusicPlayer();
+                player.Load(info.audio_file_path);
+                MusicPlayerManager.ApplyPlayer(player);
+            }
 
             if (Setting.EncodingEnvironment)
             {
@@ -69,7 +54,7 @@ namespace ReOsuStoryBoardPlayer
                 encoding_kernel.Start();
             }
 
-            MusicPlayerManager.ActivityPlayer.Play();
+            MusicPlayerManager.ActivityPlayer?.Play();
             window.Run();
         }
 
