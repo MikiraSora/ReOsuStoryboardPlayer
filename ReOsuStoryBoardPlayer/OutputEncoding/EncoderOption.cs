@@ -38,7 +38,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
 
             BitRate=(args.TryGetArg(out var bit_rate, "encoding_bitrate") ? bit_rate.ToInt() : 12_0000)*1024;
 
-            EncoderName=args.TryGetArg(out var encoder_name, "encoding_encoder_name") ? encoder_name : "h264";
+            EncoderName=args.TryGetArg(out var encoder_name, "encoding_encoder_name") ? encoder_name : "libx264";
             OutputPath=args.TryGetArg(out var output_path, "encoding_output_path") ? output_path : "output.mp4";
         }
     }

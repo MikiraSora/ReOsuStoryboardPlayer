@@ -81,7 +81,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
             var video_format = new VideoFormat(option.Width, option.Height, AVPixelFormat.Bgra);
             var video_param = new VideoEncoderParameters() { FrameRate=new Fraction(option.FPS), BitRate=option.BitRate };
 
-            video_encoder=new VideoEncoder("h264_nvenc", video_format, video_param);
+            video_encoder=new VideoEncoder(option.EncoderName, video_format, video_param);
 
             #endregion
 
@@ -109,8 +109,13 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
         private void AudioEncoding()
         {
             //skip start_time if IsExplicitTimeRange=true
+            int calc_start_time=0, calc_end_time= (int)MusicPlayerManager.ActivityPlayer.Length;
+
             if (option.IsExplicitTimeRange)
             {
+                calc_end_time=option.EndTime;
+                calc_start_time=option.StartTime;
+
                 while (audio_reader.NextFrame(audio_frame, audio_decoder.StreamIndex))
                 {
                     pos=audio_reader.Position.TotalMilliseconds;
