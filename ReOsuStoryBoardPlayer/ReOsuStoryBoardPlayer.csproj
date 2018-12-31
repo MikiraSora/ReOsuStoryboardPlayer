@@ -243,8 +243,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
-      <Project>{ab4caba1-06e4-4a32-8a15-1fbe20ed5bc6}</Project>
+    <ProjectReference Include="..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
+      <Project>{AB4CABA1-06E4-4A32-8A15-1FBE20ED5BC6}</Project>
       <Name>SaarFFmpeg</Name>
     </ProjectReference>
   </ItemGroup>
