@@ -26,8 +26,10 @@ namespace ReOsuStoryBoardPlayer
 
             var args=ParseProgramCommands(argv, out var beatmap_folder);
 
-            Setting.PrintSettings();
+            EnvironmentHelper.SetupEnvironment();
 
+            Setting.PrintSettings();
+            
             //init window
             StoryboardWindow window = new StoryboardWindow(Setting.Width, Setting.Height);
 
@@ -60,7 +62,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\798443 Ahiru - HEARTBEAT (USAO Remix)";
+            beatmap_folder=@"G:\SBTest\381480 Halozy - Itsuka Furu Ame, Sakura";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -126,6 +128,9 @@ namespace ReOsuStoryBoardPlayer
 
                 if (args.Switches.Any(k => k=="disable_hp_fps_limit"))
                     Setting.EnableHighPrecisionFPSLimit=false;
+                
+                if (args.Switches.Any(k => k=="debug"))
+                    Setting.DebugMode=true;
 
                 if (args.Switches.Any(k => k=="cli"))
                 {

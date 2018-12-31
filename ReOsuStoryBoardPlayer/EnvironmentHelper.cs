@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
+﻿using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
@@ -9,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReOsuStoryBoardPlayer.DebugTool
+namespace ReOsuStoryBoardPlayer
 {
-    public static class DebuggerHelper
+    public static class EnvironmentHelper
     {
         private static void SetupCommonEnvironment()
         {
@@ -19,7 +20,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool
             DebuggerManager.AddDebugger(new InputControllerDebugger());
         }
 
-        public static void SetupDebugEnvironment()
+        private static void SetupDebugEnvironment()
         {
             Log.AbleDebugLog=true;
 
@@ -29,9 +30,29 @@ namespace ReOsuStoryBoardPlayer.DebugTool
             DebuggerManager.AddDebugger(new ObjectsSequenceViewerDebugger());
         }
 
-        public static void SetupReleaseEnvironment()
+        private static void SetupReleaseEnvironment()
         {
             SetupCommonEnvironment();
+        }
+
+        private static void SetupMiniEnvironment()
+        {
+            DebuggerManager.AddDebugger(new CLIControllerDebugger());
+        }
+
+        public static void SetupEnvironment()
+        {
+            if (Setting.MiniMode)
+            {
+                SetupMiniEnvironment();
+            }
+            else
+            {
+                if (Setting.DebugMode)
+                    SetupDebugEnvironment();
+                else
+                    SetupReleaseEnvironment();
+            }
         }
     }
 }
