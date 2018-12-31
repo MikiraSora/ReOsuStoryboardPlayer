@@ -125,11 +125,11 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
                 }
             }
 
-            while (writer!=null)
+            while (true)
             {
                 if (pos>=MusicPlayerManager.ActivityPlayer.CurrentTime)
                     continue;
-
+                    
                 if (!audio_reader.NextFrame(audio_frame, audio_decoder.StreamIndex))
                     break;
 
