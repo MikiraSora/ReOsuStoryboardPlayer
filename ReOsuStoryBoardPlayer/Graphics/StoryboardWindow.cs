@@ -417,7 +417,7 @@ namespace ReOsuStoryBoardPlayer
 
             Clean();
 
-            DebuggerManager.Term();
+            DebuggerManager.Close();
 
             Environment.Exit(0);
         }
