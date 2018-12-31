@@ -7,6 +7,7 @@ using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
@@ -14,10 +15,14 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using ReOsuStoryBoardPlayer.Graphics.PostProcesses;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -25,7 +30,8 @@ namespace ReOsuStoryBoardPlayer
     {
         #region Field&Property
 
-        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2}";
+        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2} {8}";
+
 
         public static StoryboardWindow CurrentWindow { get; set; }
         public float ViewWidth { get; private set; }
@@ -164,7 +170,6 @@ namespace ReOsuStoryBoardPlayer
 
         internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
         {
-
             Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
 
             foreach (var obj in StoryboardObjectList)
@@ -361,13 +366,21 @@ namespace ReOsuStoryBoardPlayer
             //UpdateTitle
             if (title_update_timer > 0.2)
             {
+                string title_encoding_part = string.Empty;
+
+                if (Setting.EncodingEnvironment)
+                {
+                    var kernel = DebuggerManager.GetDebugger<EncodingKernel>();
+                    title_encoding_part=$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp}";
+                }
+
                 Title = string.Format(TITLE, Width, Height,
                     GL.GetInteger(GetPName.MajorVersion),
                     GL.GetInteger(GetPName.MinorVersion),
                     _update_stopwatch.ElapsedMilliseconds,
                     _render_stopwatch.ElapsedMilliseconds,
                     (total_time - _update_stopwatch.ElapsedMilliseconds - _render_stopwatch.ElapsedMilliseconds)
-                    , RenderFrequency);
+                    , RenderFrequency,title_encoding_part);
                 title_update_timer = 0;
             }
 
@@ -401,6 +414,10 @@ namespace ReOsuStoryBoardPlayer
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+
+            Clean();
+
+            DebuggerManager.Term();
 
             Environment.Exit(0);
         }
@@ -461,7 +478,7 @@ namespace ReOsuStoryBoardPlayer
         }
 
         #endregion Storyboard Rendering
-
+        
         #region Input Process
 
         //解决窗口失去/获得焦点时鼠标xjb移动

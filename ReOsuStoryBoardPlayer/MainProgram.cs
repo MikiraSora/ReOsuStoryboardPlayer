@@ -12,6 +12,9 @@ using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using System.IO;
+using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryBoardPlayer.OutputEncoding;
+using ReOsuStoryBoardPlayer.OutputEncoding.Player;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -21,7 +24,7 @@ namespace ReOsuStoryBoardPlayer
         {
             Setting.Init();
 
-            ParseProgramCommands(argv, out var beatmap_folder);
+            var args=ParseProgramCommands(argv, out var beatmap_folder);
 
             Setting.PrintSettings();
 
@@ -53,12 +56,24 @@ namespace ReOsuStoryBoardPlayer
             //init window
             StoryboardWindow window = new StoryboardWindow(Setting.Width, Setting.Height);
             window.LoadStoryboardInstance(instance);
-                                                                                        
-            player.Play();
+
+            if (Setting.EncodingEnvironment)
+            {
+                //init encoding environment
+                var encoding_opt = new EncoderOption(args);
+                EncodingKernel encoding_kernel = new EncodingKernel(encoding_opt);
+                EncodingProcessPlayer encoding_player = new EncodingProcessPlayer(MusicPlayerManager.ActivityPlayer.Length, encoding_opt.FPS);
+                MusicPlayerManager.ActivityPlayer.Pause();
+                MusicPlayerManager.ApplyPlayer(encoding_player);
+                DebuggerManager.AddDebugger(encoding_kernel);
+                encoding_kernel.Start();
+            }
+
+            MusicPlayerManager.ActivityPlayer.Play();
             window.Run();
         }
 
-        private static void ParseProgramCommands(string[] argv, out string beatmap_folder)
+        private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
             beatmap_folder=@"G:\SBTest\798443 Ahiru - HEARTBEAT (USAO Remix)";
 
@@ -146,7 +161,11 @@ namespace ReOsuStoryBoardPlayer
                 {
                     Setting.ShowProfileSuggest=true;
                 }
+
+                Setting.EncodingEnvironment=args.Switches.Any(x => x=="encode");
             }
+
+            return args;
         }
 
 

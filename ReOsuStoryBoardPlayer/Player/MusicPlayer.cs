@@ -19,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public override uint Length { get => sound.PlayLength; }
 
-        public override uint CurrentTime { get => (uint)GetTime(); }
+        public override float CurrentTime { get => (uint)GetTime(); }
 
         public override float PlaybackSpeed { get => sound.PlaybackSpeed; set => sound.PlaybackSpeed=value; }
 
@@ -54,13 +54,13 @@ namespace ReOsuStoryBoardPlayer.Player
             loaded_path=audio_file;
         }
 
-        public override void Jump(uint time)
+        public override void Jump(float time)
         {
             Pause();
-            sound.PlayPosition=time;
+            sound.PlayPosition=(uint)time;
             offset_watch.Reset();
 
-            prev_mp3_time=time-sound.PlayPosition;
+            prev_mp3_time=(uint)(time-sound.PlayPosition);
 
             StoryboardInstanceManager.ActivityInstance.Flush();
         }

@@ -8,7 +8,7 @@ namespace ReOsuStoryBoardPlayer.Player
 {
     public abstract class PlayerBase
     {
-        public abstract uint CurrentTime { get; }
+        public abstract float CurrentTime { get; }
         public abstract float Volume { get; set; }
         public abstract uint Length { get; }
         public abstract bool IsPlaying { get; }
@@ -18,6 +18,6 @@ namespace ReOsuStoryBoardPlayer.Player
         public abstract void Play();
         public abstract void Stop();
         public abstract void Pause();
-        public abstract void Jump(uint time);
+        public abstract void Jump(float time);
     }
 }

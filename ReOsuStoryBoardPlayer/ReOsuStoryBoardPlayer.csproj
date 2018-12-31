@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ReOsuStoryBoardPlayer</RootNamespace>
     <AssemblyName>ReOsuStoryBoardPlayer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -131,6 +132,13 @@
     <Compile Include="Graphics\PostProcesses\Shaders\ClipShader.cs" />
     <Compile Include="Graphics\PostProcesses\Shaders\FinalShader.cs" />
     <Compile Include="Graphics\PostProcesses\Shaders\PostProcessShader.cs" />
+    <Compile Include="OutputEncoding\DefaultEncodingWriter.cs" />
+    <Compile Include="OutputEncoding\EncodingWriterFatory.cs" />
+    <Compile Include="OutputEncoding\EncoderOption.cs" />
+    <Compile Include="OutputEncoding\EncodingWriterBase.cs" />
+    <Compile Include="OutputEncoding\Frame.cs" />
+    <Compile Include="OutputEncoding\Kernel\EncodingKernel.cs" />
+    <Compile Include="OutputEncoding\Player\EncodingProcessPlayer.cs" />
     <Compile Include="Optimzer\OptimzerBase.cs" />
     <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
     <Compile Include="Parser\CommandParser\ValueCommandParser\ByteVec4CommandParser.cs" />
@@ -234,6 +242,11 @@
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
+      <Project>{ab4caba1-06e4-4a32-8a15-1fbe20ed5bc6}</Project>
+      <Name>SaarFFmpeg</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
