@@ -62,7 +62,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\654033 Function Phantom - Algebra";
+            beatmap_folder=@"G:\SBTest\884669";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -133,10 +133,7 @@ namespace ReOsuStoryBoardPlayer
                     Setting.DebugMode=true;
 
                 if (args.Switches.Any(k => k=="cli"))
-                {
                     Setting.MiniMode=true;
-                    DebuggerManager.AddDebugger(new CLIControllerDebugger());
-                }
 
                 //额外功能 - 提取解析好变量的文本
                 if (args.TryGetArg(out var parse_type, "parse"))
