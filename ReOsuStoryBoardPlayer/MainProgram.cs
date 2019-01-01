@@ -62,7 +62,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\553237";
+            beatmap_folder=@"G:\SBTest\144171 Nekomata Master - Far east nightbird (kors k Remix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -150,7 +150,8 @@ namespace ReOsuStoryBoardPlayer
                 if (args.TryGetSwitch("show_profile_suggest"))
                     Setting.ShowProfileSuggest=true;
 
-                Setting.EncodingEnvironment=args.Switches.Any(x => x=="encode");
+                if (args.Switches.Any(k => k=="encode"))
+                    Setting.EncodingEnvironment=true;
             }
 
             return args;

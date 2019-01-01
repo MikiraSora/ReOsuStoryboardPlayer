@@ -210,9 +210,11 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         /// <param name="effect_count"></param>
         public void RemoveUnusedCommand(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
         {
+            Event[] skip_event = new[] { Event.Loop, Event.Trigger };
+
             foreach (var obj in storyboard_objects)
             {
-                foreach (var timeline in obj.CommandMap.Values)
+                foreach (var timeline in obj.CommandMap.Where(x=> !skip_event.Contains(x.Key)).Select(x=>x.Value))
                 {
                     for (int i = timeline.Count-1; i>=0; i--)
                     {
