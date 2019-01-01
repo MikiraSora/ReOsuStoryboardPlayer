@@ -230,13 +230,37 @@ namespace ReOsuStoryBoardPlayer
 
                 //load
                 string file_path = Path.Combine(folder_path, image_name);
-                Texture tex = new Texture(file_path);
 
-                group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)Setting.DrawCallInstanceCountMax, file_path, tex);
+                if (!_load_tex(file_path,out var tex))
+                {
+                    file_path=Path.Combine(Setting.UserSkinPath, image_name);
+                    _load_tex(file_path, out tex);
+                }
+
+                if (tex!=null)
+                {
+                    group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)Setting.DrawCallInstanceCountMax, file_path, tex);
+                }
 
                 Log.Debug($"Created storyboard sprite instance from image file :{file_path}");
 
                 return group!=null;
+            }
+
+            bool _load_tex(string file_path,out Texture texture)
+            {
+                texture=null;
+
+                try
+                {
+                    texture = new Texture(file_path);
+                }
+                catch (Exception e)
+                {
+                    texture=null;
+                }
+
+                return texture!=null;
             }
         }
 
