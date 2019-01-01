@@ -240,9 +240,8 @@ namespace ReOsuStoryBoardPlayer
                 if (tex!=null)
                 {
                     group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)Setting.DrawCallInstanceCountMax, file_path, tex);
+                    Log.Debug($"Created storyboard sprite instance from image file :{file_path}");
                 }
-
-                Log.Debug($"Created storyboard sprite instance from image file :{file_path}");
 
                 return group!=null;
             }

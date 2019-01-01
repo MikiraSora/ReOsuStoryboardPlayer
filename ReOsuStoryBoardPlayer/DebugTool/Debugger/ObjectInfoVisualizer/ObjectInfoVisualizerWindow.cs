@@ -46,7 +46,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
                     try
                     {
-                        var path = Path.Combine(StoryboardInstanceManager.ActivityInstance.Info.folder_path, SelectObject.ImageFilePath);
+                        pictureBox1.Image=null;
+                        var path = SelectObject.RenderGroup.ImagePath;
                         var img = Bitmap.FromFile(path);
 
                         if (img != null)
