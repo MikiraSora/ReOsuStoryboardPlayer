@@ -101,6 +101,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
             audio_frame=new AudioFrame(audio_decoder.OutFormat);
 
             audio_encoding_thread=new Thread(AudioEncoding);
+            audio_encoding_thread.Name="Audio Encoder Thread";
             audio_encoding_thread.Start();
         }
 
@@ -125,7 +126,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
                 }
             }
 
-            while (true)
+            while (writer!=null)
             {
                 if (pos>=MusicPlayerManager.ActivityPlayer.CurrentTime)
                     continue;
