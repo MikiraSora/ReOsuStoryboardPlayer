@@ -62,7 +62,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\381480 Halozy - Itsuka Furu Ame, Sakura";
+            beatmap_folder=@"G:\SBTest\553237";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -148,9 +148,7 @@ namespace ReOsuStoryBoardPlayer
 
                 //额外功能 - 输出优化提示
                 if (args.TryGetSwitch("show_profile_suggest"))
-                {
                     Setting.ShowProfileSuggest=true;
-                }
 
                 Setting.EncodingEnvironment=args.Switches.Any(x => x=="encode");
             }

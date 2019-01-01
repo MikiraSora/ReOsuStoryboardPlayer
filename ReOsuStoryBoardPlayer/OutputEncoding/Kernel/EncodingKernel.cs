@@ -34,6 +34,12 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
             this.option=option;
         }
 
+        private void OnKeyPress(OpenTK.Input.Key obj)
+        {
+            if (obj==OpenTK.Input.Key.E)
+                Abort();
+        }
+
         public void Start()
         {
             time_control=MusicPlayerManager.ActivityPlayer as EncodingProcessPlayer;
@@ -110,12 +116,12 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
 
         public override void Init()
         {
-
+            DebuggerManager.KeyboardPress+=OnKeyPress;
         }
 
         public override void Term()
         {
-
+            DebuggerManager.KeyboardPress-=OnKeyPress;
         }
 
         public override void Update()
