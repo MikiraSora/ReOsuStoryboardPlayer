@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Commands
+namespace ReOsuStoryBoardPlayer.Commands.Group
 {
     public abstract class GroupCommand : Command
     {

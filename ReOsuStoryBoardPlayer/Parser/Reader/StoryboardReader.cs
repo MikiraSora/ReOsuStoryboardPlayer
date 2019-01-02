@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ReOsuStoryBoardPlayer.Graphics;
+using ReOsuStoryBoardPlayer.Commands.Group;
 
 namespace ReOsuStoryBoardPlayer.Parser.Reader
 {

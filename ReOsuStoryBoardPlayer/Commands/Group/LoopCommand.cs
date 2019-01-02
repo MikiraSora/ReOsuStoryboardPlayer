@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Commands.Group;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Commands
+namespace ReOsuStoryBoardPlayer.Commands.Group
 {
     internal class LoopCommand : GroupCommand
     {

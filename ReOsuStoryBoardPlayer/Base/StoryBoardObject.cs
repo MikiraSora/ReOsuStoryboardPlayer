@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using OpenTK;
 using ReOsuStoryBoardPlayer.Graphics;
+using ReOsuStoryBoardPlayer.Commands.Group;
 
 namespace ReOsuStoryBoardPlayer
 {

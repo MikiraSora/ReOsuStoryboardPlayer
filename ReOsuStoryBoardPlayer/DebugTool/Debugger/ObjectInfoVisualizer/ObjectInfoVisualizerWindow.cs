@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Commands.Group;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
