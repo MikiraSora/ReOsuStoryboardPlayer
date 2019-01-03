@@ -18,5 +18,11 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
             foreach (var command in commands)
                 AddSubCommand(command);
         }
+
+        public virtual void UpdateSubCommand()
+        {
+            foreach (var list in SubCommands.Values)
+                list.Sort();
+        }
     }
 }

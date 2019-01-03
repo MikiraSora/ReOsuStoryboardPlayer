@@ -4,37 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
+namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
 {
-    //from osu! EventTriggerHitSound.cs
-    public class TriggerConditionType
+    public class HitSoundTriggerCondition:TriggerConditionBase
     {
-        [Flags]
-        public enum HitObjectSoundType
-        {
-            None = 0,
-            Normal = 1,
-            Whistle = 2,
-            Finish = 4,
-            Clap = 8
-        };
-
-        public enum SampleSetType
-        {
-            All = -1,
-            None = 0,
-            Normal = 1,
-            Soft = 2,
-            Drum = 3
-        }
-
-        public enum CustomSampleSetType
-        {
-            Default = 0,
-            Custom1 = 1,
-            Custom2 = 2
-        }
-
         public HitObjectSoundType SoundType { get; private set; }
         public SampleSetType SampleSet { get; private set; } = SampleSetType.All;
         public SampleSetType SampleSetAdditions { get; private set; } = SampleSetType.All;
@@ -43,9 +16,9 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         public bool AdditionsSampleSetDefined { get; private set; }
         public bool CheckCustomSampleSet { get; private set; }
 
-        private TriggerConditionType(string description)
+        internal HitSoundTriggerCondition(string description)
         {
-            string remainingDescription = description;
+            string remainingDescription = description.Remove(0,"HitSound".Length);
 
             // Main and additions sample sets
             SampleSetType parsedSampleSet;
@@ -100,8 +73,22 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             }
 
             // Check that the description is valid
-            if (!ToString().Equals("HitSound"+description))
+            if (!ToString().Equals(description))
                 throw new Exception("Invalid hitsound trigger description after "+ToString());
+        }
+
+        public override string ToString()
+        {
+            string triggerName = "HitSound";
+            if (MainSampleSetDefined)
+                triggerName+=SampleSet;
+            if (AdditionsSampleSetDefined)
+                triggerName+=SampleSetAdditions;
+            if (SoundType!=HitObjectSoundType.None)
+                triggerName+=SoundType;
+            if (CheckCustomSampleSet)
+                triggerName+=((int)CustomSampleSet);
+            return triggerName;
         }
 
         private bool TryParseStartsWith<T>(string val, out T result)
@@ -123,14 +110,23 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             return false;
         }
 
-        private static Dictionary<string, TriggerConditionType> cache_triggers = new Dictionary<string, TriggerConditionType>();
-
-        public static TriggerConditionType Parse(string description)
+        public bool CheckCondition(HitSoundInfo hitSoundInfo)
         {
-            if (!cache_triggers.TryGetValue(description, out var trigger_condition))
-                cache_triggers[description]=new TriggerConditionType(description);
+            if (SampleSet!=SampleSetType.All&&hitSoundInfo.SampleSet!=SampleSet)
+                return false;
 
-            return cache_triggers[description];
+            if (SampleSetAdditions!=SampleSetType.All&&
+                !(hitSoundInfo.SampleSetAdditions==SampleSetAdditions
+                ||hitSoundInfo.SampleSetAdditions==SampleSetType.None&&hitSoundInfo.SampleSet==SampleSetAdditions))
+                return false;
+
+            if (SoundType!=HitObjectSoundType.None&&!hitSoundInfo.SoundType.HasFlag(SoundType))
+                return false;
+
+            if (CheckCustomSampleSet&&hitSoundInfo.CustomSampleSet!=CustomSampleSet)
+                return false;
+
+            return true;
         }
 
         public struct HitSoundInfo
@@ -150,10 +146,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 this.Volume=Volume;
             }
 
-            public override string ToString()
-            {
-                return String.Format(@"{1} {2} {3} {4}% - {0}", SoundType, SampleSet, SampleSetAdditions, CustomSampleSet, Volume);
-            }
+            public override string ToString() => $@"{SampleSet} {SampleSetAdditions} {CustomSampleSet} {Volume}% - {SoundType}";
         };
     }
 }

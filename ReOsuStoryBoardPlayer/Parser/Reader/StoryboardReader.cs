@@ -30,7 +30,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
         private StoryBoardObject ParsePacket(StoryboardPacket packet)
         {
-            try
+            //try
             {
                 var storyboard_object = ParseObjectLine(packet.ObjectLine);
 
@@ -44,11 +44,12 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 Reader.ReturnPacket(ref packet);
                 return storyboard_object;
             }
+            /*
             catch (Exception e)
             {
                 Log.Debug($"Cant parse storyboard packet.{e.Message}");
                 return null;
-            }
+            }*/
         }
 
         #region Packet Parse
@@ -170,10 +171,9 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                         var prev_group = current_group_command;
                         current_group_command=cmd as GroupCommand;
 
-                        if (current_group_command!=prev_group&&
-                            prev_group is LoopCommand loopc)
+                        if (current_group_command!=prev_group)
                         {
-                            loopc.UpdateSubCommand();
+                            prev_group?.UpdateSubCommand();
                         }
 
                         commands.Add(cmd);

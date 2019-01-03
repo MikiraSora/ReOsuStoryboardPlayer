@@ -6,6 +6,7 @@ using System.Linq;
 using OpenTK;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Commands.Group;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -30,7 +31,9 @@ namespace ReOsuStoryBoardPlayer
 
         public int Z = -1;
 
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; private set; }
+
+        public bool ContainTrigger { get; private set; }
 
         #region Transform
 
@@ -46,7 +49,7 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion Transform
 
-        #region Add Command
+        #region Add/Remove Command
 
         public void AddCommand(Command command)
         {
@@ -81,6 +84,12 @@ namespace ReOsuStoryBoardPlayer
 
         }
 
+        public void AddCommand(TriggerCommand trigger_command)
+        {
+            //todo
+            TriggerListener.DefaultListener.Add(trigger_command);
+        }
+
         public void SortCommands()
         {
             foreach (var time in CommandMap.Values)
@@ -93,6 +102,31 @@ namespace ReOsuStoryBoardPlayer
 
                     return x.EndTime-y.EndTime;
                 });
+        }
+
+        public void RemoveCommand(Command command)
+        {
+            switch (command)
+            {
+                case LoopCommand loop_command:
+                    foreach (var t in CommandMap.Values)
+                    {
+                        var result = t/*.OfType<LoopSubTimelineCommand>()*/.Where(x => x.RelativeLine==loop_command.RelativeLine).ToArray();
+
+                        foreach (var c in result)
+                            t.Remove(c);
+                    }
+                    break;
+                default:
+                    if (CommandMap.TryGetValue(command.Event,out var timeline))
+                        timeline.Remove(command);
+                    break;
+            }
+
+            if (command is TriggerCommand trigger_command)
+            {
+                TriggerListener.DefaultListener.Remove(trigger_command);
+            }
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Commands.Group;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.Parser.CommandParser.ValueCommandParser;
 using System;
 using System.Collections.Generic;
@@ -59,8 +60,9 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
                     result=CommandParserIntance<ColorCommand>.Instance.Parse(data_arr);
                     break;
 
-                case "T"://Not support yet >///<
-                    yield break;
+                case "T":
+                    result=CommandParserIntance<TriggerCommand>.Instance.Parse(data_arr);
+                    break;
 
                 default:
                     throw new Exception("Unknown command event:"+command_event);
@@ -115,6 +117,9 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
 
                 case "LoopCommand":
                     return new LoopCommandParser();
+
+                case "TriggerCommand":
+                    return new TriggerCommandParser();
 
                 case "StateCommand":
                 case "AdditiveBlendCommand":

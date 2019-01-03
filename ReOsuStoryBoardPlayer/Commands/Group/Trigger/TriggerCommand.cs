@@ -10,11 +10,11 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
     public class TriggerCommand : GroupCommand
     {
-        public TriggerConditionType Condition { get; set; }
+        public TriggerConditionBase Condition { get; set; }
 
         private StoryBoardObject bind_object;
 
-        public TriggerCommand(TriggerConditionType condition)
+        public TriggerCommand(TriggerConditionBase condition)
         {
             Event=Event.Trigger;
             Condition=condition??throw new ArgumentNullException(nameof(condition));
@@ -39,5 +39,21 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 bind_object.AddCommand(command);
             }
         }
+
+        public void Clean()
+        {
+            foreach (Command command in SubCommands.Values.SelectMany(l => l))
+            {
+                bind_object.RemoveCommand(command);
+            }
+        }
+
+        public bool CheckTimeVaild(float time)
+        {
+            //todo
+            return false;
+        }
+
+        public override string ToString() => $"{base.ToString()} {Condition}";
     }
 }

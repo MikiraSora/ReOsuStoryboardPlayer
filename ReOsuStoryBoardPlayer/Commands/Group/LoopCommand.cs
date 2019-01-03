@@ -13,7 +13,12 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
 
         public int LoopCount { get; set; }
 
-        public void UpdateSubCommand()
+        public override void Execute(StoryBoardObject @object, float current_value)
+        {
+            //咕咕哒
+        }
+
+        public override void UpdateSubCommand()
         {
             var commands = SubCommands.SelectMany(l => l.Value);
             var offset = commands.Min(x => x.StartTime);
@@ -24,18 +29,11 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
                 command.EndTime-=offset;
             }
 
-            CostTime =commands.Max(c => c.EndTime);
-            var total_cast_time = CostTime * LoopCount;
+            CostTime=commands.Max(c => c.EndTime);
+            var total_cast_time = CostTime*LoopCount;
+            EndTime=StartTime+total_cast_time;
 
-            EndTime = StartTime + total_cast_time;
-
-            foreach (var list in SubCommands.Values)
-                list.Sort();
-        }
-
-        public override void Execute(StoryBoardObject @object, float current_value)
-        {
-            //咕咕哒
+            base.UpdateSubCommand();
         }
 
         public IEnumerable<Command> SubCommandExpand()

@@ -106,7 +106,14 @@
     <Compile Include="Base\StoryboardAnimation.cs" />
     <Compile Include="Base\StoryboardBackgroundObject.cs" />
     <Compile Include="Commands\Group\Trigger\TriggerCommand.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerConditionType.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerConditionBase.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerCondition\CustomSampleSetType.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerCondition\GameState.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerCondition\GameStateTriggerCondition.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerCondition\HitObjectSoundType.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerCondition\HitSoundTriggerCondition.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerCondition\SampleSetType.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerListener.cs" />
     <Compile Include="Commands\Group\Trigger\TriggerSubCommandsWrapperCommand.cs" />
     <Compile Include="Commands\Timeline\CommandTimeline.cs" />
     <Compile Include="Commands\Group\GroupCommand.cs" />
@@ -149,6 +156,7 @@
     <Compile Include="Optimzer\OptimzerBase.cs" />
     <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
     <Compile Include="Parser\CommandParser\ValueCommandParser\ByteVec4CommandParser.cs" />
+    <Compile Include="Parser\CommandParser\ValueCommandParser\TriggerCommandParser.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />
