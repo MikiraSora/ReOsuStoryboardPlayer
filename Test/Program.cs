@@ -3,6 +3,7 @@ using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Parser.Reader;
+using ReOsuStoryBoardPlayer.Parser.SimpleOsuParser;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using System;
 using System.Buffers;
@@ -21,11 +22,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            ReadOnlyMemory<byte> d = Encoding.UTF8.GetBytes("123.,456.,789.,");
-
-            var x = d.Split(Encoding.UTF8.GetBytes(".,"),StringSplitOptions.RemoveEmptyEntries);
-
-            Console.ReadLine();
+            var x = HitObjectParserHelper.ParseHitObjects(@"G:\SBTest\144171 Nekomata Master - Far east nightbird (kors k Remix)\Nekomata Master - Far east nightbird (kors k Remix) (jonathanlfj) [EruJazz's Beginner].osu");
         }
     }
 }
