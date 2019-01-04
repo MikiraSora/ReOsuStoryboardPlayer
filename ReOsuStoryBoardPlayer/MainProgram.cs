@@ -15,6 +15,7 @@ using System.IO;
 using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryBoardPlayer.OutputEncoding;
 using ReOsuStoryBoardPlayer.OutputEncoding.Player;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -42,6 +43,9 @@ namespace ReOsuStoryBoardPlayer
                 var player = new MusicPlayer();
                 player.Load(info.audio_file_path);
                 MusicPlayerManager.ApplyPlayer(player);
+
+                var auto_trigger = DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
+                auto_trigger.Load(info);
             }
 
             if (Setting.EncodingEnvironment)
@@ -62,7 +66,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\463479 Nanahira - Bassdrop Freaks (Long Ver)";
+            beatmap_folder=@"G:\osu!\Songs\M.Graveyard - hope";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

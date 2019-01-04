@@ -18,6 +18,10 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         public bool Trigged { get; private set; }
 
+        public int CostTime { get; private set; }
+
+        private float last_trigged_time = 0;
+
         public TriggerCommand(TriggerConditionBase condition)
         {
             Event=Event.Trigger;
@@ -26,7 +30,16 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         public override void Execute(StoryBoardObject @object, float time)
         {
-            //TODO,不对貌似也没啥可实现的
+            if (Trigged)
+            {
+                //executed,recovery status and reset
+                if (last_trigged_time+CostTime<=time)
+                {
+                    Trigged=false;
+                    Log.Debug($"Object {bind_object}({this}) Reset in time {time}!");
+                    Reset();
+                }
+            }
         }
 
         public void BindObject(StoryBoardObject obj)
@@ -36,13 +49,25 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             bind_object=obj??throw new ArgumentNullException(nameof(obj));
         }
 
-        public void Trig()
+        public void Trig(float time)
         {
             if (Trigged)
                 return; //trigged,ignore.
 
-            foreach (Command command in SubCommands.Values.SelectMany(l=>l))
+            Log.Debug($"Object {bind_object}({this}) Trigged in time {time}!");
+
+            last_trigged_time=time;
+
+            foreach (Command command in SubCommands.Values.SelectMany(l => l))
+            {
+                //map to real time
+                command.StartTime+=(int)time;
+                command.EndTime+=(int)time;
+
                 bind_object.AddCommand(command);
+            }
+
+            bind_object.SortCommands();
 
             Trigged=true;
         }
@@ -50,7 +75,13 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         public void Reset()
         {
             foreach (Command command in SubCommands.Values.SelectMany(l => l))
+            {
+                //recovery to relative time
+                command.StartTime-=(int)last_trigged_time;
+                command.EndTime-=(int)last_trigged_time;
+
                 bind_object.RemoveCommand(command);
+            }
 
             Trigged=false;
         }
@@ -58,6 +89,13 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         public bool CheckTimeVaild(float time)
         {
             return StartTime<=time&&time<=EndTime;
+        }
+
+        public override void UpdateSubCommand()
+        {
+            base.UpdateSubCommand();
+
+            CostTime=SubCommands.Values.SelectMany(l => l).Max(p => p.EndTime);
         }
 
         public override string ToString() => $"{base.ToString()} {Condition}";

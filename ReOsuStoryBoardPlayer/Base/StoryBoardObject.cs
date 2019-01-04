@@ -14,6 +14,9 @@ namespace ReOsuStoryBoardPlayer
     {
         internal Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
+        //表示此物件拥有的Trigger集合，Key为GroupID
+        internal Dictionary<int, HashSet<TriggerCommand>> Triggers = new Dictionary<int, HashSet<TriggerCommand>>();
+
         public string ImageFilePath;
 
         public bool FromOsbFile;
@@ -53,14 +56,21 @@ namespace ReOsuStoryBoardPlayer
 
         public void AddCommand(Command command)
         {
-            if (command is LoopCommand loop)
+            switch (command)
             {
-                AddLoopCommand(loop);
-                //这里不用return是因为还要再Visualizer显示这个Loop命令，方便调试，Loop::Execute(...)已被架空
+                case LoopCommand loop:
+                    AddLoopCommand(loop);
+                    break;
+                case TriggerCommand trigger:
+                    AddTriggerCommand(trigger);
+                    break;
+                default:
+                    break;
             }
 
             if (!CommandMap.TryGetValue(command.Event, out var timeline))
-                timeline = CommandMap[command.Event] = new CommandTimeline();
+                timeline=CommandMap[command.Event]=new CommandTimeline();
+
             timeline.Add(command);
         }
 
@@ -84,10 +94,14 @@ namespace ReOsuStoryBoardPlayer
 
         }
 
-        public void AddCommand(TriggerCommand trigger_command)
+        private void AddTriggerCommand(TriggerCommand trigger_command, bool insert = false)
         {
-            //todo
-            TriggerListener.DefaultListener.Add(trigger_command);
+            if (!Triggers.TryGetValue(trigger_command.GroupID,out var list))
+                Triggers[trigger_command.GroupID]=new HashSet<TriggerCommand>();
+
+            Triggers[trigger_command.GroupID].Add(trigger_command);
+            trigger_command.BindObject(this);
+            TriggerListener.DefaultListener.Add(this);
         }
 
         public void SortCommands()
@@ -117,16 +131,18 @@ namespace ReOsuStoryBoardPlayer
                             t.Remove(c);
                     }
                     break;
+                case TriggerCommand trigger_command:
+                    Triggers[trigger_command.GroupID].Remove(trigger_command);
+
+                    if (!Triggers.Values.SelectMany(l=>l).Any())
+                        TriggerListener.DefaultListener.Remove(this);
+                    break;
                 default:
-                    if (CommandMap.TryGetValue(command.Event,out var timeline))
-                        timeline.Remove(command);
                     break;
             }
 
-            if (command is TriggerCommand trigger_command)
-            {
-                TriggerListener.DefaultListener.Remove(trigger_command);
-            }
+            if (CommandMap.TryGetValue(command.Event, out var timeline))
+                timeline.Remove(command);
         }
 
         #endregion

@@ -181,7 +181,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                 }
             }
 
-            if (current_group_command is LoopCommand loop)
+            if (current_group_command is GroupCommand loop)
                 loop.UpdateSubCommand();
 
             ObjectPool<List<Command>>.Instance.PutObject(cur_group_cmds);

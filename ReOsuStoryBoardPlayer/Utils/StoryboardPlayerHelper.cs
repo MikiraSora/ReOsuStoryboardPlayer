@@ -1,4 +1,6 @@
-﻿using ReOsuStoryBoardPlayer.Kernel;
+﻿using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
 using System;
@@ -24,6 +26,9 @@ namespace ReOsuStoryBoardPlayer.Utils
 
             //load storyboard objects
             var instance = new StoryBoardInstance(info);
+
+            var auto_trigger=DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
+            auto_trigger.Load(info);
 
             ExecutorSync.PostTask(() => 
             {

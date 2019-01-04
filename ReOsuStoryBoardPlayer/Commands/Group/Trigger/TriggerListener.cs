@@ -11,23 +11,16 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
     public class TriggerListener
     {
-        Dictionary<int, HashSet<TriggerCommand>> register_group_triggers = new Dictionary<int, HashSet<TriggerCommand>>();
+        HashSet<StoryBoardObject> register_trigger_objects = new HashSet<StoryBoardObject>();
        
-        public void Add(TriggerCommand command)
+        public void Add(StoryBoardObject @object)
         {
-            if (!register_group_triggers.TryGetValue(command.GroupID,out var sets))
-            {
-                register_group_triggers[command.GroupID]=new HashSet<TriggerCommand>();
-            }
-
-            register_group_triggers[command.GroupID].Add(command);
-            command.Reset();
+            register_trigger_objects.Add(@object);
         }
 
-        public void Remove(TriggerCommand trigger_command)
+        public void Remove(StoryBoardObject @object)
         {
-            foreach (var sets in register_group_triggers.Values)
-                sets.Remove(trigger_command);
+            register_trigger_objects.Remove(@object);
         }
 
         private TriggerCommand PickVaildTrigger(IEnumerable<TriggerCommand> commands,float current_time)
@@ -35,30 +28,37 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             return commands.FirstOrDefault(x => x.CheckTimeVaild(current_time));
         }
 
-        public void Trig(HitSoundInfo hit_sound,float current_time)
+        public void Trig(HitSoundInfo hit_sound, float current_time)
         {
-            foreach (var register_triggers in register_group_triggers.Values)
+            foreach (var obj in register_trigger_objects)
             {
-                var cmd = PickVaildTrigger(register_triggers, current_time);
-
-                if (cmd.Condition is HitSoundTriggerCondition condition
-                    &&condition.CheckCondition(hit_sound))
+                foreach (var register_triggers in obj.Triggers.Values)
                 {
-                    cmd.Trig();
+                    var cmd = PickVaildTrigger(register_triggers, current_time);
+
+                    if (cmd?.Condition is HitSoundTriggerCondition condition
+                        &&condition.CheckCondition(hit_sound))
+                    {
+                        cmd.Trig(current_time);
+                    }
                 }
+
             }
         }
 
         public void Trig(GameState state, float current_time)
         {
-            foreach (var register_triggers in register_group_triggers.Values)
+            foreach (var obj in register_trigger_objects)
             {
-                var cmd = PickVaildTrigger(register_triggers, current_time);
-
-                if (cmd.Condition is GameStateTriggerCondition condition
-                    &&condition.CheckCondition(state))
+                foreach (var register_triggers in obj.Triggers.Values)
                 {
-                    cmd.Trig();
+                    var cmd = PickVaildTrigger(register_triggers, current_time);
+
+                    if (cmd.Condition is GameStateTriggerCondition condition
+                        &&condition.CheckCondition(state))
+                    {
+                        cmd.Trig(current_time);
+                    }
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         /// </summary>
         public void Reset()
         {
-            foreach (var trigger in register_group_triggers.Values.SelectMany(l=>l))
+            foreach (var trigger in register_trigger_objects.SelectMany(l=>l.Triggers).Select(l=>l.Value).SelectMany(l=>l))
             {
                 trigger.Reset();
             }
