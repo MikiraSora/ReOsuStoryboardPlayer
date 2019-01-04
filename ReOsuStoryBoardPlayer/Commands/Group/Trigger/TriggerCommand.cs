@@ -38,6 +38,9 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         public void Trig()
         {
+            if (Trigged)
+                return; //trigged,ignore.
+
             foreach (Command command in SubCommands.Values.SelectMany(l=>l))
                 bind_object.AddCommand(command);
 
