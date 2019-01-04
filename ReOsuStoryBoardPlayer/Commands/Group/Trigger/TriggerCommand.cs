@@ -67,6 +67,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 bind_object.AddCommand(command);
             }
 
+            //todo ,优化掉这货
             bind_object.SortCommands();
 
             Trigged=true;
@@ -82,6 +83,8 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
                 bind_object.RemoveCommand(command);
             }
+
+            last_trigged_time=0;
 
             Trigged=false;
         }

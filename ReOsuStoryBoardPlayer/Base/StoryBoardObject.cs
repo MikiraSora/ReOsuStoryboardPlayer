@@ -172,9 +172,13 @@ namespace ReOsuStoryBoardPlayer
             ExecutedCommands.ForEach(c => c.IsExecuted=false);
             ExecutedCommands.Clear();
 #endif
-            foreach (var timeline in CommandMap.Values)
+            foreach (var pair in CommandMap)
             {
+                var timeline = pair.Value;
                 var command = timeline.PickCommand(current_time);
+
+                if (command==null)
+                    continue;
 
                 command.Execute(this, current_time);
 #if DEBUG

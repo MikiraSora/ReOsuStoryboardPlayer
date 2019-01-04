@@ -32,17 +32,22 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         {
             foreach (var obj in register_trigger_objects)
             {
-                foreach (var register_triggers in obj.Triggers.Values)
+                foreach (var pair in obj.Triggers)
                 {
-                    var cmd = PickVaildTrigger(register_triggers, current_time);
+                    IEnumerable<TriggerCommand> commands = 
+                        pair.Key==0 ? //0 Group里面的Trigger相互不冲突，除此之外的Group都会只能执行一个Trigger(后者优先）
+                        pair.Value.Where(x => x.CheckTimeVaild(current_time)) 
+                        : pair.Value.Reverse().Where(x => x.CheckTimeVaild(current_time)).Take(1);
 
-                    if (cmd?.Condition is HitSoundTriggerCondition condition
-                        &&condition.CheckCondition(hit_sound))
+                    foreach (var cmd in commands)
                     {
-                        cmd.Trig(current_time);
+                        if (cmd?.Condition is HitSoundTriggerCondition condition
+                            &&condition.CheckCondition(hit_sound))
+                        {
+                            cmd.Trig(current_time);
+                        }
                     }
                 }
-
             }
         }
 
