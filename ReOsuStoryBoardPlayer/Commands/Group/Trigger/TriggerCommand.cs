@@ -14,6 +14,10 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         private StoryBoardObject bind_object;
 
+        public int GroupID;
+
+        public bool Trigged { get; private set; }
+
         public TriggerCommand(TriggerConditionBase condition)
         {
             Event=Event.Trigger;
@@ -35,23 +39,22 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         public void Trig()
         {
             foreach (Command command in SubCommands.Values.SelectMany(l=>l))
-            {
                 bind_object.AddCommand(command);
-            }
+
+            Trigged=true;
         }
 
-        public void Clean()
+        public void Reset()
         {
             foreach (Command command in SubCommands.Values.SelectMany(l => l))
-            {
                 bind_object.RemoveCommand(command);
-            }
+
+            Trigged=false;
         }
 
         public bool CheckTimeVaild(float time)
         {
-            //todo
-            return false;
+            return StartTime<=time&&time<=EndTime;
         }
 
         public override string ToString() => $"{base.ToString()} {Condition}";

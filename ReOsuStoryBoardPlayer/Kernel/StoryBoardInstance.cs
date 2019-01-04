@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
@@ -142,6 +143,9 @@ namespace ReOsuStoryBoardPlayer.Kernel
             UpdatingStoryboardObjects.Clear();
 
             CurrentScanNode=StoryboardObjectList.First;
+
+            //重置触发器状态
+            TriggerListener.DefaultListener.Reset();
         }
 
         private bool Scan(float current_time)

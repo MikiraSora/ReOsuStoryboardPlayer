@@ -7,7 +7,7 @@ using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 
-namespace ReOsuStoryBoardPlayer.Parser.CommandParser.ValueCommandParser
+namespace ReOsuStoryBoardPlayer.Parser.CommandParser
 {
     public class TriggerCommandParser : ICommandParser
     {
@@ -19,7 +19,8 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser.ValueCommandParser
             TriggerCommand command = new TriggerCommand(condition);
 
             command.StartTime=data_arr.ElementAt(2).ToInt();
-            command.EndTime=data_arr.ElementAt(3).ToInt();
+            command.EndTime=string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? command.StartTime : data_arr.ElementAt(3).ToInt();
+            command.GroupID=string.IsNullOrWhiteSpace(data_arr.ElementAt(4)) ? 0 : data_arr.ElementAt(4).ToInt();
 
             yield return command;
         }

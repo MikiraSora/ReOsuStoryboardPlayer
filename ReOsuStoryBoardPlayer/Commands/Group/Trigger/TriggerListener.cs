@@ -11,39 +11,66 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
     public class TriggerListener
     {
-        HashSet<TriggerCommand> register_triggers = new HashSet<TriggerCommand>();
-
+        Dictionary<int, HashSet<TriggerCommand>> register_group_triggers = new Dictionary<int, HashSet<TriggerCommand>>();
+       
         public void Add(TriggerCommand command)
         {
-            Debug.Assert(!register_triggers.Contains(command),"Not allow to add trigger repeatly.");
+            if (!register_group_triggers.TryGetValue(command.GroupID,out var sets))
+            {
+                register_group_triggers[command.GroupID]=new HashSet<TriggerCommand>();
+            }
 
-            register_triggers.Add(command);
+            register_group_triggers[command.GroupID].Add(command);
+            command.Reset();
         }
 
         public void Remove(TriggerCommand trigger_command)
         {
-            register_triggers.Remove(trigger_command);
+            foreach (var sets in register_group_triggers.Values)
+                sets.Remove(trigger_command);
+        }
+
+        private TriggerCommand PickVaildTrigger(IEnumerable<TriggerCommand> commands,float current_time)
+        {
+            return commands.FirstOrDefault(x => x.CheckTimeVaild(current_time));
         }
 
         public void Trig(HitSoundInfo hit_sound,float current_time)
         {
-            foreach (var command in register_triggers
-                .Where(x=> x.CheckTimeVaild(current_time)
-                    &&x.Condition is HitSoundTriggerCondition condition
-                    &&condition.CheckCondition(hit_sound)))
+            foreach (var register_triggers in register_group_triggers.Values)
             {
-                command.Trig();
+                var cmd = PickVaildTrigger(register_triggers, current_time);
+
+                if (cmd.Condition is HitSoundTriggerCondition condition
+                    &&condition.CheckCondition(hit_sound))
+                {
+                    cmd.Trig();
+                }
             }
         }
 
         public void Trig(GameState state, float current_time)
         {
-            foreach (var command in register_triggers
-                .Where(x => x.CheckTimeVaild(current_time)
-                    &&x.Condition is GameStateTriggerCondition condition
-                    &&condition.CheckCondition(state)))
+            foreach (var register_triggers in register_group_triggers.Values)
             {
-                command.Trig();
+                var cmd = PickVaildTrigger(register_triggers, current_time);
+
+                if (cmd.Condition is GameStateTriggerCondition condition
+                    &&condition.CheckCondition(state))
+                {
+                    cmd.Trig();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 当时间轴回滚的时候就得清除触发器的子命令，然后重置状态
+        /// </summary>
+        public void Reset()
+        {
+            foreach (var trigger in register_group_triggers.Values.SelectMany(l=>l))
+            {
+                trigger.Reset();
             }
         }
 

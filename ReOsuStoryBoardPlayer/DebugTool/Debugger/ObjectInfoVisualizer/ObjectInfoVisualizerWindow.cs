@@ -60,7 +60,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                     }
                     catch (Exception e)
                     {
-                        Log.Error("[ObjectInfoVisualizer]Can't load bitmap:" + e.Message);
+                        //Log.Error("[ObjectInfoVisualizer]Can't load bitmap:" + e.Message);
                     }
                 }
 
@@ -144,9 +144,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                         {
                             var cmd_note = cmd_root.Nodes.Add(cmd.ToString());
 
-                            if (cmd is LoopCommand loop_command)
+                            if (cmd is GroupCommand group_command)
                             {
-                                foreach (var loop_sub_command in loop_command.SubCommands.SelectMany(l => l.Value).OrderBy(c => c.StartTime))
+                                foreach (var loop_sub_command in group_command.SubCommands.SelectMany(l => l.Value).OrderBy(c => c.StartTime))
                                 {
                                     var loop_sub_note = cmd_note.Nodes.Add(loop_sub_command.ToString());
                                     BindCommandNode(loop_sub_command, loop_sub_note);
