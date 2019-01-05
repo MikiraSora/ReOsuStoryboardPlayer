@@ -29,7 +29,13 @@ namespace ReOsuStoryBoardPlayer.Parser
                 list.RemoveAll(c => c==null);
 
                 foreach (var obj in list)
+                {
                     obj.UpdateObjectFrameTime();
+#if DEBUG
+                    //objects are all ready to execute. so block ::AddCommand()/::RemoveCommand() for safe.
+                    obj.BlockCommandsChange();
+#endif
+                }
 
                 if (Setting.EnableRuntimeOptimzeObjects)
                 {

@@ -39,6 +39,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
                     storyboard_object.FileLine=packet.ObjectFileLine;
 
                     BuildCommandMapAndSetup(storyboard_object, packet.CommandLines);
+
                 }
 
                 Reader.ReturnPacket(ref packet);
@@ -60,8 +61,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
             var data_arr = line.Split(',');
 
-            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0], true, out var obj_type)) || !(obj_type == StoryboardObjectType.Background || obj_type == StoryboardObjectType.Animation || obj_type == StoryboardObjectType.Sprite))
-                throw new Exception($"Unknown/Unsupport storyboard object type:" + data_arr[0]);
+            if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0], true, out var obj_type))||!(obj_type==StoryboardObjectType.Background||obj_type==StoryboardObjectType.Animation||obj_type==StoryboardObjectType.Sprite))
+            {
+                Log.Warn($"Unknown/Unsupport storyboard object type:"+data_arr[0]);
+                return null;
+            }
 
             switch (obj_type)
             {

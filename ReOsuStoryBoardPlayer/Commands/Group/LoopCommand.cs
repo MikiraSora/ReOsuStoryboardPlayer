@@ -20,8 +20,11 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
 
         public override void UpdateSubCommand()
         {
+            base.UpdateSubCommand();
+
             var commands = SubCommands.SelectMany(l => l.Value);
-            var offset = commands.Min(x => x.StartTime);
+
+            var offset = commands.Count()==0?0:commands.Min(x => x.StartTime);
             StartTime+=offset;
             foreach (var command in commands)
             {
@@ -29,11 +32,9 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
                 command.EndTime-=offset;
             }
 
-            CostTime=commands.Max(c => c.EndTime);
+            CostTime=commands.Count()==0 ? 0 : commands.Max(c => c.EndTime);
             var total_cast_time = CostTime*LoopCount;
             EndTime=StartTime+total_cast_time;
-
-            base.UpdateSubCommand();
         }
 
         public IEnumerable<Command> SubCommandExpand()

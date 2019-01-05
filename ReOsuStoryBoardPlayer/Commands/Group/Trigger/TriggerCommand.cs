@@ -81,7 +81,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 command.StartTime-=(int)last_trigged_time;
                 command.EndTime-=(int)last_trigged_time;
 
-                bind_object.RemoveCommand(command);
+                bind_object.InternalRemoveCommand(command);
             }
 
             last_trigged_time=0;

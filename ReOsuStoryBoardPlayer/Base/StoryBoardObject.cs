@@ -7,6 +7,7 @@ using OpenTK;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Commands.Group;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
+using System.Diagnostics;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -56,6 +57,13 @@ namespace ReOsuStoryBoardPlayer
 
         public void AddCommand(Command command)
         {
+            Debug.Assert(!command_change_block, "Can't add any commands when BlockCommandAdd() was called.");
+
+            InternalAddCommand(command);
+        }
+
+        internal void InternalAddCommand(Command command)
+        {
             switch (command)
             {
                 case LoopCommand loop:
@@ -80,7 +88,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
                 foreach (var cmd in loop_command.SubCommandExpand())
-                    AddCommand(cmd);
+                    InternalAddCommand(cmd);
             }
             else
             {
@@ -88,10 +96,9 @@ namespace ReOsuStoryBoardPlayer
                 foreach (var @event in loop_command.SubCommands.Keys)
                 {
                     var sub_command_wrapper = new LoopSubTimelineCommand(loop_command, @event);
-                    AddCommand(sub_command_wrapper);
+                    InternalAddCommand(sub_command_wrapper);
                 }
             }
-
         }
 
         private void AddTriggerCommand(TriggerCommand trigger_command, bool insert = false)
@@ -119,6 +126,12 @@ namespace ReOsuStoryBoardPlayer
         }
 
         public void RemoveCommand(Command command)
+        {
+            Debug.Assert(!command_change_block, "Can't remove any commands when BlockCommandAdd() was called.");
+            InternalRemoveCommand(command);
+        }
+
+        internal void InternalRemoveCommand(Command command)
         {
             switch (command)
             {
@@ -257,10 +270,10 @@ namespace ReOsuStoryBoardPlayer
         }
 
 #if DEBUG
-
         internal List<Command> ExecutedCommands = new List<Command>();
 
         internal bool DebugShow = true;
+        private bool command_change_block;
 
         internal void MarkCommandExecuted(Command command, bool is_exec = true)
         {
@@ -272,6 +285,10 @@ namespace ReOsuStoryBoardPlayer
             command.IsExecuted = is_exec;
         }
 
+        public void BlockCommandsChange()
+        {
+            command_change_block=true;
+        }
 #endif
 
         public void UpdateObjectFrameTime()

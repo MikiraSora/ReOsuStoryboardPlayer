@@ -60,7 +60,6 @@ namespace ReOsuStoryBoardPlayer.Parser.SimpleOsuParser
             else if (hit_object.Type==HitObjectType.Slider)
             {
                 ApplyHitSoundSetup(10);
-
             }
 
             return hit_object;

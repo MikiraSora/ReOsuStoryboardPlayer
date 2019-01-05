@@ -95,9 +95,6 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
         {
             result=default;
 
-            if (string.IsNullOrWhiteSpace(val))
-                throw new ArgumentNullException(nameof(val));
-
             foreach (object v in Enum.GetValues(typeof(T)))
             {
                 if (val.StartsWith(v.ToString()))
@@ -106,7 +103,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
                     return true;
                 }
             }
-
+            
             return false;
         }
 
