@@ -12,8 +12,12 @@ namespace ReOsuStoryBoardPlayer.Commands
 
         private bool overlay;
 
+        public Event Event=Event.Unknown;
+
         public new void Add(Command command)
         {
+            Debug.Assert(((Event==Event.Unknown ? (Event=command.Event) : Event)==Event) && Event==command.Event,"Not allow to add different event command");
+
             //check overlay
             if (Count>=1)
             {
@@ -81,6 +85,6 @@ namespace ReOsuStoryBoardPlayer.Commands
             bool TimeInCommand(Command c) => (current_time>=c.StartTime&&current_time<=c.EndTime);
         }
 
-        public override string ToString() => $"{(this.FirstOrDefault()?.Event)?.ToString()??"Unknown"} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(overlay?"Overlay":string.Empty)}";
+        public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(overlay?"Overlay":string.Empty)}";
     }
 }

@@ -18,6 +18,8 @@
         VerticalFlip = 11,
 
         HorizonFlip = 12,
-        AdditiveBlend = 13
+        AdditiveBlend = 13,
+
+        Unknown = 2857
     }
 }
