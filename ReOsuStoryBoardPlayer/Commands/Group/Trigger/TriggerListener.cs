@@ -79,6 +79,31 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             }
         }
 
+
+        /// <summary>
+        /// For AutoTrigger. optimze/trim HitSounds.
+        /// </summary>
+        /// <param name="hit_sound"></param>
+        /// <returns></returns>
+        internal bool CheckTrig(HitSoundInfo hit_sound)
+        {
+            foreach (var obj in register_trigger_objects)
+                foreach (var pair in obj.Triggers)
+                {
+                    IEnumerable<TriggerCommand> commands =
+                        pair.Key==0 ? //0 Group里面的Trigger相互不冲突，除此之外的Group都会只能执行一个Trigger(后者优先）
+                        pair.Value.Where(x => x.CheckTimeVaild((float)hit_sound.Time))
+                        : pair.Value.Reverse().Where(x => x.CheckTimeVaild((float)hit_sound.Time)).Take(1);
+
+                    foreach (var cmd in commands)
+                        if (cmd?.Condition is HitSoundTriggerCondition condition
+                            &&condition.CheckCondition(hit_sound))
+                            return true;
+                }
+
+            return false;
+        }
+
         public static TriggerListener DefaultListener { get; private set; } = new TriggerListener();
     }
 }

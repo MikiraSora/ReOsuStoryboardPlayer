@@ -29,6 +29,7 @@ namespace ReOsuStoryBoardPlayer.Utils
 
             var auto_trigger=DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
             auto_trigger.Load(info);
+            auto_trigger.Trim();
 
             ExecutorSync.PostTask(() => 
             {

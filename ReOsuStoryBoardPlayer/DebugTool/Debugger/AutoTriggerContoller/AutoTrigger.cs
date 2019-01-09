@@ -40,7 +40,17 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
         {
             cur=objects.First;
             prev_time = 0;
-            
+        }
+
+        public void Trim()
+        {
+            var unused_hitsounds = objects.Where(x => !TriggerListener.DefaultListener.CheckTrig(x)).ToList();
+
+            foreach (var sounds in unused_hitsounds)
+                objects.Remove(sounds);
+
+            Log.Debug($"Remove {unused_hitsounds.Count()} hitsounds");
+            Flush();
         }
 
         public override void Update()
@@ -57,7 +67,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
                 var hit_object = cur.Value;
 
                 if (time>=hit_object.Time)
-                    TriggerListener.DefaultListener.Trig(hit_object, (float)hit_object.Time);
+                    TriggerListener.DefaultListener.Trig(hit_object, (float)hit_object.Time+5);
                 else
                     break;
 

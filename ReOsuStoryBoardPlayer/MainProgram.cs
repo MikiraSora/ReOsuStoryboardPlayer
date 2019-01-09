@@ -46,6 +46,7 @@ namespace ReOsuStoryBoardPlayer
 
                 var auto_trigger = DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
                 auto_trigger.Load(info);
+                auto_trigger.Trim();
             }
 
             if (Setting.EncodingEnvironment)
