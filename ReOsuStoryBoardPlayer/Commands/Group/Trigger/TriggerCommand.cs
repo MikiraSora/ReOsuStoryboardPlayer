@@ -36,7 +36,6 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 if (last_trigged_time+CostTime<=time)
                 {
                     Trigged=false;
-                    Log.Debug($"Object {bind_object}({this}) Reset in time {time}!");
                     Reset();
                 }
             }
@@ -53,9 +52,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         {
             if (Trigged)
                 return; //trigged,ignore.
-
-            Log.Debug($"Object {bind_object}({this}) Trigged in time {time}!");
-
+            
             last_trigged_time=time;
 
             foreach (Command command in SubCommands.Values.SelectMany(l => l))
@@ -64,11 +61,12 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 command.StartTime+=(int)time;
                 command.EndTime+=(int)time;
 
-                bind_object.AddCommand(command);
+                bind_object.InternalAddCommand(command);
             }
 
             //todo ,优化掉这货
             bind_object.SortCommands();
+            bind_object.UpdateObjectFrameTime();
 
             Trigged=true;
         }
@@ -102,5 +100,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         }
 
         public override string ToString() => $"{base.ToString()} {Condition}";
+
+        public readonly static Action<StoryBoardObject> OverrideDefaultValue = obj => obj.Color.w=0;
     }
 }

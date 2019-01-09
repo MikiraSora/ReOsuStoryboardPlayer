@@ -126,24 +126,32 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
             return true;
         }
 
-        public struct HitSoundInfo
+        public struct HitSoundInfo:IComparable<HitSoundInfo>
         {
+            public double Time;
+
             public HitObjectSoundType SoundType;
             public SampleSetType SampleSet;
             public SampleSetType SampleSetAdditions;
             public CustomSampleSetType CustomSampleSet;
             public int Volume;
 
-            public HitSoundInfo(HitObjectSoundType SoundType, SampleSetType SampleSet, CustomSampleSetType CustomSampleSet, int Volume, SampleSetType SampleSetAdditions = SampleSetType.None)
+            public HitSoundInfo(double Time,HitObjectSoundType SoundType, SampleSetType SampleSet, CustomSampleSetType CustomSampleSet, int Volume, SampleSetType SampleSetAdditions = SampleSetType.None)
             {
                 this.SoundType=SoundType;
                 this.SampleSet=SampleSet;
                 this.SampleSetAdditions=SampleSetAdditions;
                 this.CustomSampleSet=CustomSampleSet;
                 this.Volume=Volume;
+                this.Time=Time;
             }
 
-            public override string ToString() => $@"{SampleSet} {SampleSetAdditions} {CustomSampleSet} {Volume}% - {SoundType}";
+            public int CompareTo(HitSoundInfo other)
+            {
+                return this.Time.CompareTo(other.Time);
+            }
+
+            public override string ToString() => $@"{(int)Time} {SampleSet} {SampleSetAdditions} {CustomSampleSet} {Volume}% - {SoundType}";
         };
     }
 }

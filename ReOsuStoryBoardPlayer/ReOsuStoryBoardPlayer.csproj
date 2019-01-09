@@ -105,6 +105,7 @@
     <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\StoryboardAnimation.cs" />
     <Compile Include="Base\StoryboardBackgroundObject.cs" />
+    <Compile Include="BeatmapParser\EditorBeatmap.cs" />
     <Compile Include="Commands\Group\Trigger\TriggerCommand.cs" />
     <Compile Include="Commands\Group\Trigger\TriggerConditionBase.cs" />
     <Compile Include="Commands\Group\Trigger\TriggerCondition\CustomSampleSetType.cs" />
@@ -158,8 +159,7 @@
     <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
     <Compile Include="Parser\CommandParser\ValueCommandParser\ByteVec4CommandParser.cs" />
     <Compile Include="Parser\CommandParser\TriggerCommandParser.cs" />
-    <Compile Include="Parser\SimpleOsuParser\HitObject.cs" />
-    <Compile Include="Parser\SimpleOsuParser\HitObjectType.cs" />
+    <Compile Include="Parser\HitObjectHelpers.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />
@@ -189,8 +189,6 @@
     <Compile Include="Player\MusicPlayer.cs" />
     <Compile Include="Player\PlayerBase.cs" />
     <Compile Include="Player\MusicPlayerManager.cs" />
-    <Compile Include="Parser\SimpleOsuParser\HitObjectParserHelper.cs" />
-    <Compile Include="Parser\SimpleOsuParser\HitObjectReader.cs" />
     <Compile Include="Utils\Log.cs" />
     <Compile Include="DebugTool\DebuggerManager.cs" />
     <Compile Include="DebugTool\DebuggerBase.cs" />
@@ -265,6 +263,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\storybrew\common\common.csproj">
+      <Project>{f0edccec-4b64-4ce8-801f-1377e3384dc4}</Project>
+      <Name>common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
       <Project>{AB4CABA1-06E4-4A32-8A15-1FBE20ED5BC6}</Project>
       <Name>SaarFFmpeg</Name>

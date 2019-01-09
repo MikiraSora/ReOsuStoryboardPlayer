@@ -203,6 +203,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\storybrew\common\common.csproj">
+      <Project>{F0EDCCEC-4B64-4CE8-801F-1377E3384DC4}</Project>
+      <Name>common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReOsuStoryBoardPlayer\ReOsuStoryBoardPlayer.csproj">
       <Project>{5116d93a-a7d9-4312-b052-fbc2fe5d0444}</Project>
       <Name>ReOsuStoryBoardPlayer</Name>

@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
 using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Parser.SimpleOsuParser;
+using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,13 @@ using static ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition.HitSo
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
 {
+    //Part from osu! source code
     public class AutoTrigger : DebuggerBase
     {
-        BeatmapFolderInfo info = null;
+        LinkedList<HitSoundInfo> objects;
+        LinkedListNode<HitSoundInfo> cur;
 
-        LinkedListNode<HitObject> cur;
-
-        LinkedList<HitObject> objects;
-
-        float prev_time = 0;
+        double prev_time=0;
 
         public override void Init()
         {
@@ -33,7 +32,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
 
         public void Load(BeatmapFolderInfo info)
         {
-            objects = new LinkedList<HitObject>(HitObjectParserHelper.ParseHitObjects(info.osu_file_path));
+            objects = HitSoundInfosHelpers.Parse(info.osu_file_path);
             Flush();
         }
 
@@ -41,6 +40,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
         {
             cur=objects.First;
             prev_time = 0;
+            
         }
 
         public override void Update()
@@ -57,15 +57,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
                 var hit_object = cur.Value;
 
                 if (time>=hit_object.Time)
-                {
-                    TriggerListener.DefaultListener.Trig(new HitSoundInfo() {
-                        CustomSampleSet=hit_object.CustomSampleSet,
-                        SampleSet=hit_object.SampleSet,
-                        SampleSetAdditions=hit_object.AdditionSampleSet,
-                        SoundType=hit_object.HitSoundType,
-                        Volume=2857
-                    }, hit_object.Time);
-                }
+                    TriggerListener.DefaultListener.Trig(hit_object, (float)hit_object.Time);
                 else
                     break;
 
