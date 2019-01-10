@@ -115,7 +115,7 @@
     <Compile Include="Commands\Group\Trigger\TriggerCondition\HitSoundTriggerCondition.cs" />
     <Compile Include="Commands\Group\Trigger\TriggerCondition\SampleSetType.cs" />
     <Compile Include="Commands\Group\Trigger\TriggerListener.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerSubCommandsWrapperCommand.cs" />
+    <Compile Include="Commands\Group\Trigger\TriggerSubTimelineCommand.cs" />
     <Compile Include="Commands\Timeline\CommandTimeline.cs" />
     <Compile Include="Commands\Group\GroupCommand.cs" />
     <Compile Include="Commands\Group\LoopCommand.cs" />

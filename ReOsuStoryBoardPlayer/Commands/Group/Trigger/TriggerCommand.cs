@@ -12,6 +12,8 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
     {
         public TriggerConditionBase Condition { get; set; }
 
+        private Dictionary<Event, TriggerSubTimelineCommand> cache_timline_wrapper = new Dictionary<Event, TriggerSubTimelineCommand>();
+
         private StoryBoardObject bind_object;
 
         public int GroupID;
@@ -36,7 +38,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 if (last_trigged_time+CostTime<=time)
                 {
                     Trigged=false;
-                    Reset();
+                    Reset(true);
                 }
             }
         }
@@ -55,14 +57,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             
             last_trigged_time=time;
 
-            foreach (Command command in SubCommands.Values.SelectMany(l => l))
-            {
-                //map to real time
-                command.StartTime+=(int)time;
-                command.EndTime+=(int)time;
-
-                bind_object.InternalAddCommand(command);
-            }
+            AttachSubCommands(time);
 
             //todo ,优化掉这货
             bind_object.SortCommands();
@@ -71,18 +66,27 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             Trigged=true;
         }
 
-        public void Reset()
+        private void AttachSubCommands(float time)
         {
-            foreach (Command command in SubCommands.Values.SelectMany(l => l))
+            foreach (var wrapper in cache_timline_wrapper)
             {
-                //recovery to relative time
-                command.StartTime-=(int)last_trigged_time;
-                command.EndTime-=(int)last_trigged_time;
-
-                bind_object.InternalRemoveCommand(command);
+                bind_object.InternalRemoveCommand(wrapper.Value);
+                wrapper.Value.UpdateOffset((int)time);
+                bind_object.InternalAddCommand(wrapper.Value);
             }
+        }
+        
+        private void DetachSubCommands(bool magic=false)
+        {
+            foreach (var wrapper in cache_timline_wrapper.Where(x=>!magic||(x.Value.StartTime==x.Value.EndTime&&x.Value.StartTime==0)))
+                bind_object.InternalRemoveCommand(wrapper.Value);
+        }
 
-            last_trigged_time=0;
+        public void Reset(bool magic = false)
+        {
+            DetachSubCommands(magic);
+
+            last_trigged_time =0;
 
             Trigged=false;
         }
@@ -97,6 +101,11 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             base.UpdateSubCommand();
 
             CostTime=SubCommands.Values.SelectMany(l => l).Max(p => p.EndTime);
+
+            cache_timline_wrapper.Clear();
+
+            foreach (var timeline in SubCommands)
+                cache_timline_wrapper[timeline.Key]=new TriggerSubTimelineCommand(this, timeline.Key);
         }
 
         public override string ToString() => $"{base.ToString()} {Condition}";

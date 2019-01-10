@@ -28,6 +28,10 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 return new HitSoundTriggerCondition(condition_expr);
             if (Enum.GetNames(typeof(GameState)).Any(x => condition_expr.StartsWith(x)))
                 return new GameStateTriggerCondition(condition_expr);
+            /* todo
+            if (condition_expr=="HitObjectHit")
+                return new HitSoundTriggerCondition("HitSound");
+                */
 
             throw new FormatException($"\"{condition_expr}\" not a vaild trigger type value.");
         }
