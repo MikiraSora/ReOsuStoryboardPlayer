@@ -10,7 +10,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
     {
         private GameState listen_state;
 
-        private GameStateTriggerCondition(string description)
+        public GameStateTriggerCondition(string description)
         {
             listen_state=(GameState)Enum.Parse(typeof(GameState),description,true);
         }

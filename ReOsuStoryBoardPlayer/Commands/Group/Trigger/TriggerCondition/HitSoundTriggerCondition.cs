@@ -1,112 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
 {
-    public class HitSoundTriggerCondition:TriggerConditionBase
+    public class HitSoundTriggerCondition : TriggerConditionBase
     {
-        public HitObjectSoundType SoundType { get; private set; }
-        public SampleSetType SampleSet { get; private set; } = SampleSetType.All;
-        public SampleSetType SampleSetAdditions { get; private set; } = SampleSetType.All;
-        public CustomSampleSetType CustomSampleSet { get; private set; }
-        public bool MainSampleSetDefined { get; private set; }
-        public bool AdditionsSampleSetDefined { get; private set; }
-        public bool CheckCustomSampleSet { get; private set; }
+        public HitObjectSoundType HitSound;
+        //default All ,for example "HitSound" and accept all hitsoundinfos.
+        public SampleSetType SampleSet = SampleSetType.All;
+        public SampleSetType SampleSetAdditions = SampleSetType.All;
+        public CustomSampleSetType CustomSampleSet;
 
         internal HitSoundTriggerCondition(string description)
         {
-            string remainingDescription = description.Remove(0,"HitSound".Length);
+            //why I wrote these sh[]t?
+            Parse(Parse(Parse(Parse(description.Replace("HitSound",string.Empty), ref SampleSet),
+                        ref SampleSetAdditions),
+                    ref HitSound),
+                ref CustomSampleSet);
 
-            // Main and additions sample sets
-            SampleSetType parsedSampleSet;
-            if (TryParseStartsWith(remainingDescription, out parsedSampleSet)
-                &&parsedSampleSet!=SampleSetType.None)
-            {
-                SampleSet=parsedSampleSet;
-                MainSampleSetDefined=true;
-                remainingDescription=remainingDescription.Substring(SampleSet.ToString().Length,
-                    remainingDescription.Length-SampleSet.ToString().Length);
-
-                // Additions
-
-                if (TryParseStartsWith(remainingDescription, out parsedSampleSet)
-                    &&parsedSampleSet!=SampleSetType.None)
-                {
-                    SampleSetAdditions=parsedSampleSet;
-                    AdditionsSampleSetDefined=true;
-                    remainingDescription=remainingDescription.Substring(SampleSetAdditions.ToString().Length,
-                        remainingDescription.Length-SampleSetAdditions.ToString().Length);
-                }
-            }
-
-            // Sound type
-            HitObjectSoundType parsedSoundType;
-            if (TryParseStartsWith(remainingDescription, out parsedSoundType)
-                &&parsedSoundType!=HitObjectSoundType.None&&parsedSoundType!=HitObjectSoundType.Normal)
-            {
-                SoundType=parsedSoundType;
-                remainingDescription=remainingDescription.Substring(SoundType.ToString().Length,
-                    remainingDescription.Length-SoundType.ToString().Length);
-            }
-
-            // Custom sample set
-            int parsedSampleSetIndex;
-            if (Int32.TryParse(remainingDescription, out parsedSampleSetIndex))
-            {
-                CustomSampleSet=(CustomSampleSetType)parsedSampleSetIndex;
-                CheckCustomSampleSet=true;
-            }
-
-            // Make trigger descriptions have more intuitive results:
-            // - HitSoundDrumWhistle refers to the whistle addition being from the drum sampleset, 
-            //   if you'd wanted a trigger on a drum sampleset + any whistle addition (uncommon), you'd use HitSoundDrumAllWhistle
-            if (SoundType!=HitObjectSoundType.None&&MainSampleSetDefined&&!AdditionsSampleSetDefined)
-            {
-                SampleSetAdditions=SampleSet;
-                SampleSet=SampleSetType.All;
-
-                MainSampleSetDefined=false;
-                AdditionsSampleSetDefined=true;
-            }
-
-            // Check that the description is valid
-            if (!ToString().Equals(description))
-                throw new Exception("Invalid hitsound trigger description after "+ToString());
+            //todo:Assert check.
         }
 
-        public override string ToString()
+        public string Parse<T>(string str, ref T v)
         {
-            string triggerName = "HitSound";
-            if (MainSampleSetDefined)
-                triggerName+=SampleSet;
-            if (AdditionsSampleSetDefined)
-                triggerName+=SampleSetAdditions;
-            if (SoundType!=HitObjectSoundType.None)
-                triggerName+=SoundType;
-            if (CheckCustomSampleSet)
-                triggerName+=((int)CustomSampleSet);
-            return triggerName;
-        }
-
-        private bool TryParseStartsWith<T>(string val, out T result)
-        {
-            result=default;
-
-            foreach (object v in Enum.GetValues(typeof(T)))
-            {
-                if (val.StartsWith(v.ToString()))
-                {
-                    result=(T)v;
-                    return true;
-                }
-            }
+            Debug.Assert(typeof(T).IsEnum, $"Dont use Parse() for non-enum type parsing.");
             
-            return false;
+            if (string.IsNullOrWhiteSpace(str))
+                return str;
+
+            var t = ((T[])Enum.GetValues(typeof(T))).FirstOrDefault(x => str.StartsWith(x.ToString()));
+
+            var match=!EqualityComparer<T>.Default.Equals(t, default(T));
+
+            v=match ? t : v;
+
+            return str.Substring(match ? v.ToString().Length : 0);
         }
 
+        public override string ToString() => $"HitSound {SampleSet} {SampleSetAdditions} {HitSound} {CustomSampleSet}";
+        
         public bool CheckCondition(HitSoundInfo hitSoundInfo)
         {
             if (SampleSet!=SampleSetType.All&&hitSoundInfo.SampleSet!=SampleSet)
@@ -117,10 +54,10 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
                 ||hitSoundInfo.SampleSetAdditions==SampleSetType.None&&hitSoundInfo.SampleSet==SampleSetAdditions))
                 return false;
 
-            if (SoundType!=HitObjectSoundType.None&&!hitSoundInfo.SoundType.HasFlag(SoundType))
+            if (HitSound!=HitObjectSoundType.None&&!hitSoundInfo.SoundType.HasFlag(HitSound))
                 return false;
 
-            if (CheckCustomSampleSet&&hitSoundInfo.CustomSampleSet!=CustomSampleSet)
+            if (CustomSampleSet!=CustomSampleSetType.Default&&hitSoundInfo.CustomSampleSet!=CustomSampleSet)
                 return false;
 
             return true;
@@ -134,24 +71,22 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
             public SampleSetType SampleSet;
             public SampleSetType SampleSetAdditions;
             public CustomSampleSetType CustomSampleSet;
-            public int Volume;
 
-            public HitSoundInfo(double Time,HitObjectSoundType SoundType, SampleSetType SampleSet, CustomSampleSetType CustomSampleSet, int Volume, SampleSetType SampleSetAdditions = SampleSetType.None)
+            public HitSoundInfo(double Time,HitObjectSoundType SoundType, SampleSetType SampleSet, CustomSampleSetType CustomSampleSet, SampleSetType SampleSetAdditions = SampleSetType.None)
             {
                 this.SoundType=SoundType;
                 this.SampleSet=SampleSet;
                 this.SampleSetAdditions=SampleSetAdditions;
                 this.CustomSampleSet=CustomSampleSet;
-                this.Volume=Volume;
                 this.Time=Time;
             }
 
             public int CompareTo(HitSoundInfo other)
             {
-                return this.Time.CompareTo(other.Time);
+                return Time.CompareTo(other.Time);
             }
 
-            public override string ToString() => $@"{(int)Time} {SampleSet} {SampleSetAdditions} {CustomSampleSet} {Volume}% - {SoundType}";
+            public override string ToString() => $@"{(int)Time} {SampleSet} {SampleSetAdditions} {SoundType} {CustomSampleSet}";
         };
     }
 }

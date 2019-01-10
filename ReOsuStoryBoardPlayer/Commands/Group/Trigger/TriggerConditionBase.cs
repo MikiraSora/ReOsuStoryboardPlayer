@@ -22,12 +22,14 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             return cache_triggers[description];
         }
 
-        private static TriggerConditionBase Generate(string description)
+        private static TriggerConditionBase Generate(string condition_expr)
         {
-            if (description.StartsWith("HitSound"))
-                return new HitSoundTriggerCondition(description);
+            if (condition_expr.StartsWith("HitSound"))
+                return new HitSoundTriggerCondition(condition_expr);
+            if (Enum.GetNames(typeof(GameState)).Any(x => condition_expr.StartsWith(x)))
+                return new GameStateTriggerCondition(condition_expr);
 
-            throw new FormatException($"\"{description}\" not a vaild trigger type value.");
+            throw new FormatException($"\"{condition_expr}\" not a vaild trigger type value.");
         }
 
         #endregion
