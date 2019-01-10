@@ -32,7 +32,7 @@
             else if (time >= EndTime)
                 return 1;
             else
-                return (float)OsuEasingInterpolator.ApplyEasing(Easing,time-StartTime,0,1,EndTime-StartTime);
+                return (float)Interpolation.ApplyEasing(Easing,(time-StartTime)/(EndTime-StartTime));
         }
 
         public override void Execute(StoryBoardObject @object, float time)
