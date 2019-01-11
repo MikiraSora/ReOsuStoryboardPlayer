@@ -189,18 +189,19 @@ namespace ReOsuStoryBoardPlayer
 			*   vec2(2)		        vec4(4)             Matrix3x2(6)
 			*/
 
+            
             var is_xflip = Math.Sign(scale.x);
             var is_yflip = Math.Sign(scale.y);
 
-            //todo:adjust scale transform which value is negative
-            //horizon_flip=horizon_flip|(is_xflip<0);
+            //adjust scale transform which value is negative
+            horizon_flip=horizon_flip|(is_xflip<0);
             vertical_flip=vertical_flip|(is_yflip<0);
+            float scalex = is_xflip*scale.x*bound.x;
+            float scaley = is_yflip*scale.y*bound.y;
 
             //Create ModelMatrix
             float cosa = (float)Math.Cos(rotate);
             float sina = (float)Math.Sin(rotate);
-            float scalex = is_yflip*scale.x * bound.x;
-            float scaley = is_yflip*scale.y * bound.y;
 
             Matrix3x2 model = Matrix3x2.Zero;
             model.Row0.X = cosa * scalex;
