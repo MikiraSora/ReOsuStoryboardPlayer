@@ -10,7 +10,7 @@ namespace ReOsuStoryBoardPlayer.Commands
         public int StartTime=int.MaxValue;
         public int EndTime;
 
-        private bool overlay;
+        public bool Overlay { get; set; }
 
         public Event Event=Event.Unknown;
 
@@ -25,7 +25,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
                 if (command.EndTime<=prev_cmd.EndTime||command.StartTime<prev_cmd.EndTime)
                 {
-                    overlay=true;
+                    Overlay=true;
 
                     if (Setting.ShowProfileSuggest&&(command.StartTime!=command.EndTime))
                         Log.User($"{command} is conflict with {prev_cmd}");
@@ -51,7 +51,7 @@ namespace ReOsuStoryBoardPlayer.Commands
             //cache
             if (selected_command!=null
                 &&selected_command.StartTime<=current_time&&current_time<=selected_command.EndTime
-                &&(!overlay))
+                &&(!Overlay))
                 return selected_command;
 
             if (current_time<this.First().StartTime)
@@ -67,7 +67,7 @@ namespace ReOsuStoryBoardPlayer.Commands
 
                 if (TimeInCommand(cmd))
                 {
-                    if (overlay&&next_cmd!=null)
+                    if (Overlay&&next_cmd!=null)
                     {
                         //判断下一个命令(可能是overlay command)是否也是在范围内
                         if (TimeInCommand(next_cmd))
@@ -85,6 +85,6 @@ namespace ReOsuStoryBoardPlayer.Commands
             bool TimeInCommand(Command c) => (current_time>=c.StartTime&&current_time<=c.EndTime);
         }
 
-        public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(overlay?"Overlay":string.Empty)}";
+        public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(Overlay ? "Overlay":string.Empty)}";
     }
 }

@@ -50,7 +50,8 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 if (obj==null
                     ||obj is StoryboardAnimation  //qnmd
                     ||!obj.CommandMap.TryGetValue(Event.Fade, out var fade_list)
-                    ||fade_list.Count==0)
+                    ||fade_list.Count==0
+                    ||fade_list.Overlay)
                     continue;
 
                 var first_fade = fade_list.First() as FadeCommand;
