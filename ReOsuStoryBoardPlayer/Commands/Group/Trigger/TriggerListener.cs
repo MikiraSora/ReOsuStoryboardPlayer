@@ -39,6 +39,8 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                         pair.Value.Where(x => x.CheckTimeVaild(current_time)) 
                         : pair.Value.Reverse().Where(x => x.CheckTimeVaild(current_time)).Take(1);
 
+                    commands=commands.ToList();
+
                     foreach (var cmd in commands)
                     {
                         if (cmd?.Condition is HitSoundTriggerCondition condition
