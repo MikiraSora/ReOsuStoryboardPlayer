@@ -181,7 +181,7 @@ namespace ReOsuStoryBoardPlayer
                         if (background.RenderGroup!=null)
                         {
                             var scale = SB_HEIGHT/background.RenderGroup.Texture.Height;
-                            background.AddCommand(new ScaleCommand()
+                            background.InternalAddCommand(new ScaleCommand()
                             {
                                 Easing=/*EasingConverter.CacheEasingInterpolatorMap[Easing.Linear]*/EasingTypes.None,
                                 StartTime=-2857,
