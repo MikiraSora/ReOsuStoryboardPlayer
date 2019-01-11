@@ -112,8 +112,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             Vector3[] points = new Vector3[4];
 
-            int w = (int)(obj.RenderGroup.Texture.Width * obj.Scale.x);
-            int h = (int)(obj.RenderGroup.Texture.Height * obj.Scale.y);
+            int w = (int)(obj.RenderGroup.Texture.Width * Math.Abs(obj.Scale.x));
+            int h = (int)(obj.RenderGroup.Texture.Height *Math.Abs(obj.Scale.y));
 
             Vector2 anchor = new Vector2(obj.Anchor.x, obj.Anchor.y) + new Vector2(0.5f,0.5f);
             anchor.X *= w;
