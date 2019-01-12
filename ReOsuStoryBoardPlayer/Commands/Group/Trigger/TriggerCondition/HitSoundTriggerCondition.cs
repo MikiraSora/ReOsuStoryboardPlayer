@@ -46,12 +46,19 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
         
         public bool CheckCondition(HitSoundInfo hitSoundInfo)
         {
+            /*
             if (SampleSet!=SampleSetType.All&&hitSoundInfo.SampleSet!=SampleSet)
                 return false;
 
             if (SampleSetAdditions!=SampleSetType.All&&
                 !(hitSoundInfo.SampleSetAdditions==SampleSetAdditions
                 ||hitSoundInfo.SampleSetAdditions==SampleSetType.None&&hitSoundInfo.SampleSet==SampleSetAdditions))
+                return false;
+                */
+            if (!CheckSampleSet(hitSoundInfo.SampleSet))
+                return false;
+
+            if (!CheckSampleSet(hitSoundInfo.SampleSetAdditions))
                 return false;
 
             if (HitSound!=HitObjectSoundType.None&&!hitSoundInfo.SoundType.HasFlag(HitSound))
@@ -61,6 +68,20 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
                 return false;
 
             return true;
+        }
+
+        private bool CheckSampleSet(SampleSetType b)
+        {
+            if (b==SampleSetType.None || b==SampleSetType.All)
+                return false;//默认通过(虽然理论上是不存在这些条件)
+
+            if (this.SampleSet==SampleSetType.All||(this.SampleSet!=SampleSetType.All&&this.SampleSet==b))
+                return true;
+
+            if (this.SampleSetAdditions==SampleSetType.All||(this.SampleSetAdditions!=SampleSetType.All&&this.SampleSetAdditions==b))
+                return true;
+
+            return false;
         }
 
         public struct HitSoundInfo:IComparable<HitSoundInfo>

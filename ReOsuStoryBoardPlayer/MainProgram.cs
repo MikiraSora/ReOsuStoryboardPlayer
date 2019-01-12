@@ -67,7 +67,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\548679 DJ NAGAI feat a_ru - Benibotan";
+            beatmap_folder=@"G:\SBTest\463479 Nanahira - Bassdrop Freaks (Long Ver)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
