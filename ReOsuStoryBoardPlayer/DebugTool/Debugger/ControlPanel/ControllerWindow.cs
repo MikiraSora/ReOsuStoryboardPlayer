@@ -32,15 +32,26 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             MusicPlayerManager.ActivityPlayer.Jump(0);
         }
 
+        private float prev_display_time= float.MinValue;
+
+        private void UpdateProgressTime(float time)
+        {
+            progressBar1.Value=(int)Math.Max(0, Math.Min(time*1.0f/MusicPlayerManager.ActivityPlayer.Length*progressBar1.Maximum, progressBar1.Maximum));
+            prev_display_time=time;
+        }
+
         public void UpdateInfo()
         {
+            var t = MusicPlayerManager.ActivityPlayer.CurrentTime;
+
+            if (Math.Abs(t-prev_display_time)>=1000)
+                UpdateProgressTime(t);
+
             label2.Text = StoryboardInstanceManager.ActivityInstance.Info.folder_path;
-            progressBar1.Value = (int)Math.Max(0,Math.Min(MusicPlayerManager.ActivityPlayer.CurrentTime*1.0f/MusicPlayerManager.ActivityPlayer.Length*progressBar1.Maximum, progressBar1.Maximum));
 
             label1.Text = MusicPlayerManager.ActivityPlayer.PlaybackSpeed + "x";
             label3.Text = $"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
-            //label5.Text = $"{CurrentStoryboardIntance.RenderCastTime + CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.UpdateCastTime}\t:{CurrentStoryboardIntance.RenderCastTime}";
-
+            
             button1.Enabled = !MusicPlayerManager.ActivityPlayer.IsPlaying;
             button2.Enabled = MusicPlayerManager.ActivityPlayer.IsPlaying;
         }
@@ -52,6 +63,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             var jump_pos = (uint)(normalize_pos *MusicPlayerManager.ActivityPlayer.Length);
 
             MusicPlayerManager.ActivityPlayer.Jump(jump_pos);
+            UpdateProgressTime(jump_pos);
         }
 
         private void ControllerWindow_Load(object sender, EventArgs e)

@@ -57,8 +57,9 @@ namespace ReOsuStoryBoardPlayer
 
         public void AddCommand(Command command)
         {
+#if DEBUG
             Debug.Assert(!command_change_block, "Can't add any commands when BlockCommandAdd() was called.");
-
+#endif
             InternalAddCommand(command);
         }
 
@@ -130,7 +131,9 @@ namespace ReOsuStoryBoardPlayer
 
         public void RemoveCommand(Command command)
         {
+#if DEBUG
             Debug.Assert(!command_change_block, "Can't remove any commands when BlockCommandAdd() was called.");
+#endif
             InternalRemoveCommand(command);
         }
 
@@ -166,7 +169,7 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        #endregion
+#endregion
 
         public StoryBoardObject()
         {
