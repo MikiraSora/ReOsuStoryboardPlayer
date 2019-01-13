@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
@@ -26,39 +27,37 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
             //todo:Assert check.
         }
 
-        public string Parse<T>(string str, ref T v)
+        public string Parse<T>(string str, ref T v) where T: Enum
         {
             Debug.Assert(typeof(T).IsEnum, $"Dont use Parse() for non-enum type parsing.");
             
             if (string.IsNullOrWhiteSpace(str))
                 return str;
 
-            var t = ((T[])Enum.GetValues(typeof(T))).FirstOrDefault(x => str.StartsWith(x.ToString()));
+            string int_val = Regex.Match(str, @"\d*").Groups[0].Value;
 
-            var match=!EqualityComparer<T>.Default.Equals(t, default(T));
+            int iv=0;
+            bool is_value =(!string.IsNullOrWhiteSpace(int_val))&&int.TryParse(int_val,out iv);
 
-            v=match ? t : v;
+            var t = ((T[])Enum.GetValues(typeof(T))).FirstOrDefault(x => is_value? (iv==Convert.ToInt32(x)) : str.StartsWith(x.ToString()));
 
-            return str.Substring(match ? v.ToString().Length : 0);
+            var match=!t.Equals(default(T));
+
+            v= match ? t : v;
+
+            return str.Substring(match ? ( is_value ?  iv.ToString().Length : v.ToString().Length ): 0);
         }
 
         public override string ToString() => $"HitSound {SampleSet} {SampleSetAdditions} {HitSound} {CustomSampleSet}";
         
         public bool CheckCondition(HitSoundInfo hitSoundInfo)
         {
-            /*
-            if (SampleSet!=SampleSetType.All&&hitSoundInfo.SampleSet!=SampleSet)
+            if (SampleSet!=SampleSetType.All&&(hitSoundInfo.SampleSet!=SampleSet&&SampleSet!=hitSoundInfo.SampleSetAdditions))
                 return false;
 
             if (SampleSetAdditions!=SampleSetType.All&&
                 !(hitSoundInfo.SampleSetAdditions==SampleSetAdditions
                 ||hitSoundInfo.SampleSetAdditions==SampleSetType.None&&hitSoundInfo.SampleSet==SampleSetAdditions))
-                return false;
-                */
-            if (!CheckSampleSet(hitSoundInfo.SampleSet))
-                return false;
-
-            if (!CheckSampleSet(hitSoundInfo.SampleSetAdditions))
                 return false;
 
             if (HitSound!=HitObjectSoundType.None&&!hitSoundInfo.SoundType.HasFlag(HitSound))
