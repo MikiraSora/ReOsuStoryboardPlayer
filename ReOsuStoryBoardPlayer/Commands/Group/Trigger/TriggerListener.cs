@@ -28,18 +28,24 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             return commands.FirstOrDefault(x => x.CheckTimeVaild(current_time));
         }
 
+        private IEnumerable<TriggerCommand> PickVaildTriggers(int group_id,IEnumerable<TriggerCommand> commands, float current_time)
+        {
+            /*
+             0 Group里面的Trigger相互不冲突，除此之外的Group组里,都会只能执行一个Trigger(后者优先).
+             不过在旧屙屎里面>0里面group_id会对应各个主要TriggerCondition类型，而且还是取负输出到.osb/.osu , 也取负读取，一脸懵逼.jpg
+             */
+            return group_id==0 ? 
+                           commands.Where(x => x.CheckTimeVaild(current_time))
+                           : commands.Reverse().Where(x => x.CheckTimeVaild(current_time)).Take(1);
+        }
+
         public void Trig(HitSoundInfo hit_sound, float current_time)
         {
             foreach (var obj in register_trigger_objects)
             {
                 foreach (var pair in obj.Triggers)
                 {
-                    IEnumerable<TriggerCommand> commands = 
-                        pair.Key==0 ? //0 Group里面的Trigger相互不冲突，除此之外的Group都会只能执行一个Trigger(后者优先）
-                        pair.Value.Where(x => x.CheckTimeVaild(current_time)) 
-                        : pair.Value.Reverse().Where(x => x.CheckTimeVaild(current_time)).Take(1);
-
-                    commands=commands.ToList();
+                    var commands=PickVaildTriggers(pair.Key,pair.Value,current_time);
 
                     foreach (var cmd in commands)
                     {
@@ -92,10 +98,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             foreach (var obj in register_trigger_objects)
                 foreach (var pair in obj.Triggers)
                 {
-                    IEnumerable<TriggerCommand> commands =
-                        pair.Key==0 ? //0 Group里面的Trigger相互不冲突，除此之外的Group都会只能执行一个Trigger(后者优先）
-                        pair.Value.Where(x => x.CheckTimeVaild((float)hit_sound.Time))
-                        : pair.Value.Reverse().Where(x => x.CheckTimeVaild((float)hit_sound.Time)).Take(1);
+                    var commands=PickVaildTriggers(pair.Key, pair.Value, (float)hit_sound.Time);
 
                     foreach (var cmd in commands)
                         if (cmd?.Condition is HitSoundTriggerCondition condition

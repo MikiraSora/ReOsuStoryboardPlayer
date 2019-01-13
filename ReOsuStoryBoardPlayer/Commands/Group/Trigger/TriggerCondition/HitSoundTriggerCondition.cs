@@ -52,15 +52,16 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
         
         public bool CheckCondition(HitSoundInfo hitSoundInfo)
         {
-            if (SampleSet!=SampleSetType.All&&(hitSoundInfo.SampleSet!=SampleSet&&SampleSet!=hitSoundInfo.SampleSetAdditions))
+            if (SampleSet!=SampleSetType.All&&
+                hitSoundInfo.SampleSet!=SampleSet&&SampleSet!=hitSoundInfo.SampleSetAdditions)
                 return false;
 
             if (SampleSetAdditions!=SampleSetType.All&&
                 !(hitSoundInfo.SampleSetAdditions==SampleSetAdditions
-                ||hitSoundInfo.SampleSetAdditions==SampleSetType.None&&hitSoundInfo.SampleSet==SampleSetAdditions))
+                ||hitSoundInfo.SampleSet==SampleSetAdditions))
                 return false;
 
-            if (HitSound!=HitObjectSoundType.None&&!hitSoundInfo.SoundType.HasFlag(HitSound))
+            if (!hitSoundInfo.SoundType.HasFlag(HitSound))
                 return false;
 
             if (CustomSampleSet!=CustomSampleSetType.Default&&hitSoundInfo.CustomSampleSet!=CustomSampleSet)
