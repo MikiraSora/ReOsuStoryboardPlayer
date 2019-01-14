@@ -52,11 +52,9 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         public void Trig(float time)
         {
-            /*
             if (Trigged)
                 return; //trigged,ignore.
-            */
-
+            
             Reset(true);
             last_trigged_time=time;
 

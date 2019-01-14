@@ -51,7 +51,9 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                     ||obj is StoryboardAnimation  //qnmd
                     ||!obj.CommandMap.TryGetValue(Event.Fade, out var fade_list)
                     ||fade_list.Count==0
-                    ||fade_list.Overlay)
+                    ||fade_list.Overlay
+                    ||fade_list.Count<=1
+                    )
                     continue;
 
                 var first_fade = fade_list.First() as FadeCommand;
@@ -59,11 +61,9 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 if (first_fade!=null)
                 {
                     FadeCommand front_fade = null;
-
-
-                    if ((first_fade.EndTime==0 || first_fade.StartTime==first_fade.EndTime)
-                        &&first_fade.EndValue==0
-                        &&fade_list.Count>1)
+                    
+                    if ((first_fade.EndTime==0 || first_fade.StartTime==first_fade.EndTime) //是否为立即命令（dutation=0）
+                        &&first_fade.EndValue==0) //是否是隐藏的
                     {
                         if (fade_list.Skip(1).First() is FadeCommand second_fade)
                         {
@@ -84,7 +84,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 }
 
                 var last_fade = fade_list.Last() as FadeCommand;
-
+                
                 if (last_fade!=null&&last_fade.EndValue==0)
                 {
                     obj.FrameEndTime=last_fade.EndTime;

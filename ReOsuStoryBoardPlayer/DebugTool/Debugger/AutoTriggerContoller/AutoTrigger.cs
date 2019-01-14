@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
                 var hit_object = cur.Value;
 
                 if (time>=hit_object.Time)
-                    TriggerListener.DefaultListener.Trig(hit_object, (float)hit_object.Time+5);
+                    TriggerListener.DefaultListener.Trig(hit_object, (float)hit_object.Time);
                 else
                     break;
 

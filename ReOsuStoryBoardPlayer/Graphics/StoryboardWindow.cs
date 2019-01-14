@@ -283,8 +283,6 @@ namespace ReOsuStoryBoardPlayer
                 BuildCacheDrawSpriteBatch(instance.StoryboardObjectList, instance.Info.folder_path);
             }
 
-            instance.Flush();
-
             _timestamp=0;
 
             ready=true;

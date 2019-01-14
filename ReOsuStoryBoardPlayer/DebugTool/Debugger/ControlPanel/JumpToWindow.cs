@@ -33,7 +33,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 
             jump = jump >=MusicPlayerManager.ActivityPlayer.Length ? MusicPlayerManager.ActivityPlayer.Length : jump;
 
-            MusicPlayerManager.ActivityPlayer.Jump(jump);
+            MusicPlayerManager.ActivityPlayer.Jump(jump,true);
 
             Close();
         }

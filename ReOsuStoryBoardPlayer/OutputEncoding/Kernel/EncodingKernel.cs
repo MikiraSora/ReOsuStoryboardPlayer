@@ -57,7 +57,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
 
             if (option.IsExplicitTimeRange)
             {
-                time_control.Jump(option.StartTime);
+                time_control.Jump(option.StartTime,true);
             }
 
             DebuggerManager.AfterRender+=OnAfterRender;

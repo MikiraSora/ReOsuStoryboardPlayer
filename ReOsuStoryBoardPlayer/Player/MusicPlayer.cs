@@ -54,7 +54,7 @@ namespace ReOsuStoryBoardPlayer.Player
             loaded_path=audio_file;
         }
 
-        public override void Jump(float time)
+        public override void Jump(float time,bool pause)
         {
             Pause();
             sound.PlayPosition=(uint)time;
@@ -62,7 +62,8 @@ namespace ReOsuStoryBoardPlayer.Player
 
             prev_mp3_time=(uint)(time-sound.PlayPosition);
 
-            StoryboardInstanceManager.ActivityInstance.Flush();
+            if (!pause)
+                Play();
         }
 
         public override void Play()
@@ -88,7 +89,7 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public override void Stop()
         {
-            Jump(0);
+            Jump(0,true);
         }
 
         public override void Pause()
@@ -107,7 +108,7 @@ namespace ReOsuStoryBoardPlayer.Player
             if (FinishedPlay?.Invoke()??true)
             {
                 Load(loaded_path);
-                Jump(0);
+                Jump(0,true);
             }
         }
     }

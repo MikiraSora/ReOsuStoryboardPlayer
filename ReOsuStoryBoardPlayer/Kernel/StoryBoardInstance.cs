@@ -138,7 +138,7 @@ namespace ReOsuStoryBoardPlayer.Kernel
         /// <summary>
         /// 重置物件的时间轴状态
         /// </summary>
-        public void Flush()
+        private void Flush()
         {
             UpdatingStoryboardObjects.Clear();
 
@@ -181,14 +181,21 @@ namespace ReOsuStoryBoardPlayer.Kernel
             return LastAddNode!=null;
         }
 
+        private float prev_time = int.MinValue;
+
         /// <summary>
         /// 更新物件，因为是增量更新维护，所以current_time递减或变小时，必须先Flush()后Update().
         /// </summary>
         /// <param name="current_time"></param>
         public void Update(float current_time)
         {
-            UpdatingStoryboardObjects.RemoveAll((obj) => current_time>obj.FrameEndTime||current_time<obj.FrameStartTime);
+            if (current_time<prev_time)
+                Flush();
+            else
+                UpdatingStoryboardObjects.RemoveAll((obj) => current_time>obj.FrameEndTime||current_time<obj.FrameStartTime);
 
+            prev_time=current_time;
+            
             bool hasAdded = Scan(current_time);
             
             if (hasAdded)

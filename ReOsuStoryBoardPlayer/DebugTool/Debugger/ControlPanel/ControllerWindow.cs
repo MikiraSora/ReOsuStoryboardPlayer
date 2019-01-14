@@ -29,7 +29,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MusicPlayerManager.ActivityPlayer.Jump(0);
+            MusicPlayerManager.ActivityPlayer.Jump(0,true);
         }
 
         private float prev_display_time= float.MinValue;
@@ -62,7 +62,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             var normalize_pos = ((e as MouseEventArgs).X /*- bar.Bounds.X*/ * 1.0f) / bar.Bounds.Width;
             var jump_pos = (uint)(normalize_pos *MusicPlayerManager.ActivityPlayer.Length);
 
-            MusicPlayerManager.ActivityPlayer.Jump(jump_pos);
+            MusicPlayerManager.ActivityPlayer.Jump(jump_pos, true);
             UpdateProgressTime(jump_pos);
         }
 

@@ -68,7 +68,8 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
                 ||hitSoundInfo.SampleSet==SampleSetAdditions))
                 return false;
 
-            if (!HitSound.HasFlag(hitSoundInfo.SoundType))
+            //storybrew可能塞了个HitSound为None的玩意
+            if (hitSoundInfo.SoundType==HitObjectSoundType.None || !HitSound.HasFlag(hitSoundInfo.SoundType))
                 return false;
 
             if (CustomSampleSet!=CustomSampleSetType.Default&&hitSoundInfo.CustomSampleSet!=CustomSampleSet)

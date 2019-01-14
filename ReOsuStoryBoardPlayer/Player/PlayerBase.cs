@@ -18,6 +18,6 @@ namespace ReOsuStoryBoardPlayer.Player
         public abstract void Play();
         public abstract void Stop();
         public abstract void Pause();
-        public abstract void Jump(float time);
+        public abstract void Jump(float time,bool pause);
     }
 }

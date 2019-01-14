@@ -44,11 +44,11 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         public void Trig(HitSoundInfo hit_sound, float current_time)
         {
-            foreach (var obj in register_trigger_objects)
+            foreach (var obj in register_trigger_objects.Where(o => o.FrameStartTime<=current_time&&current_time<=o.FrameEndTime))
             {
                 foreach (var pair in obj.Triggers)
                 {
-                    var commands=PickVaildTriggers(pair.Key,pair.Value,current_time);
+                    var commands=PickVaildTriggers(pair.Key,pair.Value,current_time).ToList();
 
                     foreach (var cmd in commands)
                     {

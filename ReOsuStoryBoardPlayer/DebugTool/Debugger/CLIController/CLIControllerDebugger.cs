@@ -69,7 +69,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
                         if (str==null) break;
                         var num = uint.Parse(str);
 
-                        ExecutorSync.PostTask(() => MusicPlayerManager.ActivityPlayer.Jump(num)).Wait();
+                        ExecutorSync.PostTask(() => MusicPlayerManager.ActivityPlayer.Jump(num,true)).Wait();
                         break;
                     case "exit":
                     case "quit":

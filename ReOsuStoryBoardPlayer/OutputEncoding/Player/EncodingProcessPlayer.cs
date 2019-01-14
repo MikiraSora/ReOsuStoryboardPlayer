@@ -21,7 +21,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Player
 
         bool is_playing = false;
 
-        public override void Jump(float time)
+        public override void Jump(float time,bool pause)
         {
             current_time=Math.Min(time,Length);
         }
