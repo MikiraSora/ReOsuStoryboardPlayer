@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
 
-namespace ReOsuStoryBoardPlayer.Parser
+namespace ReOsuStoryBoardPlayer.BeatmapParser
 {
     public static class HitSoundInfosHelpers
     {

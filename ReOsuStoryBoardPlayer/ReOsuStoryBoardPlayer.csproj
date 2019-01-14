@@ -159,7 +159,7 @@
     <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
     <Compile Include="Parser\CommandParser\ValueCommandParser\ByteVec4CommandParser.cs" />
     <Compile Include="Parser\CommandParser\TriggerCommandParser.cs" />
-    <Compile Include="Parser\HitObjectHelpers.cs" />
+    <Compile Include="BeatmapParser\HitObjectHelpers.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />

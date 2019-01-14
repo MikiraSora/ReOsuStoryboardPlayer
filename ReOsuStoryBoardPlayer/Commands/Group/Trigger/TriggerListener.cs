@@ -9,6 +9,9 @@ using static ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition.HitSo
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
+    /// <summary>
+    /// 用于管控SB里面所有Trigger,通过此类(默认Default)可以直接触发已经绑定的TriggerCommand.
+    /// </summary>
     public class TriggerListener
     {
         HashSet<StoryBoardObject> register_trigger_objects = new HashSet<StoryBoardObject>();

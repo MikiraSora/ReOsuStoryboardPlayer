@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
+﻿using ReOsuStoryBoardPlayer.BeatmapParser;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Parser.Stream;
