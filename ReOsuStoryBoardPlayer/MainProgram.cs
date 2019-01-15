@@ -42,6 +42,7 @@ namespace ReOsuStoryBoardPlayer
                 
                 var player = new MusicPlayer();
                 player.Load(info.audio_file_path);
+                player.Volume=0;
                 MusicPlayerManager.ApplyPlayer(player);
 
                 var auto_trigger = DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
@@ -67,7 +68,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\463479 Nanahira - Bassdrop Freaks (Long Ver)";
+            beatmap_folder=@"G:\SBTest\144171 Nekomata Master - Far east nightbird (kors k Remix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

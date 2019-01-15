@@ -45,7 +45,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
 
         public void Trim()
         {
-            var unused_hitsounds = objects/*.AsParallel()*/.Where(x => !TriggerListener.DefaultListener.CheckTrig(x)).ToList();
+            var unused_hitsounds = objects.AsParallel().Where(x => !TriggerListener.DefaultListener.CheckTrig(x)).ToList();
 
             foreach (var sounds in unused_hitsounds)
                 objects.Remove(sounds);

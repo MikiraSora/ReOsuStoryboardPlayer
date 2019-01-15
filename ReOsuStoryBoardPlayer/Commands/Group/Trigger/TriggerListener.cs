@@ -49,7 +49,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 foreach (var pair in obj.Triggers)
                 {
                     var commands=PickVaildTriggers(pair.Key,pair.Value,current_time).ToList();
-
+                    
                     foreach (var cmd in commands)
                     {
                         if (cmd?.Condition is HitSoundTriggerCondition condition
@@ -98,7 +98,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         /// <returns></returns>
         internal bool CheckTrig(HitSoundInfo hit_sound)
         {
-            foreach (var obj in register_trigger_objects)
+            foreach (var obj in register_trigger_objects.Where(o => o.FrameStartTime<=hit_sound.Time&&hit_sound.Time<=o.FrameEndTime))
             {
                 foreach (var pair in obj.Triggers)
                 {

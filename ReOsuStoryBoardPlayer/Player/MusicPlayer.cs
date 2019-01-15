@@ -48,10 +48,12 @@ namespace ReOsuStoryBoardPlayer.Player
             sound=engine.Play2D(audio_file, false, true, StreamMode.AutoDetect, false);
             sound.setSoundStopEventReceiver(this);
 
-            CurrentFixedTime=0;
-            offset_watch.Reset();
-
+            sound.Volume=Volume;
+            sound.PlaybackSpeed=PlaybackSpeed;
+            
             loaded_path=audio_file;
+
+            Stop();
         }
 
         public override void Jump(float time,bool pause)

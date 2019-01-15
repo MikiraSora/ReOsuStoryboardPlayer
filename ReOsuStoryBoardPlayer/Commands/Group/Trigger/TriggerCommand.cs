@@ -52,9 +52,15 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         public void Trig(float time)
         {
+            /*
+             * 这里有点奇怪，如果是按照yf的Bassdrop以及440423 Kushi - Yuumeikyou o Wakatsu Koto，只能等到前者执行完毕才能重置，等待新的触发
+             * 但按照Danmae大师的Far east nightbird后面频谱的话，触发的话就得直接重置不用等前者打完
+             * todo:修复触发逻辑
+             */
             if (Trigged)
-                return; //trigged,ignore.
+                return; //trigged,ignore until prev action has been done.
             
+
             Reset(true);
             last_trigged_time=time;
 
