@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Commands.Group;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
@@ -15,6 +16,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
     public partial class ObjectVisualizerWindow : Form
     {
         private StoryBoardObject last_obj;
+
+        private HashSet<TriggerCommand> trigger_status_cache = new HashSet<TriggerCommand>();
 
         public StoryBoardObject SelectObject { get; set; }
 
@@ -39,9 +42,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                     AnchorLabel.Text = SelectObject.Anchor.ToString();
                     OrderLabel.Text = SelectObject.Z.ToString();
                     TimeLabel.Text = $"{SelectObject.FrameStartTime}~{SelectObject.FrameEndTime}";
-#if DEBUG
+
                     checkBox1.Checked=SelectObject.DebugShow;
-#endif
+                    trigger_status_cache.Clear();
 
                     command_node_map.Clear();
 
@@ -67,9 +70,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 //这里是要实时更新的
 
                 PositionLabel.Text = SelectObject.Postion.ToString();
-#if DEBUG
                 SelectObject.DebugShow=checkBox1.Checked;
-#endif
                 int r = SelectObject.Color.x, g = SelectObject.Color.y, b = SelectObject.Color.z;
                 ColorLabel.Text = $"{r},{g},{b}";
                 
@@ -152,8 +153,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                                     BindCommandNode(loop_sub_command, loop_sub_note);
                                 }
                             }
-                            else
-                                BindCommandNode(cmd, cmd_note);
+
+                            BindCommandNode(cmd, cmd_note);
                         }
                     }
 
@@ -166,33 +167,29 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 command_node_map[command] = node;
             }
         }
-
+        
         private void UpdateCommandNode()
         {
-#if DEBUG
             foreach (var pair in command_node_map)
             {
                 pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
-            }
-#endif
-        }
 
-        private void IsShowRawCommand_CheckedChanged(object sender, EventArgs e)
-        {
+                var trigger = pair.Key as TriggerCommand;
 
-        }
-
-        /*
-        void ShowRawCommandList()
-        {
-            if (obj != last_obj)
-            {
-                CommandTreeViewer.Nodes.Clear();
-
-                if (obj != null)
+                if (trigger!=null)
                 {
+                    //这里必须做内容更新判断否则因为太过频繁窗口会出现闪烁现象
+                    if (trigger.Trigged!=trigger_status_cache.Contains(trigger))
+                    {
+                        if (trigger.Trigged)
+                            trigger_status_cache.Add(trigger);
+                        else
+                            trigger_status_cache.Remove(trigger);
+
+                        pair.Value.Text=trigger.ToString();
+                    }
                 }
             }
-        }*/
+        }
     }
 }

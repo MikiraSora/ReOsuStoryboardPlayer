@@ -115,7 +115,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 cache_timline_wrapper[timeline.Key]=new TriggerSubTimelineCommand(this, timeline.Key);
         }
 
-        public override string ToString() => $"{base.ToString()} {Condition}";
+        public override string ToString() => $"{base.ToString()} {Condition} {(Trigged?$"Trigged at {last_trigged_time} ~ end:{last_trigged_time+CostTime}":"")}";
 
         public readonly static Action<StoryBoardObject> OverrideDefaultValue = obj => obj.Color.w=0;
     }
