@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -104,6 +105,13 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 
                 player.Jump((float)hitsound.Value.Time, true);
             }
+        }
+
+        public void ExcplictSelect(StoryBoardObject obj)
+        {
+            Debug.Assert(comboBox1.Items.OfType<StoryBoardObject>().Contains(obj));
+
+            comboBox1.SelectedItem=obj;
         }
     }
 }

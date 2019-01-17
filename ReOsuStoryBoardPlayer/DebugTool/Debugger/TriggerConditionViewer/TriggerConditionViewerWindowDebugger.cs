@@ -9,17 +9,17 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 {
     class TriggerConditionViewerDebugger : DebuggerBase
     {
-        TriggerConditionViewerWindow window;
+        public TriggerConditionViewerWindow Window { get; private set; }
         StoryBoardInstance instance;
 
         public override void Init()
         {
-            window=new TriggerConditionViewerWindow();
+            Window=new TriggerConditionViewerWindow();
         }
 
         public override void Term()
         {
-            window.Close();
+            Window.Close();
         }
 
         public override void Update()
@@ -27,7 +27,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
             var i = StoryboardInstanceManager.ActivityInstance;
 
             if (i!=instance)
-                window?.Reset();
+                Window?.Reset();
 
             instance=i;
         }

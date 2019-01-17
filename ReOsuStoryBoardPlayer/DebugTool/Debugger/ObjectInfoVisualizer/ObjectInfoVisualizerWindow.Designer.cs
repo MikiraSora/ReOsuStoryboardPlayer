@@ -39,7 +39,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.CommandTreeViewer = new System.Windows.Forms.TreeView();
-            this.IsShowRawCommand = new System.Windows.Forms.CheckBox();
             this.PositionLabel = new System.Windows.Forms.Label();
             this.ColorLabel = new System.Windows.Forms.Label();
             this.AnchorLabel = new System.Windows.Forms.Label();
@@ -52,6 +51,7 @@
             this.ScaleLabel = new System.Windows.Forms.Label();
             this.asd = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -161,17 +161,6 @@
             this.CommandTreeViewer.Name = "CommandTreeViewer";
             this.CommandTreeViewer.Size = new System.Drawing.Size(854, 431);
             this.CommandTreeViewer.TabIndex = 11;
-            // 
-            // IsShowRawCommand
-            // 
-            this.IsShowRawCommand.AutoSize = true;
-            this.IsShowRawCommand.Location = new System.Drawing.Point(16, 176);
-            this.IsShowRawCommand.Name = "IsShowRawCommand";
-            this.IsShowRawCommand.Size = new System.Drawing.Size(108, 16);
-            this.IsShowRawCommand.TabIndex = 12;
-            this.IsShowRawCommand.Text = "ShowRawCommand";
-            this.IsShowRawCommand.UseVisualStyleBackColor = true;
-            this.IsShowRawCommand.CheckedChanged += new System.EventHandler(this.IsShowRawCommand_CheckedChanged);
             // 
             // PositionLabel
             // 
@@ -296,18 +285,30 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(16, 154);
+            this.checkBox1.Location = new System.Drawing.Point(16, 176);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(66, 16);
             this.checkBox1.TabIndex = 24;
             this.checkBox1.Text = "Visible";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // ObjectInfoVisualizerWindow
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(459, 167);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(164, 25);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "Show trigger HitSounds";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // ObjectVisualizerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 641);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.ScaleLabel);
             this.Controls.Add(this.asd);
@@ -320,7 +321,6 @@
             this.Controls.Add(this.AnchorLabel);
             this.Controls.Add(this.ColorLabel);
             this.Controls.Add(this.PositionLabel);
-            this.Controls.Add(this.IsShowRawCommand);
             this.Controls.Add(this.CommandTreeViewer);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
@@ -334,7 +334,7 @@
             this.Controls.Add(this.pictureBox1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ObjectInfoVisualizerWindow";
+            this.Name = "ObjectVisualizerWindow";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "ObjectInfoVisualizerWindow";
@@ -357,7 +357,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TreeView CommandTreeViewer;
-        private System.Windows.Forms.CheckBox IsShowRawCommand;
         private System.Windows.Forms.Label PositionLabel;
         private System.Windows.Forms.Label ColorLabel;
         private System.Windows.Forms.Label AnchorLabel;
@@ -370,5 +369,6 @@
         private System.Windows.Forms.Label ScaleLabel;
         private System.Windows.Forms.Label asd;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button1;
     }
 }

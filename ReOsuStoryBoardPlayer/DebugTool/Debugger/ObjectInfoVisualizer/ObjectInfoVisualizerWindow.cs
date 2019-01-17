@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Commands.Group;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
@@ -47,6 +48,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                     trigger_status_cache.Clear();
 
                     command_node_map.Clear();
+
+                    button1.Enabled=SelectObject.ContainTrigger;
 
                     try
                     {
@@ -115,14 +118,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 }
             }
 
-            if (IsShowRawCommand.Checked)
-            {
-                //ShowRawCommandList();
-            }
-            else
-            {
-                ShowCommandList();
-            }
+            ShowCommandList();
 
             last_obj = SelectObject;
         }
@@ -186,10 +182,23 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                         else
                             trigger_status_cache.Remove(trigger);
 
-                        pair.Value.Text=trigger.ToString();
+                        try
+                        {
+                            //偶尔莫名其妙跳一个Disposed异常
+                            pair.Value.Text=trigger.ToString();
+                        }
+                        catch{}
                     }
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var debugger = DebuggerManager.GetOrCreateDebugger<TriggerConditionViewerDebugger>();
+
+            if (SelectObject?.ContainTrigger??false)
+                debugger.Window.ExcplictSelect(SelectObject);
         }
     }
 }
