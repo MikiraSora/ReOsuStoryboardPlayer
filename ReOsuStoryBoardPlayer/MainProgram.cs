@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\144171 Nekomata Master - Far east nightbird (kors k Remix)";
+            beatmap_folder=@"G:\SBTest\463479 Nanahira - Bassdrop Freaks (Long Ver)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

@@ -16,7 +16,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
     //Part from osu! source code
     public class AutoTrigger : DebuggerBase
     {
-        LinkedList<HitSoundInfo> objects;
+        public LinkedList<HitSoundInfo> objects { get; private set; }
         LinkedListNode<HitSoundInfo> cur;
 
         double prev_time=0;

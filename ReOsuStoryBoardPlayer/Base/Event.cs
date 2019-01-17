@@ -2,8 +2,8 @@
 {
     public enum Event
     {
-        Move = 0,
         Fade = 1,
+        Move = 0,
         Scale = 2,
         VectorScale = 3,
         Rotate = 4,

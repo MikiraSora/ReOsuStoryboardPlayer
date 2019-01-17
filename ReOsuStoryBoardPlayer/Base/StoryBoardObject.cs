@@ -110,6 +110,7 @@ namespace ReOsuStoryBoardPlayer
             Triggers[trigger_command.GroupID].Add(trigger_command);
             trigger_command.BindObject(this);
             TriggerListener.DefaultListener.Add(this);
+            ContainTrigger=true;
 
             if (!CommandMap.TryGetValue(Event.Trigger,out var x) || x.Count==0)
                 BaseTransformResetAction+=TriggerCommand.OverrideDefaultValue;
@@ -160,12 +161,16 @@ namespace ReOsuStoryBoardPlayer
                     break;
             }
 
+            //删除无用的时间轴
             if (CommandMap.TryGetValue(command.Event, out var timeline))
             {
                 timeline.Remove(command);
 
                 if (timeline.Count==0&&command.Event==Event.Trigger)
+                {
                     BaseTransformResetAction-=TriggerCommand.OverrideDefaultValue;
+                    ContainTrigger=false;
+                }
             }
         }
 

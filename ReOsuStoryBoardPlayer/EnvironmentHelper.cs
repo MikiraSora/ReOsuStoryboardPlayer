@@ -4,6 +4,7 @@ using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace ReOsuStoryBoardPlayer
 
             DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
             DebuggerManager.AddDebugger(new ObjectsSequenceViewerDebugger());
+            DebuggerManager.AddDebugger(new TriggerConditionViewerDebugger());
         }
 
         private static void SetupReleaseEnvironment()
