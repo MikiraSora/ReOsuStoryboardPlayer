@@ -15,7 +15,6 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
         public override void Init()
         {
             window=new TriggerConditionViewerWindow();
-            window.Show();
         }
 
         public override void Term()

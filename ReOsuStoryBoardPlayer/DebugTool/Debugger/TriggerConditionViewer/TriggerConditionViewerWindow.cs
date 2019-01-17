@@ -32,7 +32,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 
             var list = instance.StoryboardObjectList.Where(x => x.ContainTrigger).ToArray();
 
-            comboBox1.Items.AddRange(list);
+            if (list.Length!=0)
+            {
+                Show();
+                comboBox1.Items.AddRange(list);
+                comboBox1.SelectedItem=list.First();
+            }
+            else
+            {
+                Hide();
+            }
         }
 
         private void Clear()
