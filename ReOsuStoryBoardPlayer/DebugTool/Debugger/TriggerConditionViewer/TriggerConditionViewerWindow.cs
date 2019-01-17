@@ -1,7 +1,9 @@
 ﻿using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 {
@@ -85,6 +88,22 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 
             foreach (var item in result)
                 listBox1.Items.Add(item);
+        }
+
+        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var hitsound = listBox1.SelectedItem as HitSoundInfo?;
+
+            if (hitsound!=null&&MusicPlayerManager.ActivityPlayer is MusicPlayer player)
+            {
+                var obj = comboBox1.SelectedItem as StoryBoardObject;
+                var object_info_window=DebuggerManager.GetDebugger<ObjectVisualizerDebugger>()?.Window;
+
+                if (object_info_window!=null&&obj!=null)
+                    object_info_window.SelectObject=obj;
+
+                player.Jump((float)hitsound.Value.Time, true);
+            }
         }
     }
 }
