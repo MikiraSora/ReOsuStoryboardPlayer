@@ -113,5 +113,11 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 
             comboBox1.SelectedItem=obj;
         }
+
+        private void TriggerConditionViewerWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel=true;
+            Hide();
+        }
     }
 }

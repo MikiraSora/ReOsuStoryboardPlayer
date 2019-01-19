@@ -25,8 +25,6 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public override bool IsPlaying { get => !sound.Paused; }
 
-        public float CurrentFixedTime { get; private set; }
-
         public override float Volume { get => sound.Volume; set => sound.Volume=value; }
         
         public Stopwatch offset_watch = new Stopwatch();
@@ -58,6 +56,8 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public override void Jump(float time,bool pause)
         {
+            time=Math.Max(0,Math.Min(time, Length));
+
             Pause();
             sound.PlayPosition=(uint)time;
             offset_watch.Reset();

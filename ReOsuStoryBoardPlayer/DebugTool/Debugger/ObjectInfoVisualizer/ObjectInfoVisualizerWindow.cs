@@ -198,7 +198,11 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             var debugger = DebuggerManager.GetOrCreateDebugger<TriggerConditionViewerDebugger>();
 
             if (SelectObject?.ContainTrigger??false)
+            {
                 debugger.Window.ExcplictSelect(SelectObject);
+
+                debugger.Window.Visible=true;
+            }
         }
     }
 }

@@ -98,6 +98,11 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         /// <returns></returns>
         internal bool CheckTrig(HitSoundInfo hit_sound)
         {
+            if (hit_sound.Time==50507)
+            {
+
+            }
+
             foreach (var obj in register_trigger_objects.Where(o => o.FrameStartTime<=hit_sound.Time&&hit_sound.Time<=o.FrameEndTime))
             {
                 foreach (var pair in obj.Triggers)

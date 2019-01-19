@@ -2,7 +2,7 @@
 
 namespace ReOsuStoryBoardPlayer.Base
 {
-    internal class StoryboardBackgroundObject : StoryBoardObject
+    public class StoryboardBackgroundObject : StoryBoardObject
     {
         public StoryboardBackgroundObject()
         {

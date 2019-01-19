@@ -65,32 +65,46 @@ namespace ReOsuStoryBoardPlayer.Parser
 
             info.folder_path=folder_path;
 
-            info.reader=new OsuFileReader(info.osu_file_path);
-            var section = new SectionReader(Section.General, info.reader);
-
-            foreach (var line in section.EnumValues())
+            if ((!string.IsNullOrWhiteSpace(info.osu_file_path))&&File.Exists(info.osu_file_path))
             {
-                var match = Regex.Match(line, @"AudioFilename\s*:\s*(.+)");
+                info.reader=new OsuFileReader(info.osu_file_path);
+                var section = new SectionReader(Section.General, info.reader);
 
-                if (match.Success)
+                foreach (var line in section.EnumValues())
                 {
-                    info.audio_file_path=Path.Combine(folder_path,match.Groups[1].Value);
-                    Log.User($"audio file path={info.audio_file_path}");
-                    break;
+                    var match = Regex.Match(line, @"AudioFilename\s*:\s*(.+)");
+
+                    if (match.Success)
+                    {
+                        info.audio_file_path=Path.Combine(folder_path, match.Groups[1].Value);
+                        Log.User($"audio file path={info.audio_file_path}");
+                        break;
+                    }
+                }
+
+                foreach (var line in section.EnumValues())
+                {
+                    var wideMatch = Regex.Match(line, @"WidescreenStoryboard\s*:\s*(.+)");
+                    if (wideMatch.Success)
+                    {
+                        info.IsWidescreenStoryboard=(wideMatch.Groups[1].Value.ToInt()==1);
+                        break;
+                    }
+
                 }
             }
 
-            foreach (var line in section.EnumValues())
+            if (string.IsNullOrWhiteSpace(info.osu_file_path) || (!File.Exists(info.osu_file_path)))
             {
-                var wideMatch = Regex.Match(line, @"WidescreenStoryboard\s*:\s*(.+)");
-                if (wideMatch.Success)
-                {
-                    info.IsWidescreenStoryboard = (wideMatch.Groups[1].Value.ToInt() == 1);
-                    break;
-                }
+                info.audio_file_path=Directory
+                    .GetFiles(info.folder_path, "*.mp3")
+                    .Select(x => new FileInfo(x))
+                    .OrderByDescending(x => x.Length)
+                    .FirstOrDefault()
+                    .FullName;
             }
 
-            Trace.Assert((_check(info.osu_file_path)||_check(info.osb_file_path))&&_check(info.audio_file_path));
+            Trace.Assert(((_check(info.osu_file_path)||_check(info.osb_file_path)))&&_check(info.audio_file_path));
             
             return info;
 

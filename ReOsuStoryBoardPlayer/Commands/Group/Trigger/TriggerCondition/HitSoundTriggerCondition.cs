@@ -69,13 +69,16 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
                 return false;
 
             //storybrew可能塞了个HitSound为None的玩意
-            if (hitSoundInfo.SoundType==HitObjectSoundType.None || !HitSound.HasFlag(hitSoundInfo.SoundType))
+            if (hitSoundInfo.SoundType==HitObjectSoundType.None || !ContainFlagEnum(HitSound,hitSoundInfo.SoundType))
                 return false;
 
             if (CustomSampleSet!=CustomSampleSetType.Default&&hitSoundInfo.CustomSampleSet!=CustomSampleSet)
                 return false;
 
             return true;
+
+            bool ContainFlagEnum<T>(T source,T compare_with) where T : Enum =>
+                Enum.GetValues(typeof(T)).Cast<T>().Any(val=>source.HasFlag(val)&&compare_with.HasFlag(val)&&Convert.ToInt32(val)!=0);
         }
 
         public struct HitSoundInfo:IComparable<HitSoundInfo>

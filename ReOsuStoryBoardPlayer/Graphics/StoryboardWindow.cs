@@ -527,6 +527,18 @@ namespace ReOsuStoryBoardPlayer
             mouseDown = true;
         }
 
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            var time = -e.DeltaPrecise*125;
+
+            var player = MusicPlayerManager.ActivityPlayer as MusicPlayer;
+
+            if (player!=null)
+                player.Jump(player.CurrentTime+time,true);
+        }
+
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);

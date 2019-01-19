@@ -33,7 +33,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
 
         public void Load(BeatmapFolderInfo info)
         {
-            objects = HitSoundInfosHelpers.Parse(info.osu_file_path);
+            try
+            {
+                objects=HitSoundInfosHelpers.Parse(info.osu_file_path);
+            }
+            catch (Exception e)
+            {
+                Log.Warn(e.Message);
+                objects=new LinkedList<HitSoundInfo>();
+            }
+
             Flush();
         }
 

@@ -71,6 +71,7 @@
             this.Controls.Add(this.comboBox1);
             this.Name = "TriggerConditionViewerWindow";
             this.Text = "TriggerConditionViewerWindowcs";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TriggerConditionViewerWindow_FormClosing);
             this.ResumeLayout(false);
 
         }

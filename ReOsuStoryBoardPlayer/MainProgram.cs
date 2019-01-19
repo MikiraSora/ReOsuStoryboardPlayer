@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\440423 Kushi - Yuumeikyou o Wakatsu Koto";
+            beatmap_folder=@"G:\OsuStoryBroadPlayer\StoryboardElementsPicker\bin\Debug\60744 L i z z - Answer";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
