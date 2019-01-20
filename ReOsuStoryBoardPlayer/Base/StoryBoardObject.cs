@@ -37,7 +37,11 @@ namespace ReOsuStoryBoardPlayer
 
         public bool IsVisible { get; private set; }
 
-        public bool ContainTrigger { get; private set; }
+        public bool ContainTrigger => CommandMap.TryGetValue(Event.Trigger, out var _);
+
+        public bool ContainLoop => CommandMap.TryGetValue(Event.Loop, out var l)&&l.Any();
+
+        public bool ContainNonValueCommand => ContainLoop||ContainTrigger;
 
         #region Transform
 
@@ -110,7 +114,6 @@ namespace ReOsuStoryBoardPlayer
             Triggers[trigger_command.GroupID].Add(trigger_command);
             trigger_command.BindObject(this);
             TriggerListener.DefaultListener.Add(this);
-            ContainTrigger=true;
 
             if (!CommandMap.TryGetValue(Event.Trigger,out var x) || x.Count==0)
                 BaseTransformResetAction+=TriggerCommand.OverrideDefaultValue;
@@ -166,10 +169,12 @@ namespace ReOsuStoryBoardPlayer
             {
                 timeline.Remove(command);
 
-                if (timeline.Count==0&&command.Event==Event.Trigger)
+                if (timeline.Count==0)
                 {
-                    BaseTransformResetAction-=TriggerCommand.OverrideDefaultValue;
-                    ContainTrigger=false;
+                    CommandMap.Remove(command.Event);
+
+                    if (command.Event==Event.Trigger)
+                        BaseTransformResetAction-=TriggerCommand.OverrideDefaultValue;
                 }
             }
         }
@@ -203,6 +208,7 @@ namespace ReOsuStoryBoardPlayer
 #endif
             foreach (var pair in CommandMap)
             {
+
                 var timeline = pair.Value;
                 var command = timeline.PickCommand(current_time);
 
@@ -307,6 +313,9 @@ namespace ReOsuStoryBoardPlayer
         }
 #endif
 
+        /// <summary>
+        /// 计算物件的FrameTime
+        /// </summary>
         public void UpdateObjectFrameTime()
         {
             var commands = CommandMap.SelectMany(l => l.Value);
@@ -314,7 +323,7 @@ namespace ReOsuStoryBoardPlayer
             if (commands.Count() == 0)
                 return;
 
-            FrameStartTime = commands.Min(p => p.StartTime);
+            FrameStartTime =commands.Min(p => p.StartTime);
             FrameEndTime = commands.Max(p => p.EndTime);
         }
 

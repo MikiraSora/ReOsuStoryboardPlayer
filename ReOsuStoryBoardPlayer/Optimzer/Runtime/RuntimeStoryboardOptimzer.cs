@@ -77,7 +77,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
                     if (front_fade!=null&&front_fade.StartTime<=obj.FrameStartTime)
                     {
-                        obj.FrameStartTime=front_fade.StartTime;
+                        obj.BaseTransformResetAction+=sb_obj => sb_obj.FrameStartTime=front_fade.StartTime;
                         Suggest(obj, $"FrameTime可优化成{front_fade.StartTime}");
                         effect_count++;
                     }
@@ -87,7 +87,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 
                 if (last_fade!=null&&last_fade.EndValue==0)
                 {
-                    obj.FrameEndTime=last_fade.EndTime;
+                    obj.BaseTransformResetAction+=sb_obj => sb_obj.FrameEndTime=last_fade.EndTime;
                     Suggest(obj,$"EndTime可优化成{last_fade.StartTime}.");
                     effect_count++;
                 }
