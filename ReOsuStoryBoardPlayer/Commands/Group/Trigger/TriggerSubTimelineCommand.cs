@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
@@ -13,7 +9,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         private CommandTimeline timeline;
 
         private float CostTime;
-        
+
         public TriggerSubTimelineCommand(TriggerCommand trigger_command, Event bind_event)
         {
             this.trigger_command=trigger_command;
@@ -22,7 +18,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
             CostTime=timeline.Count!=0 ? timeline.Max(x => x.EndTime) : 0;
 
-            RelativeLine =trigger_command.RelativeLine;
+            RelativeLine=trigger_command.RelativeLine;
         }
 
         public void UpdateOffset(int time)

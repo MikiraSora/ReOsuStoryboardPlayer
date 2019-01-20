@@ -1,10 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
@@ -43,6 +40,10 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             }
         }
 
+        /// <summary>
+        /// 钦定触发器绑定的物件，一次性的
+        /// </summary>
+        /// <param name="obj"></param>
         public void BindObject(StoryBoardObject obj)
         {
             Debug.Assert(bind_object==null, "Not allow trigger command bind more storyboard objects");
@@ -50,6 +51,10 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             bind_object=obj??throw new ArgumentNullException(nameof(obj));
         }
 
+        /// <summary>
+        /// 钦定触发器激活，并将子命令塞到物件里面去
+        /// </summary>
+        /// <param name="time"></param>
         public void Trig(float time)
         {
             Reset(true);
@@ -57,13 +62,18 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
             AttachSubCommands(time);
 
-            //todo ,优化掉这货
+            //todo:优化掉这货
             bind_object.SortCommands();
+            //todo:理论上可以配合优化器食用
             bind_object.UpdateObjectFrameTime();
 
             Trigged=true;
         }
 
+        /// <summary>
+        /// 将子命令塞到物件那里执行
+        /// </summary>
+        /// <param name="time"></param>
         private void AttachSubCommands(float time)
         {
             foreach (var wrapper in cache_timline_wrapper)
@@ -73,22 +83,36 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 bind_object.InternalAddCommand(wrapper.Value);
             }
         }
-        
-        private void DetachSubCommands(bool magic=false)
+
+        /// <summary>
+        /// 清除物件内自己的子命令
+        /// </summary>
+        /// <param name="magic"></param>
+        private void DetachSubCommands(bool magic = false)
         {
-            foreach (var wrapper in cache_timline_wrapper.Where(x=>!magic||(x.Value.StartTime==x.Value.EndTime&&x.Value.StartTime==0)))
+            foreach (var wrapper in cache_timline_wrapper.Where(x => !magic||(x.Value.StartTime==x.Value.EndTime&&x.Value.StartTime==0)))
                 bind_object.InternalRemoveCommand(wrapper.Value);
         }
 
+        /// <summary>
+        /// 清除物件内自己的子命令，重置触发器状态
+        /// </summary>
+        /// <param name="magic">是否要也要清除物件内，同Group组所有Trigger子命令，
+        /// 为啥是magic呢，因为我看不出这有啥实际意义，而且现在屙屎的Trigger逻辑细节和以前不同，也没文档跟上，只能按照基本法膜法一下了</param>
         public void Reset(bool magic = false)
         {
             DetachSubCommands(magic);
 
-            last_trigged_time =0;
+            last_trigged_time=0;
 
             Trigged=false;
         }
 
+        /// <summary>
+        /// 检查时间是否处于触发器可触发时间内
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public bool CheckTimeVaild(float time)
         {
             return StartTime<=time&&time<=EndTime;
@@ -106,8 +130,12 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
                 cache_timline_wrapper[timeline.Key]=new TriggerSubTimelineCommand(this, timeline.Key);
         }
 
-        public override string ToString() => $"{base.ToString()} {Condition} {(Trigged?$"Trigged at {last_trigged_time} ~ end:{last_trigged_time+CostTime}":"")}";
+        public override string ToString() => $"{base.ToString()} {Condition} {(Trigged ? $"Trigged at {last_trigged_time} ~ end:{last_trigged_time+CostTime}" : "")}";
 
+        /// <summary>
+        /// 有触发器的物件默认不显示(之前默认显示),不懂ppy想法，magic
+        /// 比如440423的歌词
+        /// </summary>
         public readonly static Action<StoryBoardObject> OverrideDefaultValue = obj => obj.Color.w=0;
     }
 }

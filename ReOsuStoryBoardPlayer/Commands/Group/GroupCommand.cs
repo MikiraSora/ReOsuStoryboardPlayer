@@ -9,7 +9,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
         public virtual void AddSubCommand(Command command)
         {
             if (!SubCommands.ContainsKey(command.Event))
-                SubCommands[command.Event] = new CommandTimeline();
+                SubCommands[command.Event]=new CommandTimeline();
             SubCommands[command.Event].Add(command);
         }
 

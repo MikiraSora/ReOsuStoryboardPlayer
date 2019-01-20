@@ -1,5 +1,4 @@
-﻿using ReOsuStoryBoardPlayer.Commands.Group;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +6,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
 {
     internal class LoopCommand : GroupCommand
     {
-        public LoopCommand() => Event = Event.Loop;
+        public LoopCommand() => Event=Event.Loop;
 
         public int CostTime { get; private set; }
 
@@ -24,7 +23,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group
 
             var commands = SubCommands.SelectMany(l => l.Value);
 
-            var offset = commands.Count()==0?0:commands.Min(x => x.StartTime);
+            var offset = commands.Count()==0 ? 0 : commands.Min(x => x.StartTime);
             StartTime+=offset;
             foreach (var command in commands)
             {

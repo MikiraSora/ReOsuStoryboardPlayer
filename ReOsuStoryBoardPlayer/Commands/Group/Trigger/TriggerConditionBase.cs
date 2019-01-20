@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
@@ -36,6 +34,6 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
             throw new FormatException($"\"{condition_expr}\" not a vaild trigger type value.");
         }
 
-        #endregion
+        #endregion Parse
     }
 }

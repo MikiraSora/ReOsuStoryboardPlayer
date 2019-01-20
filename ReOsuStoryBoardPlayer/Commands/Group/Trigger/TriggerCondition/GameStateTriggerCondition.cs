@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
 {
@@ -12,7 +8,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
 
         public GameStateTriggerCondition(string description)
         {
-            listen_state=(GameState)Enum.Parse(typeof(GameState),description,true);
+            listen_state=(GameState)Enum.Parse(typeof(GameState), description, true);
         }
 
         public bool CheckCondition(GameState state) => listen_state==state;
