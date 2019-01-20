@@ -85,8 +85,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
             if (obj==null||hitsounds==null||hitsounds.Count==0||condition==null)
                 return;
 
-            var result = hitsounds.Where(x => command.CheckTimeVaild((float)x.Time)&&condition.CheckCondition(x));
+            var result = hitsounds.Where(x => condition.CheckCondition(x)&&command.CheckTimeVaild((float)x.Time)).ToArray();
 
+            listBox1.Items.Clear();
             foreach (var item in result)
                 listBox1.Items.Add(item);
         }
