@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"C:\Users\MikiraSora\.osu\Songs\904962 Ayaponzu_, Ayo - Kyoukyou no Fortunate Polka";
+            beatmap_folder=@"G:\osu!\Songs\746788 Function Phantom - Algebra\746788 Function Phantom - Algebra";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

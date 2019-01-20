@@ -75,7 +75,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                         front_fade=first_fade;
                     }
 
-                    if (front_fade!=null&&front_fade.StartTime<=obj.FrameStartTime)
+                    if (front_fade!=null&&obj.FrameStartTime<=front_fade.StartTime)
                     {
                         obj.BaseTransformResetAction+=sb_obj => sb_obj.FrameStartTime=front_fade.StartTime;
                         Suggest(obj, $"FrameTime可优化成{front_fade.StartTime}");
@@ -92,6 +92,8 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                     effect_count++;
                 }
             }
+
+            Parallel.ForEach(storyboard_objects, obj => obj.ResetTransform());
         }
 
         public void CombineCommands(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
