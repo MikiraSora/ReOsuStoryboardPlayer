@@ -44,7 +44,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                     OrderLabel.Text = SelectObject.Z.ToString();
                     TimeLabel.Text = $"{SelectObject.FrameStartTime}~{SelectObject.FrameEndTime}";
 
+#if DEBUG
                     checkBox1.Checked=SelectObject.DebugShow;
+#endif
                     trigger_status_cache.Clear();
 
                     command_node_map.Clear();
@@ -73,7 +75,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 //这里是要实时更新的
 
                 PositionLabel.Text = SelectObject.Postion.ToString();
+#if DEBUG
                 SelectObject.DebugShow=checkBox1.Checked;
+#endif
                 int r = SelectObject.Color.x, g = SelectObject.Color.y, b = SelectObject.Color.z;
                 ColorLabel.Text = $"{r},{g},{b}";
                 
@@ -168,8 +172,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
         {
             foreach (var pair in command_node_map)
             {
+#if DEBUG
                 pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
-
+#endif
                 var trigger = pair.Key as TriggerCommand;
 
                 if (trigger!=null)

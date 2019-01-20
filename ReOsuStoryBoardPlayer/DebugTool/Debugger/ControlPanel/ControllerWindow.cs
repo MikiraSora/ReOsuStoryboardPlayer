@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Windows.Forms;
@@ -40,6 +41,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             prev_display_time=time;
         }
 
+        float prev_playback_display = float.MinValue,prev_playspeed_display=float.MinValue;
+        BeatmapFolderInfo prev_info_display = null;
+
         public void UpdateInfo()
         {
             var t = MusicPlayerManager.ActivityPlayer.CurrentTime;
@@ -47,10 +51,23 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             if (Math.Abs(t-prev_display_time)>=1000)
                 UpdateProgressTime(t);
 
-            label2.Text = StoryboardInstanceManager.ActivityInstance.Info.folder_path;
+            if (prev_info_display!=StoryboardInstanceManager.ActivityInstance.Info)
+            {
+                prev_info_display=StoryboardInstanceManager.ActivityInstance.Info;
+                label2.Text=prev_info_display.folder_path;
+            }
 
-            label1.Text = MusicPlayerManager.ActivityPlayer.PlaybackSpeed + "x";
-            label3.Text = $"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
+            if (Math.Abs(prev_playback_display-MusicPlayerManager.ActivityPlayer.CurrentTime)>250)
+            {
+                prev_playback_display=MusicPlayerManager.ActivityPlayer.CurrentTime;
+                label3.Text=$"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
+            }
+
+            if (prev_playspeed_display!=MusicPlayerManager.ActivityPlayer.PlaybackSpeed)
+            {
+                prev_playspeed_display=MusicPlayerManager.ActivityPlayer.PlaybackSpeed;
+                label1.Text=prev_playspeed_display+"x";
+            }
             
             button1.Enabled = !MusicPlayerManager.ActivityPlayer.IsPlaying;
             button2.Enabled = MusicPlayerManager.ActivityPlayer.IsPlaying;
