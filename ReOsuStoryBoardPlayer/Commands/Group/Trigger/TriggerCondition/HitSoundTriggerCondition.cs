@@ -16,17 +16,33 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
         public SampleSetType SampleSetAdditions = SampleSetType.All;
         public CustomSampleSetType CustomSampleSet=CustomSampleSetType.Default;
 
-        internal HitSoundTriggerCondition(string description)
+        public HitSoundTriggerCondition(string description)
         {
-            var fix_expr = description.Replace("HitSound", string.Empty);
+            /* MAGIC > <
+             * 
+             * HitSound -> HitSound(All)(All)(Whistle|Normal|Clap|Finish)(Default)
+             * HitSoundNormalWhistle -> HitSound(All)(Normal)Whistle(Default)
+             * HitSoundWhistle6 -> HitSound(All)(All)Whistle(CustomSampleSet 6)
+             * 
+             */
+
+            var fix_trim_expr = description.Replace("HitSound", string.Empty);
             //why I wrote these sh[]t?
-            Parse(Parse(Parse(Parse(fix_expr, ref SampleSet),
+            Parse(Parse(Parse(Parse(fix_trim_expr, ref SampleSet),
                         ref SampleSetAdditions),
                     ref HitSound),
                 ref CustomSampleSet);
 
+            if (HitSound!= HitObjectSoundType.None
+                && fix_trim_expr.StartsWith(SampleSet.ToString())
+                && !fix_trim_expr.Substring(SampleSet.ToString().Length).Contains(SampleSetAdditions.ToString()))
+            {
+                SampleSetAdditions=SampleSet;
+                SampleSet=SampleSetType.All;
+            }
+
             //assert check.
-            Debug.Assert(HitSound!=HitObjectSoundType.None&&(String.IsNullOrWhiteSpace(fix_expr)||((HitObjectSoundType[])Enum.GetValues(typeof(HitObjectSoundType)))
+            Debug.Assert(HitSound!=HitObjectSoundType.None&&(String.IsNullOrWhiteSpace(fix_trim_expr)||((HitObjectSoundType[])Enum.GetValues(typeof(HitObjectSoundType)))
                 .Where(x => HitSound.HasFlag(x))
                 .Any(x => description.Contains(x.ToString()))),"parse HitSoundTriggerCondition::HitSound wrong!");
             Debug.Assert(SampleSet==SampleSetType.All||SampleSet!=SampleSetType.None||description.Contains(SampleSet.ToString()), "parse HitSoundTriggerCondition::SampleSet wrong!");
@@ -63,9 +79,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
                 hitSoundInfo.SampleSet!=SampleSet&&SampleSet!=hitSoundInfo.SampleSetAdditions)
                 return false;
             
-            if (SampleSetAdditions!=SampleSetType.All&&
-                !(hitSoundInfo.SampleSetAdditions==SampleSetAdditions
-                ||hitSoundInfo.SampleSet==SampleSetAdditions))
+            if (SampleSetAdditions!=SampleSetType.All && hitSoundInfo.SampleSetAdditions!=SampleSetAdditions)
                 return false;
 
             //storybrew可能塞了个HitSound为None的玩意
@@ -83,6 +97,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
 
         public struct HitSoundInfo:IComparable<HitSoundInfo>
         {
+            //easy to debug
             public double Time;
 
             public HitObjectSoundType SoundType;
