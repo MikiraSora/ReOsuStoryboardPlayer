@@ -64,8 +64,8 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
             //todo:优化掉这货
             bind_object.SortCommands();
-            //todo:理论上可以配合优化器食用
-            bind_object.UpdateObjectFrameTime();
+
+            bind_object.CalculateAndApplyBaseFrameTime();
 
             Trigged=true;
         }

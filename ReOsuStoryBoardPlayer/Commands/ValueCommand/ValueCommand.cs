@@ -1,8 +1,13 @@
-﻿namespace ReOsuStoryBoardPlayer.Commands
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace ReOsuStoryBoardPlayer.Commands
 {
     public abstract class ValueCommand : Command
     {
         public EasingTypes Easing { get; set; }
+
+        public abstract IEqualityComparer EqualityComparer { get; }
 
         #region Evil Methods
 
@@ -18,6 +23,8 @@
     public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
     {
         public abstract void ApplyValue(StoryBoardObject @object, VALUE_TYPE value);
+
+        public override IEqualityComparer EqualityComparer => EqualityComparer<VALUE_TYPE>.Default;
 
         public VALUE_TYPE StartValue { get; set; }
 

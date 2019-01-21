@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Parser.Stream;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Parser.Reader
 {
@@ -30,6 +31,23 @@ namespace ReOsuStoryBoardPlayer.Parser.Reader
 
                 yield return line;
             }
+        }
+
+        readonly static char[] split = new[] { ':' };
+        public string ReadProperty(string name)
+        {
+            foreach (var line in EnumValues().Where(x=>x.StartsWith(name)))
+            {
+                var data = line.Split(split, 2).Select(x=> {
+                    x.Trim();
+                    return x;
+                });
+
+                if (data.Count()==2&&data.ElementAt(0)==name)
+                    return data.ElementAt(1).Trim();
+            }
+
+            return string.Empty;
         }
     }
 }

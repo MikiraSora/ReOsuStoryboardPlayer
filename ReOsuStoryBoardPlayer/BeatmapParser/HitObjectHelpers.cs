@@ -54,6 +54,21 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                         break;
                 }
             }
+            
+            var itor = infos.First;
+
+            while (itor!=null)
+            {
+                var info = itor.Value;
+
+                if (info.SoundType==HitObjectSoundType.None)
+                {
+                    info.SoundType=HitObjectSoundType.Normal;
+                    itor.Value=info;
+                }
+
+                itor=itor.Next;
+            }
 
             return infos;
         }

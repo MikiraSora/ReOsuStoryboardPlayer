@@ -54,7 +54,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
                         var folder_path = cmd.FreeArgs.FirstOrDefault();
                         if ((!string.IsNullOrWhiteSpace(folder_path))&&Directory.Exists(folder_path))
                         {
-                            var info = BeatmapFolderInfo.Parse(folder_path);
+                            var info = BeatmapFolderInfo.Parse(folder_path,null);
                             StoryboardPlayerHelper.PlayStoryboard(info);
                         }
                         break;

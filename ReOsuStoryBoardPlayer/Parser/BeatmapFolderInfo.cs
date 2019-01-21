@@ -28,7 +28,7 @@ namespace ReOsuStoryBoardPlayer.Parser
 
         private BeatmapFolderInfo() { }
 
-        public static BeatmapFolderInfo Parse(string folder_path)
+        public static BeatmapFolderInfo Parse(string folder_path, ProgramCommandParser.Parameters args)
         {
             if (!Directory.Exists(folder_path))
                 throw new Exception($"\"{folder_path}\" not a folder!");
@@ -37,29 +37,58 @@ namespace ReOsuStoryBoardPlayer.Parser
 
             var osu_files = TryGetAnyFiles(".osu");
 
-            //优先先选std铺面的.一些图其他模式谱面会有阻挡 53925 fripSide - Hesitation Snow
-            var osu_file = osu_files.FirstOrDefault(x=> {
-                var lines = File.ReadAllLines(x);
+            string explicitly_osu_diff_name=string.Empty;
+            if (args!=null&&args.TryGetArg("diff", out var diff_name))
+                explicitly_osu_diff_name=diff_name;
 
-                foreach (var line in lines)
+            if (!string.IsNullOrWhiteSpace(explicitly_osu_diff_name))
+            {
+                int index = -1;
+                index=int.TryParse(explicitly_osu_diff_name, out index) ? index : -1;
+
+                if (index>0)
                 {
-                    if (line.StartsWith("Mode"))
-                    {
-                        try
-                        {
-                            var mode = line.Split(':').Last().ToInt();
-
-                            if (mode==0)
-                                return true;
-                        }
-                        catch{}
-                    }
+                    info.osu_file_path=osu_files.OrderBy(x => x).FirstOrDefault();
                 }
+                else
+                {
+                    var fix_pattern = Regex.Escape(explicitly_osu_diff_name);
+                    Regex regex = new Regex(@"\[.*"+fix_pattern+@".*\]\.osu",RegexOptions.IgnoreCase);
 
-                return false;
-            });
+                    info.osu_file_path=osu_files.Where(x => regex.IsMatch(x)).OrderBy(x => x.Length).FirstOrDefault();
+                }
+            }
+            else
+            {
+                //优先先选std铺面的.一些图其他模式谱面会有阻挡 53925 fripSide - Hesitation Snow
+                info.osu_file_path=osu_files.FirstOrDefault(x =>
+                {
+                    var lines = File.ReadAllLines(x);
 
-            info.osu_file_path = osu_file==null ? osu_files.FirstOrDefault() : osu_file;
+                    foreach (var line in lines)
+                    {
+                        if (line.StartsWith("Mode"))
+                        {
+                            try
+                            {
+                                var mode = line.Split(':').Last().ToInt();
+
+                                if (mode==0)
+                                    return true;
+                            }
+                            catch { }
+                        }
+                    }
+
+                    return false;
+                });
+
+                if (!File.Exists(info.osu_file_path))
+                    info.osu_file_path=osu_files.FirstOrDefault();
+            }
+
+            if (string.IsNullOrWhiteSpace(info.osu_file_path)||!File.Exists(info.osu_file_path))
+                Log.Warn("No .osu load");
 
             info.osb_file_path= TryGetAnyFiles(".osb").FirstOrDefault();
 
@@ -70,6 +99,16 @@ namespace ReOsuStoryBoardPlayer.Parser
                 info.reader=new OsuFileReader(info.osu_file_path);
                 var section = new SectionReader(Section.General, info.reader);
 
+                info.audio_file_path=Path.Combine(folder_path, section.ReadProperty("AudioFilename"));
+                Log.User($"audio file path={info.audio_file_path}");
+
+
+                var wideMatch = section.ReadProperty("WidescreenStoryboard");
+
+                if (string.IsNullOrWhiteSpace(wideMatch))
+                    info.IsWidescreenStoryboard=wideMatch.ToInt()==1;
+
+                /*
                 foreach (var line in section.EnumValues())
                 {
                     var match = Regex.Match(line, @"AudioFilename\s*:\s*(.+)");
@@ -90,8 +129,8 @@ namespace ReOsuStoryBoardPlayer.Parser
                         info.IsWidescreenStoryboard=(wideMatch.Groups[1].Value.ToInt()==1);
                         break;
                     }
-
                 }
+                */
             }
 
             if (string.IsNullOrWhiteSpace(info.osu_file_path) || (!File.Exists(info.osu_file_path)))

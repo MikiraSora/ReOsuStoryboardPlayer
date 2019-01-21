@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ReOsuStoryBoardPlayer.Parser.Stream
 {
-    public class OsuFileReader
+    public class OsuFileReader:IDisposable
     {
         private StreamReader reader;
 
@@ -18,7 +18,7 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
 
         ~OsuFileReader()
         {
-            reader.Dispose();
+            Dispose();
         }
 
         public bool JumpSectionContent(Section section)
@@ -54,6 +54,11 @@ namespace ReOsuStoryBoardPlayer.Parser.Stream
                 return true;
 
             return false;
+        }
+
+        public void Dispose()
+        {
+            reader.Dispose();
         }
     }
 }

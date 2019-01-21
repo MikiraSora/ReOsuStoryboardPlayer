@@ -36,7 +36,7 @@ namespace ReOsuStoryBoardPlayer
 
             if (Directory.Exists(beatmap_folder))
             {
-                var info = BeatmapFolderInfo.Parse(beatmap_folder);
+                var info = BeatmapFolderInfo.Parse(beatmap_folder,args);
                 var instance = new StoryBoardInstance(info);
                 window.LoadStoryboardInstance(instance);
                 
@@ -169,7 +169,7 @@ namespace ReOsuStoryBoardPlayer
         {
             try
             {
-                var info = BeatmapFolderInfo.Parse(beatmap_folder);
+                var info = BeatmapFolderInfo.Parse(beatmap_folder,null);
                 var input_file = parse_osb ? info.osb_file_path : info.osu_file_path;
                 output_path=string.IsNullOrWhiteSpace(output_path) ? input_file+".parse_output" : output_path;
 

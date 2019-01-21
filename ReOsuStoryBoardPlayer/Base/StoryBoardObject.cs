@@ -316,15 +316,27 @@ namespace ReOsuStoryBoardPlayer
         /// <summary>
         /// 计算物件的FrameTime
         /// </summary>
-        public void UpdateObjectFrameTime()
+        /// <param name="bind">是否将计算结果固定成物件初始值，否则仅仅单纯应用到FrameStartTime/FrameEndTime</param>
+        public void CalculateAndApplyBaseFrameTime(bool bind=true)
         {
             var commands = CommandMap.SelectMany(l => l.Value);
 
             if (commands.Count() == 0)
                 return;
 
-            FrameStartTime =commands.Min(p => p.StartTime);
-            FrameEndTime = commands.Max(p => p.EndTime);
+            var start =commands.Min(p => p.StartTime);
+            var end = commands.Max(p => p.EndTime);
+
+            if (bind)
+            {
+                BaseTransformResetAction+=obj => {
+                    obj.FrameStartTime=start;
+                    obj.FrameEndTime=end;
+                };
+            }
+
+            FrameStartTime=start;
+            FrameEndTime=end;
         }
 
         public long FileLine { get; set; }
