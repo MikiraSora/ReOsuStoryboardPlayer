@@ -42,6 +42,7 @@ namespace ReOsuStoryBoardPlayer
                 
                 var player = new MusicPlayer();
                 player.Load(info.audio_file_path);
+                player.Volume=0;
                 MusicPlayerManager.ApplyPlayer(player);
 
                 var auto_trigger = DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
@@ -67,7 +68,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\404360 ginkiha - EOS (kamome sano rmx)";
+            beatmap_folder=@"G:\SBTest\499488 Kana Nishino - Sweet Dreams (11t dnb mix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

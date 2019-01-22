@@ -77,7 +77,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
                     if (front_fade!=null&&obj.FrameStartTime<=front_fade.StartTime)
                     {
-                        obj.BaseTransformResetAction+=sb_obj => sb_obj.FrameStartTime=front_fade.StartTime;
+                        obj.FrameStartTime=front_fade.StartTime;
                         Suggest(obj, $"FrameTime可优化成{front_fade.StartTime}");
                         effect_count++;
                     }
@@ -87,7 +87,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 
                 if (last_fade!=null&&last_fade.EndValue==0)
                 {
-                    obj.BaseTransformResetAction+=sb_obj => sb_obj.FrameEndTime=last_fade.EndTime;
+                    obj.FrameEndTime=last_fade.EndTime;
                     Suggest(obj,$"EndTime可优化成{last_fade.StartTime}.");
                     effect_count++;
                 }
@@ -173,13 +173,14 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
             foreach (var obj in storyboard_objects)
             {
-                foreach (var timeline in obj.CommandMap.Values/*.Where(x => x.Count==1)*/)
+                foreach (var timeline in obj.CommandMap.Values.Where(x => x.Count==1))
                 {
                     Command cmd = timeline.FirstOrDefault();
 
                     if (cmd.EndTime<=obj.FrameStartTime
                         &&cmd.StartTime==cmd.EndTime
-                        &&((cmd is ValueCommand vcmd)&&(vcmd.EqualityComparer.Equals(vcmd.GetEndValue(), vcmd.GetStartValue()))||
+                                                     //C,0,0,,0,0,0,226,172,247
+                        &&((cmd is ValueCommand)/*&&(vcmd.EqualityComparer.Equals(vcmd.GetEndValue(), vcmd.GetStartValue()))*/||
                         cmd is StateCommand))
                     {
                         /*

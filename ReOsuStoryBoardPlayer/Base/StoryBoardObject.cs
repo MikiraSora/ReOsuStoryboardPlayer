@@ -317,7 +317,7 @@ namespace ReOsuStoryBoardPlayer
         /// 计算物件的FrameTime
         /// </summary>
         /// <param name="bind">是否将计算结果固定成物件初始值，否则仅仅单纯应用到FrameStartTime/FrameEndTime</param>
-        public void CalculateAndApplyBaseFrameTime(bool bind=true)
+        public void CalculateAndApplyBaseFrameTime(bool bind=false)
         {
             var commands = CommandMap.SelectMany(l => l.Value);
 

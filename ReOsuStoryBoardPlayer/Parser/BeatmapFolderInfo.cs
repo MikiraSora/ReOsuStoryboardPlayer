@@ -106,7 +106,7 @@ namespace ReOsuStoryBoardPlayer.Parser
                 var wideMatch = section.ReadProperty("WidescreenStoryboard");
 
                 if (!string.IsNullOrWhiteSpace(wideMatch))
-                    info.IsWidescreenStoryboard=wideMatch.ToInt()==1;
+                    info.IsWidescreenStoryboard=wideMatch.ToInt()==1; 
             }
 
             if (string.IsNullOrWhiteSpace(info.osu_file_path) || (!File.Exists(info.osu_file_path)))
