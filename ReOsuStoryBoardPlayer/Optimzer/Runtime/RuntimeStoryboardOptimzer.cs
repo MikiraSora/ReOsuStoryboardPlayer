@@ -176,15 +176,14 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
             foreach (var obj in storyboard_objects)
             {
-                //物件命令数量+Trigger对应类型的子命令数量
-                foreach (var timeline in obj.CommandMap.Where(x => x.Value.Count+(obj.ContainTrigger?
-                obj.CommandMap[Event.Trigger]
+                //物件命令数量!=0 且 无Trigger对应类型的子命令
+                foreach (var timeline in obj.CommandMap.Where(x => x.Value.Count==1 && ((!obj.ContainTrigger) ||(
+                !obj.CommandMap[Event.Trigger]
                 .OfType<GroupCommand>()
                 .SelectMany(
                     l=>l.SubCommands
-                    .SelectMany(q=>q.Value)
-                    .Where(w=>w.Event==x.Key))
-                    .Count():0)==1).Select(e=>e.Value))
+                    .Where(w=>w.Key==x.Key)).Select(m=>m.Value)
+                    .Any()))).Select(e=>e.Value))
                 {
                     Command cmd = timeline.FirstOrDefault();
 
