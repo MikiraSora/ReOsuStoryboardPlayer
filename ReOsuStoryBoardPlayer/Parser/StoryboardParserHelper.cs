@@ -41,12 +41,6 @@ namespace ReOsuStoryBoardPlayer.Parser
                 {
                     var optimzer = new RuntimeStoryboardOptimzer();
                     optimzer.Optimze(list);
-
-                    //recalc
-                    foreach (var obj in list)
-                    {
-                        obj.CalculateAndApplyBaseFrameTime();
-                    }
                 }
             }
 

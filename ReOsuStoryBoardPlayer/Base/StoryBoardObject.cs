@@ -8,6 +8,7 @@ using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Commands.Group;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using System.Diagnostics;
+using ReOsuStoryBoardPlayer.Base;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -27,7 +28,7 @@ namespace ReOsuStoryBoardPlayer
         /// </summary>
         public Action<StoryBoardObject> BaseTransformResetAction;
 
-        public int FrameStartTime, FrameEndTime;
+        public int FrameStartTime=int.MinValue, FrameEndTime;
 
         public SpriteInstanceGroup RenderGroup;
 
@@ -315,9 +316,9 @@ namespace ReOsuStoryBoardPlayer
 
         /// <summary>
         /// 计算物件的FrameTime
+        /// (此方法必须确保计算出来的物件时间是基于命令的真实的有效时间，不能因为Trigger而提前计算，FrameStartTime必须是一次性算好固定的值(否则Scan炸了，理论上也没什么玩意可以变更此参数))
         /// </summary>
-        /// <param name="bind">是否将计算结果固定成物件初始值，否则仅仅单纯应用到FrameStartTime/FrameEndTime</param>
-        public void CalculateAndApplyBaseFrameTime(bool bind=false)
+        public void CalculateAndApplyBaseFrameTime()
         {
             var commands = CommandMap.SelectMany(l => l.Value);
 
@@ -327,13 +328,7 @@ namespace ReOsuStoryBoardPlayer
             var start =commands.Min(p => p.StartTime);
             var end = commands.Max(p => p.EndTime);
 
-            if (bind)
-            {
-                BaseTransformResetAction+=obj => {
-                    obj.FrameStartTime=start;
-                    obj.FrameEndTime=end;
-                };
-            }
+            Debug.Assert(FrameStartTime==int.MinValue || FrameStartTime==start || this is StoryboardBackgroundObject || Z<0, "目前实现不能再次更变FrameStartTime");
 
             FrameStartTime=start;
             FrameEndTime=end;

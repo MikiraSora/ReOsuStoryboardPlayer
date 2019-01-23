@@ -92,8 +92,6 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                     effect_count++;
                 }
             }
-
-            Parallel.ForEach(storyboard_objects, obj => obj.ResetTransform());
         }
 
         public void CombineCommands(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
@@ -158,7 +156,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         ///Sprite,Foreground,Centre,"sb\light.png",320,240
         /// S,0,0,,0.22        <---- Set as Object.Scale inital value by Optimzer
         /// MX,0,0,,278        <---- Set as Object.Position.X inital value by Optimzer
-        /// F,0,126739,,0            <---- Set as Object.Color.W inital value by Optimzer
+        /// F,0,126739,,0       
         /// F,0,208016,,0.7,1           
         /// C,0,208016,,255,255,255
         /// P,0,208016,,A             <---- Set as Object.IsAdditive value by Optimzer
