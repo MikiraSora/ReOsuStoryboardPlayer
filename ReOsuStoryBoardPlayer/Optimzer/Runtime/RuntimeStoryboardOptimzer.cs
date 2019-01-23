@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Commands.Group;
 using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections;
@@ -78,7 +79,10 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
                     if (front_fade!=null&&obj.FrameStartTime<=front_fade.StartTime)
                     {
-                        obj.FrameStartTime=front_fade.StartTime;
+                        var trigger_time = obj.ContainTrigger ? obj.CommandMap[Event.Trigger].Min(x => x.StartTime) : int.MaxValue;
+                        var trim_start_time = Math.Min(trigger_time, front_fade.StartTime);
+
+                        obj.FrameStartTime=trim_start_time;
                         Suggest(obj, $"FrameTime可优化成{front_fade.StartTime}");
                         effect_count++;
                     }
@@ -172,7 +176,15 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
             foreach (var obj in storyboard_objects)
             {
-                foreach (var timeline in obj.CommandMap.Values.Where(x => x.Count==1))
+                //物件命令数量+Trigger对应类型的子命令数量
+                foreach (var timeline in obj.CommandMap.Where(x => x.Value.Count+(obj.ContainTrigger?
+                obj.CommandMap[Event.Trigger]
+                .OfType<GroupCommand>()
+                .SelectMany(
+                    l=>l.SubCommands
+                    .SelectMany(q=>q.Value)
+                    .Where(w=>w.Event==x.Key))
+                    .Count():0)==1).Select(e=>e.Value))
                 {
                     Command cmd = timeline.FirstOrDefault();
 
