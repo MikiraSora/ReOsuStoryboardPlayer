@@ -1,7 +1,10 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
+namespace ReOsuStoryBoardPlayer.Base
 {
+    /// <summary>
+    /// 判断的时候None理论上默认为Normal
+    /// </summary>
     [Flags]
     public enum HitObjectSoundType
     {

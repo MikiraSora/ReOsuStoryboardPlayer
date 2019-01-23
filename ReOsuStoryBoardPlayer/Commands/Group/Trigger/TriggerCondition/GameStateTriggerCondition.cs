@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Base;
+using System;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
 {
     public class GameStateTriggerCondition : TriggerConditionBase
     {
-        private GameState listen_state;
+        private readonly GameState listen_state;
 
         public GameStateTriggerCondition(string description)
         {

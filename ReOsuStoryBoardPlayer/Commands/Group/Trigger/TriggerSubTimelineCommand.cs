@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using ReOsuStoryBoardPlayer.Base;
+using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 {
@@ -8,7 +9,7 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
 
         private CommandTimeline timeline;
 
-        private float CostTime;
+        private readonly float CostTime;
 
         public TriggerSubTimelineCommand(TriggerCommand trigger_command, Event bind_event)
         {

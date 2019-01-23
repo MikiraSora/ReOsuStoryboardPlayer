@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer
+﻿namespace ReOsuStoryBoardPlayer.Base
 {
     public enum Event
     {

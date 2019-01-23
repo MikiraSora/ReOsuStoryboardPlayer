@@ -98,12 +98,12 @@ void main(){
 
             Matrix4 model =
                 Matrix4.Identity *
-                Matrix4.CreateScale(scale.x, scale.y, 1) *
-                Matrix4.CreateTranslation(position.x, -position.y, 0) *
+                Matrix4.CreateScale(scale.X, scale.Y, 1) *
+                Matrix4.CreateTranslation(position.X, -position.Y, 0) *
                 Matrix4.CreateFromAxisAngle(_staticCacheAxis, angle / 180.0f * 3.1415926f)
             ;
 
-            Vector2 anchorFixer = new Vector2(norAnchor.x, -norAnchor.y);
+            Vector2 anchorFixer = new Vector2(norAnchor.X, -norAnchor.Y);
 
             //Pass Uniform Variable
             texture_shader.PassUniform("ViewProjection", VP);

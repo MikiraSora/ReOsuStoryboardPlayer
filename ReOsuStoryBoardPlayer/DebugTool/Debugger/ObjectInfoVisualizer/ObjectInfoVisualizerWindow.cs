@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Commands;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Commands.Group;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer;
@@ -66,9 +67,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                             prev_imgae.Dispose();
                         }
                     }
-                    catch (Exception e)
+                    catch
                     {
-                        //Log.Error("[ObjectInfoVisualizer]Can't load bitmap:" + e.Message);
+                        
                     }
                 }
 
@@ -78,7 +79,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 #if DEBUG
                 SelectObject.DebugShow=checkBox1.Checked;
 #endif
-                int r = SelectObject.Color.x, g = SelectObject.Color.y, b = SelectObject.Color.z;
+                int r = SelectObject.Color.X, g = SelectObject.Color.Y, b = SelectObject.Color.Z;
                 ColorLabel.Text = $"{r},{g},{b}";
                 
                 try
@@ -92,7 +93,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 }
 
                 AngleLabel.Text = (SelectObject.Rotate * 180 / Math.PI).ToString();
-                AlphaLabel.Text = SelectObject.Color.w.ToString();
+                AlphaLabel.Text = SelectObject.Color.W.ToString();
                 ScaleLabel.Text = SelectObject.Scale.ToString();
 
                 ParameterLabel.Text = $"{(SelectObject.IsAdditive ? "A" : " ")}{(SelectObject.IsHorizonFlip ? "H" : " ")}{(SelectObject.IsVerticalFlip ? "V" : " ")}";
@@ -175,9 +176,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 #if DEBUG
                 pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
 #endif
-                var trigger = pair.Key as TriggerCommand;
-
-                if (trigger!=null)
+                if (pair.Key is TriggerCommand trigger)
                 {
                     //这里必须做内容更新判断否则因为太过频繁窗口会出现闪烁现象
                     if (trigger.Trigged!=trigger_status_cache.Contains(trigger))

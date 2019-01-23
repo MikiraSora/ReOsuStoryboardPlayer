@@ -197,9 +197,8 @@ namespace ReOsuStoryBoardPlayer
 
                         for (int index = 0; index<animation.FrameCount; index++)
                         {
-                            SpriteInstanceGroup group;
                             string path = animation.FrameBaseImagePath+index+animation.FrameFileExtension;
-                            if (!_get(path, out group))
+                            if (!_get(path, out SpriteInstanceGroup group))
                             {
                                 Log.Warn($"not found image:{path}");
                                 continue;
@@ -256,6 +255,7 @@ namespace ReOsuStoryBoardPlayer
                 }
                 catch (Exception e)
                 {
+                    Log.Warn($"Load texture \"{file_path}\" failed : {e.Message}");
                     texture=null;
                 }
 
@@ -533,9 +533,7 @@ namespace ReOsuStoryBoardPlayer
 
             var time = -e.DeltaPrecise*125;
 
-            var player = MusicPlayerManager.ActivityPlayer as MusicPlayer;
-
-            if (player!=null)
+            if (MusicPlayerManager.ActivityPlayer is MusicPlayer player)
                 player.Jump(player.CurrentTime+time,true);
         }
 

@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Optimzer.Runtime;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Optimzer.Runtime;
 using ReOsuStoryBoardPlayer.Parser.Collection;
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using ReOsuStoryBoardPlayer.Parser.Stream;

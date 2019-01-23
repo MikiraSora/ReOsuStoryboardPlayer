@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
@@ -58,9 +59,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
         //选择物件
         private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            var obj = comboBox1.SelectedItem as StoryBoardObject;
-
-            if (obj==null||!obj.CommandMap.TryGetValue(Event.Trigger,out var triggers))
+            if (!(comboBox1.SelectedItem is StoryBoardObject obj)||!obj.CommandMap.TryGetValue(Event.Trigger, out var triggers))
                 return;
 
             comboBox2.Items.Clear();
@@ -76,13 +75,12 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
         //选择命令
         private void comboBox2_SelectedValueChanged(object sender, EventArgs e)
         {
-            var obj = comboBox1.SelectedItem as StoryBoardObject;
             var command = comboBox2.SelectedItem as TriggerCommand;
             var condition = command?.Condition as HitSoundTriggerCondition;
 
-            var hitsounds=DebuggerManager.GetDebugger<AutoTrigger>()?.objects;
+            var hitsounds=DebuggerManager.GetDebugger<AutoTrigger>()?.HitSoundInfos;
 
-            if (obj==null||hitsounds==null||hitsounds.Count==0||condition==null)
+            if (!(comboBox1.SelectedItem is StoryBoardObject obj)||hitsounds==null||hitsounds.Count==0||condition==null)
                 return;
 
             var result = hitsounds.Where(x => condition.CheckCondition(x)&&command.CheckTimeVaild((float)x.Time)).ToArray();

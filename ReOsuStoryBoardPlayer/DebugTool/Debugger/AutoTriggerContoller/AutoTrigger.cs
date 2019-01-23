@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.BeatmapParser;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.BeatmapParser;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
 using ReOsuStoryBoardPlayer.Parser;
@@ -16,7 +17,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
     //Part from osu! source code
     public class AutoTrigger : DebuggerBase
     {
-        public LinkedList<HitSoundInfo> objects { get; private set; }
+        public LinkedList<HitSoundInfo> HitSoundInfos { get; private set; }
         LinkedListNode<HitSoundInfo> cur;
 
         double prev_time=0;
@@ -35,12 +36,12 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
         {
             try
             {
-                objects=HitSoundInfosHelpers.Parse(info.osu_file_path);
+                HitSoundInfos=HitSoundInfosHelpers.Parse(info.osu_file_path);
             }
             catch (Exception e)
             {
                 Log.Warn(e.Message);
-                objects=new LinkedList<HitSoundInfo>();
+                HitSoundInfos=new LinkedList<HitSoundInfo>();
             }
 
             Flush();
@@ -48,16 +49,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
 
         private void Flush()
         {
-            cur=objects.First;
+            cur=HitSoundInfos.First;
             prev_time = 0;
         }
 
         public void Trim()
         {
-            var unused_hitsounds = objects.AsParallel().Where(x => !TriggerListener.DefaultListener.CheckTrig(x)).ToList();
+            var unused_hitsounds = HitSoundInfos.AsParallel().Where(x => !TriggerListener.DefaultListener.CheckTrig(x)).ToList();
 
             foreach (var sounds in unused_hitsounds)
-                objects.Remove(sounds);
+                HitSoundInfos.Remove(sounds);
 
             Log.Debug($"Remove {unused_hitsounds.Count()} hitsounds");
             Flush();

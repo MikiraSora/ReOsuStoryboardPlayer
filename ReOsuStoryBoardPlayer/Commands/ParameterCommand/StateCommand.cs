@@ -1,4 +1,6 @@
-﻿namespace ReOsuStoryBoardPlayer.Commands
+﻿using ReOsuStoryBoardPlayer.Base;
+
+namespace ReOsuStoryBoardPlayer.Commands
 {
     public abstract class StateCommand : Command
     {

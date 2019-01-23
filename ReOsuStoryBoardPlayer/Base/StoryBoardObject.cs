@@ -8,9 +8,8 @@ using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Commands.Group;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
 using System.Diagnostics;
-using ReOsuStoryBoardPlayer.Base;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryBoardPlayer.Base
 {
     public class StoryBoardObject
     {
@@ -222,7 +221,7 @@ namespace ReOsuStoryBoardPlayer
 #endif
             }
 
-            IsVisible = (Color.w != 0);
+            IsVisible = (Color.W != 0);
             //if (IsVisible) IsVisible = CalculateVisible(); //没必要了
         }
 
@@ -236,9 +235,9 @@ namespace ReOsuStoryBoardPlayer
             float xstart = -offset;
             float xend = StoryboardWindow.SB_WIDTH + offset;
 
-            float w = RenderGroup.Texture.Width * Scale.x;
-            float h = RenderGroup.Texture.Height * Scale.y;
-            Vector2 anchor = new Vector2(Anchor.x + 0.5f, Anchor.y + 0.5f);
+            float w = RenderGroup.Texture.Width * Scale.X;
+            float h = RenderGroup.Texture.Height * Scale.Y;
+            Vector2 anchor = new Vector2(Anchor.X + 0.5f, Anchor.Y + 0.5f);
             anchor.X *= w;
             anchor.Y *= h;
 
@@ -268,8 +267,8 @@ namespace ReOsuStoryBoardPlayer
                 vertices[i].X = vertices[i].X * cosa + vertices[i].Y * sina;
                 vertices[i].Y = vertices[i].X * sina - vertices[i].Y * cosa;
 
-                vertices[i].X += Postion.x;
-                vertices[i].Y += Postion.y;
+                vertices[i].X += Postion.X;
+                vertices[i].Y += Postion.Y;
             }
 
             //构造AABB

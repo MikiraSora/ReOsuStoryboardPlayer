@@ -11,7 +11,6 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
     class FinalPostProcess:APostProcess
     {
         FinalShader _shader = new FinalShader();
-        private int _tmp_fbo = 0;
 
         public FinalPostProcess()
         {

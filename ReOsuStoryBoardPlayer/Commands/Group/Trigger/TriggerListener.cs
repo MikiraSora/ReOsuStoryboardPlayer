@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
 using System;
 using System.Collections.Generic;
 using System.Linq;

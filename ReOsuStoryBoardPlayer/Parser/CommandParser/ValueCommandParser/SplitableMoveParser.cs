@@ -17,13 +17,13 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser.ValueCommandParser
         private IEnumerable<Command> SplitCommand(MoveCommand move)
         {
             var x = _get<MoveXCommand>(move);
-            x.StartValue=move.StartValue.x;
-            x.EndValue=move.EndValue.x;
+            x.StartValue=move.StartValue.X;
+            x.EndValue=move.EndValue.X;
             yield return x;
 
             var y = _get<MoveYCommand>(move);
-            y.StartValue=move.StartValue.y;
-            y.EndValue=move.EndValue.y;
+            y.StartValue=move.StartValue.Y;
+            y.EndValue=move.EndValue.Y;
             yield return y;
 
 

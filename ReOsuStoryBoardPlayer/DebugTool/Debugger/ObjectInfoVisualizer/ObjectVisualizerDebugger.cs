@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using ReOsuStoryBoardPlayer.Base;
 using ReOsuStoryBoardPlayer.Kernel;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             if (select_object==null)
                 return;
 
-            select_object.Color.w=backup_alpha;
+            select_object.Color.W=backup_alpha;
         }
 
         byte backup_alpha;
@@ -53,8 +54,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             count+=0.00045f*DateTime.Now.Second;
 
-            backup_alpha=select_object.Color.w;
-            select_object.Color.w=(byte)Math.Min(255, Math.Abs(255*Math.Cos(count)));
+            backup_alpha=select_object.Color.W;
+            select_object.Color.W=(byte)Math.Min(255, Math.Abs(255*Math.Cos(count)));
         }
 
         private void OnMouseClick(int x, int y, MouseInput input)
@@ -98,7 +99,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         private bool IsPointInObjectArea(StoryBoardObject obj, float x, float y)
         {
-            Vector2 obj_pos = new Vector2(obj.Postion.x, obj.Postion.y);
+            Vector2 obj_pos = new Vector2(obj.Postion.X, obj.Postion.Y);
 
             float radio = (float)StoryboardWindow.CurrentWindow.Width / (float)StoryboardWindow.CurrentWindow.Height;
             float view_width = StoryboardWindow.SB_HEIGHT * radio;
@@ -112,10 +113,10 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             Vector3[] points = new Vector3[4];
 
-            int w = (int)(obj.RenderGroup.Texture.Width * Math.Abs(obj.Scale.x));
-            int h = (int)(obj.RenderGroup.Texture.Height *Math.Abs(obj.Scale.y));
+            int w = (int)(obj.RenderGroup.Texture.Width * Math.Abs(obj.Scale.X));
+            int h = (int)(obj.RenderGroup.Texture.Height *Math.Abs(obj.Scale.Y));
 
-            Vector2 anchor = new Vector2(obj.Anchor.x, obj.Anchor.y) + new Vector2(0.5f,0.5f);
+            Vector2 anchor = new Vector2(obj.Anchor.X, obj.Anchor.Y) + new Vector2(0.5f,0.5f);
             anchor.X *= w;
             anchor.Y *= h;
 

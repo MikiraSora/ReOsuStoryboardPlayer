@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryBoardPlayer.Base
 {
     public class StoryboardAnimation : StoryBoardObject
     {

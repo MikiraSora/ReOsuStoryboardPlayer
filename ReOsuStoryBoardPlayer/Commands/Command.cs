@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Base;
+using System;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Base;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -136,6 +137,6 @@ namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger
         /// 有触发器的物件默认不显示(之前默认显示),不懂ppy想法，magic
         /// 比如440423的歌词
         /// </summary>
-        public readonly static Action<StoryBoardObject> OverrideDefaultValue = obj => obj.Color.w=0;
+        public readonly static Action<StoryBoardObject> OverrideDefaultValue = obj => obj.Color.W=0;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ReOsuStoryBoardPlayer.Base;
+using System.Collections.Generic;
 
 namespace ReOsuStoryBoardPlayer.Commands.Group
 {

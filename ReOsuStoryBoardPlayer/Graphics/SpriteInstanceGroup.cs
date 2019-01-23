@@ -70,8 +70,8 @@ namespace ReOsuStoryBoardPlayer
         {
             ImagePath = image_path;
 
-            _bound.x = texture.Width;
-            _bound.y = texture.Height;
+            _bound.X = texture.Width;
+            _bound.Y = texture.Height;
 
             this.Capacity = capacity;
 
@@ -190,14 +190,14 @@ namespace ReOsuStoryBoardPlayer
 			*/
 
             
-            var is_xflip = Math.Sign(scale.x);
-            var is_yflip = Math.Sign(scale.y);
+            var is_xflip = Math.Sign(scale.X);
+            var is_yflip = Math.Sign(scale.Y);
 
             //adjust scale transform which value is negative
             horizon_flip=horizon_flip|(is_xflip<0);
             vertical_flip=vertical_flip|(is_yflip<0);
-            float scalex = is_xflip*scale.x*bound.x;
-            float scaley = is_yflip*scale.y*bound.y;
+            float scalex = is_xflip*scale.X*bound.X;
+            float scaley = is_yflip*scale.Y*bound.Y;
 
             //Create ModelMatrix
             float cosa = (float)Math.Cos(rotate);
@@ -209,8 +209,8 @@ namespace ReOsuStoryBoardPlayer
             model.Row1.X = sina * scaley;
             model.Row1.Y = cosa * scaley;
 
-            model.Row2.X = position.x - StoryboardWindow.SB_WIDTH / 2f;
-            model.Row2.Y = -position.y + StoryboardWindow.SB_HEIGHT / 2f;
+            model.Row2.X = position.X - StoryboardWindow.SB_WIDTH / 2f;
+            model.Row2.Y = -position.Y + StoryboardWindow.SB_HEIGHT / 2f;
 
             unsafe
             {

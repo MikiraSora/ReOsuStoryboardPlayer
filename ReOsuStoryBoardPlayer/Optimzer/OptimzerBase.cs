@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Commands;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;

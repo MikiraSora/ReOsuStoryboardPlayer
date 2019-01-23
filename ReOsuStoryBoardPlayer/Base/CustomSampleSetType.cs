@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
+﻿namespace ReOsuStoryBoardPlayer.Base
 {
     public enum CustomSampleSetType
     {

@@ -3,115 +3,135 @@
 namespace ReOsuStoryBoardPlayer
 {
     [Serializable]
-    public struct Vector
+    public struct Vector : IEquatable<Vector>
     {
-        private float __x;
-        private float __y;
-
-        public float x { get { return __x; } set { __x = value; } }
-        public float y { get { return __y; } set { __y = value; } }
+        public float X { get; set; }
+        public float Y { get; set; }
 
         public static Vector Zero { get { return new Vector(0, 0); } }
         public static Vector One { get { return new Vector(0, 0); } }
 
         public Vector(float _x, float _y)
         {
-            __x = _x;
-            __y = _y;
+            X = _x;
+            Y = _y;
         }
 
-        public Vector clone()
+        public Vector Clone()
         {
             return (Vector)MemberwiseClone();
         }
 
-        public Vector add(Vector vec)
+        public Vector Add(Vector vec)
         {
-            return new Vector(x + vec.x, y + vec.y);
+            return new Vector(X + vec.X, Y + vec.Y);
         }
 
-        public static Vector lerp(Vector value1, Vector value2, float amount)
+        public static Vector Lerp(Vector value1, Vector value2, float amount)
         {
             return new Vector(
-                (float)lerp(value1.x, value2.x, amount),
-                (float)lerp(value1.y, value2.y, amount));
+                (float)Lerp(value1.X, value2.X, amount),
+                (float)Lerp(value1.Y, value2.Y, amount));
         }
 
         public static Vector operator -(Vector value)
         {
-            value.x = -value.x;
-            value.y = -value.y;
+            value.X = -value.X;
+            value.Y = -value.Y;
             return value;
         }
 
         public static bool operator ==(Vector value1, Vector value2)
         {
-            return value1.x == value2.x && value1.y == value2.y;
+            return value1.X == value2.X && value1.Y == value2.Y;
         }
 
         public static bool operator !=(Vector value1, Vector value2)
         {
-            return value1.x != value2.x || value1.y != value2.y;
+            return value1.X != value2.X || value1.Y != value2.Y;
         }
 
         public static Vector operator /(Vector value1, Vector value2)
         {
-            value1.x /= value2.x;
-            value1.y /= value2.y;
+            value1.X /= value2.X;
+            value1.Y /= value2.Y;
             return value1;
         }
 
         public static Vector operator +(Vector value1, Vector value2)
         {
-            value1.x += value2.x;
-            value1.y += value2.y;
+            value1.X += value2.X;
+            value1.Y += value2.Y;
             return value1;
         }
 
         public static Vector operator -(Vector value1, Vector value2)
         {
-            value1.x -= value2.x;
-            value1.y -= value2.y;
+            value1.X -= value2.X;
+            value1.Y -= value2.Y;
             return value1;
         }
 
         public static Vector operator /(Vector value1, float divider)
         {
             float factor = 1 / divider;
-            value1.x *= factor;
-            value1.y *= factor;
+            value1.X *= factor;
+            value1.Y *= factor;
             return value1;
         }
 
         public static Vector operator *(Vector value1, Vector value2)
         {
-            value1.x *= value2.x;
-            value1.y *= value2.y;
+            value1.X *= value2.X;
+            value1.Y *= value2.Y;
             return value1;
         }
 
         public static Vector operator *(float scaleFactor, Vector value)
         {
-            value.x *= scaleFactor;
-            value.y *= scaleFactor;
+            value.X *= scaleFactor;
+            value.Y *= scaleFactor;
             return value;
         }
 
         public static Vector operator *(Vector value, float scaleFactor)
         {
-            value.x *= scaleFactor;
-            value.y *= scaleFactor;
+            value.X *= scaleFactor;
+            value.Y *= scaleFactor;
             return value;
         }
 
         public override string ToString()
         {
-            return "[" + x + ";" + y + "]";
+            return "[" + X + ";" + Y + "]";
         }
 
-        public static double lerp(double value1, double value2, double amount)
+        public static double Lerp(double value1, double value2, double amount)
         {
             return value1 + (value2 - value1) * amount;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vector&&Equals((Vector)obj);
+        }
+
+        public bool Equals(Vector other)
+        {
+            return X==other.X&&
+                   Y==other.Y&&
+                   X==other.X&&
+                   Y==other.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -810690406;
+            hashCode=hashCode*-1521134295+X.GetHashCode();
+            hashCode=hashCode*-1521134295+Y.GetHashCode();
+            hashCode=hashCode*-1521134295+X.GetHashCode();
+            hashCode=hashCode*-1521134295+Y.GetHashCode();
+            return hashCode;
         }
     }
 }

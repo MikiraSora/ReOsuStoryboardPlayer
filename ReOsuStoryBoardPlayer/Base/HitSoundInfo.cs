@@ -1,7 +1,11 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition
+namespace ReOsuStoryBoardPlayer.Base
 {
+    /// <summary>
+    /// 表示用于触发TriggerListener绑定的触发器参数封装结构，塞了个时间方便Listener自寻触发对应的触发器
+    /// 移植实现时可以通过这个方便使用触发器
+    /// </summary>
     public struct HitSoundInfo : IComparable<HitSoundInfo>
     {
         //easy to debug

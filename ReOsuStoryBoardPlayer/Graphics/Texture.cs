@@ -32,8 +32,8 @@ namespace ReOsuStoryBoardPlayer
 
         private string name;
 
-        public int Width { get { return (int)_textureSize.x; } }
-        public int Height { get { return (int)_textureSize.y; } }
+        public int Width { get { return (int)_textureSize.X; } }
+        public int Height { get { return (int)_textureSize.Y; } }
 
         public Texture()
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Base;
+using System;
 
 namespace ReOsuStoryBoardPlayer.Commands
 {
@@ -11,21 +12,21 @@ namespace ReOsuStoryBoardPlayer.Commands
     {
         public FadeCommand() => Event = Event.Fade;
 
-        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Color.w = (byte)(value*255);
+        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Color.W = (byte)(value*255);
     }
 
     public class MoveXCommand : FloatValueCommand
     {
         public MoveXCommand() => Event = Event.MoveX;
 
-        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Postion.x = value;
+        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Postion.X = value;
     }
 
     public class MoveYCommand : FloatValueCommand
     {
         public MoveYCommand() => Event = Event.MoveY;
 
-        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Postion.y = value;
+        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Postion.Y = value;
     }
 
     public class RotateCommand : FloatValueCommand
@@ -39,6 +40,6 @@ namespace ReOsuStoryBoardPlayer.Commands
     {
         public ScaleCommand() => Event = Event.Scale;
 
-        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Scale.x = @object.Scale.y = value;
+        public override void ApplyValue(StoryBoardObject @object, float value) => @object.Scale.X = @object.Scale.Y = value;
     }
 }

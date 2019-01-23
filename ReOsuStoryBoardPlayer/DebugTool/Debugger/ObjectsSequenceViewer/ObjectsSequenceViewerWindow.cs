@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+﻿using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Player;
@@ -28,15 +29,19 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
             var width_unit = (listView1.Width)/10.0f;
 
-            ColumnHeader index_header = new ColumnHeader();
-            index_header.Text="Object";
-            index_header.Width=(int)(width_unit*9);
-            index_header.TextAlign=HorizontalAlignment.Center;
+            ColumnHeader index_header = new ColumnHeader
+            {
+                Text="Object",
+                Width=(int)(width_unit*9),
+                TextAlign=HorizontalAlignment.Center
+            };
 
-            ColumnHeader object_header = new ColumnHeader();
-            object_header.Text="Index";
-            object_header.Width=(int)(width_unit*1);
-            object_header.TextAlign=HorizontalAlignment.Center;
+            ColumnHeader object_header = new ColumnHeader
+            {
+                Text="Index",
+                Width=(int)(width_unit*1),
+                TextAlign=HorizontalAlignment.Center
+            };
 
             listView1.Columns.Add(index_header);
             listView1.Columns.Add(object_header);
