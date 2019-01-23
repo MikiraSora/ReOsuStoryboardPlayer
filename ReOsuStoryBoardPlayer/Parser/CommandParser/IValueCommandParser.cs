@@ -18,10 +18,10 @@ namespace ReOsuStoryBoardPlayer.Parser.CommandParser
 
             command.Easing = (EasingTypes)data_arr.ElementAt(1).ToInt();
             
-            /*
+            
             if (Setting.FunReverseEasing)
-                command.Easing=(EasingInterpolator)command.Easing.reverse();
-                */
+                command.Easing=Interpolation.GetReverseEasing(command.Easing);
+                
 
             command.StartTime=StartTime;
             command.EndTime=EndTime;

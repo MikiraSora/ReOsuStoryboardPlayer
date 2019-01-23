@@ -70,6 +70,33 @@ namespace ReOsuStoryBoardPlayer
 
     public static class Interpolation
     {
+        public static EasingTypes GetReverseEasing(EasingTypes easing)
+        {
+            var s = easing.ToString();
+
+            var contain_in = s.Contains("In");
+            var contain_out = s.Contains("Out");
+
+            if (contain_in ^ contain_out)
+            {
+                var x = s;
+
+                if (contain_in)
+                {
+                    x=x.Replace("In", "Out");
+                }
+
+                if (contain_out)
+                {
+                    x=x.Replace("Out", "In");
+                }
+
+                return Enum.TryParse(x, out EasingTypes r) ? r : EasingTypes.None;
+            }
+
+            return easing;
+        }
+
         public static double Lerp(double start, double final, double amount) => start+(final-start)*amount;
 
         public static double ApplyEasing(EasingTypes easing, double time)

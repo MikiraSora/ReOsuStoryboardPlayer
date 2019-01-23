@@ -67,7 +67,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\798443 Ahiru - HEARTBEAT (USAO Remix)";
+            beatmap_folder=@"G:\SBTest\432822 NOMA - Brain Power Long Version";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
