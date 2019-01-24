@@ -65,7 +65,7 @@ namespace ReOsuStoryBoardPlayer.Core.Base
             InternalAddCommand(command);
         }
 
-        internal void InternalAddCommand(Command command)
+        public void InternalAddCommand(Command command)
         {
             switch (command)
             {

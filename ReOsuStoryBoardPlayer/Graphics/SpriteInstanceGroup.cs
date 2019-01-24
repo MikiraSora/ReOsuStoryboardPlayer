@@ -45,7 +45,7 @@ namespace ReOsuStoryBoardPlayer
             s_shader = new BatchShader();
             s_shader.Compile();
 
-            PostData = new byte[_VertexSize * Setting.DrawCallInstanceCountMax];
+            PostData = new byte[_VertexSize *PlayerSetting.DrawCallInstanceCountMax];
 
             s_vbo_vertexBase = GL.GenBuffer();
             s_vbo_texPosBase = GL.GenBuffer();
@@ -145,7 +145,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
                 {
-                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_VertexSize * Setting.DrawCallInstanceCountMax), IntPtr.Zero, BufferUsageHint.DynamicDraw);
+                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_VertexSize * PlayerSetting.DrawCallInstanceCountMax), IntPtr.Zero, BufferUsageHint.DynamicDraw);
 
                     //Anchor
                     GL.EnableVertexAttribArray(2);

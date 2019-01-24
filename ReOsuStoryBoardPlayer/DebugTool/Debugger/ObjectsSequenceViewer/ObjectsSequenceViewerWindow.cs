@@ -51,7 +51,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         public void ApplyRangeFlush(Range range)
         {
-            var objects = StoryboardInstanceManager.ActivityInstance.StoryboardObjectList
+            var objects = StoryboardInstanceManager.ActivityInstance.Updater.StoryboardObjectList
                 .Where(o => range.InRange(o.FrameStartTime)||range.InRange(o.FrameEndTime));
 
             RangeObjects=objects;
@@ -167,7 +167,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            RangeObjects=StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects.OrderBy(c => c.Z);
+            RangeObjects=StoryboardInstanceManager.ActivityInstance.Updater.UpdatingStoryboardObjects.OrderBy(c => c.Z);
             ApplyObjectsFlush();
         }
 

@@ -106,6 +106,7 @@
     <Compile Include="Graphics\PostProcesses\Shaders\ClipShader.cs" />
     <Compile Include="Graphics\PostProcesses\Shaders\FinalShader.cs" />
     <Compile Include="Graphics\PostProcesses\Shaders\PostProcessShader.cs" />
+    <Compile Include="Graphics\StoryboardResource.cs" />
     <Compile Include="Kernel\StoryboardInstance.cs" />
     <Compile Include="OutputEncoding\DefaultEncodingWriter.cs" />
     <Compile Include="OutputEncoding\EncodingWriterFatory.cs" />

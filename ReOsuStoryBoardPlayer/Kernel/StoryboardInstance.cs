@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.Core.Kernel;
 using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace ReOsuStoryBoardPlayer.Kernel
     {
         public StoryboardUpdater Updater { get; private set; }
         public BeatmapFolderInfo Info { get; private set; }
+        public StoryboardResource Resource { get; set; }
 
         private StoryboardInstance() { }
 

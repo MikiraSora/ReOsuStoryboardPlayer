@@ -27,7 +27,7 @@ namespace ReOsuStoryBoardPlayer.Utils
             MusicPlayerManager.ApplyPlayer(player);
 
             //load storyboard objects
-            var instance = new StoryboardInstance(info);
+            var instance = StoryboardInstance.Load(info);
 
             var auto_trigger=DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
             auto_trigger.Load(info);

@@ -38,7 +38,7 @@ namespace ReOsuStoryBoardPlayer.Parser
 #endif
                 }
 
-                if (Setting.EnableRuntimeOptimzeObjects)
+                if (PlayerSetting.EnableRuntimeOptimzeObjects)
                 {
                     var optimzer = new RuntimeStoryboardOptimzer();
                     optimzer.Optimze(list);

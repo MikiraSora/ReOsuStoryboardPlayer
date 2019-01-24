@@ -82,7 +82,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             StoryBoardObject obj = null;
 
-            foreach (var temp in StoryboardInstanceManager.ActivityInstance.UpdatingStoryboardObjects)
+            foreach (var temp in StoryboardInstanceManager.ActivityInstance.Updater.UpdatingStoryboardObjects)
             {
                 if (temp.Z>last_order_index&&
                     (obj==null ? true : (temp.Z<obj.Z))&&
@@ -114,8 +114,10 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             Vector3[] points = new Vector3[4];
 
-            int w = (int)(obj.RenderGroup.Texture.Width * Math.Abs(obj.Scale.X));
-            int h = (int)(obj.RenderGroup.Texture.Height *Math.Abs(obj.Scale.Y));
+            var group = StoryboardInstanceManager.ActivityInstance.Resource.GetSprite(obj.ImageFilePath);
+
+            int w = (int)(group.Texture.Width * Math.Abs(obj.Scale.X));
+            int h = (int)(group.Texture.Height *Math.Abs(obj.Scale.Y));
 
             Vector2 anchor = new Vector2(obj.Anchor.X, obj.Anchor.Y) + new Vector2(0.5f,0.5f);
             anchor.X *= w;

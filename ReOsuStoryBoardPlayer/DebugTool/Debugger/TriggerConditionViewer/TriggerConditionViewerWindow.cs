@@ -35,7 +35,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
             if (instance==null)
                 return;
 
-            var list = instance.StoryboardObjectList.Where(x => x.ContainTrigger).ToArray();
+            var list = instance.Updater.StoryboardObjectList.Where(x => x.ContainTrigger).ToArray();
 
             if (list.Length!=0)
             {

@@ -46,8 +46,6 @@ namespace ReOsuStoryBoardPlayer
         private ClipPostProcess _clipPostProcess;
         private PostProcessesManager _postProcessesManager;
 
-        private List<SpriteInstanceGroup> register_sprites = new List<SpriteInstanceGroup>();
-
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
         
         private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
@@ -168,21 +166,24 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        internal void BuildCacheDrawSpriteBatch(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
+        internal StoryboardResource BuildDrawSpriteResources(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
         {
             Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
 
+            StoryboardResource resource = new StoryboardResource();
+            
             foreach (var obj in StoryboardObjectList)
             {
+                SpriteInstanceGroup group;
                 switch (obj)
                 {
                     case StoryboardBackgroundObject background:
-                        if (!_get(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
+                        if (!_get(obj.ImageFilePath.ToLower(), out group))
                             Log.Warn($"not found image:{obj.ImageFilePath}");
 
-                        if (background.RenderGroup!=null)
+                        if (group!=null)
                         {
-                            var scale = SB_HEIGHT/background.RenderGroup.Texture.Height;
+                            var scale = SB_HEIGHT/group.Texture.Height;
                             background.InternalAddCommand(new ScaleCommand()
                             {
                                 Easing=/*EasingConverter.CacheEasingInterpolatorMap[Easing.Linear]*/EasingTypes.None,
@@ -200,7 +201,7 @@ namespace ReOsuStoryBoardPlayer
                         for (int index = 0; index<animation.FrameCount; index++)
                         {
                             string path = animation.FrameBaseImagePath+index+animation.FrameFileExtension;
-                            if (!_get(path, out SpriteInstanceGroup group))
+                            if (!_get(path, out group))
                             {
                                 Log.Warn($"not found image:{path}");
                                 continue;
@@ -208,17 +209,18 @@ namespace ReOsuStoryBoardPlayer
                             list.Add(group);
                         }
 
-                        animation.backup_group=list.ToArray();
                         break;
 
                     default:
-                        if (!_get(obj.ImageFilePath.ToLower(), out obj.RenderGroup))
+                        if (!_get(obj.ImageFilePath.ToLower(), out group))
                             Log.Warn($"not found image:{obj.ImageFilePath}");
                         break;
                 }
             }
 
-            register_sprites=CacheDrawSpriteInstanceMap.Values.ToList();
+            resource.AddSpriteInstanceGroups(CacheDrawSpriteInstanceMap);
+
+            return resource;
 
             bool _get(string image_name,out SpriteInstanceGroup group)
             {
@@ -282,7 +284,8 @@ namespace ReOsuStoryBoardPlayer
 
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
             {
-                BuildCacheDrawSpriteBatch(instance.Updater.StoryboardObjectList, instance.Info.folder_path);
+                var resource=BuildDrawSpriteResources(instance.Updater.StoryboardObjectList, instance.Info.folder_path);
+                instance.Resource=resource;
             }
 
             _timestamp=0;
@@ -295,13 +298,7 @@ namespace ReOsuStoryBoardPlayer
         /// </summary>
         private void Clean()
         {
-            foreach (var sprite in register_sprites)
-                sprite.Dispose();
-
-            register_sprites.Clear();
-
-            foreach (var obj in Instance?.Updater.StoryboardObjectList)
-                obj.RenderGroup=null;
+            Instance.Resource.Dispose();
         }
 
         private double GetSyncTime()
@@ -457,7 +454,7 @@ namespace ReOsuStoryBoardPlayer
 
         private void DrawStoryBoardObjects(List<StoryBoardObject> draw_list)
         {
-            SpriteInstanceGroup group = draw_list.First().RenderGroup;
+            SpriteInstanceGroup group = Instance.Resource.GetSprite(draw_list.First().ImageFilePath);
 
             bool additive_trigger;
             ChangeAdditiveStatus(draw_list.First().IsAdditive);
@@ -472,7 +469,9 @@ namespace ReOsuStoryBoardPlayer
                 if (!obj.DebugShow)
                     continue;//skip
 #endif
-                if (group!=obj.RenderGroup||additive_trigger!=obj.IsAdditive)
+                var obj_group = Instance.Resource.GetSprite(obj);
+
+                if (group!=obj_group||additive_trigger!=obj.IsAdditive)
                 {
                     group?.FlushDraw();
 
@@ -480,7 +479,7 @@ namespace ReOsuStoryBoardPlayer
                     ChangeAdditiveStatus(obj.IsAdditive);
 
 
-                    group=obj.RenderGroup;
+                    group=obj_group;
                 }
 
                 group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale, obj.Anchor, obj.Color, obj.IsVerticalFlip, obj.IsHorizonFlip);

@@ -55,7 +55,7 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
             GL.Clear(ClearBufferMask.ColorBufferBit);
             _currentIndex = 1;//reset to 1
 
-            int sample = 1 << Setting.SsaaLevel;
+            int sample = 1 <<PlayerSetting.SsaaLevel;
             GL.Viewport(0, 0, StoryboardWindow.CurrentWindow.Width * sample, StoryboardWindow.CurrentWindow.Height * sample);
         }
 

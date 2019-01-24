@@ -26,10 +26,12 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
         public StoryBoardObject SelectObject { get; set; }
 
         private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
+        private readonly StoryboardInstance instance;
 
         public ObjectVisualizerWindow(StoryboardInstance instance)
         {
             InitializeComponent();
+            this.instance=instance;
         }
 
         public void UpdateCurrentStoryboardObject()
@@ -59,7 +61,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                     try
                     {
                         pictureBox1.Image=null;
-                        var path = SelectObject.RenderGroup.ImagePath;
+                        var path = instance.Resource.GetSprite(SelectObject.ImageFilePath).ImagePath;
                         var img = Bitmap.FromFile(path);
 
                         if (img != null)

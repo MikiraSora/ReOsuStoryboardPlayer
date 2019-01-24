@@ -45,7 +45,7 @@ namespace ReOsuStoryBoardPlayer
 
         public static void SetupEnvironment()
         {
-            if (Setting.MiniMode)
+            if (PlayerSetting.MiniMode)
             {
                 SetupMiniEnvironment();
             }

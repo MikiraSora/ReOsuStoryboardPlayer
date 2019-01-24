@@ -44,7 +44,7 @@ namespace ReOsuStoryBoardPlayer
             if (Directory.Exists(beatmap_folder))
             {
                 var info = BeatmapFolderInfo.Parse(beatmap_folder,args);
-                var instance = new StoryboardInstance(info);
+                var instance = StoryboardInstance.Load(info);
                 window.LoadStoryboardInstance(instance);
                 
                 var player = new MusicPlayer();
