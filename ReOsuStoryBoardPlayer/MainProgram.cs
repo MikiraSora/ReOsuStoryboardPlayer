@@ -29,14 +29,13 @@ namespace ReOsuStoryBoardPlayer
     {
         public static void Main(string[] argv)
         {
-            Setting.Init();
             PlayerSetting.Init();
 
             var args=ParseProgramCommands(argv, out var beatmap_folder);
 
             EnvironmentHelper.SetupEnvironment();
 
-            Setting.PrintSettings();
+            PlayerSetting.PrintSettings();
             
             //init window
             StoryboardWindow window = new StoryboardWindow(PlayerSetting.Width, PlayerSetting.Height);

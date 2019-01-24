@@ -42,10 +42,39 @@ namespace ReOsuStoryBoardPlayer
 
         public static int SsaaLevel { get; set; } = 0;
 
-        public static bool DebugMode { get; set; } = false;
-
         public static bool EncodingEnvironment { get; set; } = false;
-        
+
+        #region Core Settings
+
+        /// <summary>
+        /// 对指定以上的数量的命令进行并行解析
+        /// </summary>
+        public static int ParallelParseCommandLimitCount { get => Setting.ParallelParseCommandLimitCount; set => Setting.ParallelParseCommandLimitCount=value; }
+
+        /// <summary>
+        /// 对指定以上的数量的物件进行并行更新
+        /// </summary>
+        public static int ParallelUpdateObjectsLimitCount { get => Setting.ParallelParseCommandLimitCount; set => Setting.ParallelParseCommandLimitCount=value; }
+
+        public static bool EnableSplitMoveScaleCommand { get => Setting.EnableSplitMoveScaleCommand; set => Setting.EnableSplitMoveScaleCommand=value; }
+
+        public static bool EnableLoopCommandExpand { get => Setting.EnableLoopCommandExpand; set => Setting.EnableLoopCommandExpand=value; }
+
+        public static bool FunReverseEasing { get => Setting.FunReverseEasing; set => Setting.FunReverseEasing=value; }
+
+        /// <summary>
+        /// Update线程数量
+        /// </summary>
+        public static int UpdateThreadCount { get => Setting.UpdateThreadCount; set => Setting.UpdateThreadCount=value; }
+
+        public static bool ShowProfileSuggest { get => Setting.ShowProfileSuggest; set => Setting.ShowProfileSuggest=value; }
+
+        public static bool DebugMode { get => Setting.DebugMode; set => Setting.DebugMode=value; }
+
+        public static string UserSkinPath { get; set; }
+
+        #endregion
+
         #region Extendsion
 
         public static void PrintSettings()
@@ -83,7 +112,7 @@ namespace ReOsuStoryBoardPlayer
                 HashSet<PropertyInfo> read_prop=new HashSet<PropertyInfo>();
 
                 //你以为我会用win32那坨玩意吗，想太多了.jpg
-                var props = typeof(Setting).GetProperties().Where(p=> p.GetSetMethod().IsPublic&&p.GetGetMethod().IsPublic);
+                var props = typeof(PlayerSetting).GetProperties().Where(p=> p.GetSetMethod().IsPublic&&p.GetGetMethod().IsPublic);
                 var lines = File.ReadAllLines(config_file);
 
                 foreach (var line in lines.Where(l => l.Contains("=")))
@@ -124,7 +153,8 @@ namespace ReOsuStoryBoardPlayer
                         }
                     }
 
-                    Log.Debug($"set {prop.Name} = {value} from config.ini");
+                    if (prop!=null)
+                        Log.Debug($"set {prop.Name} = {value} from config.ini");
                 }
 
                 using (var writer=File.AppendText(config_file))
@@ -144,7 +174,7 @@ namespace ReOsuStoryBoardPlayer
             using (var writer=new StreamWriter(File.OpenWrite(config_file)))
             {
                 writer.WriteLine("[Setting]");
-                var props = typeof(Setting).GetProperties();
+                var props = typeof(PlayerSetting).GetProperties();
 
                 foreach (var prop in props)
                 {
