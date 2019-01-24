@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,31 +9,15 @@ using System.Text;
 
 namespace ReOsuStoryBoardPlayer
 {
-    public static class Setting
+    public static class PlayerSetting
     {
-        /// <summary>
-        /// 对指定以上的数量的命令进行并行解析
-        /// </summary>
-        public static int ParallelParseCommandLimitCount { get; set; } = 500;
-
-        /// <summary>
-        /// 对指定以上的数量的物件进行并行更新
-        /// </summary>
-        public static int ParallelUpdateObjectsLimitCount { get; set; } = 100;
-
         /// <summary>
         /// 最小化
         /// </summary>
         public static bool MiniMode { get; set; } = false;
-
-        public static bool EnableSplitMoveScaleCommand { get; set; } = true;
-
+        
         public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
-
-        public static bool EnableLoopCommandExpand { get; set; } = false;
-
-        public static bool FunReverseEasing { get; set; } = false;
-
+        
         public static bool EnableBorderless { get; set; } = false;
 
         public static bool EnableFullScreen { get; set; } = false;
@@ -51,25 +36,16 @@ namespace ReOsuStoryBoardPlayer
         /// </summary>
         public static bool EnableTimestamp { get; set; } = false;
 
-        /// <summary>
-        /// Update线程数量
-        /// </summary>
-        public static int UpdateThreadCount { get; set; } = 1;
-
         public static int MaxFPS { get; set; } = 0;
 
         public static bool EnableHighPrecisionFPSLimit { get; set; } = false;
 
         public static int SsaaLevel { get; set; } = 0;
 
-        public static bool ShowProfileSuggest { get; set; } = false;
-
         public static bool DebugMode { get; set; } = false;
 
         public static bool EncodingEnvironment { get; set; } = false;
-
-        public static string UserSkinPath { get; set; } = string.Empty;
-
+        
         #region Extendsion
 
         public static void PrintSettings()

@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Base;
+﻿using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
-using ReOsuStoryBoardPlayer.Utils;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

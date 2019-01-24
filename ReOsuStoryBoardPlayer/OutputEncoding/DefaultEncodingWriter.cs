@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Kernel;
+﻿using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using Saar.FFmpeg.CSharp;
 using System;

@@ -23,7 +23,7 @@ THE SOFTWARE.
 
 using System;
 
-namespace ReOsuStoryBoardPlayer.Core
+namespace ReOsuStoryBoardPlayer.Core.Base
 {
     public enum EasingTypes
     {
@@ -137,7 +137,7 @@ namespace ReOsuStoryBoardPlayer.Core
                     return time*time*time*time;
 
                 case EasingTypes.OutQuart:
-                    return 1---time*time*time*time;
+                    return 1- --time*time*time*time;
 
                 case EasingTypes.InOutQuart:
                     if (time<.5) return time*time*time*time*8;
@@ -176,7 +176,7 @@ namespace ReOsuStoryBoardPlayer.Core
                     return 1-Math.Sqrt(1-time*time);
 
                 case EasingTypes.OutCirc:
-                    return Math.Sqrt(1---time*time);
+                    return Math.Sqrt(1- --time*time);
 
                 case EasingTypes.InOutCirc:
                     if ((time*=2)<1) return .5-.5*Math.Sqrt(1-time*time);

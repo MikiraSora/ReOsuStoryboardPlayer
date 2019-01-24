@@ -25,6 +25,7 @@ using System.Runtime.InteropServices;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.Core.Kernel;
+using ReOsuStoryBoardPlayer.Core;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -37,7 +38,7 @@ namespace ReOsuStoryBoardPlayer
         public float ViewWidth { get; private set; }
         public float ViewHeight { get; private set; }
 
-        public StoryBoardInstance StoryBoardInstance { get; private set; }
+        public StoryboardInstance Instance { get; private set; }
 
         private bool ready = false;
 
@@ -80,8 +81,8 @@ namespace ReOsuStoryBoardPlayer
             VSync = VSyncMode.Off;
             CurrentWindow = this;
 
-            ApplyBorderless(Setting.EnableBorderless);
-            SwitchFullscreen(Setting.EnableFullScreen);
+            ApplyBorderless(PlayerSetting.EnableBorderless);
+            SwitchFullscreen(PlayerSetting.EnableFullScreen);
 
             _clipPostProcess = new ClipPostProcess();
         }
@@ -144,7 +145,7 @@ namespace ReOsuStoryBoardPlayer
             ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
             CameraViewMatrix = Matrix4.Identity;
 
-            int sample = 1 << Setting.SsaaLevel;
+            int sample = 1 <<PlayerSetting.SsaaLevel;
             _postProcessesManager = new PostProcessesManager(Width * sample, Height * sample);
             SetupClipPostProcesses();
         }
@@ -157,7 +158,7 @@ namespace ReOsuStoryBoardPlayer
                 _existClipPostProcess = false;
             }
 
-            if (StoryBoardInstance.Info.IsWidescreenStoryboard == false)
+            if (Instance.Info.IsWidescreenStoryboard == false)
             {
                 if (_postProcessesManager != null)
                 {
@@ -239,7 +240,7 @@ namespace ReOsuStoryBoardPlayer
 
                 if (tex!=null)
                 {
-                    group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)Setting.DrawCallInstanceCountMax, file_path, tex);
+                    group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)PlayerSetting.DrawCallInstanceCountMax, file_path, tex);
                     Log.Debug($"Created storyboard sprite instance from image file :{file_path}");
                 }
 
@@ -268,20 +269,20 @@ namespace ReOsuStoryBoardPlayer
         /// 将SB实例加载到Window上，后者将会自动调用instance.Update()并渲染
         /// </summary>
         /// <param name="instance"></param>
-        public void LoadStoryboardInstance(StoryBoardInstance instance)
+        public void LoadStoryboardInstance(StoryboardInstance instance)
         {
             ready=false;
 
-            if (this.StoryBoardInstance!=null)
+            if (this.Instance!=null)
                 Clean();
 
-            this.StoryBoardInstance=instance;
+            this.Instance=instance;
             StoryboardInstanceManager.ApplyInstance(instance);
             SetupClipPostProcesses();
 
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
             {
-                BuildCacheDrawSpriteBatch(instance.StoryboardObjectList, instance.Info.folder_path);
+                BuildCacheDrawSpriteBatch(instance.Updater.StoryboardObjectList, instance.Info.folder_path);
             }
 
             _timestamp=0;
@@ -299,7 +300,7 @@ namespace ReOsuStoryBoardPlayer
 
             register_sprites.Clear();
 
-            foreach (var obj in StoryBoardInstance?.StoryboardObjectList)
+            foreach (var obj in Instance?.Updater.StoryboardObjectList)
                 obj.RenderGroup=null;
         }
 
@@ -311,7 +312,7 @@ namespace ReOsuStoryBoardPlayer
             double step = _timestamp_stopwatch.ElapsedMilliseconds*playbackRate;
             _timestamp_stopwatch.Restart();
 
-            if (MusicPlayerManager.ActivityPlayer.IsPlaying&&Setting.EnableTimestamp)
+            if (MusicPlayerManager.ActivityPlayer.IsPlaying&&PlayerSetting.EnableTimestamp)
             {
                 double nextTime = _timestamp+step;
 
@@ -348,7 +349,7 @@ namespace ReOsuStoryBoardPlayer
             if (!ready)
                 return;
 
-            StoryBoardInstance.Update((float)time);
+            Instance.Updater.Update((float)time);
             DebuggerManager.FrameUpdate();
 
             _update_stopwatch.Stop();
@@ -388,7 +389,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 string title_encoding_part = string.Empty;
 
-                if (Setting.EncodingEnvironment)
+                if (PlayerSetting.EncodingEnvironment)
                 {
                     var kernel = DebuggerManager.GetDebugger<EncodingKernel>();
                     title_encoding_part=$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp}";
@@ -400,26 +401,26 @@ namespace ReOsuStoryBoardPlayer
                     _update_stopwatch.ElapsedMilliseconds,
                     _render_stopwatch.ElapsedMilliseconds,
                     (total_time - _update_stopwatch.ElapsedMilliseconds - _render_stopwatch.ElapsedMilliseconds)
-                    , RenderFrequency,StoryBoardInstance?.UpdatingStoryboardObjects?.Count??0,title_encoding_part);
+                    , RenderFrequency,Instance?.Updater.UpdatingStoryboardObjects?.Count??0,title_encoding_part);
                 title_update_timer = 0;
             }
 
             title_update_timer += total_time * THOUSANDTH;
             
-            if (Setting.EnableHighPrecisionFPSLimit)
+            if (PlayerSetting.EnableHighPrecisionFPSLimit)
             {
-                if (Math.Abs(TargetUpdateFrequency - Setting.MaxFPS) > 10e-5)
+                if (Math.Abs(TargetUpdateFrequency -PlayerSetting.MaxFPS) > 10e-5)
                 {
-                    TargetUpdateFrequency = Setting.MaxFPS;
-                    TargetRenderFrequency = Setting.MaxFPS;
+                    TargetUpdateFrequency =PlayerSetting.MaxFPS;
+                    TargetRenderFrequency =PlayerSetting.MaxFPS;
                 }
             }
             else
             {
                 float time = (_update_stopwatch.ElapsedMilliseconds + _render_stopwatch.ElapsedMilliseconds) * THOUSANDTH;
-                if (Setting.MaxFPS != 0)
+                if (PlayerSetting.MaxFPS != 0)
                 {
-                    float period = 1.0f / Setting.MaxFPS;
+                    float period = 1.0f /PlayerSetting.MaxFPS;
                     if (period > time)
                     {
                         int sleep = (int) ((period - time) * 1000);
@@ -446,10 +447,10 @@ namespace ReOsuStoryBoardPlayer
 
         private void PostDrawStoryBoard()
         {
-            if (StoryBoardInstance.UpdatingStoryboardObjects.Count==0)
+            if (Instance.Updater.UpdatingStoryboardObjects.Count==0)
                 return;
 
-            DrawStoryBoardObjects(StoryBoardInstance.UpdatingStoryboardObjects);
+            DrawStoryBoardObjects(Instance.Updater.UpdatingStoryboardObjects);
 
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }

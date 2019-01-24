@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ReOsuStoryBoardPlayer.Parser;
+using ReOsuStoryBoardPlayer.Core.Kernel;
 
 namespace ReOsuStoryBoardPlayer.Utils
 {
@@ -26,7 +27,7 @@ namespace ReOsuStoryBoardPlayer.Utils
             MusicPlayerManager.ApplyPlayer(player);
 
             //load storyboard objects
-            var instance = new StoryBoardInstance(info);
+            var instance = new StoryboardInstance(info);
 
             var auto_trigger=DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
             auto_trigger.Load(info);

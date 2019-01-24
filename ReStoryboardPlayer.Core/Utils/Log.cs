@@ -13,7 +13,7 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
 
         public static bool AbleLog
         {
-            get => !Setting.MiniMode&&_ableLog;
+            get => _ableLog;
             set => _ableLog=value;
         }
 

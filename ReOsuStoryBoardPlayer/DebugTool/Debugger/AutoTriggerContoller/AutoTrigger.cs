@@ -1,16 +1,17 @@
-﻿using ReOsuStoryBoardPlayer.Base;
+﻿using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.BeatmapParser;
-using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
+using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
 using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Parser.Stream;
+using ReOsuStoryBoardPlayer.Core.Parser.Stream;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
+using static ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
+using ReOsuStoryBoardPlayer.Core.Utils;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
 {

@@ -21,6 +21,7 @@ using ReOsuStoryBoardPlayer.Core.Parser;
 using ReOsuStoryBoardPlayer.Core.Parser.Stream;
 using ReOsuStoryBoardPlayer.Core.Parser.Collection;
 using ReOsuStoryBoardPlayer.Core.Parser.Reader;
+using ReOsuStoryBoardPlayer.Core.Kernel;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -29,6 +30,7 @@ namespace ReOsuStoryBoardPlayer
         public static void Main(string[] argv)
         {
             Setting.Init();
+            PlayerSetting.Init();
 
             var args=ParseProgramCommands(argv, out var beatmap_folder);
 
@@ -37,12 +39,12 @@ namespace ReOsuStoryBoardPlayer
             Setting.PrintSettings();
             
             //init window
-            StoryboardWindow window = new StoryboardWindow(Setting.Width, Setting.Height);
+            StoryboardWindow window = new StoryboardWindow(PlayerSetting.Width, PlayerSetting.Height);
 
             if (Directory.Exists(beatmap_folder))
             {
                 var info = BeatmapFolderInfo.Parse(beatmap_folder,args);
-                var instance = new StoryBoardInstance(info);
+                var instance = new StoryboardInstance(info);
                 window.LoadStoryboardInstance(instance);
                 
                 var player = new MusicPlayer();
@@ -54,7 +56,7 @@ namespace ReOsuStoryBoardPlayer
                 auto_trigger.Trim();
             }
 
-            if (Setting.EncodingEnvironment)
+            if (PlayerSetting.EncodingEnvironment)
             {
                 //init encoding environment
                 var encoding_opt = new EncoderOption(args);
@@ -89,13 +91,13 @@ namespace ReOsuStoryBoardPlayer
                     beatmap_folder=args.FreeArgs.FirstOrDefault()??beatmap_folder;
 
                 if (args.TryGetArg(out var valW, "width", "w"))
-                    Setting.Width=int.Parse(valW);
+                    PlayerSetting.Width=int.Parse(valW);
 
                 if (args.TryGetArg(out var draw_count, "multi_instance_render", "mtr"))
-                    Setting.DrawCallInstanceCountMax=int.Parse(draw_count);
+                    PlayerSetting.DrawCallInstanceCountMax=int.Parse(draw_count);
 
                 if (args.TryGetArg(out var valH, "height", "h"))
-                    Setting.Height=int.Parse(valH);
+                    PlayerSetting.Height=int.Parse(valH);
 
                 if (args.TryGetArg(out var folder, "folder", "f"))
                     beatmap_folder=folder;
@@ -107,25 +109,25 @@ namespace ReOsuStoryBoardPlayer
                     Setting.UpdateThreadCount=update_thread_count.ToInt();
 
                 if (args.TryGetArg(out var max_fps, "fps"))
-                    Setting.MaxFPS=max_fps.ToInt();
+                    PlayerSetting.MaxFPS=max_fps.ToInt();
 
                 if (args.TryGetArg(out var ssaa, "ssaa"))
-                    Setting.SsaaLevel=ssaa.ToInt();
+                    PlayerSetting.SsaaLevel=ssaa.ToInt();
 
                 if (args.Switches.Any(k => k=="enable_timestamp"))
-                    Setting.EnableTimestamp=true;
+                    PlayerSetting.EnableTimestamp=true;
 
                 if (args.Switches.Any(k => k=="full_screen"))
-                    Setting.EnableFullScreen=true;
+                    PlayerSetting.EnableFullScreen=true;
 
                 if (args.Switches.Any(k => k=="borderless"))
-                    Setting.EnableBorderless=true;
+                    PlayerSetting.EnableBorderless=true;
 
                 if (args.Switches.Any(k => k=="enable_loop_expand"))
                     Setting.EnableLoopCommandExpand=true;
 
                 if (args.Switches.Any(k => k=="mini"))
-                    Setting.MiniMode=true;
+                    PlayerSetting.MiniMode=true;
 
                 if (args.Switches.Any(k => k=="disable_split"))
                     Setting.EnableSplitMoveScaleCommand=false;
@@ -134,10 +136,10 @@ namespace ReOsuStoryBoardPlayer
                     Setting.FunReverseEasing=true;
 
                 if (args.Switches.Any(k => k=="disable_runtime_optimze"))
-                    Setting.EnableRuntimeOptimzeObjects=false;
+                    PlayerSetting.EnableRuntimeOptimzeObjects=false;
 
                 if (args.Switches.Any(k => k=="disable_hp_fps_limit"))
-                    Setting.EnableHighPrecisionFPSLimit=false;
+                    PlayerSetting.EnableHighPrecisionFPSLimit=false;
                 
                 if (args.Switches.Any(k => k=="debug"))
                     Setting.DebugMode=true;
@@ -158,7 +160,7 @@ namespace ReOsuStoryBoardPlayer
                     Setting.ShowProfileSuggest=true;
 
                 if (args.Switches.Any(k => k=="encode"))
-                    Setting.EncodingEnvironment=true;
+                    PlayerSetting.EncodingEnvironment=true;
             }
 
             return args;
@@ -215,7 +217,7 @@ namespace ReOsuStoryBoardPlayer
             DebuggerManager.Close();
             StoryboardWindow.CurrentWindow?.Close();
 
-            if ((!Setting.MiniMode)&&(!string.IsNullOrWhiteSpace(error_reason)))
+            if ((!PlayerSetting.MiniMode)&&(!string.IsNullOrWhiteSpace(error_reason)))
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.Yellow;

@@ -1,5 +1,6 @@
 ﻿using OpenTK;
-using ReOsuStoryBoardPlayer.Base;
+using ReOsuStoryBoardPlayer.Core.Base;
+using ReOsuStoryBoardPlayer.Core.Kernel;
 using ReOsuStoryBoardPlayer.Kernel;
 using System;
 using System.Collections.Generic;

@@ -3,6 +3,7 @@ using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System.Text;
 using System.Threading.Tasks;
 

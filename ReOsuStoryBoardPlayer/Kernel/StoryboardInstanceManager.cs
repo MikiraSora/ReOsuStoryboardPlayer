@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Core.Kernel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace ReOsuStoryBoardPlayer.Kernel
 {
     public static class StoryboardInstanceManager
     {
-        public static StoryBoardInstance ActivityInstance { get; private set; }
+        public static StoryboardInstance ActivityInstance { get; private set; }
 
-        public static void ApplyInstance(StoryBoardInstance instance)
+        public static void ApplyInstance(StoryboardInstance instance)
         {
             ActivityInstance=instance;
         }

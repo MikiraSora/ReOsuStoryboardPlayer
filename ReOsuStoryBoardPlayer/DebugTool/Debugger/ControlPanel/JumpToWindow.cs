@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Kernel;
+﻿using ReOsuStoryBoardPlayer.Core.Kernel;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Windows.Forms;
@@ -7,9 +8,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 {
     public partial class JumpToWindow : Form
     {
-        private StoryBoardInstance instance;
+        private StoryboardInstance instance;
 
-        public JumpToWindow(StoryBoardInstance instance)
+        public JumpToWindow(StoryboardInstance instance)
         {
             InitializeComponent();
 

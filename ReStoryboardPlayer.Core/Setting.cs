@@ -20,53 +20,20 @@ namespace ReOsuStoryBoardPlayer
         /// </summary>
         public static int ParallelUpdateObjectsLimitCount { get; set; } = 100;
 
-        /// <summary>
-        /// 最小化
-        /// </summary>
-        public static bool MiniMode { get; set; } = false;
-
         public static bool EnableSplitMoveScaleCommand { get; set; } = true;
-
-        public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
 
         public static bool EnableLoopCommandExpand { get; set; } = false;
 
         public static bool FunReverseEasing { get; set; } = false;
-
-        public static bool EnableBorderless { get; set; } = false;
-
-        public static bool EnableFullScreen { get; set; } = false;
-
-        public static int Width { get; set; } = 854;
-
-        public static int Height { get; set; } = 480;
-
-        /// <summary>
-        /// 一次渲染同贴图同Blend的物件数量
-        /// </summary>
-        public static int DrawCallInstanceCountMax { get; set; } = 1000;
-
-        /// <summary>
-        /// 支持时间插值，但对于低帧率会有延迟出现
-        /// </summary>
-        public static bool EnableTimestamp { get; set; } = false;
 
         /// <summary>
         /// Update线程数量
         /// </summary>
         public static int UpdateThreadCount { get; set; } = 1;
 
-        public static int MaxFPS { get; set; } = 0;
-
-        public static bool EnableHighPrecisionFPSLimit { get; set; } = false;
-
-        public static int SsaaLevel { get; set; } = 0;
-
         public static bool ShowProfileSuggest { get; set; } = false;
 
         public static bool DebugMode { get; set; } = false;
-
-        public static bool EncodingEnvironment { get; set; } = false;
 
         public static string UserSkinPath { get; set; } = string.Empty;
 
@@ -74,9 +41,6 @@ namespace ReOsuStoryBoardPlayer
 
         public static void PrintSettings()
         {
-            if (MiniMode)
-                return;
-
             var props = typeof(Setting).GetProperties();
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("=======Setting=======");
@@ -97,7 +61,7 @@ namespace ReOsuStoryBoardPlayer
         /// </summary>
         private const string config_file = @"./player_config.ini";
 
-        internal static void Init()
+        public static void Init()
         {
             try
             {

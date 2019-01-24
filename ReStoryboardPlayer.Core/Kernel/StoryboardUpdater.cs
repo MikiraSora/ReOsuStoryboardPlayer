@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace ReOsuStoryBoardPlayer.Core.Kernel
 {
     /// <summary>
-    /// SB更新物件的核心，通过Update来更新物件
+    /// SB更新物件的核心，通过Update()来更新物件
     /// </summary>
-    public class StoryBoardInstance
+    public class StoryboardUpdater
     {
         /// <summary>
         /// 已加载的物件集合
@@ -26,7 +26,7 @@ namespace ReOsuStoryBoardPlayer.Core.Kernel
 
         private ParallelOptions parallel_options = new ParallelOptions() { MaxDegreeOfParallelism=Setting.UpdateThreadCount };
 
-        public StoryBoardInstance(List<StoryBoardObject> objects)
+        public StoryboardUpdater(List<StoryBoardObject> objects)
         {
             StoryboardObjectList=new LinkedList<StoryBoardObject>();
 
@@ -103,41 +103,6 @@ namespace ReOsuStoryBoardPlayer.Core.Kernel
             var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
 
             UpdatingStoryboardObjects=new List<StoryBoardObject>(limit_update_count);
-
-            /*
-            void AdjustZ(List<StoryBoardObject> list, int base_z)
-            {
-                list.Sort((a, b) => (int)(a.FileLine-b.FileLine));
-            }
-            */
-        }
-
-        private List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list, List<StoryBoardObject> osu_list)
-        {
-            List<StoryBoardObject> result = new List<StoryBoardObject>();
-
-            Add(Layout.Background);
-            Add(Layout.Fail);
-            Add(Layout.Pass);
-            Add(Layout.Foreground);
-
-            int z = 0;
-            foreach (var obj in result)
-            {
-                obj.Z=z++;
-            }
-
-            return result;
-
-            void Add(Layout layout)
-            {
-                result.AddRange(osu_list.Where(x => x.layout==layout));//先加osu
-                result.AddRange(osb_list.Where(x => x.layout==layout).Select(x =>
-                  {
-                      x.FromOsbFile=true;
-                      return x;
-                  }));//后加osb覆盖
-            }
         }
 
         /// <summary>
@@ -222,7 +187,7 @@ namespace ReOsuStoryBoardPlayer.Core.Kernel
             }
         }
 
-        ~StoryBoardInstance()
+        ~StoryboardUpdater()
         {
         }
 

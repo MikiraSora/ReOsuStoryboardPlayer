@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.DebugTool;
+﻿using ReOsuStoryBoardPlayer.Core.Kernel;
+using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
@@ -9,9 +10,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
 {
     public partial class ControllerWindow : Form
     {
-        private StoryBoardInstance CurrentStoryboardIntance;
+        private StoryboardInstance CurrentStoryboardIntance;
 
-        public ControllerWindow(StoryBoardInstance instance)
+        public ControllerWindow(StoryboardInstance instance)
         {
             InitializeComponent();
 

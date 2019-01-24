@@ -91,7 +91,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
         /// </summary>
         /// <param name="hit_sound"></param>
         /// <returns></returns>
-        internal bool CheckTrig(HitSoundInfo hit_sound)
+        public bool CheckTrig(HitSoundInfo hit_sound)
         {
             if (hit_sound.Time==50507)
             {

@@ -1,6 +1,6 @@
-﻿using ReOsuStoryBoardPlayer.Base;
-using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition;
+﻿using ReOsuStoryBoardPlayer.Core.Base;
+using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.Kernel;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ReOsuStoryBoardPlayer.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
+using static ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 {

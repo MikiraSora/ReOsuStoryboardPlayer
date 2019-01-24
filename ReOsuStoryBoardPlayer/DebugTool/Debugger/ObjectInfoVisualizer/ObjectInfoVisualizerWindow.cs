@@ -1,7 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.Base;
-using ReOsuStoryBoardPlayer.Commands;
-using ReOsuStoryBoardPlayer.Commands.Group;
-using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
+﻿using ReOsuStoryBoardPlayer.Core.Base;
+using ReOsuStoryBoardPlayer.Core.Commands;
+using ReOsuStoryBoardPlayer.Core.Commands.Group;
+using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryBoardPlayer.Core.Kernel;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
@@ -25,7 +27,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
 
-        public ObjectVisualizerWindow(StoryBoardInstance instance)
+        public ObjectVisualizerWindow(StoryboardInstance instance)
         {
             InitializeComponent();
         }

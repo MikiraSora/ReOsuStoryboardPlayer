@@ -6,7 +6,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
     public abstract class Command : IComparable<Command>
     {
 #if DEBUG
-        internal bool IsExecuted = false;
+        public bool IsExecuted = false;
 #endif
 
         public long RelativeLine = -1;
