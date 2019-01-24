@@ -3,12 +3,9 @@ using ReOsuStoryBoardPlayer.Core.Kernel;
 using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Parser;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Kernel
 {
@@ -21,13 +18,15 @@ namespace ReOsuStoryBoardPlayer.Kernel
         public BeatmapFolderInfo Info { get; private set; }
         public StoryboardResource Resource { get; set; }
 
-        private StoryboardInstance() { }
+        private StoryboardInstance()
+        {
+        }
 
         public static StoryboardInstance Load(BeatmapFolderInfo info)
         {
             StoryboardInstance instance = new StoryboardInstance();
 
-            instance.Info= info;
+            instance.Info=info;
 
             using (StopwatchRun.Count("Load and Parse osb/osu file"))
             {

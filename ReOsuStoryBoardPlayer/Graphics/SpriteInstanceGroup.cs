@@ -1,10 +1,8 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
 using System;
 using System.Runtime.CompilerServices;
-using ReOsuStoryBoardPlayer.Graphics;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
 using Half = OpenTK.Half;
 
 namespace ReOsuStoryBoardPlayer
@@ -23,7 +21,7 @@ namespace ReOsuStoryBoardPlayer
         private static byte[] PostData;
         private static int s_vbo_vertexBase, s_vbo_texPosBase;
         private const int BUFFER_COUNT = 3;
-        private static int[] s_vaos = new int[BUFFER_COUNT]; 
+        private static int[] s_vaos = new int[BUFFER_COUNT];
         private static int[] s_vbos = new int[BUFFER_COUNT];
         private static BatchShader s_shader;
 
@@ -33,7 +31,7 @@ namespace ReOsuStoryBoardPlayer
 
         private SpriteInstanceGroup()
         {
-            StoryboardWindow.CurrentWindow.Resize += (s, e) => _window_resized = true;
+            StoryboardWindow.CurrentWindow.Resize+=(s, e) => _window_resized=true;
         }
 
         public string ImagePath { get; }
@@ -42,42 +40,42 @@ namespace ReOsuStoryBoardPlayer
 
         static SpriteInstanceGroup()
         {
-            s_shader = new BatchShader();
+            s_shader=new BatchShader();
             s_shader.Compile();
 
-            PostData = new byte[_VertexSize *PlayerSetting.DrawCallInstanceCountMax];
+            PostData=new byte[_VertexSize*PlayerSetting.DrawCallInstanceCountMax];
 
-            s_vbo_vertexBase = GL.GenBuffer();
-            s_vbo_texPosBase = GL.GenBuffer();
+            s_vbo_vertexBase=GL.GenBuffer();
+            s_vbo_texPosBase=GL.GenBuffer();
 
             GL.GenVertexArrays(BUFFER_COUNT, s_vaos);
             GL.GenBuffers(BUFFER_COUNT, s_vbos);
 
-            for (int i = 0; i < BUFFER_COUNT; i++)
+            for (int i = 0; i<BUFFER_COUNT; i++)
             {
                 _InitVertexBase(s_vaos[i]);
                 _InitBuffer(s_vaos[i], s_vbos[i]);
             }
 
-            StoryboardWindow.CurrentWindow.Closing += (s, e) =>
-            {
-                GL.DeleteBuffer(s_vbo_vertexBase);
-                GL.DeleteBuffer(s_vbo_texPosBase);
-                GL.DeleteBuffers(BUFFER_COUNT, s_vbos);
-                GL.DeleteVertexArrays(BUFFER_COUNT, s_vaos);
-            };
+            StoryboardWindow.CurrentWindow.Closing+=(s, e) =>
+          {
+              GL.DeleteBuffer(s_vbo_vertexBase);
+              GL.DeleteBuffer(s_vbo_texPosBase);
+              GL.DeleteBuffers(BUFFER_COUNT, s_vbos);
+              GL.DeleteVertexArrays(BUFFER_COUNT, s_vaos);
+          };
         }
 
         internal SpriteInstanceGroup(uint capacity, string image_path, Texture texture)
         {
-            ImagePath = image_path;
+            ImagePath=image_path;
 
-            _bound.X = texture.Width;
-            _bound.Y = texture.Height;
+            _bound.X=texture.Width;
+            _bound.Y=texture.Height;
 
-            this.Capacity = capacity;
+            this.Capacity=capacity;
 
-            this.Texture = texture;
+            this.Texture=texture;
         }
 
         private static int _VertexSize
@@ -85,10 +83,10 @@ namespace ReOsuStoryBoardPlayer
             get
             {
                 /*-----------------CURRENT VERSION------------------ -
-                        anchor(Hlaf)     flip(Hlaf)     color(byte)     modelMatrix(float)     
-                        vec2(2)		     vec2(2)        vec4(4)         Matrix3x2(6)            
+                        anchor(Hlaf)     flip(Hlaf)     color(byte)     modelMatrix(float)
+                        vec2(2)		     vec2(2)        vec4(4)         Matrix3x2(6)
                 */
-                return (2 + 2) * 2/*Hlaf*/ + 4 * sizeof(byte) + 6 * sizeof(float);
+                return (2+2)*2/*Hlaf*/ +4*sizeof(byte)+6*sizeof(float);
             }
         }
 
@@ -115,11 +113,11 @@ namespace ReOsuStoryBoardPlayer
                 GL.BindBuffer(BufferTarget.ArrayBuffer, s_vbo_vertexBase);
                 {
                     //绑定基本顶点
-                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float) * _cacheBaseVertex.Length),
+                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float)*_cacheBaseVertex.Length),
                         _cacheBaseVertex, BufferUsageHint.StaticDraw);
 
                     GL.EnableVertexAttribArray(1);
-                    GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float) * (2), 0);
+                    GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float)*(2), 0);
                     GL.VertexAttribDivisor(1, 0);
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
@@ -127,11 +125,11 @@ namespace ReOsuStoryBoardPlayer
                 GL.BindBuffer(BufferTarget.ArrayBuffer, s_vbo_texPosBase);
                 {
                     //绑定基本顶点
-                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float) * _cacheBaseTexPos.Length),
+                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float)*_cacheBaseTexPos.Length),
                         _cacheBaseTexPos, BufferUsageHint.StaticDraw);
 
                     GL.EnableVertexAttribArray(0);
-                    GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, sizeof(float) * (2), 0);
+                    GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, sizeof(float)*(2), 0);
                     GL.VertexAttribDivisor(0, 0);
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
@@ -139,13 +137,13 @@ namespace ReOsuStoryBoardPlayer
             GL.BindVertexArray(0);
         }
 
-        private static void _InitBuffer(int vao,int vbo)
+        private static void _InitBuffer(int vao, int vbo)
         {
             GL.BindVertexArray(vao);
             {
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
                 {
-                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_VertexSize * PlayerSetting.DrawCallInstanceCountMax), IntPtr.Zero, BufferUsageHint.DynamicDraw);
+                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(_VertexSize*PlayerSetting.DrawCallInstanceCountMax), IntPtr.Zero, BufferUsageHint.DynamicDraw);
 
                     //Anchor
                     GL.EnableVertexAttribArray(2);
@@ -191,7 +189,6 @@ namespace ReOsuStoryBoardPlayer
 			*   vec2(2)		        vec4(4)             Matrix3x2(6)
 			*/
 
-            
             var is_xflip = Math.Sign(scale.X);
             var is_yflip = Math.Sign(scale.Y);
 
@@ -206,13 +203,13 @@ namespace ReOsuStoryBoardPlayer
             float sina = (float)Math.Sin(rotate);
 
             Matrix3x2 model = Matrix3x2.Zero;
-            model.Row0.X = cosa * scalex;
-            model.Row0.Y = -sina * scalex;
-            model.Row1.X = sina * scaley;
-            model.Row1.Y = cosa * scaley;
+            model.Row0.X=cosa*scalex;
+            model.Row0.Y=-sina*scalex;
+            model.Row1.X=sina*scaley;
+            model.Row1.Y=cosa*scaley;
 
-            model.Row2.X = position.X - StoryboardWindow.SB_WIDTH / 2f;
-            model.Row2.Y = -position.Y + StoryboardWindow.SB_HEIGHT / 2f;
+            model.Row2.X=position.X-StoryboardWindow.SB_WIDTH/2f;
+            model.Row2.Y=-position.Y+StoryboardWindow.SB_HEIGHT/2f;
 
             unsafe
             {
@@ -221,24 +218,24 @@ namespace ReOsuStoryBoardPlayer
                 {
                     //anchor
                     int* hpv = (int*)(ptr+0);
-                    *hpv = *(int*)&anchor;
+                    *hpv=*(int*)&anchor;
 
                     //color
                     int* ip = (int*)(ptr+4);
-                    *ip = *(int*)&color;
+                    *ip=*(int*)&color;
 
                     //flip write
                     Half* hp = (Half*)(ptr+8);
-                    hp[0] = horizon_flip ? HalfNegativeOne : HalfOne;
-                    hp[1] = vertical_flip ? HalfNegativeOne : HalfOne;
+                    hp[0]=horizon_flip ? HalfNegativeOne : HalfOne;
+                    hp[1]=vertical_flip ? HalfNegativeOne : HalfOne;
 
-                    Unsafe.CopyBlock(ptr+12, &model.Row0.X, 2 * 3 * sizeof(float));
+                    Unsafe.CopyBlock(ptr+12, &model.Row0.X, 2*3*sizeof(float));
                 }
             }
 
             CurrentPostCount++;
-            _currentPostBaseIndex += _VertexSize;
-            if (CurrentPostCount >= Capacity)
+            _currentPostBaseIndex+=_VertexSize;
+            if (CurrentPostCount>=Capacity)
             {
                 FlushDraw();
             }
@@ -252,15 +249,15 @@ namespace ReOsuStoryBoardPlayer
 
             if (_window_resized)
             {
-                var VP = Projection * View;
+                var VP = Projection*View;
                 s_shader.PassUniform("ViewProjection", VP);
-                _window_resized = false;
+                _window_resized=false;
             }
             s_shader.PassUniform("diffuse", Texture);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, s_vbos[_current_buffer_index]);
             {
-                GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)(0), (IntPtr)(_VertexSize * CurrentPostCount), PostData);
+                GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)(0), (IntPtr)(_VertexSize*CurrentPostCount), PostData);
             }
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
@@ -269,7 +266,7 @@ namespace ReOsuStoryBoardPlayer
                 GL.DrawArraysInstanced(PrimitiveType.TriangleFan, 0, 4, CurrentPostCount);
             }
             GL.BindVertexArray(0);
-            _current_buffer_index = (_current_buffer_index + 1) % s_vbos.Length;
+            _current_buffer_index=(_current_buffer_index+1)%s_vbos.Length;
         }
 
         public void FlushDraw()
@@ -280,11 +277,12 @@ namespace ReOsuStoryBoardPlayer
 
         private void Clear()
         {
-            CurrentPostCount = 0;
-            _currentPostBaseIndex = 0;
+            CurrentPostCount=0;
+            _currentPostBaseIndex=0;
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
@@ -294,7 +292,7 @@ namespace ReOsuStoryBoardPlayer
                 if (disposing)
                     Texture.Dispose();
 
-                disposedValue = true;
+                disposedValue=true;
             }
         }
 
@@ -302,6 +300,7 @@ namespace ReOsuStoryBoardPlayer
         {
             Dispose(true);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }

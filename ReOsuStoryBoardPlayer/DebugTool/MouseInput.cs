@@ -2,6 +2,6 @@
 {
     public enum MouseInput
     {
-        Right,Left
+        Right, Left
     }
 }

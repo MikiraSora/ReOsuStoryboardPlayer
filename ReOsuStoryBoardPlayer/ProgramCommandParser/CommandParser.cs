@@ -2,19 +2,19 @@
 
 namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 {
-    class CommandParser
+    internal class CommandParser
     {
         private readonly ParamParserV2 _parser;
 
         public CommandParser(ParamParserV2 parser)
         {
-            this._parser = parser;
+            this._parser=parser;
         }
 
         public Parameters Parse(string args, out string cmdName)
         {
             var array = args.Split(' ');
-            cmdName = array.First();
+            cmdName=array.First();
             var arg = string.Join(" ", array.Skip(1));
             if (_parser.TryDivide(arg, out var p))
             {
@@ -26,12 +26,12 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 
         public Parameters Parse(string[] args, out string cmdName)
         {
-            for (var i = 0; i < args.Length; i++)
+            for (var i = 0; i<args.Length; i++)
             {
                 var s = args[i];
-                if (s.Any(k => k == ' '))
+                if (s.Any(k => k==' '))
                 {
-                    args[i] = $"{_parser.Quotes.First()}{s}{_parser.Quotes.First()}";
+                    args[i]=$"{_parser.Quotes.First()}{s}{_parser.Quotes.First()}";
                 }
             }
 

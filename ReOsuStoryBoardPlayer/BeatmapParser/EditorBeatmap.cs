@@ -22,18 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #pragma warning disable IDE1006 // 命名样式
+
 using OpenTK.Graphics;
 using ReOsuStoryBoardPlayer.Core.Utils;
 using StorybrewCommon.Mapset;
 using StorybrewCommon.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.BeatmapParser
 {
@@ -80,6 +77,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
             new Color4(18, 124, 255, 255),
             new Color4(242, 24, 57, 255),
         };
+
         public override IEnumerable<Color4> ComboColors => comboColors;
 
         public string backgroundPath;
@@ -100,6 +98,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
         private List<ControlPoint> controlPoints = new List<ControlPoint>();
 
         public override IEnumerable<ControlPoint> ControlPoints => controlPoints;
+
         public override IEnumerable<ControlPoint> TimingPoints
         {
             get
@@ -132,7 +131,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
         public override ControlPoint GetTimingPointAt(int time)
             => GetControlPointAt(time, cp => !cp.IsInherited);
 
-        #endregion
+        #endregion Timing
 
         #region .osu parsing
 
@@ -176,6 +175,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                 }
             });
         }
+
         private static void parseEditorSection(EditorBeatmap beatmap, StreamReader reader)
         {
             reader.ParseKeyValueSection((key, value) =>
@@ -189,6 +189,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                 }
             });
         }
+
         private static void parseMetadataSection(EditorBeatmap beatmap, StreamReader reader)
         {
             reader.ParseKeyValueSection((key, value) =>
@@ -200,6 +201,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                 }
             });
         }
+
         private static void parseDifficultySection(EditorBeatmap beatmap, StreamReader reader)
         {
             reader.ParseKeyValueSection((key, value) =>
@@ -215,11 +217,13 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                 }
             });
         }
+
         private static void parseTimingPointsSection(EditorBeatmap beatmap, StreamReader reader)
         {
             reader.ParseSectionLines(line => beatmap.controlPoints.Add(ControlPoint.Parse(line)));
             beatmap.controlPoints.Sort();
         }
+
         private static void parseColoursSection(EditorBeatmap beatmap, StreamReader reader)
         {
             beatmap.comboColors.Clear();
@@ -232,6 +236,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                 beatmap.comboColors.Add(new Color4(byte.Parse(rgb[0]), byte.Parse(rgb[1]), byte.Parse(rgb[2]), 255));
             });
         }
+
         private static void parseEventsSection(EditorBeatmap beatmap, StreamReader reader)
         {
             reader.ParseSectionLines(line =>
@@ -245,12 +250,14 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                     case "0":
                         beatmap.backgroundPath=removePathQuotes(values[2]);
                         break;
+
                     case "2":
                         beatmap.breaks.Add(OsuBreak.Parse(beatmap, line));
                         break;
                 }
             }, false);
         }
+
         private static void parseHitObjectsSection(EditorBeatmap beatmap, StreamReader reader)
         {
             OsuHitObject previousHitObject = null;
@@ -285,7 +292,8 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
         private static string removePathQuotes(string path)
             => path.StartsWith("\"")&&path.EndsWith("\"") ? path.Substring(1, path.Length-2) : path;
 
-        #endregion
+        #endregion .osu parsing
     }
 }
+
 #pragma warning restore IDE1006 // 命名样式

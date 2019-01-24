@@ -14,20 +14,20 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 
         public ParamParserV2(char cmdFlag, params char[] quotes)
         {
-            _quotesStr = quotes.Select(k => k.ToString()).ToArray();
-            _cmdFlagStr = cmdFlag.ToString();
-            Quotes = quotes;
-            CmdFlag = cmdFlag;
+            _quotesStr=quotes.Select(k => k.ToString()).ToArray();
+            _cmdFlagStr=cmdFlag.ToString();
+            Quotes=quotes;
+            CmdFlag=cmdFlag;
         }
 
         public bool TryDivide(string args, out IParameters p)
         {
-            p = new Parameters();
+            p=new Parameters();
             string argStr = args.Trim();
             p.SimpleArgs.AddRange(argStr.Split(' '));
-            if (argStr == "")
+            if (argStr=="")
             {
-                p = null;
+                p=null;
                 return false;
             }
 
@@ -46,21 +46,21 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
                 bool combined = true;
                 foreach (var item in _quotesStr)
                 {
-                    for (int i = 0; i < splitedParam.Count - 1; i++)
+                    for (int i = 0; i<splitedParam.Count-1; i++)
                     {
-                        string cur = splitedParam[i], next = splitedParam[i + 1];
+                        string cur = splitedParam[i], next = splitedParam[i+1];
 
-                        if (cur.StartsWith(item) && !cur.EndsWith(item))
+                        if (cur.StartsWith(item)&&!cur.EndsWith(item))
                         {
-                            combined = false;
-                            splitedParam[i] = cur + " " + next;
+                            combined=false;
+                            splitedParam[i]=cur+" "+next;
                             splitedParam.Remove(next);
                             if (splitedParam[i].EndsWith(item))
-                                combined = true;
+                                combined=true;
                             i--;
                         }
                     }
-                    if (!combined) throw new ArgumentException("Expect '" + item + "'.");
+                    if (!combined) throw new ArgumentException("Expect '"+item+"'.");
                 }
 
                 string tmpKey = null;
@@ -72,19 +72,19 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
                     string tmpValue = null;
                     if (item.StartsWith(_cmdFlagStr))
                     {
-                        if (tmpKey != null)
+                        if (tmpKey!=null)
                         {
                             p.Switches.Add(tmpKey);
                         }
 
-                        tmpKey = item.Remove(0, 1);
-                        isLastKeyOrValue = true;
+                        tmpKey=item.Remove(0, 1);
+                        isLastKeyOrValue=true;
                     }
                     else
                     {
                         foreach (var q in Quotes)
                         {
-                            tmpValue = tmpValue == null ? item.Trim(q) : tmpValue.Trim(q);
+                            tmpValue=tmpValue==null ? item.Trim(q) : tmpValue.Trim(q);
                         }
                         if (!isLastKeyOrValue)
                         {
@@ -94,18 +94,16 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
                         else
                         {
                             p.Args.Add(tmpKey, tmpValue);
-                            tmpKey = null;
-                            isLastKeyOrValue = false;
+                            tmpKey=null;
+                            isLastKeyOrValue=false;
                         }
-
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
-                p = null;
+                p=null;
                 return false;
             }
             return true;
@@ -114,9 +112,9 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
         private bool ContainsChar(char ch, string str)
         {
             char[] cs = str.ToCharArray();
-            for (int i = 1; i < cs.Length - 1; i++)
+            for (int i = 1; i<cs.Length-1; i++)
             {
-                if (cs[i] == ch)
+                if (cs[i]==ch)
                     return true;
             }
 
@@ -124,4 +122,3 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
         }
     }
 }
-

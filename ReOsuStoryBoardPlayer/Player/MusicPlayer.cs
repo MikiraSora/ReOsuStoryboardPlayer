@@ -1,16 +1,11 @@
 ﻿using IrrKlang;
 using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Kernel;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Player
 {
-    public class MusicPlayer : PlayerBase,ISoundStopEventReceiver
+    public class MusicPlayer : PlayerBase, ISoundStopEventReceiver
     {
         private static ISoundEngine engine;
 
@@ -27,7 +22,7 @@ namespace ReOsuStoryBoardPlayer.Player
         public override bool IsPlaying { get => !sound.Paused; }
 
         public override float Volume { get => sound.Volume; set => sound.Volume=value; }
-        
+
         public Stopwatch offset_watch = new Stopwatch();
 
         private uint prev_mp3_time = 0;
@@ -49,15 +44,15 @@ namespace ReOsuStoryBoardPlayer.Player
 
             sound.Volume=Volume;
             sound.PlaybackSpeed=PlaybackSpeed;
-            
+
             loaded_path=audio_file;
 
             Stop();
         }
 
-        public override void Jump(float time,bool pause)
+        public override void Jump(float time, bool pause)
         {
-            time=Math.Max(0,Math.Min(time, Length));
+            time=Math.Max(0, Math.Min(time, Length));
 
             Pause();
             sound.PlayPosition=(uint)time;
@@ -92,7 +87,7 @@ namespace ReOsuStoryBoardPlayer.Player
 
         public override void Stop()
         {
-            Jump(0,true);
+            Jump(0, true);
         }
 
         public override void Pause()
@@ -111,7 +106,7 @@ namespace ReOsuStoryBoardPlayer.Player
             if (FinishedPlay?.Invoke()??true)
             {
                 Load(loaded_path);
-                Jump(0,true);
+                Jump(0, true);
             }
         }
     }

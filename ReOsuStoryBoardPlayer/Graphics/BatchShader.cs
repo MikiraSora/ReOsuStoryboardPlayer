@@ -4,7 +4,7 @@
     {
         public BatchShader()
         {
-            this.VertexProgram = @"
+            this.VertexProgram=@"
                 #version 330
                 out vec4 varying_color;
                 out vec2 varying_texPos;
@@ -26,7 +26,7 @@
 	                varying_texPos=in_texPos;
                 }
                 ";
-            this.FragmentProgram = @"
+            this.FragmentProgram=@"
                 #version 330
 
                 uniform sampler2D diffuse;
@@ -48,7 +48,7 @@
     {
         public DebugBatchShader()
         {
-            this.VertexProgram = @"
+            this.VertexProgram=@"
 #version 330
 out vec4 varying_color;
 out vec2 varying_texPos;
@@ -70,7 +70,7 @@ void main(){
 	varying_texPos=in_texPos;
 }
 ";
-            this.FragmentProgram = @"
+            this.FragmentProgram=@"
 #version 330
 
 uniform sampler2D diffuse;

@@ -1,14 +1,10 @@
 ﻿using OpenTK.Input;
 using ReOsuStoryBoardPlayer.Player;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController
 {
-    class InputControllerDebugger : DebuggerBase
+    internal class InputControllerDebugger : DebuggerBase
     {
         public override void Init()
         {
@@ -51,7 +47,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController
         private void FastJump(int offset)
         {
             var player = MusicPlayerManager.ActivityPlayer;
-            player.Jump(Math.Min(player.Length, Math.Max(player.CurrentTime+offset,0)),false);
+            player.Jump(Math.Min(player.Length, Math.Max(player.CurrentTime+offset, 0)), false);
         }
 
         public override void Term()
@@ -61,7 +57,6 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController
 
         public override void Update()
         {
-
         }
     }
 }

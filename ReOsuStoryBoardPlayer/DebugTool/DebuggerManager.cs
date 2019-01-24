@@ -3,9 +3,7 @@ using ReOsuStoryBoardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.DebugTool
 {
@@ -84,18 +82,26 @@ namespace ReOsuStoryBoardPlayer.DebugTool
 
         #region Event
 
-        public static event Action<int,int,MouseInput> MouseClick;
+        public static event Action<int, int, MouseInput> MouseClick;
+
         public static event Action<int, int> MouseMove;
+
         public static event Action<Key> KeyboardPress;
+
         public static event Action BeforeRender;
+
         public static event Action AfterRender;
 
         internal static void TrigClick(int x, int y, MouseInput input) => MouseClick?.Invoke(x, y, input);
+
         internal static void TrigMove(int x, int y) => MouseMove?.Invoke(x, y);
+
         internal static void TrigBeforeRender() => BeforeRender?.Invoke();
+
         internal static void TrigAfterRender() => AfterRender?.Invoke();
+
         internal static void TrigKeyPress(Key key) => KeyboardPress?.Invoke(key);
 
-        #endregion
+        #endregion Event
     }
 }

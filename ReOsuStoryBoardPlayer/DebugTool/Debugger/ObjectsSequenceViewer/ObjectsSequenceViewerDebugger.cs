@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
+﻿namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 {
     public class ObjectsSequenceViewerDebugger : DebuggerBase
     {
@@ -23,7 +17,6 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         public override void Update()
         {
-
         }
     }
 }

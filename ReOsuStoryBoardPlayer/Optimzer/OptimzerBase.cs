@@ -1,11 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.Core.Commands;
 using ReOsuStoryBoardPlayer.Core.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Optimzer
 {
@@ -21,7 +17,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer
             }
         }
 
-        public void Suggest(StoryBoardObject obj,string message)
+        public void Suggest(StoryBoardObject obj, string message)
         {
             Suggest($"在line {obj.FileLine}物件\"{obj.ImageFilePath}\","+message);
         }

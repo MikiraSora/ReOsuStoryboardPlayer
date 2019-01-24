@@ -1,17 +1,12 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.BeatmapParser;
+﻿using ReOsuStoryBoardPlayer.BeatmapParser;
+using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
-using ReOsuStoryBoardPlayer.Core.Utils;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
 {
@@ -19,18 +14,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
     public class AutoTrigger : DebuggerBase
     {
         public LinkedList<HitSoundInfo> HitSoundInfos { get; private set; }
-        LinkedListNode<HitSoundInfo> cur;
+        private LinkedListNode<HitSoundInfo> cur;
 
-        double prev_time=0;
+        private double prev_time = 0;
 
         public override void Init()
         {
-
         }
 
         public override void Term()
         {
-
         }
 
         public void Load(BeatmapFolderInfo info)
@@ -51,7 +44,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
         private void Flush()
         {
             cur=HitSoundInfos.First;
-            prev_time = 0;
+            prev_time=0;
         }
 
         public void Trim()

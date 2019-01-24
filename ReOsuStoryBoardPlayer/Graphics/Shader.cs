@@ -19,28 +19,28 @@ namespace ReOsuStoryBoardPlayer
 
         private string frag;
 
-        public string VertexProgram { get { return vert; } set { vert = value; } }
+        public string VertexProgram { get { return vert; } set { vert=value; } }
 
-        public string FragmentProgram { get { return frag; } set { frag = value; } }
+        public string FragmentProgram { get { return frag; } set { frag=value; } }
 
         private Dictionary<string, object> _uniforms;
 
-        public Dictionary<string, object> Uniforms { get { return _uniforms; } internal set { _uniforms = value; } }
+        public Dictionary<string, object> Uniforms { get { return _uniforms; } internal set { _uniforms=value; } }
 
         public void Compile()
         {
-            if (compiled == false)
+            if (compiled==false)
             {
-                compiled = true;
+                compiled=true;
 
-                Uniforms = new Dictionary<string, object>();
+                Uniforms=new Dictionary<string, object>();
 
                 GL.DeleteShader(vertexShader);
                 GL.DeleteShader(fragmentShader);
                 GL.DeleteProgram(program);
 
-                vertexShader = GL.CreateShader(ShaderType.VertexShader);
-                fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+                vertexShader=GL.CreateShader(ShaderType.VertexShader);
+                fragmentShader=GL.CreateShader(ShaderType.FragmentShader);
 
                 GL.ShaderSource(vertexShader, vert);
                 GL.ShaderSource(fragmentShader, frag);
@@ -54,7 +54,7 @@ namespace ReOsuStoryBoardPlayer
                 if (!String.IsNullOrEmpty(GL.GetShaderInfoLog(fragmentShader)))
                     Log.Error(GL.GetShaderInfoLog(fragmentShader));
 
-                program = GL.CreateProgram();
+                program=GL.CreateProgram();
 
                 GL.AttachShader(program, vertexShader);
                 GL.AttachShader(program, fragmentShader);
@@ -67,7 +67,7 @@ namespace ReOsuStoryBoardPlayer
                 int total = 0;
 
                 GL.GetProgram(program, GetProgramParameterName.ActiveUniforms, out total);
-                for (int i = 0; i < total; i++)
+                for (int i = 0; i<total; i++)
                 {
                     int size = 16;
                     int name_len = 16;
@@ -77,9 +77,9 @@ namespace ReOsuStoryBoardPlayer
 
                     GL.GetActiveUniform(program, i, 16, out name_len, out size, out type, name);
 
-                    name = null;
-                    size = 0;
-                    name_len = 0;
+                    name=null;
+                    size=0;
+                    name_len=0;
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace ReOsuStoryBoardPlayer
 
         public void PassUniform(string name, Texture tex)
         {
-            if (tex == null)
+            if (tex==null)
             {
                 PassNullTexUniform(name);
                 return;
@@ -140,7 +140,7 @@ namespace ReOsuStoryBoardPlayer
             GL.UniformMatrix4(l, false, ref matrix4);
         }
 
-        private Dictionary<string,int> _uniformDictionary = new Dictionary<string, int>();
+        private Dictionary<string, int> _uniformDictionary = new Dictionary<string, int>();
 
         private int GetUniformLocation(string name)
         {
@@ -149,11 +149,11 @@ namespace ReOsuStoryBoardPlayer
                 return _uniformDictionary[name];
             }
             int l = GL.GetUniformLocation(program, name);
-            _uniformDictionary.Add(name,l);
+            _uniformDictionary.Add(name, l);
 
             return l;
         }
-        
+
         public int ShaderProgram => program;
     }
 }

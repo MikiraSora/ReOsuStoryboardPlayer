@@ -4,34 +4,27 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.Core.Commands;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Graphics;
+using ReOsuStoryBoardPlayer.Graphics.PostProcesses;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryBoardPlayer.Player;
-using ReOsuStoryBoardPlayer.Utils;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using ReOsuStoryBoardPlayer.Graphics.PostProcesses;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Core.Kernel;
-using ReOsuStoryBoardPlayer.Core;
 
 namespace ReOsuStoryBoardPlayer
 {
     public class StoryboardWindow : GameWindow
     {
         #region Field&Property
+
         private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2} Objects: {8} {9}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
@@ -47,7 +40,7 @@ namespace ReOsuStoryBoardPlayer
         private PostProcessesManager _postProcessesManager;
 
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
-        
+
         private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
 
         private double _timestamp = 0;
@@ -68,21 +61,21 @@ namespace ReOsuStoryBoardPlayer
         public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
 
         public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
-        
-        #endregion
+
+        #endregion Field&Property
 
         public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
             InitGraphics();
             DrawUtils.Init();
-            VSync = VSyncMode.Off;
-            CurrentWindow = this;
+            VSync=VSyncMode.Off;
+            CurrentWindow=this;
 
             ApplyBorderless(PlayerSetting.EnableBorderless);
             SwitchFullscreen(PlayerSetting.EnableFullScreen);
 
-            _clipPostProcess = new ClipPostProcess();
+            _clipPostProcess=new ClipPostProcess();
         }
 
         protected override void OnResize(EventArgs e)
@@ -116,18 +109,18 @@ namespace ReOsuStoryBoardPlayer
         {
             if (!IsFullScreen)
             {
-                WindowedWidth = Width;
-                WindowedHeight = Height;
-                WindowState = WindowState.Fullscreen;
-                Width = DisplayDevice.Default.Width;
-                Height = DisplayDevice.Default.Height;
+                WindowedWidth=Width;
+                WindowedHeight=Height;
+                WindowState=WindowState.Fullscreen;
+                Width=DisplayDevice.Default.Width;
+                Height=DisplayDevice.Default.Height;
                 ApplyWindowRenderSize();
             }
             else
             {
-                WindowState = WindowState.Normal;
-                Width = WindowedWidth;
-                Height = WindowedHeight;
+                WindowState=WindowState.Normal;
+                Width=WindowedWidth;
+                Height=WindowedHeight;
                 ApplyWindowRenderSize();
             }
         }
@@ -135,16 +128,16 @@ namespace ReOsuStoryBoardPlayer
         public void ApplyWindowRenderSize()
         {
             //裁剪View
-            float radio = (float)Width / Height;
+            float radio = (float)Width/Height;
 
-            ViewHeight = SB_HEIGHT;
-            ViewWidth = SB_HEIGHT * radio;
+            ViewHeight=SB_HEIGHT;
+            ViewWidth=SB_HEIGHT*radio;
 
-            ProjectionMatrix = Matrix4.Identity * Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
-            CameraViewMatrix = Matrix4.Identity;
+            ProjectionMatrix=Matrix4.Identity*Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
+            CameraViewMatrix=Matrix4.Identity;
 
-            int sample = 1 <<PlayerSetting.SsaaLevel;
-            _postProcessesManager = new PostProcessesManager(Width * sample, Height * sample);
+            int sample = 1<<PlayerSetting.SsaaLevel;
+            _postProcessesManager=new PostProcessesManager(Width*sample, Height*sample);
             SetupClipPostProcesses();
         }
 
@@ -153,25 +146,25 @@ namespace ReOsuStoryBoardPlayer
             if (_existClipPostProcess)
             {
                 _postProcessesManager.RemovePostProcess(_clipPostProcess);
-                _existClipPostProcess = false;
+                _existClipPostProcess=false;
             }
 
-            if (Instance.Info.IsWidescreenStoryboard == false)
+            if (Instance.Info.IsWidescreenStoryboard==false)
             {
-                if (_postProcessesManager != null)
+                if (_postProcessesManager!=null)
                 {
                     _postProcessesManager.AddPostProcess(_clipPostProcess);
-                    _existClipPostProcess = true;
+                    _existClipPostProcess=true;
                 }
             }
         }
 
-        internal StoryboardResource BuildDrawSpriteResources(IEnumerable<StoryBoardObject> StoryboardObjectList,string folder_path)
+        internal StoryboardResource BuildDrawSpriteResources(IEnumerable<StoryBoardObject> StoryboardObjectList, string folder_path)
         {
             Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
 
             StoryboardResource resource = new StoryboardResource();
-            
+
             foreach (var obj in StoryboardObjectList)
             {
                 SpriteInstanceGroup group;
@@ -218,23 +211,23 @@ namespace ReOsuStoryBoardPlayer
                 }
             }
 
-            resource.AddSpriteInstanceGroups(CacheDrawSpriteInstanceMap);
+            resource.PinSpriteInstanceGroups(CacheDrawSpriteInstanceMap);
 
             return resource;
 
-            bool _get(string image_name,out SpriteInstanceGroup group)
+            bool _get(string image_name, out SpriteInstanceGroup group)
             {
                 //for Flex
                 if (string.IsNullOrWhiteSpace(Path.GetExtension(image_name)))
                     image_name+=".png";
-                
+
                 if (CacheDrawSpriteInstanceMap.TryGetValue(image_name, out group))
                     return true;
 
                 //load
                 string file_path = Path.Combine(folder_path, image_name);
 
-                if (!_load_tex(file_path,out var tex))
+                if (!_load_tex(file_path, out var tex))
                 {
                     file_path=Path.Combine(Setting.UserSkinPath, image_name);
                     _load_tex(file_path, out tex);
@@ -249,13 +242,13 @@ namespace ReOsuStoryBoardPlayer
                 return group!=null;
             }
 
-            bool _load_tex(string file_path,out Texture texture)
+            bool _load_tex(string file_path, out Texture texture)
             {
                 texture=null;
 
                 try
                 {
-                    texture = new Texture(file_path);
+                    texture=new Texture(file_path);
                 }
                 catch (Exception e)
                 {
@@ -284,7 +277,7 @@ namespace ReOsuStoryBoardPlayer
 
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
             {
-                var resource=BuildDrawSpriteResources(instance.Updater.StoryboardObjectList, instance.Info.folder_path);
+                var resource = BuildDrawSpriteResources(instance.Updater.StoryboardObjectList, instance.Info.folder_path);
                 instance.Resource=resource;
             }
 
@@ -382,7 +375,7 @@ namespace ReOsuStoryBoardPlayer
             _title_update_stopwatch.Restart();
 
             //UpdateTitle
-            if (title_update_timer > 0.2)
+            if (title_update_timer>0.2)
             {
                 string title_encoding_part = string.Empty;
 
@@ -392,41 +385,40 @@ namespace ReOsuStoryBoardPlayer
                     title_encoding_part=$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp}";
                 }
 
-                Title = string.Format(TITLE, Width, Height,
+                Title=string.Format(TITLE, Width, Height,
                     GL.GetInteger(GetPName.MajorVersion),
                     GL.GetInteger(GetPName.MinorVersion),
                     _update_stopwatch.ElapsedMilliseconds,
                     _render_stopwatch.ElapsedMilliseconds,
-                    (total_time - _update_stopwatch.ElapsedMilliseconds - _render_stopwatch.ElapsedMilliseconds)
-                    , RenderFrequency,Instance?.Updater.UpdatingStoryboardObjects?.Count??0,title_encoding_part);
-                title_update_timer = 0;
+                    (total_time-_update_stopwatch.ElapsedMilliseconds-_render_stopwatch.ElapsedMilliseconds)
+                    , RenderFrequency, Instance?.Updater.UpdatingStoryboardObjects?.Count??0, title_encoding_part);
+                title_update_timer=0;
             }
 
-            title_update_timer += total_time * THOUSANDTH;
-            
+            title_update_timer+=total_time*THOUSANDTH;
+
             if (PlayerSetting.EnableHighPrecisionFPSLimit)
             {
-                if (Math.Abs(TargetUpdateFrequency -PlayerSetting.MaxFPS) > 10e-5)
+                if (Math.Abs(TargetUpdateFrequency-PlayerSetting.MaxFPS)>10e-5)
                 {
-                    TargetUpdateFrequency =PlayerSetting.MaxFPS;
-                    TargetRenderFrequency =PlayerSetting.MaxFPS;
+                    TargetUpdateFrequency=PlayerSetting.MaxFPS;
+                    TargetRenderFrequency=PlayerSetting.MaxFPS;
                 }
             }
             else
             {
-                float time = (_update_stopwatch.ElapsedMilliseconds + _render_stopwatch.ElapsedMilliseconds) * THOUSANDTH;
-                if (PlayerSetting.MaxFPS != 0)
+                float time = (_update_stopwatch.ElapsedMilliseconds+_render_stopwatch.ElapsedMilliseconds)*THOUSANDTH;
+                if (PlayerSetting.MaxFPS!=0)
                 {
-                    float period = 1.0f /PlayerSetting.MaxFPS;
-                    if (period > time)
+                    float period = 1.0f/PlayerSetting.MaxFPS;
+                    if (period>time)
                     {
-                        int sleep = (int) ((period - time) * 1000);
-                        sleep = Math.Max(0, sleep - 1);
+                        int sleep = (int)((period-time)*1000);
+                        sleep=Math.Max(0, sleep-1);
                         Thread.Sleep(sleep);
                     }
                 }
             }
-            
         }
 
         protected override void OnClosed(EventArgs e)
@@ -439,7 +431,7 @@ namespace ReOsuStoryBoardPlayer
 
             Environment.Exit(0);
         }
-        
+
         #region Storyboard Rendering
 
         private void PostDrawStoryBoard()
@@ -463,7 +455,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 var obj = draw_list[i];
 
-                if(!obj.IsVisible)
+                if (!obj.IsVisible)
                     continue;
 #if DEBUG
                 if (!obj.DebugShow)
@@ -477,7 +469,6 @@ namespace ReOsuStoryBoardPlayer
 
                     //应该是现在设置Blend否则Group自动渲染来不及钦定
                     ChangeAdditiveStatus(obj.IsAdditive);
-
 
                     group=obj_group;
                 }
@@ -498,11 +489,11 @@ namespace ReOsuStoryBoardPlayer
         }
 
         #endregion Storyboard Rendering
-        
+
         #region Input Process
 
         //解决窗口失去/获得焦点时鼠标xjb移动
-        protected override void OnFocusedChanged(EventArgs e){}
+        protected override void OnFocusedChanged(EventArgs e) { }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e) => DebuggerManager.TrigKeyPress(e.Key);
 
@@ -510,22 +501,23 @@ namespace ReOsuStoryBoardPlayer
         private bool mouseDown = false;
 
 #if DEBUG
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
 
             //如果是无边窗就当作拖曳窗口操作
-            if (WindowBorder == WindowBorder.Hidden)
+            if (WindowBorder==WindowBorder.Hidden)
             {
-                downX = e.X;
-                downY = e.Y;
+                downX=e.X;
+                downY=e.Y;
             }
             else
             {
-                DebuggerManager.TrigClick(e.X, e.Y,e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
+                DebuggerManager.TrigClick(e.X, e.Y, e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
             }
 
-            mouseDown = true;
+            mouseDown=true;
         }
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
@@ -535,22 +527,22 @@ namespace ReOsuStoryBoardPlayer
             var time = -e.DeltaPrecise*125;
 
             if (MusicPlayerManager.ActivityPlayer is MusicPlayer player)
-                player.Jump(player.CurrentTime+time,true);
+                player.Jump(player.CurrentTime+time, true);
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
-            mouseDown = false;
+            mouseDown=false;
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
 
-            if (mouseDown&&WindowBorder == WindowBorder.Hidden)
+            if (mouseDown&&WindowBorder==WindowBorder.Hidden)
             {
-                Location = new Point(e.X+Location.X-downX,e.Y+Location.Y-downY);
+                Location=new Point(e.X+Location.X-downX, e.Y+Location.Y-downY);
                 //Log.User($"X: ${e.X} Y:${e.Y}");
             }
             else
@@ -558,8 +550,9 @@ namespace ReOsuStoryBoardPlayer
                 DebuggerManager.TrigMove(e.X, e.Y);
             }
         }
+
 #endif
 
-        #endregion
+        #endregion Input Process
     }
 }

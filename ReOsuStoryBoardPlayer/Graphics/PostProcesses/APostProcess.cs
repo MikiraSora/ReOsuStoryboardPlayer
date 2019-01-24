@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
+using System;
 
 namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
 {
@@ -28,8 +24,8 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
 
         static APostProcess()
         {
-            s_vbo = GL.GenBuffer();
-            s_vao = GL.GenVertexArray();
+            s_vbo=GL.GenBuffer();
+            s_vao=GL.GenVertexArray();
 
             BuildVBO();
         }
@@ -41,17 +37,17 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
                 GL.BindBuffer(BufferTarget.ArrayBuffer, s_vbo);
                 {
                     //分配空间
-                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float) * (s_cacheBaseVertex.Length+s_cacheBaseTexPos.Length)),
+                    GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float)*(s_cacheBaseVertex.Length+s_cacheBaseTexPos.Length)),
                         IntPtr.Zero, BufferUsageHint.StaticDraw);
 
-                    GL.BufferSubData<float>(BufferTarget.ArrayBuffer,IntPtr.Zero, new IntPtr(sizeof(float) * s_cacheBaseVertex.Length),s_cacheBaseVertex);
-                    GL.BufferSubData<float>(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float) * s_cacheBaseVertex.Length), new IntPtr(sizeof(float) * s_cacheBaseTexPos.Length), s_cacheBaseTexPos);
+                    GL.BufferSubData<float>(BufferTarget.ArrayBuffer, IntPtr.Zero, new IntPtr(sizeof(float)*s_cacheBaseVertex.Length), s_cacheBaseVertex);
+                    GL.BufferSubData<float>(BufferTarget.ArrayBuffer, new IntPtr(sizeof(float)*s_cacheBaseVertex.Length), new IntPtr(sizeof(float)*s_cacheBaseTexPos.Length), s_cacheBaseTexPos);
 
                     GL.EnableVertexAttribArray(0);
                     GL.EnableVertexAttribArray(1);
 
-                    GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, sizeof(float) * 2, 0);
-                    GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float) * 2, new IntPtr(sizeof(float) * s_cacheBaseVertex.Length));
+                    GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, sizeof(float)*2, 0);
+                    GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float)*2, new IntPtr(sizeof(float)*s_cacheBaseVertex.Length));
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             }
@@ -61,8 +57,14 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
         public PostProcessFrameBuffer PrevFrameBuffer;
 
         protected abstract void OnUseShader();
-        protected virtual void OnPreRender() { }
-        protected virtual void OnPostRender() { }
+
+        protected virtual void OnPreRender()
+        {
+        }
+
+        protected virtual void OnPostRender()
+        {
+        }
 
         public void Process()
         {

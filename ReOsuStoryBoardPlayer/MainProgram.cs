@@ -1,27 +1,21 @@
+using ReOsuStoryBoardPlayer.Core.Parser;
+using ReOsuStoryBoardPlayer.Core.Parser.Collection;
+using ReOsuStoryBoardPlayer.Core.Parser.Reader;
+using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.DebugTool;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
+using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
 using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.OutputEncoding;
+using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryBoardPlayer.OutputEncoding.Player;
 using ReOsuStoryBoardPlayer.Parser;
 using ReOsuStoryBoardPlayer.Player;
-using System;
 using ReOsuStoryBoardPlayer.ProgramCommandParser;
-using System.Linq;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
-using System.Runtime.InteropServices;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
-using ReOsuStoryBoardPlayer.Core.Parser.Collection;
-using ReOsuStoryBoardPlayer.Core.Parser.Reader;
-using ReOsuStoryBoardPlayer.Core.Utils;
+using System;
 using System.IO;
-using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
-using ReOsuStoryBoardPlayer.OutputEncoding;
-using ReOsuStoryBoardPlayer.OutputEncoding.Player;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
-using ReOsuStoryBoardPlayer.Utils;
-using ReOsuStoryBoardPlayer.Core.Parser;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
-using ReOsuStoryBoardPlayer.Core.Parser.Collection;
-using ReOsuStoryBoardPlayer.Core.Parser.Reader;
-using ReOsuStoryBoardPlayer.Core.Kernel;
+using System.Linq;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -31,21 +25,21 @@ namespace ReOsuStoryBoardPlayer
         {
             PlayerSetting.Init();
 
-            var args=ParseProgramCommands(argv, out var beatmap_folder);
+            var args = ParseProgramCommands(argv, out var beatmap_folder);
 
             EnvironmentHelper.SetupEnvironment();
 
             PlayerSetting.PrintSettings();
-            
+
             //init window
             StoryboardWindow window = new StoryboardWindow(PlayerSetting.Width, PlayerSetting.Height);
 
             if (Directory.Exists(beatmap_folder))
             {
-                var info = BeatmapFolderInfo.Parse(beatmap_folder,args);
+                var info = BeatmapFolderInfo.Parse(beatmap_folder, args);
                 var instance = StoryboardInstance.Load(info);
                 window.LoadStoryboardInstance(instance);
-                
+
                 var player = new MusicPlayer();
                 player.Load(info.audio_file_path);
                 MusicPlayerManager.ApplyPlayer(player);
@@ -73,7 +67,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\747823 Eisyo-kobu - Oriental Blossom";
+            beatmap_folder=@"G:\SBTest\483606 NOMA - LOUDER MACHINE";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
@@ -139,7 +133,7 @@ namespace ReOsuStoryBoardPlayer
 
                 if (args.Switches.Any(k => k=="disable_hp_fps_limit"))
                     PlayerSetting.EnableHighPrecisionFPSLimit=false;
-                
+
                 if (args.Switches.Any(k => k=="debug"))
                     Setting.DebugMode=true;
 
@@ -165,16 +159,14 @@ namespace ReOsuStoryBoardPlayer
             return args;
         }
 
-
-
         #region ProgramCommands
 
         //将解析好的内容再序列化成osb文件格式的文本内容
-        private static void SerializeDecodeStoryboardContent(string beatmap_folder,bool parse_osb,string output_path)
+        private static void SerializeDecodeStoryboardContent(string beatmap_folder, bool parse_osb, string output_path)
         {
             try
             {
-                var info = BeatmapFolderInfo.Parse(beatmap_folder,null);
+                var info = BeatmapFolderInfo.Parse(beatmap_folder, null);
                 var input_file = parse_osb ? info.osb_file_path : info.osu_file_path;
                 output_path=string.IsNullOrWhiteSpace(output_path) ? input_file+".parse_output" : output_path;
 
@@ -208,18 +200,18 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        #endregion
+        #endregion ProgramCommands
 
         //程序退出
-        public static void Exit(string error_reason="")
+        public static void Exit(string error_reason = "")
         {
             DebuggerManager.Close();
             StoryboardWindow.CurrentWindow?.Close();
 
             if ((!PlayerSetting.MiniMode)&&(!string.IsNullOrWhiteSpace(error_reason)))
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.BackgroundColor=ConsoleColor.Red;
+                Console.ForegroundColor=ConsoleColor.Yellow;
                 Console.WriteLine(error_reason);
                 Console.ResetColor();
                 Console.ReadKey();

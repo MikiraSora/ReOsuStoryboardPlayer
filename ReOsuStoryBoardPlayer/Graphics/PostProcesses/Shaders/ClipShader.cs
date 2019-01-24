@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses.Shaders
+﻿namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses.Shaders
 {
-    class ClipShader:PostProcessShader
+    internal class ClipShader : PostProcessShader
     {
         public ClipShader()
         {
-            this.FragmentProgram =
+            this.FragmentProgram=
 @"          #version 330 core
             #define SB_WIDTH 640
             #define SB_HEIGHT 480
 
             uniform sampler2D tex;
             uniform float view_width;
-            
+
             in vec2 uv;
 
             out vec4 out_color;

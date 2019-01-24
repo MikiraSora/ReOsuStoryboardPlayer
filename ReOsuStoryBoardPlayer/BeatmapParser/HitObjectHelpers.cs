@@ -1,12 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
 using StorybrewCommon.Mapset;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition.HitSoundTriggerCondition;
 
 namespace ReOsuStoryBoardPlayer.BeatmapParser
 {
@@ -14,15 +9,16 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
     {
         public static LinkedList<HitSoundInfo> Parse(string path)
         {
-            var objs=EditorBeatmap.Load(path).HitObjects;
+            var objs = EditorBeatmap.Load(path).HitObjects;
             LinkedList<HitSoundInfo> infos = new LinkedList<HitSoundInfo>();
 
-            foreach (var obj in objs.OrderBy(o=>o.StartTime))
+            foreach (var obj in objs.OrderBy(o => o.StartTime))
             {
                 switch (obj)
                 {
                     case OsuCircle circle:
-                        infos.AddLast(new HitSoundInfo() {
+                        infos.AddLast(new HitSoundInfo()
+                        {
                             SampleSet=(SampleSetType)circle.SampleSet,
                             SampleSetAdditions=(SampleSetType)circle.AdditionsSampleSet,
                             CustomSampleSet=(CustomSampleSetType)circle.CustomSampleSet,
@@ -30,9 +26,11 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                             Time=circle.StartTime
                         });
                         break;
+
                     case OsuSlider slider:
                         foreach (var node in slider.Nodes)
-                            infos.AddLast(new HitSoundInfo() {
+                            infos.AddLast(new HitSoundInfo()
+                            {
                                 SampleSet=(SampleSetType)node.SampleSet,
                                 SampleSetAdditions=(SampleSetType)node.AdditionsSampleSet,
                                 CustomSampleSet=(CustomSampleSetType)node.CustomSampleSet,
@@ -40,6 +38,7 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                                 Time=node.Time
                             });
                         break;
+
                     case OsuSpinner spinner:
                         infos.AddLast(new HitSoundInfo()
                         {
@@ -50,11 +49,12 @@ namespace ReOsuStoryBoardPlayer.BeatmapParser
                             Time=spinner.StartTime
                         });
                         break;
+
                     default:
                         break;
                 }
             }
-            
+
             var itor = infos.First;
 
             while (itor!=null)

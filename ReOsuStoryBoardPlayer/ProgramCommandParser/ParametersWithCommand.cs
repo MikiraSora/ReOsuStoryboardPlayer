@@ -2,7 +2,7 @@
 
 namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 {
-    class ParametersWithCommand : IParameters
+    internal class ParametersWithCommand : IParameters
     {
         public string CommandName { get; }
         public string ArgString { get; }
@@ -14,27 +14,26 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 
         public ParametersWithCommand()
         {
-
         }
 
         public ParametersWithCommand(IParameters p)
         {
-            ArgString = p.ArgString;
-            Args = p.Args;
-            FreeArgs = p.FreeArgs;
-            Switches = p.Switches;
-            SimpleArgs = p.SimpleArgs;
+            ArgString=p.ArgString;
+            Args=p.Args;
+            FreeArgs=p.FreeArgs;
+            Switches=p.Switches;
+            SimpleArgs=p.SimpleArgs;
         }
 
         public bool TryGetArg(string key, out string value)
         {
             if (Args.ContainsKey(key))
             {
-                value = Args[key];
+                value=Args[key];
                 return true;
             }
 
-            value = null;
+            value=null;
             return false;
         }
     }

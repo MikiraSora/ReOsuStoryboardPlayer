@@ -1,34 +1,29 @@
-﻿using ReOsuStoryBoardPlayer.DebugTool;
+﻿using OpenTK.Graphics.OpenGL;
+using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.OutputEncoding.Player;
 using ReOsuStoryBoardPlayer.Player;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using ReOsuStoryBoardPlayer.Core.Utils;
 
 namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
 {
     /// <summary>
     /// 编码功能的核心，负责管控视频编码
     /// </summary>
-    public class EncodingKernel:DebuggerBase
+    public class EncodingKernel : DebuggerBase
     {
-        EncodingProcessPlayer time_control;
+        private EncodingProcessPlayer time_control;
+
         //Thread thread;
         public EncodingWriterBase Writer { get; private set; }
-        EncoderOption option;
 
-        float prev_time;
+        private EncoderOption option;
 
-        bool is_running = false;
+        private float prev_time;
 
-        byte[] buffer;
+        private bool is_running = false;
+
+        private byte[] buffer;
 
         public EncodingKernel(EncoderOption option)
         {
@@ -58,7 +53,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
 
             if (option.IsExplicitTimeRange)
             {
-                time_control.Jump(option.StartTime,true);
+                time_control.Jump(option.StartTime, true);
             }
 
             DebuggerManager.AfterRender+=OnAfterRender;
@@ -68,9 +63,9 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
         public void OnAfterRender()
         {
             time_control.GetNextFrameTime();
-            
+
             //超出时间，结束
-            if (time_control.CurrentTime >= (option.IsExplicitTimeRange ? Math.Min(time_control.Length, option.EndTime) : time_control.Length))
+            if (time_control.CurrentTime>=(option.IsExplicitTimeRange ? Math.Min(time_control.Length, option.EndTime) : time_control.Length))
             {
                 Abort();
                 return;
@@ -83,7 +78,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
             prev_time=time_control.CurrentTime;
 
             Log.Debug($"Process time : {time_control.CurrentTime} ({(time_control.CurrentTime/time_control.Length*100).ToString("F2")})");
-       
+
             GL.ReadPixels(0, 0, option.Width, option.Height, PixelFormat.Bgra, PixelType.UnsignedByte, ref buffer[0]);
 
             for (int i = 0; i<option.Height/2; i++)
@@ -127,7 +122,6 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
 
         public override void Update()
         {
-
         }
     }
 }

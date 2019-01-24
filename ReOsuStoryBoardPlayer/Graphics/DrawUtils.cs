@@ -18,9 +18,9 @@ namespace ReOsuStoryBoardPlayer.Graphics
         {
             #region Texture
 
-            texture_vao = GL.GenVertexArray();
-            texture_vbo_pos = GL.GenBuffer();
-            texture_vbo_tex = GL.GenBuffer();
+            texture_vao=GL.GenVertexArray();
+            texture_vbo_pos=GL.GenBuffer();
+            texture_vbo_tex=GL.GenBuffer();
 
             GL.BindVertexArray(texture_vao);
             {
@@ -33,10 +33,10 @@ namespace ReOsuStoryBoardPlayer.Graphics
                         1,0,
                     };
 
-                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(2 * 4 * sizeof(float)), data, BufferUsageHint.StaticDraw);
+                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(2*4*sizeof(float)), data, BufferUsageHint.StaticDraw);
 
                     GL.EnableVertexAttribArray(0);
-                    GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0);
+                    GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 2*sizeof(float), 0);
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
@@ -49,18 +49,18 @@ namespace ReOsuStoryBoardPlayer.Graphics
                         1,0,
                     };
 
-                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(2 * 4 * sizeof(float)), data, BufferUsageHint.StaticDraw);
+                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(2*4*sizeof(float)), data, BufferUsageHint.StaticDraw);
 
                     GL.EnableVertexAttribArray(1);
-                    GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0);
+                    GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 2*sizeof(float), 0);
                 }
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             }
             GL.BindVertexArray(0);
 
-            texture_shader = new Shader()
+            texture_shader=new Shader()
             {
-                VertexProgram = @"
+                VertexProgram=@"
 								#version 330
 out vec4 varying_color;
 out vec2 varying_texPos;
@@ -75,7 +75,7 @@ void main(){
 	varying_texPos=in_texPos;
 }
 ",
-                FragmentProgram = @"
+                FragmentProgram=@"
 #version 330
 uniform sampler2D diffuse;
 uniform vec4 Color;
@@ -95,13 +95,13 @@ void main(){
         public static void DrawTexture(Texture texture, Vector position, Vector norAnchor, Vector scale, int angle, int width, int height, Vec4 color)
         {
             texture_shader.Begin();
-            var VP = StoryboardWindow.ProjectionMatrix * StoryboardWindow.CameraViewMatrix;
+            var VP = StoryboardWindow.ProjectionMatrix*StoryboardWindow.CameraViewMatrix;
 
             Matrix4 model =
-                Matrix4.Identity *
-                Matrix4.CreateScale(scale.X, scale.Y, 1) *
-                Matrix4.CreateTranslation(position.X, -position.Y, 0) *
-                Matrix4.CreateFromAxisAngle(_staticCacheAxis, angle / 180.0f * 3.1415926f)
+                Matrix4.Identity*
+                Matrix4.CreateScale(scale.X, scale.Y, 1)*
+                Matrix4.CreateTranslation(position.X, -position.Y, 0)*
+                Matrix4.CreateFromAxisAngle(_staticCacheAxis, angle/180.0f*3.1415926f)
             ;
 
             Vector2 anchorFixer = new Vector2(norAnchor.X, -norAnchor.Y);

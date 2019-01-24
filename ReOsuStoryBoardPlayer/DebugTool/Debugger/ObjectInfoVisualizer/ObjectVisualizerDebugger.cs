@@ -1,17 +1,11 @@
 ﻿using OpenTK;
 using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Kernel;
 using ReOsuStoryBoardPlayer.Kernel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 {
-    class ObjectVisualizerDebugger : DebuggerBase
+    internal class ObjectVisualizerDebugger : DebuggerBase
     {
         public ObjectVisualizerWindow Window { get; private set; }
 
@@ -40,8 +34,8 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             select_object.Color.W=backup_alpha;
         }
 
-        byte backup_alpha;
-        float count;
+        private byte backup_alpha;
+        private float count;
 
         private void OnBeforeRender()
         {
@@ -66,9 +60,11 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 case MouseInput.Right:
                     Window.SelectObject=null;
                     break;
+
                 case MouseInput.Left:
                     PickObject(x, y);
                     break;
+
                 default:
                     break;
             }
@@ -76,7 +72,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         #region Pick object
 
-        private void PickObject(float x,float y)
+        private void PickObject(float x, float y)
         {
             int last_order_index = Window?.SelectObject?.Z??-1;
 
@@ -90,7 +86,6 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                 {
                     obj=temp;
                 }
-
             }
 
             Window.SelectObject=obj;
@@ -102,51 +97,51 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
         {
             Vector2 obj_pos = new Vector2(obj.Postion.X, obj.Postion.Y);
 
-            float radio = (float)StoryboardWindow.CurrentWindow.Width / (float)StoryboardWindow.CurrentWindow.Height;
-            float view_width = StoryboardWindow.SB_HEIGHT * radio;
+            float radio = (float)StoryboardWindow.CurrentWindow.Width/(float)StoryboardWindow.CurrentWindow.Height;
+            float view_width = StoryboardWindow.SB_HEIGHT*radio;
 
-            Vector2 mouse_scale = new Vector2(view_width / StoryboardWindow.CurrentWindow.Width,
-                StoryboardWindow.SB_HEIGHT / StoryboardWindow.CurrentWindow.Height);
+            Vector2 mouse_scale = new Vector2(view_width/StoryboardWindow.CurrentWindow.Width,
+                StoryboardWindow.SB_HEIGHT/StoryboardWindow.CurrentWindow.Height);
 
-            var mouse_point = new Vector2(x, y) * mouse_scale;
+            var mouse_point = new Vector2(x, y)*mouse_scale;
 
-            mouse_point.X -= (view_width - StoryboardWindow.SB_WIDTH) / 2.0f;
+            mouse_point.X-=(view_width-StoryboardWindow.SB_WIDTH)/2.0f;
 
             Vector3[] points = new Vector3[4];
 
             var group = StoryboardInstanceManager.ActivityInstance.Resource.GetSprite(obj.ImageFilePath);
 
-            int w = (int)(group.Texture.Width * Math.Abs(obj.Scale.X));
-            int h = (int)(group.Texture.Height *Math.Abs(obj.Scale.Y));
+            int w = (int)(group.Texture.Width*Math.Abs(obj.Scale.X));
+            int h = (int)(group.Texture.Height*Math.Abs(obj.Scale.Y));
 
-            Vector2 anchor = new Vector2(obj.Anchor.X, obj.Anchor.Y) + new Vector2(0.5f,0.5f);
-            anchor.X *= w;
-            anchor.Y *= h;
+            Vector2 anchor = new Vector2(obj.Anchor.X, obj.Anchor.Y)+new Vector2(0.5f, 0.5f);
+            anchor.X*=w;
+            anchor.Y*=h;
 
             Vector2[] vertices = new Vector2[4];
 
-            vertices[0].X = 0;
-            vertices[0].Y = 0;
+            vertices[0].X=0;
+            vertices[0].Y=0;
 
-            vertices[1].X = w;
-            vertices[1].Y = 0;
+            vertices[1].X=w;
+            vertices[1].Y=0;
 
-            vertices[2].X = w;
-            vertices[2].Y = h;
+            vertices[2].X=w;
+            vertices[2].Y=h;
 
-            vertices[3].X = 0;
-            vertices[3].Y = h;
+            vertices[3].X=0;
+            vertices[3].Y=h;
 
-            float cosa = (float)Math.Cos(obj.Rotate * DEG2RAD);
-            float sina = (float) Math.Sin(obj.Rotate * DEG2RAD);
+            float cosa = (float)Math.Cos(obj.Rotate*DEG2RAD);
+            float sina = (float)Math.Sin(obj.Rotate*DEG2RAD);
 
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i<vertices.Length; i++)
             {
-                var v = vertices[i] - anchor;
-                v.X = v.X * cosa + v.Y * sina;
-                v.Y = v.X * sina - v.Y * cosa;
-                v += obj_pos;
-                points[i] = new Vector3(mouse_point-v);
+                var v = vertices[i]-anchor;
+                v.X=v.X*cosa+v.Y*sina;
+                v.Y=v.X*sina-v.Y*cosa;
+                v+=obj_pos;
+                points[i]=new Vector3(mouse_point-v);
             }
 
             Vector3 v1 = Vector3.Cross(points[0], points[1]).Normalized();
@@ -160,7 +155,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             return false;
         }
 
-        #endregion
+        #endregion Pick object
 
         public override void Term()
         {

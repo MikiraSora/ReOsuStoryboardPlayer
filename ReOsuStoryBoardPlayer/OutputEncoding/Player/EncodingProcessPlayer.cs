@@ -2,10 +2,6 @@
 using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.OutputEncoding.Player
 {
@@ -19,11 +15,11 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Player
 
         public override float PlaybackSpeed { get => 1; set { } }
 
-        bool is_playing = false;
+        private bool is_playing = false;
 
-        public override void Jump(float time,bool pause)
+        public override void Jump(float time, bool pause)
         {
-            current_time=Math.Min(time,Length);
+            current_time=Math.Min(time, Length);
         }
 
         public override void Pause()
@@ -41,18 +37,18 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Player
             DebuggerManager.GetDebugger<EncodingKernel>().Abort();
         }
 
-        float time_step;
-        float current_time;
-        uint length;
+        private float time_step;
+        private float current_time;
+        private uint length;
 
-        public EncodingProcessPlayer(uint length,int fps)
+        public EncodingProcessPlayer(uint length, int fps)
         {
             time_step=1.0f/fps*1000;
             current_time=0-time_step;
             this.length=length;
         }
 
-        public float GetNextFrameTime() => current_time+=is_playing?time_step:0;
+        public float GetNextFrameTime() => current_time+=is_playing ? time_step : 0;
 
         public override float CurrentTime => current_time;
     }

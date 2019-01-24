@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -38,14 +37,14 @@ namespace ReOsuStoryBoardPlayer
 
         public Texture()
         {
-            name = "Texture";
-            _id = 0;
+            name="Texture";
+            _id=0;
         }
 
         public Texture(string fname)
         {
-            name = "Texture";
-            _id = 0;
+            name="Texture";
+            _id=0;
 
             LoadFromFile(fname);
         }
@@ -82,13 +81,13 @@ namespace ReOsuStoryBoardPlayer
 
         public void LoadFromData(IntPtr data, int width, int height)
         {
-            if (data != IntPtr.Zero)
+            if (data!=IntPtr.Zero)
             {
                 GL.GenTextures(1, out _id);
 
                 GL.BindTexture(TextureTarget.Texture2D, _id);
 
-                _textureSize = new Vector(width, height);
+                _textureSize=new Vector(width, height);
 
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);

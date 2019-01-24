@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ReOsuStoryBoardPlayer
@@ -15,9 +14,9 @@ namespace ReOsuStoryBoardPlayer
         /// 最小化
         /// </summary>
         public static bool MiniMode { get; set; } = false;
-        
+
         public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
-        
+
         public static bool EnableBorderless { get; set; } = false;
 
         public static bool EnableFullScreen { get; set; } = false;
@@ -73,7 +72,7 @@ namespace ReOsuStoryBoardPlayer
 
         public static string UserSkinPath { get; set; }
 
-        #endregion
+        #endregion Core Settings
 
         #region Extendsion
 
@@ -109,10 +108,10 @@ namespace ReOsuStoryBoardPlayer
                 if (!File.Exists(config_file))
                     CreateConfigFile();
 
-                HashSet<PropertyInfo> read_prop=new HashSet<PropertyInfo>();
+                HashSet<PropertyInfo> read_prop = new HashSet<PropertyInfo>();
 
                 //你以为我会用win32那坨玩意吗，想太多了.jpg
-                var props = typeof(PlayerSetting).GetProperties().Where(p=> p.GetSetMethod().IsPublic&&p.GetGetMethod().IsPublic);
+                var props = typeof(PlayerSetting).GetProperties().Where(p => p.GetSetMethod().IsPublic&&p.GetGetMethod().IsPublic);
                 var lines = File.ReadAllLines(config_file);
 
                 foreach (var line in lines.Where(l => l.Contains("=")))
@@ -136,18 +135,23 @@ namespace ReOsuStoryBoardPlayer
                             case "boolean":
                                 prop.SetValue(null, Convert.ToBoolean(value));
                                 break;
+
                             case "int32":
                                 prop.SetValue(null, Convert.ToInt32(value));
                                 break;
+
                             case "single":
                                 prop.SetValue(null, Convert.ToSingle(value));
                                 break;
+
                             case "double":
                                 prop.SetValue(null, Convert.ToDouble(value));
                                 break;
+
                             case "string":
                                 prop.SetValue(null, value.ToString());
                                 break;
+
                             default:
                                 break;
                         }
@@ -157,7 +161,7 @@ namespace ReOsuStoryBoardPlayer
                         Log.Debug($"set {prop.Name} = {value} from config.ini");
                 }
 
-                using (var writer=File.AppendText(config_file))
+                using (var writer = File.AppendText(config_file))
                 {
                     foreach (var prop in props.Except(read_prop))
                         writer.WriteLine($"{prop.Name}={prop.GetValue(null)}");
@@ -171,7 +175,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static void CreateConfigFile()
         {
-            using (var writer=new StreamWriter(File.OpenWrite(config_file)))
+            using (var writer = new StreamWriter(File.OpenWrite(config_file)))
             {
                 writer.WriteLine("[Setting]");
                 var props = typeof(PlayerSetting).GetProperties();
@@ -184,6 +188,6 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        #endregion
+        #endregion Extendsion
     }
 }

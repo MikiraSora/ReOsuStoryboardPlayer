@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer.Player
+﻿namespace ReOsuStoryBoardPlayer.Player
 {
     public abstract class PlayerBase
     {
@@ -14,10 +8,12 @@ namespace ReOsuStoryBoardPlayer.Player
         public abstract bool IsPlaying { get; }
         public abstract float PlaybackSpeed { get; set; }
 
-
         public abstract void Play();
+
         public abstract void Stop();
+
         public abstract void Pause();
-        public abstract void Jump(float time,bool pause);
+
+        public abstract void Jump(float time, bool pause);
     }
 }

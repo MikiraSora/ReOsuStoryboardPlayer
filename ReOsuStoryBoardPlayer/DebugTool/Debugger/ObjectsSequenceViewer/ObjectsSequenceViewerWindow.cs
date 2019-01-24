@@ -1,26 +1,22 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
-using ReOsuStoryBoardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 {
     public partial class ObjectsSequenceViewer : Form
     {
-        Dictionary<ListViewItem, StoryBoardObject> registed_map = new Dictionary<ListViewItem, StoryBoardObject>();
+        private Dictionary<ListViewItem, StoryBoardObject> registed_map = new Dictionary<ListViewItem, StoryBoardObject>();
 
-        Regex current_filter = null;
+        private Regex current_filter = null;
 
         public ObjectsSequenceViewer()
         {
@@ -47,7 +43,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
             listView1.Alignment=ListViewAlignment.Left;
         }
 
-        IEnumerable<StoryBoardObject> RangeObjects;
+        private IEnumerable<StoryBoardObject> RangeObjects;
 
         public void ApplyRangeFlush(Range range)
         {
@@ -69,8 +65,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
             registed_map.Clear();
 
             var items = RangeObjects
-                .Where(o=>current_filter?.IsMatch(o.ToString())??true)
-                .Select(o => {
+                .Where(o => current_filter?.IsMatch(o.ToString())??true)
+                .Select(o =>
+                {
                     ListViewItem item = ObjectPool<ListViewItem>.Instance.GetObject();
 
                     item.ForeColor=(o.FrameStartTime<=time&&time<=o.FrameEndTime) ? Color.Black : Color.Gray;
@@ -87,7 +84,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
             listView1.EndUpdate();
         }
 
-        static Regex reg = new Regex(@"^([\w\(\)]+)(([+-]{1,2})(\d+))*$");
+        private static Regex reg = new Regex(@"^([\w\(\)]+)(([+-]{1,2})(\d+))*$");
 
         private void ParseFlush()
         {
@@ -143,7 +140,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {   
+        {
             ParseFlush();
         }
 
@@ -154,7 +151,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var visualizer=DebuggerManager.GetDebugger<ObjectVisualizerDebugger>();
+            var visualizer = DebuggerManager.GetDebugger<ObjectVisualizerDebugger>();
             var select_item = listView1.SelectedItems.OfType<ListViewItem>().FirstOrDefault();
 
             if (visualizer==null||select_item==null)
@@ -178,7 +175,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
                 current_filter=new Regex(textBox2.Text);
                 ApplyObjectsFlush();
             }
-            catch 
+            catch
             {
                 textBox2.ForeColor=Color.Red;
             }

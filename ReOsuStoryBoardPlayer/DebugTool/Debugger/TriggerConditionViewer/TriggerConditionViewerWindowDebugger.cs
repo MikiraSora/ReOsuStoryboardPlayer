@@ -1,17 +1,11 @@
-﻿using ReOsuStoryBoardPlayer.Core.Kernel;
-using ReOsuStoryBoardPlayer.Kernel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReOsuStoryBoardPlayer.Kernel;
 
 namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
 {
-    class TriggerConditionViewerDebugger : DebuggerBase
+    internal class TriggerConditionViewerDebugger : DebuggerBase
     {
         public TriggerConditionViewerWindow Window { get; private set; }
-        StoryboardInstance instance;
+        private StoryboardInstance instance;
 
         public override void Init()
         {

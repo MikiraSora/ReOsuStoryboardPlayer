@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
+using System;
 
 namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
 {
@@ -12,24 +8,24 @@ namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
         private int _fbo;
         public int ColorTexture { get; }
 
-        private int _w,_h;
+        private int _w, _h;
 
-        public PostProcessFrameBuffer(int w,int h)
+        public PostProcessFrameBuffer(int w, int h)
         {
-            _w = w;
-            _h = h;
+            _w=w;
+            _h=h;
 
-            _fbo = GL.GenFramebuffer();
-            ColorTexture = CraeteColorTexture();
+            _fbo=GL.GenFramebuffer();
+            ColorTexture=CraeteColorTexture();
 
             BuildFrameBuffer();
         }
 
         private void BuildFrameBuffer()
         {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer,_fbo);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _fbo);
             {
-                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer,FramebufferAttachment.ColorAttachment0,TextureTarget.Texture2D,ColorTexture,0);
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, ColorTexture, 0);
             }
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }

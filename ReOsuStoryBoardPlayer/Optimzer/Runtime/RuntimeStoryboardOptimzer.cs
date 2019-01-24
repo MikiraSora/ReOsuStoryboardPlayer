@@ -2,13 +2,9 @@
 using ReOsuStoryBoardPlayer.Core.Commands;
 using ReOsuStoryBoardPlayer.Core.Commands.Group;
 using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Utils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 {
@@ -23,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             effect_count=0;
             using (StopwatchRun.Count(() => "RemoveUnusedCommand() optimze count:"+effect_count))
                 RemoveUnusedCommand(storyboard_objects, ref effect_count);
-            
+
             effect_count=0;
             using (StopwatchRun.Count(() => "TrimInitalEffect() optimze count:"+effect_count))
                 TrimInitalEffect(storyboard_objects, ref effect_count);
@@ -32,8 +28,8 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         /// <summary>
         /// 计算Fade时间轴，优化物件的FrameStartTime/EndTime，避免不必要的计算
         /// 点名批评 -> 181957
-        /// 
-        ///           
+        ///
+        ///
         ///Sprite,Foreground,Centre,"sb\light.png",320,240
         /// S,0,0,,0.22        <----Non-optimze obj.FrameStartTime
         /// MX,0,0,,278
@@ -64,8 +60,8 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 if (first_fade!=null)
                 {
                     FadeCommand front_fade = null;
-                    
-                    if ((first_fade.EndTime==0 || first_fade.StartTime==first_fade.EndTime) //是否为立即命令（dutation=0）
+
+                    if ((first_fade.EndTime==0||first_fade.StartTime==first_fade.EndTime) //是否为立即命令（dutation=0）
                         &&first_fade.EndValue==0) //是否是隐藏的
                     {
                         if (fade_list.Skip(1).First() is FadeCommand second_fade)
@@ -90,11 +86,11 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                 }
 
                 var last_fade = fade_list.Last() as FadeCommand;
-                
+
                 if (last_fade!=null&&last_fade.EndValue==0)
                 {
                     obj.FrameEndTime=last_fade.EndTime;
-                    Suggest(obj,$"EndTime可优化成{last_fade.StartTime}.");
+                    Suggest(obj, $"EndTime可优化成{last_fade.StartTime}.");
                     effect_count++;
                 }
             }
@@ -157,16 +153,16 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
         /// <summary>
         /// 将时间轴单个立即命令直接应用到物件上，减少物件执行命令频率
-        /// 点名批评 -> 181957 
-        /// 
+        /// 点名批评 -> 181957
+        ///
         ///Sprite,Foreground,Centre,"sb\light.png",320,240
         /// S,0,0,,0.22        <---- Set as Object.Scale inital value by Optimzer
         /// MX,0,0,,278        <---- Set as Object.Position.X inital value by Optimzer
-        /// F,0,126739,,0       
-        /// F,0,208016,,0.7,1           
+        /// F,0,126739,,0
+        /// F,0,208016,,0.7,1
         /// C,0,208016,,255,255,255
         /// P,0,208016,,A             <---- Set as Object.IsAdditive value by Optimzer
-        /// MY,0,208016,209286,520,-40   
+        /// MY,0,208016,209286,520,-40
         ///
         /// </summary>
         /// <param name="storyboard_objects"></param>
@@ -178,19 +174,19 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             foreach (var obj in storyboard_objects)
             {
                 //物件命令数量!=0 且 无Trigger对应类型的子命令
-                foreach (var timeline in obj.CommandMap.Where(x => x.Value.Count==1 && ((!obj.ContainTrigger) ||(
+                foreach (var timeline in obj.CommandMap.Where(x => x.Value.Count==1&&((!obj.ContainTrigger)||(
                 !obj.CommandMap[Event.Trigger]
                 .OfType<GroupCommand>()
                 .SelectMany(
-                    l=>l.SubCommands
-                    .Where(w=>w.Key==x.Key)).Select(m=>m.Value)
-                    .Any()))).Select(e=>e.Value))
+                    l => l.SubCommands
+                    .Where(w => w.Key==x.Key)).Select(m => m.Value)
+                    .Any()))).Select(e => e.Value))
                 {
                     Command cmd = timeline.FirstOrDefault();
 
                     if (cmd.EndTime<=obj.FrameStartTime
                         &&cmd.StartTime==cmd.EndTime
-                                                     //C,0,0,,0,0,0,226,172,247
+                        //C,0,0,,0,0,0,226,172,247
                         &&((cmd is ValueCommand)/*&&(vcmd.EqualityComparer.Equals(vcmd.GetEndValue(), vcmd.GetStartValue()))*/||
                         cmd is StateCommand))
                     {
@@ -200,14 +196,15 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
                         timeline.Remove(cmd);
 
-                        obj.BaseTransformResetAction += (target) => {
+                        obj.BaseTransformResetAction+=(target) =>
+                        {
                             cmd.Execute(target, cmd.EndTime+1);
                         };
 
                         effect_count++;
                     }
                 }
-                
+
                 //去掉没有命令的时间轴
                 foreach (Event e in events)
                     if (obj.CommandMap.TryGetValue(e, out var timeline)&&timeline.Count==0)
@@ -221,8 +218,8 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         /// <summary>
         /// 删除无用的命令，即理论上根本不会被执行到的命令
         /// 点名批评 -> 381480
-        /// 
-        /// 
+        ///
+        ///
         /// </summary>
         /// <param name="storyboard_objects"></param>
         /// <param name="effect_count"></param>
@@ -232,7 +229,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
 
             foreach (var obj in storyboard_objects)
             {
-                foreach (var timeline in obj.CommandMap.Where(x=> !skip_event.Contains(x.Key)).Select(x=>x.Value))
+                foreach (var timeline in obj.CommandMap.Where(x => !skip_event.Contains(x.Key)).Select(x => x.Value))
                 {
                     for (int i = timeline.Count-1; i>=0; i--)
                     {
@@ -256,8 +253,8 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
                              *line n   (cmd) :             |--------------|       <--- Kill , biatch
                              */
                             if (cmd.EndTime<=itor.EndTime
-                                && cmd.StartTime>=itor.StartTime
-                                && itor.RelativeLine<cmd.RelativeLine
+                                &&cmd.StartTime>=itor.StartTime
+                                &&itor.RelativeLine<cmd.RelativeLine
                                 )
                             {
                                 timeline.Remove(cmd);

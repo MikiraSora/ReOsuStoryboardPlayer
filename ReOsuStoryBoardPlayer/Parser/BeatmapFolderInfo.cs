@@ -2,15 +2,12 @@
 using ReOsuStoryBoardPlayer.Core.Parser.Reader;
 using ReOsuStoryBoardPlayer.Core.Parser.Stream;
 using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Parser
 {
@@ -28,7 +25,9 @@ namespace ReOsuStoryBoardPlayer.Parser
 
         public bool IsWidescreenStoryboard { get; private set; }
 
-        private BeatmapFolderInfo() { }
+        private BeatmapFolderInfo()
+        {
+        }
 
         public static BeatmapFolderInfo Parse(string folder_path, ProgramCommandParser.Parameters args)
         {
@@ -39,7 +38,7 @@ namespace ReOsuStoryBoardPlayer.Parser
 
             var osu_files = TryGetAnyFiles(".osu");
 
-            string explicitly_osu_diff_name=string.Empty;
+            string explicitly_osu_diff_name = string.Empty;
             if (args!=null&&args.TryGetArg("diff", out var diff_name))
                 explicitly_osu_diff_name=diff_name;
 
@@ -55,7 +54,7 @@ namespace ReOsuStoryBoardPlayer.Parser
                 else
                 {
                     var fix_pattern = Regex.Escape(explicitly_osu_diff_name);
-                    Regex regex = new Regex(@"\[.*"+fix_pattern+@".*\]\.osu",RegexOptions.IgnoreCase);
+                    Regex regex = new Regex(@"\[.*"+fix_pattern+@".*\]\.osu", RegexOptions.IgnoreCase);
 
                     info.osu_file_path=osu_files.Where(x => regex.IsMatch(x)).OrderBy(x => x.Length).FirstOrDefault();
                 }
@@ -92,7 +91,7 @@ namespace ReOsuStoryBoardPlayer.Parser
             if (string.IsNullOrWhiteSpace(info.osu_file_path)||!File.Exists(info.osu_file_path))
                 Log.Warn("No .osu load");
 
-            info.osb_file_path= TryGetAnyFiles(".osb").FirstOrDefault();
+            info.osb_file_path=TryGetAnyFiles(".osb").FirstOrDefault();
 
             info.folder_path=folder_path;
 
@@ -104,14 +103,13 @@ namespace ReOsuStoryBoardPlayer.Parser
                 info.audio_file_path=Path.Combine(folder_path, section.ReadProperty("AudioFilename"));
                 Log.User($"audio file path={info.audio_file_path}");
 
-
                 var wideMatch = section.ReadProperty("WidescreenStoryboard");
 
                 if (!string.IsNullOrWhiteSpace(wideMatch))
-                    info.IsWidescreenStoryboard=wideMatch.ToInt()==1; 
+                    info.IsWidescreenStoryboard=wideMatch.ToInt()==1;
             }
 
-            if (string.IsNullOrWhiteSpace(info.osu_file_path) || (!File.Exists(info.osu_file_path)))
+            if (string.IsNullOrWhiteSpace(info.osu_file_path)||(!File.Exists(info.osu_file_path)))
             {
                 info.audio_file_path=Directory
                     .GetFiles(info.folder_path, "*.mp3")
@@ -122,7 +120,7 @@ namespace ReOsuStoryBoardPlayer.Parser
             }
 
             Trace.Assert(((_check(info.osu_file_path)||_check(info.osb_file_path)))&&_check(info.audio_file_path));
-            
+
             return info;
 
             bool _check(string file_path)

@@ -3,31 +3,28 @@ using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using Saar.FFmpeg.CSharp;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.OutputEncoding
 {
     public class DefaultEncodingWriter : EncodingWriterBase
     {
-        MediaWriter writer;
-        VideoFrame video_frame;
-        AudioFrame audio_frame;
+        private MediaWriter writer;
+        private VideoFrame video_frame;
+        private AudioFrame audio_frame;
 
-        Encoder video_encoder, audio_encoder;
-        AudioDecoder audio_decoder;
+        private Encoder video_encoder, audio_encoder;
+        private AudioDecoder audio_decoder;
 
-        MediaReader audio_reader;
+        private MediaReader audio_reader;
 
-        EncoderOption option;
+        private EncoderOption option;
 
         public override long ProcessedFrameCount => video_encoder.InputFrames;
         public override TimeSpan ProcessedTimestamp => video_encoder.InputTimestamp;
 
-        Thread audio_encoding_thread;
+        private Thread audio_encoding_thread;
         private Packet outAudioPacket = new Packet();
         private Packet outVideoPacket = new Packet();
 
@@ -76,7 +73,6 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
 
             audio_decoder=audio_reader.Decoders.OfType<AudioDecoder>().FirstOrDefault();
 
-
             #region Video Init
 
             var video_format = new VideoFormat(option.Width, option.Height, AVPixelFormat.Bgra);
@@ -84,7 +80,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
 
             video_encoder=new VideoEncoder(option.EncoderName, video_format, video_param);
 
-            #endregion
+            #endregion Video Init
 
             writer=new MediaWriter(option.OutputPath, false).AddEncoder(video_encoder);
 
@@ -106,12 +102,12 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
             audio_encoding_thread.Start();
         }
 
-        double pos;
+        private double pos;
 
         private void AudioEncoding()
         {
             //skip start_time if IsExplicitTimeRange=true
-            int calc_start_time=0, calc_end_time= (int)MusicPlayerManager.ActivityPlayer.Length;
+            int calc_start_time = 0, calc_end_time = (int)MusicPlayerManager.ActivityPlayer.Length;
 
             if (option.IsExplicitTimeRange)
             {
@@ -131,7 +127,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding
             {
                 if (pos>=MusicPlayerManager.ActivityPlayer.CurrentTime)
                     continue;
-                    
+
                 if (!audio_reader.NextFrame(audio_frame, audio_decoder.StreamIndex))
                     break;
 

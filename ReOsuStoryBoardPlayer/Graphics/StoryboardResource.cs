@@ -1,16 +1,13 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Graphics
 {
-    public class StoryboardResource:IDisposable
+    public class StoryboardResource : IDisposable
     {
-        public Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap { get; private set; } = new Dictionary<string, SpriteInstanceGroup>();
-        
+        public Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap { get; private set; }
+
         public SpriteInstanceGroup GetSprite(string key)
         {
             return CacheDrawSpriteInstanceMap[key];
@@ -18,9 +15,10 @@ namespace ReOsuStoryBoardPlayer.Graphics
 
         public SpriteInstanceGroup GetSprite(StoryBoardObject obj) => GetSprite(obj.ImageFilePath);
 
-
-        public void AddSpriteInstanceGroups(Dictionary<string, SpriteInstanceGroup> sprites)
+        public void PinSpriteInstanceGroups(Dictionary<string, SpriteInstanceGroup> sprites)
         {
+            CacheDrawSpriteInstanceMap=new Dictionary<string, SpriteInstanceGroup>(sprites.Count);
+
             foreach (var sprite in sprites)
                 CacheDrawSpriteInstanceMap.Add(sprite.Key, sprite.Value);
         }

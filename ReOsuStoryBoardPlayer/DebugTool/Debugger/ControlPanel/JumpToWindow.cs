@@ -1,5 +1,4 @@
-﻿using ReOsuStoryBoardPlayer.Core.Kernel;
-using ReOsuStoryBoardPlayer.Kernel;
+﻿using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Windows.Forms;
@@ -14,7 +13,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
         {
             InitializeComponent();
 
-            this.instance = instance;
+            this.instance=instance;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -32,9 +31,9 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
             if (!uint.TryParse(textBox1.Text, out jump))
                 return;
 
-            jump = jump >=MusicPlayerManager.ActivityPlayer.Length ? MusicPlayerManager.ActivityPlayer.Length : jump;
+            jump=jump>=MusicPlayerManager.ActivityPlayer.Length ? MusicPlayerManager.ActivityPlayer.Length : jump;
 
-            MusicPlayerManager.ActivityPlayer.Jump(jump,true);
+            MusicPlayerManager.ActivityPlayer.Jump(jump, true);
 
             Close();
         }

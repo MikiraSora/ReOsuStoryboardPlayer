@@ -2,16 +2,13 @@
 using ReOsuStoryBoardPlayer.Core.Commands;
 using ReOsuStoryBoardPlayer.Core.Commands.Group;
 using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Core.Kernel;
 using ReOsuStoryBoardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer;
 using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -38,16 +35,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
         {
             var time = MusicPlayerManager.ActivityPlayer.CurrentTime;
 
-            if (SelectObject != null)
+            if (SelectObject!=null)
             {
-                if (SelectObject != last_obj)
+                if (SelectObject!=last_obj)
                 {
                     //这里是物件装载一次的
 
-                    Text = SelectObject.ImageFilePath;
-                    AnchorLabel.Text = SelectObject.Anchor.ToString();
-                    OrderLabel.Text = SelectObject.Z.ToString();
-                    TimeLabel.Text = $"{SelectObject.FrameStartTime}~{SelectObject.FrameEndTime}";
+                    Text=SelectObject.ImageFilePath;
+                    AnchorLabel.Text=SelectObject.Anchor.ToString();
+                    OrderLabel.Text=SelectObject.Z.ToString();
+                    TimeLabel.Text=$"{SelectObject.FrameStartTime}~{SelectObject.FrameEndTime}";
 
 #if DEBUG
                     checkBox1.Checked=SelectObject.DebugShow;
@@ -64,64 +61,63 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                         var path = instance.Resource.GetSprite(SelectObject.ImageFilePath).ImagePath;
                         var img = Bitmap.FromFile(path);
 
-                        if (img != null)
+                        if (img!=null)
                         {
                             var prev_imgae = pictureBox1.Image;
-                            pictureBox1.Image = img;
+                            pictureBox1.Image=img;
                             prev_imgae.Dispose();
                         }
                     }
                     catch
                     {
-                        
                     }
                 }
 
                 //这里是要实时更新的
 
-                PositionLabel.Text = SelectObject.Postion.ToString();
+                PositionLabel.Text=SelectObject.Postion.ToString();
 #if DEBUG
                 SelectObject.DebugShow=checkBox1.Checked;
 #endif
                 int r = SelectObject.Color.X, g = SelectObject.Color.Y, b = SelectObject.Color.Z;
-                ColorLabel.Text = $"{r},{g},{b}";
-                
+                ColorLabel.Text=$"{r},{g},{b}";
+
                 try
                 {
-                    ColorLabel.ForeColor = Color.FromArgb(r, g, b);
-                    ColorLabel.BackColor = Color.FromArgb(255 - r, 255 - g, 255 - b);
+                    ColorLabel.ForeColor=Color.FromArgb(r, g, b);
+                    ColorLabel.BackColor=Color.FromArgb(255-r, 255-g, 255-b);
                 }
                 catch (Exception e)
                 {
                     Log.Error(e.Message);
                 }
 
-                AngleLabel.Text = (SelectObject.Rotate * 180 / Math.PI).ToString();
-                AlphaLabel.Text = SelectObject.Color.W.ToString();
-                ScaleLabel.Text = SelectObject.Scale.ToString();
+                AngleLabel.Text=(SelectObject.Rotate*180/Math.PI).ToString();
+                AlphaLabel.Text=SelectObject.Color.W.ToString();
+                ScaleLabel.Text=SelectObject.Scale.ToString();
 
-                ParameterLabel.Text = $"{(SelectObject.IsAdditive ? "A" : " ")}{(SelectObject.IsHorizonFlip ? "H" : " ")}{(SelectObject.IsVerticalFlip ? "V" : " ")}";
-                MarkdoneLabel.Text = (SelectObject.FrameStartTime<=time&&time<=SelectObject.FrameEndTime).ToString();
+                ParameterLabel.Text=$"{(SelectObject.IsAdditive ? "A" : " ")}{(SelectObject.IsHorizonFlip ? "H" : " ")}{(SelectObject.IsVerticalFlip ? "V" : " ")}";
+                MarkdoneLabel.Text=(SelectObject.FrameStartTime<=time&&time<=SelectObject.FrameEndTime).ToString();
 
                 UpdateCommandNode();
             }
             else
             {
-                if (SelectObject != last_obj)
+                if (SelectObject!=last_obj)
                 {
-                    PositionLabel.Text = string.Empty;
-                    ColorLabel.Text = string.Empty;
-                    AngleLabel.Text = string.Empty;
-                    AlphaLabel.Text = string.Empty;
-                    ParameterLabel.Text = string.Empty;
-                    MarkdoneLabel.Text = string.Empty;
-                    AnchorLabel.Text = string.Empty;
-                    TimeLabel.Text = string.Empty;
-                    this.Text = string.Empty;
-                    OrderLabel.Text = string.Empty;
+                    PositionLabel.Text=string.Empty;
+                    ColorLabel.Text=string.Empty;
+                    AngleLabel.Text=string.Empty;
+                    AlphaLabel.Text=string.Empty;
+                    ParameterLabel.Text=string.Empty;
+                    MarkdoneLabel.Text=string.Empty;
+                    AnchorLabel.Text=string.Empty;
+                    TimeLabel.Text=string.Empty;
+                    this.Text=string.Empty;
+                    OrderLabel.Text=string.Empty;
 
-                    ColorLabel.ForeColor = Color.White;
-                    ColorLabel.BackColor = Color.White;
+                    ColorLabel.ForeColor=Color.White;
+                    ColorLabel.BackColor=Color.White;
 
                     command_node_map.Clear();
                 }
@@ -129,16 +125,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             ShowCommandList();
 
-            last_obj = SelectObject;
+            last_obj=SelectObject;
         }
 
         private void ShowCommandList()
         {
-            if (SelectObject != last_obj)
+            if (SelectObject!=last_obj)
             {
                 CommandTreeViewer.Nodes.Clear();
 
-                if (SelectObject != null)
+                if (SelectObject!=null)
                 {
                     var root = CommandTreeViewer.Nodes.Add(SelectObject.ToString());
 
@@ -169,16 +165,16 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
             void BindCommandNode(Command command, TreeNode node)
             {
-                command_node_map[command] = node;
+                command_node_map[command]=node;
             }
         }
-        
+
         private void UpdateCommandNode()
         {
             foreach (var pair in command_node_map)
             {
 #if DEBUG
-                pair.Value.BackColor = pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
+                pair.Value.BackColor=pair.Key.IsExecuted ? Color.Aqua : Color.Transparent;
 #endif
                 if (pair.Key is TriggerCommand trigger)
                 {
@@ -195,7 +191,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
                             //偶尔莫名其妙跳一个Disposed异常
                             pair.Value.Text=trigger.ToString();
                         }
-                        catch{}
+                        catch { }
                     }
                 }
             }

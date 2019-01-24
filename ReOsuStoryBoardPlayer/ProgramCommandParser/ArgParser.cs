@@ -8,7 +8,7 @@ namespace ReOsuStoryBoardPlayer.ProgramCommandParser
 
         public ArgParser(ParamParserV2 parser)
         {
-            this._parser = parser;
+            this._parser=parser;
         }
 
         public Parameters Parse(string args)
