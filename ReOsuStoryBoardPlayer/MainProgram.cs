@@ -96,10 +96,10 @@ namespace ReOsuStoryBoardPlayer
                     beatmap_folder=folder;
 
                 if (args.TryGetArg(out var p_update_limit, "parallel_update_limit", "pu"))
-                    Setting.ParallelUpdateObjectsLimitCount=p_update_limit.ToInt();
+                    PlayerSetting.ParallelUpdateObjectsLimitCount=p_update_limit.ToInt();
 
                 if (args.TryGetArg(out var update_thread_count, "update_thread_count", "ut"))
-                    Setting.UpdateThreadCount=update_thread_count.ToInt();
+                    PlayerSetting.UpdateThreadCount=update_thread_count.ToInt();
 
                 if (args.TryGetArg(out var max_fps, "fps"))
                     PlayerSetting.MaxFPS=max_fps.ToInt();
@@ -117,16 +117,16 @@ namespace ReOsuStoryBoardPlayer
                     PlayerSetting.EnableBorderless=true;
 
                 if (args.Switches.Any(k => k=="enable_loop_expand"))
-                    Setting.EnableLoopCommandExpand=true;
+                    PlayerSetting.EnableLoopCommandExpand=true;
 
                 if (args.Switches.Any(k => k=="mini"))
                     PlayerSetting.MiniMode=true;
 
                 if (args.Switches.Any(k => k=="disable_split"))
-                    Setting.EnableSplitMoveScaleCommand=false;
+                    PlayerSetting.EnableSplitMoveScaleCommand=false;
 
                 if (args.Switches.Any(k => k=="fun_reverse_easing"))
-                    Setting.FunReverseEasing=true;
+                    PlayerSetting.FunReverseEasing=true;
 
                 if (args.Switches.Any(k => k=="disable_runtime_optimze"))
                     PlayerSetting.EnableRuntimeOptimzeObjects=false;
@@ -135,7 +135,7 @@ namespace ReOsuStoryBoardPlayer
                     PlayerSetting.EnableHighPrecisionFPSLimit=false;
 
                 if (args.Switches.Any(k => k=="debug"))
-                    Setting.DebugMode=true;
+                    PlayerSetting.DebugMode=true;
 
                 if (args.Switches.Any(k => k=="cli"))
                     DebuggerManager.GetOrCreateDebugger<CLIControllerDebugger>();
@@ -150,7 +150,7 @@ namespace ReOsuStoryBoardPlayer
 
                 //额外功能 - 输出优化提示
                 if (args.TryGetSwitch("show_profile_suggest"))
-                    Setting.ShowProfileSuggest=true;
+                    PlayerSetting.ShowProfileSuggest=true;
 
                 if (args.Switches.Any(k => k=="encode"))
                     PlayerSetting.EncodingEnvironment=true;
