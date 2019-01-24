@@ -2,8 +2,8 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using ReOsuStoryBoardPlayer.Base;
-using ReOsuStoryBoardPlayer.Commands;
+using ReOsuStoryBoardPlayer.Core.Base;
+using ReOsuStoryBoardPlayer.Core.Commands;
 using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
@@ -23,6 +23,7 @@ using ReOsuStoryBoardPlayer.Graphics.PostProcesses;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
+using ReOsuStoryBoardPlayer.Core.Utils;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -76,7 +77,6 @@ namespace ReOsuStoryBoardPlayer
             InitGraphics();
             DrawUtils.Init();
             VSync = VSyncMode.Off;
-            Log.Init();
             CurrentWindow = this;
 
             ApplyBorderless(Setting.EnableBorderless);

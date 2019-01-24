@@ -1,13 +1,14 @@
 ﻿using ReOsuStoryBoardPlayer.DebugTool;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
 using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Parser;
+using ReOsuStoryBoardPlayer.Core.Parser;
 using ReOsuStoryBoardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ReOsuStoryBoardPlayer.Parser;
 
 namespace ReOsuStoryBoardPlayer.Utils
 {

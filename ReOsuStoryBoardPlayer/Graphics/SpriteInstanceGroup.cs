@@ -4,6 +4,8 @@ using System;
 using System.Runtime.CompilerServices;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+using Half = OpenTK.Half;
 
 namespace ReOsuStoryBoardPlayer
 {

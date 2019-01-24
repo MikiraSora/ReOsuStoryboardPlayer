@@ -79,36 +79,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\Anchor.cs" />
-    <Compile Include="Base\LoopType.cs" />
-    <Compile Include="Base\Easing.cs" />
-    <Compile Include="Base\Event.cs" />
-    <Compile Include="Base\Layout.cs" />
-    <Compile Include="Base\StoryboardAnimation.cs" />
-    <Compile Include="Base\StoryboardBackgroundObject.cs" />
     <Compile Include="BeatmapParser\EditorBeatmap.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerCommand.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerConditionBase.cs" />
-    <Compile Include="Base\CustomSampleSetType.cs" />
-    <Compile Include="Base\GameState.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerCondition\GameStateTriggerCondition.cs" />
-    <Compile Include="Base\HitObjectSoundType.cs" />
-    <Compile Include="Base\HitSoundInfo.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerCondition\HitSoundTriggerCondition.cs" />
-    <Compile Include="Base\SampleSetType.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerListener.cs" />
-    <Compile Include="Commands\Group\Trigger\TriggerSubTimelineCommand.cs" />
-    <Compile Include="Commands\Timeline\CommandTimeline.cs" />
-    <Compile Include="Commands\Group\GroupCommand.cs" />
-    <Compile Include="Commands\Group\LoopCommand.cs" />
-    <Compile Include="Commands\Timeline\LoopSubTimelineCommand.cs" />
-    <Compile Include="Commands\ParameterCommand\ParameterCommand.cs" />
-    <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\ValueCommand\FloatValueCommand.cs" />
-    <Compile Include="Commands\ParameterCommand\StateCommand.cs" />
-    <Compile Include="Commands\ValueCommand\ValueCommand.cs" />
-    <Compile Include="Commands\ValueCommand\ByteVec4ValueCommand.cs" />
-    <Compile Include="Commands\ValueCommand\VectorValueCommand.cs" />
     <Compile Include="DebugTool\Debugger\AutoTriggerContoller\AutoTrigger.cs" />
     <Compile Include="DebugTool\Debugger\TriggerConditionViewer\TriggerConditionViewerWindow.cs">
       <SubType>Form</SubType>
@@ -127,10 +98,8 @@
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\Range.cs" />
-    <Compile Include="Graphics\ByteVec4.cs" />
     <Compile Include="Graphics\PostProcesses\ClipPostProcess.cs" />
     <Compile Include="Graphics\PostProcesses\PostProcessFrameBuffer.cs" />
-    <Compile Include="Graphics\HalfVector.cs" />
     <Compile Include="Graphics\PostProcesses\APostProcess.cs" />
     <Compile Include="Graphics\PostProcesses\PostProcessesManager.cs" />
     <Compile Include="Graphics\PostProcesses\FinalPostProcess.cs" />
@@ -145,10 +114,9 @@
     <Compile Include="OutputEncoding\Player\EncodingProcessPlayer.cs" />
     <Compile Include="Optimzer\OptimzerBase.cs" />
     <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
-    <Compile Include="Parser\CommandParser\ValueCommandParser\ByteVec4CommandParser.cs" />
-    <Compile Include="Parser\CommandParser\TriggerCommandParser.cs" />
     <Compile Include="BeatmapParser\HitObjectHelpers.cs" />
-    <Compile Include="Parser\Extension\ParserExtension.cs" />
+    <Compile Include="Parser\BeatmapFolderInfo.cs" />
+    <Compile Include="Parser\StoryboardParserHelper.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />
@@ -174,11 +142,9 @@
     <Compile Include="DebugTool\MouseInput.cs" />
     <Compile Include="Kernel\ExecutorSync.cs" />
     <Compile Include="Kernel\StoryboardInstanceManager.cs" />
-    <Compile Include="Parser\BeatmapFolderInfo.cs" />
     <Compile Include="Player\MusicPlayer.cs" />
     <Compile Include="Player\PlayerBase.cs" />
     <Compile Include="Player\MusicPlayerManager.cs" />
-    <Compile Include="Utils\Log.cs" />
     <Compile Include="DebugTool\DebuggerManager.cs" />
     <Compile Include="DebugTool\DebuggerBase.cs" />
     <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.cs">
@@ -193,42 +159,11 @@
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\SpriteInstanceGroup.cs" />
     <Compile Include="Graphics\Texture.cs" />
-    <Compile Include="Graphics\Vec4.cs" />
-    <Compile Include="Graphics\Vector.cs" />
     <Compile Include="MainProgram.cs" />
-    <Compile Include="Parser\Base\StoryboardObjectType.cs" />
-    <Compile Include="Parser\Collection\CharPatternCollection.cs" />
-    <Compile Include="Parser\CommandParser\CommandParserIntance.cs" />
-    <Compile Include="Parser\CommandParser\ValueCommandParser\FloatCommandParser.cs" />
-    <Compile Include="Parser\CommandParser\ICommandParser.cs" />
-    <Compile Include="Parser\CommandParser\IValueCommandParser.cs" />
-    <Compile Include="Parser\CommandParser\LoopCommandParser.cs" />
-    <Compile Include="Parser\CommandParser\ParameterCommandParser.cs" />
-    <Compile Include="Parser\CommandParser\ValueCommandParser\SplitableMoveParser.cs" />
-    <Compile Include="Parser\CommandParser\ValueCommandParser\SplitableScaleCommandParser.cs" />
-    <Compile Include="Parser\CommandParser\ValueCommandParser\Vec4CommandParser.cs" />
-    <Compile Include="Parser\CommandParser\ValueCommandParser\VectorCommandParser.cs" />
-    <Compile Include="Parser\Rubbish\EnumParser.cs" />
-    <Compile Include="Utils\StringMethodExtension.cs" />
-    <Compile Include="Parser\StoryboardParserHelper.cs" />
-    <Compile Include="Parser\Reader\EventReader.cs" />
-    <Compile Include="Parser\Stream\OsuFileReader.cs" />
-    <Compile Include="Parser\Reader\IReader.cs" />
-    <Compile Include="Parser\Reader\VariableReader.cs" />
-    <Compile Include="Parser\Section.cs" />
-    <Compile Include="Parser\StoryboardVariable.cs" />
-    <Compile Include="Parser\Reader\StoryboardReader.cs" />
-    <Compile Include="Parser\Collection\VariableCollection.cs" />
-    <Compile Include="Parser\Reader\SectionReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Base\StoryBoardObject.cs" />
-    <Compile Include="Kernel\StoryBoardInstance.cs" />
     <Compile Include="Graphics\StoryboardWindow.cs" />
     <Compile Include="Setting.cs" />
-    <Compile Include="Utils\ObjectPool.cs" />
-    <Compile Include="Utils\StopwatchRun.cs" />
     <Compile Include="Utils\StoryboardPlayerHelper.cs" />
-    <Compile Include="Utils\StoryboardUpdateLimitCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -258,6 +193,10 @@
     <ProjectReference Include="..\..\storybrew\common\common.csproj">
       <Project>{f0edccec-4b64-4ce8-801f-1377e3384dc4}</Project>
       <Name>common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReStoryboardPlayer.Core\ReStoryboardPlayer.Core.csproj">
+      <Project>{31711b28-3825-4eb4-a6e7-959b699eb3ab}</Project>
+      <Name>ReStoryboardPlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
       <Project>{AB4CABA1-06E4-4A32-8A15-1FBE20ED5BC6}</Project>

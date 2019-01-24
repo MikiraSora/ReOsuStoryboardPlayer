@@ -1,9 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.Base;
+﻿using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.Optimzer.Runtime;
-using ReOsuStoryBoardPlayer.Parser.Collection;
-using ReOsuStoryBoardPlayer.Parser.Reader;
-using ReOsuStoryBoardPlayer.Parser.Stream;
-using ReOsuStoryBoardPlayer.Utils;
+using ReOsuStoryBoardPlayer.Core.Parser.Collection;
+using ReOsuStoryBoardPlayer.Core.Parser.Reader;
+using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

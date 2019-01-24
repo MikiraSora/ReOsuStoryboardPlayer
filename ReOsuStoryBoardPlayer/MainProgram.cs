@@ -7,15 +7,20 @@ using ReOsuStoryBoardPlayer.ProgramCommandParser;
 using System.Linq;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
 using System.Runtime.InteropServices;
-using ReOsuStoryBoardPlayer.Parser.Stream;
-using ReOsuStoryBoardPlayer.Parser.Collection;
-using ReOsuStoryBoardPlayer.Parser.Reader;
+using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+using ReOsuStoryBoardPlayer.Core.Parser.Collection;
+using ReOsuStoryBoardPlayer.Core.Parser.Reader;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System.IO;
 using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryBoardPlayer.OutputEncoding;
 using ReOsuStoryBoardPlayer.OutputEncoding.Player;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
 using ReOsuStoryBoardPlayer.Utils;
+using ReOsuStoryBoardPlayer.Core.Parser;
+using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+using ReOsuStoryBoardPlayer.Core.Parser.Collection;
+using ReOsuStoryBoardPlayer.Core.Parser.Reader;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -67,7 +72,7 @@ namespace ReOsuStoryBoardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"548679 DJ NAGAI feat a_ru - Benibotan";
+            beatmap_folder=@"G:\SBTest\747823 Eisyo-kobu - Oriental Blossom";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

@@ -23,6 +23,7 @@ SOFTWARE.
 */
 #pragma warning disable IDE1006 // 命名样式
 using OpenTK.Graphics;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using StorybrewCommon.Mapset;
 using StorybrewCommon.Util;
 using System;
