@@ -10,13 +10,13 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
         public byte Z { get; set; }
         public byte W { get; set; }
 
-        public static ByteVec4 Zero { get { return new ByteVec4(0,0,0,0); } }
-        public static ByteVec4 Full { get { return new ByteVec4(255,255,255,255); } }
+        public static ByteVec4 Zero { get { return new ByteVec4(0, 0, 0, 0); } }
+        public static ByteVec4 Full { get { return new ByteVec4(255, 255, 255, 255); } }
 
-        public ByteVec4(byte x, byte y,byte z,byte w)
+        public ByteVec4(byte x, byte y, byte z, byte w)
         {
-            this.X =x;
-            this.Y = y;
+            this.X=x;
+            this.Y=y;
             this.Z=z;
             this.W=w;
         }
@@ -28,7 +28,7 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public ByteVec4 Add(ByteVec4 vec)
         {
-            return new ByteVec4((byte)(X + vec.X), (byte)(Y + vec.Y), (byte)(Z+vec.Z), (byte)(W+vec.W));
+            return new ByteVec4((byte)(X+vec.X), (byte)(Y+vec.Y), (byte)(Z+vec.Z), (byte)(W+vec.W));
         }
 
         public static ByteVec4 Lerp(ByteVec4 value1, ByteVec4 value2, float amount)
@@ -42,8 +42,8 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static ByteVec4 operator -(ByteVec4 value)
         {
-            value.X =(byte)-value.X;
-            value.Y =(byte)-value.Y;
+            value.X=(byte)-value.X;
+            value.Y=(byte)-value.Y;
             value.W=(byte)-value.W;
             value.Z=(byte)-value.Z;
             return value;
@@ -51,18 +51,18 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static bool operator ==(ByteVec4 value1, ByteVec4 value2)
         {
-            return value1.X == value2.X && value1.Y == value2.Y && value1.W==value2.W && value1.Z==value2.Z;
+            return value1.X==value2.X&&value1.Y==value2.Y&&value1.W==value2.W&&value1.Z==value2.Z;
         }
 
         public static bool operator !=(ByteVec4 value1, ByteVec4 value2)
         {
-            return value1.X != value2.X || value1.Y != value2.Y ||value1.W!=value2.W||value1.Z!=value2.Z;
+            return value1.X!=value2.X||value1.Y!=value2.Y||value1.W!=value2.W||value1.Z!=value2.Z;
         }
 
         public static ByteVec4 operator /(ByteVec4 value1, ByteVec4 value2)
         {
-            value1.X /= value2.X;
-            value1.Y /= value2.Y;
+            value1.X/=value2.X;
+            value1.Y/=value2.Y;
             value1.Z/=value2.Z;
             value1.W/=value2.W;
             return value1;
@@ -70,8 +70,8 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static ByteVec4 operator +(ByteVec4 value1, ByteVec4 value2)
         {
-            value1.X += value2.X;
-            value1.Y += value2.Y;
+            value1.X+=value2.X;
+            value1.Y+=value2.Y;
             value1.W+=value2.W;
             value1.Z+=value2.Z;
             return value1;
@@ -79,8 +79,8 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static ByteVec4 operator -(ByteVec4 value1, ByteVec4 value2)
         {
-            value1.X -= value2.X;
-            value1.Y -= value2.Y;
+            value1.X-=value2.X;
+            value1.Y-=value2.Y;
             value1.W-=value2.W;
             value1.Z-=value2.Z;
             return value1;
@@ -88,8 +88,8 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static ByteVec4 operator /(ByteVec4 value1, float divider)
         {
-            float factor = 1 / divider;
-            value1.X = (byte)(value1.X*factor);
+            float factor = 1/divider;
+            value1.X=(byte)(value1.X*factor);
             value1.Y=(byte)(value1.Y*factor);
             value1.W=(byte)(value1.W*factor);
             value1.Z=(byte)(value1.Z*factor);
@@ -98,8 +98,8 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static ByteVec4 operator *(ByteVec4 value1, ByteVec4 value2)
         {
-            value1.X *= value2.X;
-            value1.Y *= value2.Y;
+            value1.X*=value2.X;
+            value1.Y*=value2.Y;
             value1.W*=value2.W;
             value1.Z*=value2.Z;
             return value1;
@@ -111,7 +111,7 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
             value.Y=(byte)(value.Y*scaleFactor);
             value.W=(byte)(value.W*scaleFactor);
             value.Z=(byte)(value.Z*scaleFactor);
-            
+
             return value;
         }
 
@@ -132,7 +132,7 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static double Lerp(double value1, double value2, double amount)
         {
-            return value1 + (value2 - value1) * amount;
+            return value1+(value2-value1)*amount;
         }
 
         public override bool Equals(object obj)

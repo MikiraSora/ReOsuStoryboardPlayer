@@ -1,10 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Utils;
-using System;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser
 {
@@ -16,12 +13,10 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser
         {
             CMD command = new CMD();
 
-            command.Easing = (EasingTypes)data_arr.ElementAt(1).ToInt();
-            
-            
+            command.Easing=(EasingTypes)data_arr.ElementAt(1).ToInt();
+
             if (Setting.FunReverseEasing)
                 command.Easing=Interpolation.GetReverseEasing(command.Easing);
-                
 
             command.StartTime=StartTime;
             command.EndTime=EndTime;

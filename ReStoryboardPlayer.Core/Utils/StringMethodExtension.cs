@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ReOsuStoryBoardPlayer.Core.Utils
+﻿namespace ReOsuStoryBoardPlayer.Core.Utils
 {
     public static class StringMethodExtension
     {

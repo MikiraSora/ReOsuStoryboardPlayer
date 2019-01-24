@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -19,11 +18,11 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
 
         static ObjectPool()
         {
-            _t = new Timer(_ =>
-            {
-                foreach (var x in _pool_objects)
-                    x.Clean();
-            }, null, 0, 10_000);
+            _t=new Timer(_ =>
+          {
+              foreach (var x in _pool_objects)
+                  x.Clean();
+          }, null, 0, 10_000);
         }
 
         public T GetObject()
@@ -35,7 +34,7 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
 
         public void PutObject(T item)
         {
-            if (item != null)
+            if (item!=null)
                 _objects.Add(item);
         }
 
@@ -47,7 +46,7 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
 
         public override void Clean()
         {
-            while (_objects.Count != 0)
+            while (_objects.Count!=0)
                 _objects.TryTake(out _);
         }
 
@@ -57,9 +56,9 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
         {
             get
             {
-                if (_instance == null)
+                if (_instance==null)
                 {
-                    _instance = new ObjectPool<T>();
+                    _instance=new ObjectPool<T>();
                     _pool_objects.Add(_instance);
                 }
                 return _instance;

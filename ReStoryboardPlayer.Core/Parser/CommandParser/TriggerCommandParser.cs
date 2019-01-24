@@ -1,11 +1,8 @@
-﻿using System;
+﻿using ReOsuStoryBoardPlayer.Core.Commands;
+using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Utils;
 
 namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser
 {

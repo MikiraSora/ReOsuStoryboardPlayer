@@ -1,10 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Commands;
 using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser
 {
@@ -21,7 +18,6 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser
             w.StartValue=new Vector(scale.StartValue, scale.StartValue);
             w.EndValue=new Vector(scale.EndValue, scale.EndValue);
             yield return w;
-
 
             T _get<T>(ValueCommand c) where T : ValueCommand, new()
             {

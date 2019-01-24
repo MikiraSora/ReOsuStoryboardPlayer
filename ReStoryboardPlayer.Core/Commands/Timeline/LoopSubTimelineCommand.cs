@@ -1,6 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.Core.Commands.Group;
-using System;
 using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Core.Commands
@@ -15,32 +14,32 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
 
         public LoopSubTimelineCommand(LoopCommand loop_command, Event bind_event)
         {
-            this.loop_command = loop_command;
-            Event = bind_event;
-            timeline = loop_command.SubCommands[bind_event];
+            this.loop_command=loop_command;
+            Event=bind_event;
+            timeline=loop_command.SubCommands[bind_event];
 
-            var offset = loop_command.SubCommands.SelectMany(l=>l.Value).Min(x=>x.StartTime);
+            var offset = loop_command.SubCommands.SelectMany(l => l.Value).Min(x => x.StartTime);
 
             CostTime=loop_command.CostTime-offset;
-            StartTime = loop_command.StartTime+offset;
+            StartTime=loop_command.StartTime+offset;
             EndTime=StartTime+CostTime*loop_command.LoopCount;
 
             RelativeLine=loop_command.RelativeLine;
         }
-        
+
         public override void Execute(StoryBoardObject @object, float current_value)
         {
             float relative_time = current_value;
-            
+
             if (current_value<StartTime)
                 relative_time=timeline.StartTime;
             else if (current_value>EndTime)
                 relative_time=timeline.EndTime;
-            else if(CostTime!=0)
+            else if (CostTime!=0)
                 relative_time=(current_value-StartTime)%CostTime;
 
             //if (StartTime<=current_value&&current_value<=EndTime&&)
-            
+
             var command = timeline.PickCommand(relative_time);
 
             if (command!=null)

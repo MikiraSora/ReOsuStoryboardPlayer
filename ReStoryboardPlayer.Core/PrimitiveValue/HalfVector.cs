@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 {
@@ -17,14 +14,14 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public HalfVector(Half _x, Half _y)
         {
-            X = _x;
-            Y = _y;
+            X=_x;
+            Y=_y;
         }
 
         public HalfVector(float _x, float _y)
         {
-            X = (Half)_x;
-            Y = (Half)_y;
+            X=(Half)_x;
+            Y=(Half)_y;
         }
 
         public HalfVector Clone()
@@ -34,7 +31,7 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public HalfVector Add(HalfVector vec)
         {
-            return new HalfVector((Half)(X + vec.X), (Half)(Y + vec.Y));
+            return new HalfVector((Half)(X+vec.X), (Half)(Y+vec.Y));
         }
 
         public static HalfVector Lerp(HalfVector value1, HalfVector value2, Half amount)
@@ -46,79 +43,79 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
 
         public static HalfVector operator -(HalfVector value)
         {
-            value.X = (Half)(-value.X);
-            value.Y = (Half)(-value.Y);
+            value.X=(Half)(-value.X);
+            value.Y=(Half)(-value.Y);
             return value;
         }
 
         public static bool operator ==(HalfVector value1, HalfVector value2)
         {
-            return value1.X == value2.X && value1.Y == value2.Y;
+            return value1.X==value2.X&&value1.Y==value2.Y;
         }
 
         public static bool operator !=(HalfVector value1, HalfVector value2)
         {
-            return value1.X != value2.X || value1.Y != value2.Y;
+            return value1.X!=value2.X||value1.Y!=value2.Y;
         }
 
         public static HalfVector operator /(HalfVector value1, HalfVector value2)
         {
-            value1.X /= value2.X;
-            value1.Y /= value2.Y;
+            value1.X/=value2.X;
+            value1.Y/=value2.Y;
             return value1;
         }
 
         public static HalfVector operator +(HalfVector value1, HalfVector value2)
         {
-            value1.X += value2.X;
-            value1.Y += value2.Y;
+            value1.X+=value2.X;
+            value1.Y+=value2.Y;
             return value1;
         }
 
         public static HalfVector operator -(HalfVector value1, HalfVector value2)
         {
-            value1.X -= value2.X;
-            value1.Y -= value2.Y;
+            value1.X-=value2.X;
+            value1.Y-=value2.Y;
             return value1;
         }
 
         public static HalfVector operator /(HalfVector value1, Half divider)
         {
-            Half factor = (Half)(1.0f / divider);
-            value1.X *= factor;
-            value1.Y *= factor;
+            Half factor = (Half)(1.0f/divider);
+            value1.X*=factor;
+            value1.Y*=factor;
             return value1;
         }
 
         public static HalfVector operator *(HalfVector value1, HalfVector value2)
         {
-            value1.X *= value2.X;
-            value1.Y *= value2.Y;
+            value1.X*=value2.X;
+            value1.Y*=value2.Y;
             return value1;
         }
 
         public static HalfVector operator *(Half scaleFactor, HalfVector value)
         {
-            value.X *= scaleFactor;
-            value.Y *= scaleFactor;
+            value.X*=scaleFactor;
+            value.Y*=scaleFactor;
             return value;
         }
 
         public static HalfVector operator *(HalfVector value, Half scaleFactor)
         {
-            value.X *= scaleFactor;
-            value.Y *= scaleFactor;
+            value.X*=scaleFactor;
+            value.Y*=scaleFactor;
             return value;
         }
 
         public override string ToString()
         {
-            return "[" + X + ";" + Y + "]";
+            return "["+X+";"+Y+"]";
         }
 
         public static double Lerp(double value1, double value2, double amount)
         {
-            return value1 + (value2 - value1) * amount;
+            return value1+(value2-value1)*amount;
         }
 
         public override bool Equals(object obj)

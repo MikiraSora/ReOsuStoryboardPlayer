@@ -1,13 +1,11 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using ReOsuStoryBoardPlayer.Core.Commands.Group;
 using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using System.Diagnostics;
-using ReOsuStoryBoardPlayer.Core.Commands;
 using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace ReOsuStoryBoardPlayer.Core.Base
 {
@@ -27,9 +25,9 @@ namespace ReOsuStoryBoardPlayer.Core.Base
         /// </summary>
         public Action<StoryBoardObject> BaseTransformResetAction;
 
-        public int FrameStartTime=int.MinValue, FrameEndTime;
+        public int FrameStartTime = int.MinValue, FrameEndTime;
 
-        public SpriteInstanceGroup RenderGroup;
+        //public SpriteInstanceGroup RenderGroup;
 
         public Layout layout;
 
@@ -74,9 +72,11 @@ namespace ReOsuStoryBoardPlayer.Core.Base
                 case LoopCommand loop:
                     AddLoopCommand(loop);
                     break;
+
                 case TriggerCommand trigger:
                     AddTriggerCommand(trigger);
                     break;
+
                 default:
                     break;
             }
@@ -108,21 +108,21 @@ namespace ReOsuStoryBoardPlayer.Core.Base
 
         private void AddTriggerCommand(TriggerCommand trigger_command, bool insert = false)
         {
-            if (!Triggers.TryGetValue(trigger_command.GroupID,out var list))
+            if (!Triggers.TryGetValue(trigger_command.GroupID, out var list))
                 Triggers[trigger_command.GroupID]=new HashSet<TriggerCommand>();
 
             Triggers[trigger_command.GroupID].Add(trigger_command);
             trigger_command.BindObject(this);
             TriggerListener.DefaultListener.Add(this);
 
-            if (!CommandMap.TryGetValue(Event.Trigger,out var x) || x.Count==0)
+            if (!CommandMap.TryGetValue(Event.Trigger, out var x)||x.Count==0)
                 BaseTransformResetAction+=TriggerCommand.OverrideDefaultValue;
         }
 
         public void SortCommands()
         {
             foreach (var time in CommandMap.Values)
-                time.Sort((x,y) => 
+                time.Sort((x, y) =>
                 {
                     var z = x.StartTime-y.StartTime;
 
@@ -154,12 +154,14 @@ namespace ReOsuStoryBoardPlayer.Core.Base
                             t.Remove(c);
                     }
                     break;
+
                 case TriggerCommand trigger_command:
                     Triggers[trigger_command.GroupID].Remove(trigger_command);
 
-                    if (!Triggers.Values.SelectMany(l=>l).Any())
+                    if (!Triggers.Values.SelectMany(l => l).Any())
                         TriggerListener.DefaultListener.Remove(this);
                     break;
+
                 default:
                     break;
             }
@@ -179,23 +181,23 @@ namespace ReOsuStoryBoardPlayer.Core.Base
             }
         }
 
-#endregion
+        #endregion Add/Remove Command
 
         public StoryBoardObject()
         {
-            BaseTransformResetAction = (obj) =>
-           {
-               obj.Postion=new Vector(320, 240);
-               obj.Scale=new Vector(1, 1);
+            BaseTransformResetAction=(obj) =>
+         {
+             obj.Postion=new Vector(320, 240);
+             obj.Scale=new Vector(1, 1);
 
-               obj.Color=new ByteVec4(255, 255, 255, 255);
+             obj.Color=new ByteVec4(255, 255, 255, 255);
 
-               obj.Rotate=0;
+             obj.Rotate=0;
 
-               obj.IsAdditive=false;
-               obj.IsHorizonFlip=false;
-               obj.IsVerticalFlip=false;
-           };
+             obj.IsAdditive=false;
+             obj.IsHorizonFlip=false;
+             obj.IsVerticalFlip=false;
+         };
         }
 
         public void ResetTransform() => BaseTransformResetAction(this);
@@ -208,7 +210,6 @@ namespace ReOsuStoryBoardPlayer.Core.Base
 #endif
             foreach (var pair in CommandMap)
             {
-
                 var timeline = pair.Value;
                 var command = timeline.PickCommand(current_time);
 
@@ -221,7 +222,7 @@ namespace ReOsuStoryBoardPlayer.Core.Base
 #endif
             }
 
-            IsVisible = (Color.W != 0);
+            IsVisible=(Color.W!=0);
         }
 
 #if DEBUG
@@ -237,13 +238,14 @@ namespace ReOsuStoryBoardPlayer.Core.Base
             else
                 ExecutedCommands.Remove(command);
 
-            command.IsExecuted = is_exec;
+            command.IsExecuted=is_exec;
         }
 
         public void BlockCommandsChange()
         {
             command_change_block=true;
         }
+
 #endif
 
         /// <summary>
@@ -254,13 +256,13 @@ namespace ReOsuStoryBoardPlayer.Core.Base
         {
             var commands = CommandMap.SelectMany(l => l.Value);
 
-            if (commands.Count() == 0)
+            if (commands.Count()==0)
                 return;
 
             var start = commands.Min(p => p.StartTime);
             var end = commands.Max(p => p.EndTime);
 
-            Debug.Assert(FrameStartTime==int.MinValue || FrameStartTime==start || this is StoryboardBackgroundObject || Z<0, "目前实现不能再次更变FrameStartTime");
+            Debug.Assert(FrameStartTime==int.MinValue||FrameStartTime==start||this is StoryboardBackgroundObject||Z<0, "目前实现不能再次更变FrameStartTime");
 
             FrameStartTime=start;
             FrameEndTime=end;
@@ -268,7 +270,6 @@ namespace ReOsuStoryBoardPlayer.Core.Base
 
         public long FileLine { get; set; }
 
-        public override string ToString() => $"line {(FromOsbFile?"osb":"osu")}:{FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
+        public override string ToString() => $"line {(FromOsbFile ? "osb" : "osu")}:{FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
     }
 }
- 

@@ -1,15 +1,14 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
 using ReOsuStoryBoardPlayer.Core.Commands;
+using ReOsuStoryBoardPlayer.Core.Commands.Group;
 using ReOsuStoryBoardPlayer.Core.Parser.Base;
 using ReOsuStoryBoardPlayer.Core.Parser.CommandParser;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ReOsuStoryBoardPlayer.Core.Commands.Group;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
-using ReOsuStoryBoardPlayer.Core.Utils;
 
 namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 {
@@ -19,7 +18,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 
         public StoryboardReader(EventReader reader)
         {
-            Reader = reader;
+            Reader=reader;
         }
 
         public IEnumerable<StoryBoardObject> EnumValues()
@@ -33,12 +32,11 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             {
                 var storyboard_object = ParseObjectLine(packet.ObjectLine);
 
-                if (storyboard_object != null)
+                if (storyboard_object!=null)
                 {
                     storyboard_object.FileLine=packet.ObjectFileLine;
 
                     BuildCommandMapAndSetup(storyboard_object, packet.CommandLines);
-
                 }
 
                 Reader.ReturnPacket(ref packet);
@@ -69,15 +67,15 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             switch (obj_type)
             {
                 case StoryboardObjectType.Background:
-                    obj = new StoryboardBackgroundObject();
+                    obj=new StoryboardBackgroundObject();
                     break;
 
                 case StoryboardObjectType.Sprite:
-                    obj = new StoryBoardObject();
+                    obj=new StoryBoardObject();
                     break;
 
                 case StoryboardObjectType.Animation:
-                    obj = new StoryboardAnimation();
+                    obj=new StoryboardAnimation();
                     break;
 
                 default:
@@ -86,11 +84,11 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 
             if (!(obj is StoryboardBackgroundObject))
             {
-                obj.layout = (Layout)Enum.Parse(typeof(Layout), data_arr[1]);
+                obj.layout=(Layout)Enum.Parse(typeof(Layout), data_arr[1]);
 
-                obj.Anchor = GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2]));
+                obj.Anchor=GetAnchorVector((Anchor)Enum.Parse(typeof(Anchor), data_arr[2]));
 
-                obj.ImageFilePath = data_arr[3].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+                obj.ImageFilePath=data_arr[3].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
                 obj.BaseTransformResetAction+=(x) => x.Postion=new Vector(data_arr[4].ToSigle(), data_arr[5].ToSigle());
 
@@ -100,9 +98,9 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             else
             {
                 //For background object
-                obj.ImageFilePath = data_arr[2].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
+                obj.ImageFilePath=data_arr[2].Trim().Trim('\"').ToString().Replace("/", "\\").ToLower();
 
-                var position = data_arr.Length > 4 ? new Vector(data_arr[3].ToSigle(), data_arr[4].ToSigle()) : Vector.Zero;
+                var position = data_arr.Length>4 ? new Vector(data_arr[3].ToSigle(), data_arr[4].ToSigle()) : Vector.Zero;
 
                 if (position!=Vector.One)
                     obj.BaseTransformResetAction+=(x) => x.Postion=position+new Vector(320, 240);
@@ -114,14 +112,14 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
         private void ParseStoryboardAnimation(StoryboardAnimation animation, string[] sprite_param)
         {
             int dot_position = animation.ImageFilePath.LastIndexOf('.');
-            animation.FrameFileExtension = animation.ImageFilePath.Substring(dot_position);
-            animation.FrameBaseImagePath = animation.ImageFilePath.Replace(animation.FrameFileExtension, string.Empty);
+            animation.FrameFileExtension=animation.ImageFilePath.Substring(dot_position);
+            animation.FrameBaseImagePath=animation.ImageFilePath.Replace(animation.FrameFileExtension, string.Empty);
 
-            animation.FrameCount = sprite_param[6].ToInt();
+            animation.FrameCount=sprite_param[6].ToInt();
 
-            animation.FrameDelay = sprite_param[7].ToSigle();
+            animation.FrameDelay=sprite_param[7].ToSigle();
 
-            animation.LoopType = (LoopType)Enum.Parse(typeof(LoopType), sprite_param[8]);
+            animation.LoopType=(LoopType)Enum.Parse(typeof(LoopType), sprite_param[8]);
         }
 
         private readonly static Dictionary<Anchor, HalfVector> AnchorVectorMap = new Dictionary<Anchor, HalfVector>()
@@ -141,13 +139,13 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 
         private void BuildCommandMapAndSetup(StoryBoardObject obj, List<string> lines)
         {
-            var list = /*lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : */ ParseCommands(lines,obj.FileLine);
+            var list = /*lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : */ ParseCommands(lines, obj.FileLine);
 
             foreach (var cmd in list)
                 obj.AddCommand(cmd);
         }
 
-        public List<Command> ParseCommands(List<string> lines,long base_line)
+        public List<Command> ParseCommands(List<string> lines, long base_line)
         {
             List<Command> commands = new List<Command>(), cur_group_cmds = ObjectPool<List<Command>>.Instance.GetObject();
 
@@ -200,7 +198,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             {
                 var line = lines[i];
                 var data_arr = line.Split(',');
-                var is_sub_cmds = data_arr.First().StartsWith("  ") || data_arr.First().StartsWith("__");
+                var is_sub_cmds = data_arr.First().StartsWith("  ")||data_arr.First().StartsWith("__");
 
                 var temp_list = CommandParserIntance.Parse(data_arr);
 
@@ -211,7 +209,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             var sub_cmds = result.Where(x => x.is_sub);
             var fin_list = result.Except(sub_cmds.Where(sub_cmd =>
             {
-                var r = result.FirstOrDefault(z => z.index == sub_cmd.index - 1);
+                var r = result.FirstOrDefault(z => z.index==sub_cmd.index-1);
 
                 if (r.cmd is GroupCommand group)
                     group.AddSubCommand(sub_cmd.cmd);

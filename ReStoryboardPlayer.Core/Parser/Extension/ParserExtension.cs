@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReOsuStoryBoardPlayer.Core.Parser.Extension
+﻿namespace ReOsuStoryBoardPlayer.Core.Parser.Extension
 {
     public static class ParserExtension
     {

@@ -3,13 +3,13 @@ using System.IO;
 
 namespace ReOsuStoryBoardPlayer.Core.Parser.Stream
 {
-    public class OsuFileReader:IDisposable
+    public class OsuFileReader : IDisposable
     {
         private StreamReader reader;
 
         public bool EndOfStream => reader.EndOfStream;
 
-        public int FileLine=0;
+        public int FileLine = 0;
 
         public OsuFileReader(string file_path)
         {
@@ -47,10 +47,10 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Stream
 
         private static bool IsSection(string name, Section section)
         {
-            if (Enum.TryParse(name, out Section s) && s == section)
+            if (Enum.TryParse(name, out Section s)&&s==section)
                 return true;
 
-            if (int.TryParse(name, out var si) && (Section)si == section)
+            if (int.TryParse(name, out var si)&&(Section)si==section)
                 return true;
 
             return false;

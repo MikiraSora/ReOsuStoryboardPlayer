@@ -13,8 +13,8 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 
         public SectionReader(Section section, OsuFileReader reader)
         {
-            this.section = section;
-            this.reader = reader;
+            this.section=section;
+            this.reader=reader;
         }
 
         public IEnumerable<string> EnumValues()
@@ -26,19 +26,21 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             {
                 var line = reader.ReadLine();
 
-                if (line.Length > 2 && line[0] == '[' && line[line.Length - 1] == ']')
+                if (line.Length>2&&line[0]=='['&&line[line.Length-1]==']')
                     break;
 
                 yield return line;
             }
         }
 
-        readonly static char[] split = new[] { ':' };
+        private static readonly char[] split = new[] { ':' };
+
         public string ReadProperty(string name)
         {
-            foreach (var line in EnumValues().Where(x=>x.StartsWith(name)))
+            foreach (var line in EnumValues().Where(x => x.StartsWith(name)))
             {
-                var data = line.Split(split, 2).Select(x=> {
+                var data = line.Split(split, 2).Select(x =>
+                {
                     x.Trim();
                     return x;
                 });

@@ -1,10 +1,7 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Utils;
-using System;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser
 {

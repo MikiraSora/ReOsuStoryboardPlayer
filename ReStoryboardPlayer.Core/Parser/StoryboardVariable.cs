@@ -13,21 +13,21 @@ namespace ReOsuStoryBoardPlayer.Core.Parser
 
         public StoryboardVariable(string name, string value)
         {
-            if (value.Length != 0 && name.FirstOrDefault() != '$')
+            if (value.Length!=0&&name.FirstOrDefault()!='$')
                 throw new Exception("StoryboardVariable name first char must be '$'");
 
-            Name = name ?? string.Empty;
-            Value = value ?? string.Empty;
+            Name=name??string.Empty;
+            Value=value??string.Empty;
         }
 
         public int CompareTo(StoryboardVariable other)
         {
-            return (Name ?? string.Empty).CompareTo(other.Name ?? string.Empty);
+            return (Name??string.Empty).CompareTo(other.Name??string.Empty);
         }
 
-        public static bool operator ==(StoryboardVariable x, StoryboardVariable y) => x.CompareTo(y) == 0;
+        public static bool operator ==(StoryboardVariable x, StoryboardVariable y) => x.CompareTo(y)==0;
 
-        public static bool operator !=(StoryboardVariable x, StoryboardVariable y) => !(x == y);
+        public static bool operator !=(StoryboardVariable x, StoryboardVariable y) => !(x==y);
 
         public override string ToString() => $"{Name} = {Value}";
 

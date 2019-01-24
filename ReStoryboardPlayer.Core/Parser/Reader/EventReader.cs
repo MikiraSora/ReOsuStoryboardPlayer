@@ -1,7 +1,6 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Parser.Collection;
 using ReOsuStoryBoardPlayer.Core.Parser.Extension;
 using ReOsuStoryBoardPlayer.Core.Parser.Stream;
-using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -14,11 +13,11 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
         public string ObjectLine;
         public long ObjectFileLine;
 
-        public static readonly StoryboardPacket Empty = new StoryboardPacket() { ObjectFileLine = -2857 };
+        public static readonly StoryboardPacket Empty = new StoryboardPacket() { ObjectFileLine=-2857 };
 
         public int CompareTo(StoryboardPacket other)
         {
-            return Math.Sign(ObjectFileLine - other.ObjectFileLine);
+            return Math.Sign(ObjectFileLine-other.ObjectFileLine);
         }
 
         public override bool Equals(object obj)
@@ -43,9 +42,9 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             return hashCode;
         }
 
-        public static bool operator ==(StoryboardPacket a, StoryboardPacket b) => a.CompareTo(b) == 0;
+        public static bool operator ==(StoryboardPacket a, StoryboardPacket b) => a.CompareTo(b)==0;
 
-        public static bool operator !=(StoryboardPacket a, StoryboardPacket b) => !(a == b);
+        public static bool operator !=(StoryboardPacket a, StoryboardPacket b) => !(a==b);
     }
 
     public class EventReader : IReader<StoryboardPacket>
@@ -63,8 +62,8 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 
         public EventReader(OsuFileReader reader, VariableCollection variables)
         {
-            Variables = variables;
-            this.reader = new SectionReader(Section.Events, reader);
+            Variables=variables;
+            this.reader=new SectionReader(Section.Events, reader);
         }
 
         private StoryboardPacket packet = StoryboardPacket.Empty;
@@ -81,12 +80,12 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
                         //return current object
                         var t = packet;
 
-                        packet = new StoryboardPacket();
-                        packet.CommandLines = new List<string>();
-                        packet.ObjectFileLine =reader.FileLine;
-                        packet.ObjectLine =decode_line;
+                        packet=new StoryboardPacket();
+                        packet.CommandLines=new List<string>();
+                        packet.ObjectFileLine=reader.FileLine;
+                        packet.ObjectLine=decode_line;
 
-                        if (t != StoryboardPacket.Empty)
+                        if (t!=StoryboardPacket.Empty)
                             yield return t;
 
                         break;
@@ -102,10 +101,10 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
                 }
             }
 
-            if (packet != StoryboardPacket.Empty)
+            if (packet!=StoryboardPacket.Empty)
             {
                 yield return packet;
-                packet = StoryboardPacket.Empty;
+                packet=StoryboardPacket.Empty;
             }
         }
 
@@ -114,7 +113,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             if (!line.CheckLineValid())
                 return LineType.Others;
 
-            if (line[0] == '_' || line[0] == ' ')
+            if (line[0]=='_'||line[0]==' ')
                 return LineType.Command;
 
             return LineType.Object;
@@ -123,7 +122,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
         public void ReturnPacket(ref StoryboardPacket packet)
         {
             //force set null and wait for GC
-            packet = StoryboardPacket.Empty;
+            packet=StoryboardPacket.Empty;
         }
 
         public string LineProcessVariable(string line)

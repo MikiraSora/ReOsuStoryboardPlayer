@@ -9,7 +9,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
         internal bool IsExecuted = false;
 #endif
 
-        public long RelativeLine=-1;
+        public long RelativeLine = -1;
 
         public Event Event;
 
@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
 
         public int EndTime;
 
-        public int CompareTo(Command other) => StartTime - other.StartTime;
+        public int CompareTo(Command other) => StartTime-other.StartTime;
 
         public abstract void Execute(StoryBoardObject @object, float time);
 

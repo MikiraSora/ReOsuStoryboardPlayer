@@ -10,20 +10,20 @@ namespace ReOsuStoryBoardPlayer.Core.Base
 
             AddCommand(new FadeCommand()
             {
-                Easing = /*EasingConverter.GetEasingInterpolator(Easing.Linear)*/EasingTypes.None,
-                StartTime = -2857,
-                EndTime = -2857,
-                StartValue = 1,
-                EndValue = 1
+                Easing= /*EasingConverter.GetEasingInterpolator(Easing.Linear)*/EasingTypes.None,
+                StartTime=-2857,
+                EndTime=-2857,
+                StartValue=1,
+                EndValue=1
             });
 
             AddCommand(new FadeCommand()
             {
-                Easing = /*EasingConverter.GetEasingInterpolator(Easing.Linear)*/EasingTypes.None,
-                StartTime = int.MaxValue - 2857,
-                EndTime = int.MaxValue - 2857,
-                StartValue = 1,
-                EndValue = 1
+                Easing= /*EasingConverter.GetEasingInterpolator(Easing.Linear)*/EasingTypes.None,
+                StartTime=int.MaxValue-2857,
+                EndTime=int.MaxValue-2857,
+                StartValue=1,
+                EndValue=1
             });
 
             /*todo

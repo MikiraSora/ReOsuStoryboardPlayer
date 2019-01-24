@@ -1,17 +1,14 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser
 {
-    public class SplitableMoveCommandParser: VectorCommandParser<MoveCommand>
+    public class SplitableMoveCommandParser : VectorCommandParser<MoveCommand>
     {
         public override IEnumerable<Command> Parse(IEnumerable<string> data_arr)
         {
-            return base.Parse(data_arr).OfType<MoveCommand>().Select(p=>SplitCommand(p)).SelectMany(l=>l);
+            return base.Parse(data_arr).OfType<MoveCommand>().Select(p => SplitCommand(p)).SelectMany(l => l);
         }
 
         private IEnumerable<Command> SplitCommand(MoveCommand move)
@@ -25,7 +22,6 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser
             y.StartValue=move.StartValue.Y;
             y.EndValue=move.EndValue.Y;
             yield return y;
-
 
             T _get<T>(ValueCommand c) where T : ValueCommand, new()
             {

@@ -12,7 +12,7 @@ namespace ReOsuStoryBoardPlayer.Core.Base
 
         public LoopType LoopType;
 
-        public SpriteInstanceGroup[] backup_group;
+        //public SpriteInstanceGroup[] backup_group;
 
         private int prev_frame_index = -2857;
 
@@ -20,19 +20,19 @@ namespace ReOsuStoryBoardPlayer.Core.Base
         {
             base.Update(current_time);
 
-            float current_frame_index = (current_time - FrameStartTime) / FrameDelay;
+            float current_frame_index = (current_time-FrameStartTime)/FrameDelay;
 
-            current_frame_index = (int)(LoopType == LoopType.LoopForever ? (current_frame_index % FrameCount) : Math.Min(current_frame_index, FrameCount - 1));
+            current_frame_index=(int)(LoopType==LoopType.LoopForever ? (current_frame_index%FrameCount) : Math.Min(current_frame_index, FrameCount-1));
 
             int result = Math.Max(0, (int)current_frame_index);
 
-            if (prev_frame_index != result)
+            if (prev_frame_index!=result)
             {
-                ImageFilePath = FrameBaseImagePath + result + FrameFileExtension;
-                this.RenderGroup = backup_group[result];
+                ImageFilePath=FrameBaseImagePath+result+FrameFileExtension;
+                //this.RenderGroup = backup_group[result];
             }
 
-            prev_frame_index = result;
+            prev_frame_index=result;
         }
     }
 }

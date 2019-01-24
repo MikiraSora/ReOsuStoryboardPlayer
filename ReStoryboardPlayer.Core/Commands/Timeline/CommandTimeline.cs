@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryBoardPlayer.Core.Base;
+using ReOsuStoryBoardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,16 +9,16 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
 {
     public class CommandTimeline : List<Command>
     {
-        public int StartTime=int.MaxValue;
+        public int StartTime = int.MaxValue;
         public int EndTime;
 
         public bool Overlay { get; set; }
 
-        public Event Event=Event.Unknown;
+        public Event Event = Event.Unknown;
 
         public new void Add(Command command)
         {
-            Debug.Assert(((Event==Event.Unknown ? (Event=command.Event) : Event)==Event) && Event==command.Event,"Not allow to add different event command");
+            Debug.Assert(((Event==Event.Unknown ? (Event=command.Event) : Event)==Event)&&Event==command.Event, "Not allow to add different event command");
 
             //check overlay
             if (Count>=1)
@@ -86,6 +87,6 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
             bool TimeInCommand(Command c) => (current_time>=c.StartTime&&current_time<=c.EndTime);
         }
 
-        public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(Overlay ? "Overlay":string.Empty)}";
+        public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(Overlay ? "Overlay" : string.Empty)}";
     }
 }

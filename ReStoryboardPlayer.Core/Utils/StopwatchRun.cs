@@ -16,12 +16,11 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
 
         private StopwatchRun(string message) : this(() => message)
         {
-
         }
 
         private StopwatchRun(Func<string> callback) : this()
         {
-            this.callback = callback;
+            this.callback=callback;
         }
 
         public void Dispose()
@@ -32,6 +31,7 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
         }
 
         public static StopwatchRun Count(string message) => new StopwatchRun(message);
+
         public static StopwatchRun Count(Func<string> callback) => new StopwatchRun(callback);
     }
 }

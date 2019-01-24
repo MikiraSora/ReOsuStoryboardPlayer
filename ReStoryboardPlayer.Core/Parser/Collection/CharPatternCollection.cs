@@ -19,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
 
             public CharItem(char c, T val)
             {
-                Val = val;
+                Val=val;
             }
 
             public T Val { get; set; }
@@ -67,9 +67,9 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
         /// <param name="variables">初始集合</param>
         public CharPatternCollectionBase(Func<T, string> PathProjectionFunc, T InvaildTValue, IEnumerable<T> variables)
         {
-            this.PathProjectionFunc = PathProjectionFunc;
-            this.InvaildTValue = InvaildTValue;
-            root = new CharItem('\0', InvaildTValue);
+            this.PathProjectionFunc=PathProjectionFunc;
+            this.InvaildTValue=InvaildTValue;
+            root=new CharItem('\0', InvaildTValue);
             foreach (var variable in variables)
                 Add(variable);
         }
@@ -88,7 +88,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
                 if (!cur_item.NextMap.TryGetValue(ch, out var item))
                     return InvaildTValue;
 
-                cur_item = cur_item.NextMap[ch];
+                cur_item=cur_item.NextMap[ch];
             }
 
             return cur_item.Val;
@@ -103,12 +103,12 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
             foreach (var ch in key)
             {
                 if (!cur_item.NextMap.TryGetValue(ch, out var item))
-                    cur_item.NextMap[ch] = new CharItem(ch, default(T));
+                    cur_item.NextMap[ch]=new CharItem(ch, default(T));
 
-                cur_item = cur_item.NextMap[ch];
+                cur_item=cur_item.NextMap[ch];
             }
 
-            cur_item.Val = value;
+            cur_item.Val=value;
         }
 
         public bool Remove(string key)
@@ -120,17 +120,17 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
                 if (!cur_item.NextMap.TryGetValue(ch, out var item))
                     return false;
 
-                cur_item = cur_item.NextMap[ch];
+                cur_item=cur_item.NextMap[ch];
             }
 
-            cur_item.Val = InvaildTValue;
+            cur_item.Val=InvaildTValue;
             return true;
         }
 
         public bool TryGetValue(string key, out T value)
         {
             var val = Get(key);
-            value = !ValueEquals(val, InvaildTValue) ? val : InvaildTValue;
+            value=!ValueEquals(val, InvaildTValue) ? val : InvaildTValue;
             return !ValueEquals(val, InvaildTValue);
         }
 
@@ -148,7 +148,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
         {
             var val = Get(item.Key);
 
-            return !ValueEquals(val, InvaildTValue) && ValueEquals(val, item.Value);
+            return !ValueEquals(val, InvaildTValue)&&ValueEquals(val, item.Value);
         }
 
         public void CopyTo(KeyValuePair<string, T>[] array, int arrayIndex)
@@ -167,7 +167,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
                 yield return item;
         }
 
-        private bool ValueEquals(T a, T b) => a.CompareTo(b) == 0;
+        private bool ValueEquals(T a, T b) => a.CompareTo(b)==0;
 
         private IEnumerable<KeyValuePair<string, T>> GetVariables(CharItem item)
         {

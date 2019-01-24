@@ -24,6 +24,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryBoardPlayer.Core.Kernel;
 
 namespace ReOsuStoryBoardPlayer
 {

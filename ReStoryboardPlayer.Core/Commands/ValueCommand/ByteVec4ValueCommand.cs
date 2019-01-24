@@ -6,13 +6,13 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
 {
     internal class ColorCommand : ValueCommand<ByteVec4>
     {
-        public ColorCommand() => Event = Event.Color;
+        public ColorCommand() => Event=Event.Color;
 
         public override void ApplyValue(StoryBoardObject @object, ByteVec4 value)
         {
-            @object.Color.X = value.X;
-            @object.Color.Y = value.Y;
-            @object.Color.Z = value.Z;
+            @object.Color.X=value.X;
+            @object.Color.Y=value.Y;
+            @object.Color.Z=value.Z;
         }
 
         public override ByteVec4 CalculateValue(float normalize_value)

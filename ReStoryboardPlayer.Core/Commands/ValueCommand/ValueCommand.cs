@@ -13,12 +13,14 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
         #region Evil Methods
 
         public object GetStartValue() => GetType().GetProperty("StartValue").GetValue(this);
+
         public object GetEndValue() => GetType().GetProperty("EndValue").GetValue(this);
 
         public T GetEndValue<T>() => (T)GetEndValue();
+
         public T GetStartValue<T>() => (T)GetStartValue();
 
-        #endregion
+        #endregion Evil Methods
     }
 
     public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
@@ -35,12 +37,12 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
 
         private float CalculateNormalizeValue(float time)
         {
-            if (time <= StartTime)
+            if (time<=StartTime)
                 return 0;
-            else if (time >= EndTime)
+            else if (time>=EndTime)
                 return 1;
             else
-                return (float)Interpolation.ApplyEasing(Easing,(time-StartTime)/(EndTime-StartTime));
+                return (float)Interpolation.ApplyEasing(Easing, (time-StartTime)/(EndTime-StartTime));
         }
 
         public override void Execute(StoryBoardObject @object, float time)

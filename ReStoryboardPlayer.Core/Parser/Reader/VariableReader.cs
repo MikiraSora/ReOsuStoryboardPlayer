@@ -11,7 +11,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 
         public VariableReader(OsuFileReader reader)
         {
-            this.reader = new SectionReader(Section.Variables, reader);
+            this.reader=new SectionReader(Section.Variables, reader);
         }
 
         public IEnumerable<StoryboardVariable> EnumValues()
@@ -19,12 +19,12 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             foreach (var line in reader.EnumValues())
             {
                 var arr = line.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-                if (arr.Length != 2)
+                if (arr.Length!=2)
                     continue;
 
                 var variable = new StoryboardVariable();
-                variable.Name = arr.First();
-                variable.Value = arr.Last();
+                variable.Name=arr.First();
+                variable.Value=arr.Last();
 
                 yield return variable;
             }

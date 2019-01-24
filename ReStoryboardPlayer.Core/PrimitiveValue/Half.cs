@@ -395,6 +395,7 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
         public static readonly float Epsilon = 0.00097656f;
 
 #pragma warning disable SA1611 // Element parameters should be documented
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Half"/> struct.
         /// Used by <see cref="ISerializable"/> to deserialize the object.
@@ -411,6 +412,7 @@ namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
         {
             info.AddValue("bits", _bits);
         }
+
 #pragma warning restore SA1611 // Element parameters should be documented
 
         /// <summary>
