@@ -1,5 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Parser.Extension;
-using ReOsuStoryBoardPlayer.ProgramCommandParser;
+﻿using ReOsuStoryBoardPlayer.ProgramCommandParser;
+using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

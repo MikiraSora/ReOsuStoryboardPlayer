@@ -2,7 +2,6 @@
 using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Parser.Base;
 using ReOsuStoryBoardPlayer.Parser.CommandParser;
-using ReOsuStoryBoardPlayer.Parser.Extension;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Utils;
 using System;

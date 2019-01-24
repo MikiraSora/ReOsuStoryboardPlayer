@@ -6,7 +6,6 @@ using System;
 using ReOsuStoryBoardPlayer.ProgramCommandParser;
 using System.Linq;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
-using ReOsuStoryBoardPlayer.Parser.Extension;
 using System.Runtime.InteropServices;
 using ReOsuStoryBoardPlayer.Parser.Stream;
 using ReOsuStoryBoardPlayer.Parser.Collection;
@@ -16,6 +15,7 @@ using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryBoardPlayer.OutputEncoding;
 using ReOsuStoryBoardPlayer.OutputEncoding.Player;
 using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
+using ReOsuStoryBoardPlayer.Utils;
 
 namespace ReOsuStoryBoardPlayer
 {
@@ -138,7 +138,7 @@ namespace ReOsuStoryBoardPlayer
                     Setting.DebugMode=true;
 
                 if (args.Switches.Any(k => k=="cli"))
-                    Setting.MiniMode=true;
+                    DebuggerManager.GetOrCreateDebugger<CLIControllerDebugger>();
 
                 //额外功能 - 提取解析好变量的文本
                 if (args.TryGetArg(out var parse_type, "parse"))

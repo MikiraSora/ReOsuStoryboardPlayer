@@ -1,6 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Parser.Extension;
+﻿
 using ReOsuStoryBoardPlayer.Parser.Reader;
 using ReOsuStoryBoardPlayer.Parser.Stream;
+using ReOsuStoryBoardPlayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

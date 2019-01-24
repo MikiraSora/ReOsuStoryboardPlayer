@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ReOsuStoryBoardPlayer.Commands;
 using ReOsuStoryBoardPlayer.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Parser.Extension;
+using ReOsuStoryBoardPlayer.Utils;
 
 namespace ReOsuStoryBoardPlayer.Parser.CommandParser
 {
