@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
+namespace ReOsuStoryboardPlayer.Core.Parser.Collection
 {
     public class VariableCollection : CharPatternCollectionBase<StoryboardVariable>
     {

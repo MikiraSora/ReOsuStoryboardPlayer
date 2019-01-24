@@ -1,6 +1,6 @@
-﻿using ReOsuStoryBoardPlayer.Kernel;
+﻿using ReOsuStoryboardPlayer.Kernel;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer
 {
     internal class TriggerConditionViewerDebugger : DebuggerBase
     {

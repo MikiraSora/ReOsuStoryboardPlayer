@@ -1,9 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.DebugTool;
-using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
-using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryboardPlayer.Player;
 using System;
 
-namespace ReOsuStoryBoardPlayer.OutputEncoding.Player
+namespace ReOsuStoryboardPlayer.OutputEncoding.Player
 {
     public class EncodingProcessPlayer : PlayerBase
     {

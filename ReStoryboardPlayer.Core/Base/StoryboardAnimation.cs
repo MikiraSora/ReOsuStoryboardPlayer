@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Base
+namespace ReOsuStoryboardPlayer.Core.Base
 {
-    public class StoryboardAnimation : StoryBoardObject
+    public class StoryboardAnimation : StoryboardObject
     {
         public int FrameCount;
 

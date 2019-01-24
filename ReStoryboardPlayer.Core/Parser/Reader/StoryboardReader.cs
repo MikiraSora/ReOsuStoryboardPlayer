@@ -1,18 +1,18 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Commands.Group;
-using ReOsuStoryBoardPlayer.Core.Parser.Base;
-using ReOsuStoryBoardPlayer.Core.Parser.CommandParser;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
-using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Commands.Group;
+using ReOsuStoryboardPlayer.Core.Parser.Base;
+using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
+namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 {
-    public class StoryboardReader : IReader<StoryBoardObject>
+    public class StoryboardReader : IReader<StoryboardObject>
     {
         public EventReader Reader { get; }
 
@@ -21,46 +21,46 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
             Reader=reader;
         }
 
-        public IEnumerable<StoryBoardObject> EnumValues()
+        public IEnumerable<StoryboardObject> EnumValues()
         {
             return Reader.EnumValues().Select(p => ParsePacket(p));
         }
 
-        private StoryBoardObject ParsePacket(StoryboardPacket packet)
+        private StoryboardObject ParsePacket(StoryboardPacket packet)
         {
             //try
             {
-                var storyboard_object = ParseObjectLine(packet.ObjectLine);
+                var Storyboard_object = ParseObjectLine(packet.ObjectLine);
 
-                if (storyboard_object!=null)
+                if (Storyboard_object!=null)
                 {
-                    storyboard_object.FileLine=packet.ObjectFileLine;
+                    Storyboard_object.FileLine=packet.ObjectFileLine;
 
-                    BuildCommandMapAndSetup(storyboard_object, packet.CommandLines);
+                    BuildCommandMapAndSetup(Storyboard_object, packet.CommandLines);
                 }
 
                 Reader.ReturnPacket(ref packet);
-                return storyboard_object;
+                return Storyboard_object;
             }
             /*
             catch (Exception e)
             {
-                Log.Debug($"Cant parse storyboard packet.{e.Message}");
+                Log.Debug($"Cant parse Storyboard packet.{e.Message}");
                 return null;
             }*/
         }
 
         #region Packet Parse
 
-        public StoryBoardObject ParseObjectLine(string line)
+        public StoryboardObject ParseObjectLine(string line)
         {
-            StoryBoardObject obj = null;
+            StoryboardObject obj = null;
 
             var data_arr = line.Split(',');
 
             if ((!Enum.TryParse<StoryboardObjectType>(data_arr[0], true, out var obj_type))||!(obj_type==StoryboardObjectType.Background||obj_type==StoryboardObjectType.Animation||obj_type==StoryboardObjectType.Sprite))
             {
-                Log.Warn($"Unknown/Unsupport storyboard object type:"+data_arr[0]);
+                Log.Warn($"Unknown/Unsupport Storyboard object type:"+data_arr[0]);
                 return null;
             }
 
@@ -71,7 +71,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
                     break;
 
                 case StoryboardObjectType.Sprite:
-                    obj=new StoryBoardObject();
+                    obj=new StoryboardObject();
                     break;
 
                 case StoryboardObjectType.Animation:
@@ -137,7 +137,7 @@ namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
 
         public static HalfVector GetAnchorVector(Anchor anchor) => AnchorVectorMap.TryGetValue(anchor, out var vector) ? vector : AnchorVectorMap[Anchor.Centre];
 
-        private void BuildCommandMapAndSetup(StoryBoardObject obj, List<string> lines)
+        private void BuildCommandMapAndSetup(StoryboardObject obj, List<string> lines)
         {
             var list = /*lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : */ ParseCommands(lines, obj.FileLine);
 

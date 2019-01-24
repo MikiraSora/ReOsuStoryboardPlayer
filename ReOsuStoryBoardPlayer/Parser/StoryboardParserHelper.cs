@@ -1,17 +1,17 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Parser.Collection;
-using ReOsuStoryBoardPlayer.Core.Parser.Reader;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Optimzer.Runtime;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Parser.Collection;
+using ReOsuStoryboardPlayer.Core.Parser.Reader;
+using ReOsuStoryboardPlayer.Core.Parser.Stream;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Optimzer.Runtime;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Parser
+namespace ReOsuStoryboardPlayer.Parser
 {
     public static class StoryboardParserHelper
     {
-        public static List<StoryBoardObject> GetStoryBoardObjects(string path)
+        public static List<StoryboardObject> GetStoryboardObjects(string path)
         {
             OsuFileReader reader = new OsuFileReader(path);
 
@@ -19,13 +19,13 @@ namespace ReOsuStoryBoardPlayer.Parser
 
             EventReader er = new EventReader(reader, collection);
 
-            StoryboardReader storyboardReader = new StoryboardReader(er);
+            StoryboardReader StoryboardReader = new StoryboardReader(er);
 
-            List<StoryBoardObject> list;
+            List<StoryboardObject> list;
 
             using (StopwatchRun.Count($"Parse&Optimze Storyboard Objects/Commands from {path}"))
             {
-                list=storyboardReader.EnumValues().ToList();
+                list=StoryboardReader.EnumValues().ToList();
                 list.RemoveAll(c => c==null);
 
                 foreach (var obj in list)

@@ -1,9 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Utils
+namespace ReOsuStoryboardPlayer.Core.Utils
 {
     public static class StoryboardUpdateLimitCalculator
     {
@@ -12,7 +12,7 @@ namespace ReOsuStoryBoardPlayer.Core.Utils
         /// </summary>
         /// <param name="objects"></param>
         /// <returns></returns>
-        public static int CalculateMaxUpdatingObjectsCount(this IEnumerable<StoryBoardObject> objects)
+        public static int CalculateMaxUpdatingObjectsCount(this IEnumerable<StoryboardObject> objects)
         {
             var timeline = objects.SelectMany(obj => new[] { (obj.FrameStartTime, true), (obj.FrameEndTime, false) })
                 .GroupBy(x => x.Item1)

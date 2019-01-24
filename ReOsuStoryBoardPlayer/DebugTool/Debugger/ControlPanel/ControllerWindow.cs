@@ -1,10 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.Parser;
+using ReOsuStoryboardPlayer.Player;
 using System;
 using System.Windows.Forms;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel
 {
     public partial class ControllerWindow : Form
     {

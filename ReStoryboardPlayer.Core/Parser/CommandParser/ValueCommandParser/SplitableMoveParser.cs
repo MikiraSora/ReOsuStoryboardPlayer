@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Core.Commands;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser
+namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser.ValueCommandParser
 {
     public class SplitableMoveCommandParser : VectorCommandParser<MoveCommand>
     {

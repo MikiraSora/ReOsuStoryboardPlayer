@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
+namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 {
     public class PostProcessesManager
     {

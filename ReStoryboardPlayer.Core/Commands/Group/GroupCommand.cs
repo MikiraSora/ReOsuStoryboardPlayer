@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group
+namespace ReOsuStoryboardPlayer.Core.Commands.Group
 {
     public abstract class GroupCommand : Command
     {

@@ -1,14 +1,14 @@
-﻿using ReOsuStoryBoardPlayer.BeatmapParser;
-using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryboardPlayer.BeatmapParser;
+using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Parser;
+using ReOsuStoryboardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.AutoTriggerContoller
 {
     //Part from osu! source code
     public class AutoTrigger : DebuggerBase

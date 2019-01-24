@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer
+﻿namespace ReOsuStoryboardPlayer
 {
     internal class BatchShader : Shader
     {

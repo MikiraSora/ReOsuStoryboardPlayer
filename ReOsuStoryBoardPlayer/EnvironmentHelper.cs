@@ -1,13 +1,13 @@
-﻿using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.DebugTool;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer;
+﻿using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.CLIController;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.InputController;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryboardPlayer
 {
     public static class EnvironmentHelper
     {

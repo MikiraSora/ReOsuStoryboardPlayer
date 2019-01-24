@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser
+namespace ReOsuStoryboardPlayer.Core.Parser
 {
     public struct StoryboardVariable : IComparable<StoryboardVariable>
     {

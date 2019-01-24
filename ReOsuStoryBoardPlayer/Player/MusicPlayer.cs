@@ -1,9 +1,9 @@
 ﻿using IrrKlang;
-using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Diagnostics;
 
-namespace ReOsuStoryBoardPlayer.Player
+namespace ReOsuStoryboardPlayer.Player
 {
     public class MusicPlayer : PlayerBase, ISoundStopEventReceiver
     {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.ProgramCommandParser
+namespace ReOsuStoryboardPlayer.ProgramCommandParser
 {
     internal class CommandParser
     {

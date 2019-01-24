@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Graphics
+namespace ReOsuStoryboardPlayer.Graphics
 {
     public class StoryboardResource : IDisposable
     {
@@ -13,7 +13,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
             return CacheDrawSpriteInstanceMap[key];
         }
 
-        public SpriteInstanceGroup GetSprite(StoryBoardObject obj) => GetSprite(obj.ImageFilePath);
+        public SpriteInstanceGroup GetSprite(StoryboardObject obj) => GetSprite(obj.ImageFilePath);
 
         public void PinSpriteInstanceGroups(Dictionary<string, SpriteInstanceGroup> sprites)
         {

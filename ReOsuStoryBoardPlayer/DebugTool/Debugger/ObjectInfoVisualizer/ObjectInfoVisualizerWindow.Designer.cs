@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
+﻿namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 {
     partial class ObjectVisualizerWindow
     {

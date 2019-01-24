@@ -1,23 +1,23 @@
-using ReOsuStoryBoardPlayer.Core.Parser;
-using ReOsuStoryBoardPlayer.Core.Parser.Collection;
-using ReOsuStoryBoardPlayer.Core.Parser.Reader;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.DebugTool;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.OutputEncoding;
-using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
-using ReOsuStoryBoardPlayer.OutputEncoding.Player;
-using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Player;
-using ReOsuStoryBoardPlayer.ProgramCommandParser;
+using ReOsuStoryboardPlayer.Core.Parser;
+using ReOsuStoryboardPlayer.Core.Parser.Collection;
+using ReOsuStoryboardPlayer.Core.Parser.Reader;
+using ReOsuStoryboardPlayer.Core.Parser.Stream;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.AutoTriggerContoller;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.CLIController;
+using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.OutputEncoding;
+using ReOsuStoryboardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryboardPlayer.OutputEncoding.Player;
+using ReOsuStoryboardPlayer.Parser;
+using ReOsuStoryboardPlayer.Player;
+using ReOsuStoryboardPlayer.ProgramCommandParser;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryboardPlayer
 {
     public class MainProgram
     {
@@ -76,7 +76,7 @@ namespace ReOsuStoryBoardPlayer
             {
                 if (args.Switches.Any(k => k=="help"))
                 {
-                    Console.WriteLine("please visit here: https://github.com/MikiraSora/OsuStoryBoardPlayer/wiki/Program-command-options");
+                    Console.WriteLine("please visit here: https://github.com/MikiraSora/OsuStoryboardPlayer/wiki/Program-command-options");
                     Exit("");
                 }
 

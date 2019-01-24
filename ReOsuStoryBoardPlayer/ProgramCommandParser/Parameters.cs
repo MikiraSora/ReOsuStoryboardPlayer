@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.ProgramCommandParser
+namespace ReOsuStoryboardPlayer.ProgramCommandParser
 {
     public class Parameters : IParameters
     {

@@ -1,10 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser
+namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
 {
     public class ParameterCommandParser : ICommandParser
     {

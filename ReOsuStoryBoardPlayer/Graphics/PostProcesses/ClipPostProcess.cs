@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using ReOsuStoryBoardPlayer.Graphics.PostProcesses.Shaders;
+using ReOsuStoryboardPlayer.Graphics.PostProcesses.Shaders;
 
-namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
+namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 {
     internal class ClipPostProcess : APostProcess
     {

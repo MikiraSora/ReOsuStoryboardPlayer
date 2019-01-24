@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
+namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 {
     internal interface IReader<T>
     {

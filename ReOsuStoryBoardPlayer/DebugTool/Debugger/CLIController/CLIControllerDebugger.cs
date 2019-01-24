@@ -1,15 +1,15 @@
-﻿using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Player;
-using ReOsuStoryBoardPlayer.ProgramCommandParser;
-using ReOsuStoryBoardPlayer.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.Parser;
+using ReOsuStoryboardPlayer.Player;
+using ReOsuStoryboardPlayer.ProgramCommandParser;
+using ReOsuStoryboardPlayer.Utils;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.CLIController
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.CLIController
 {
     public class CLIControllerDebugger : DebuggerBase
     {

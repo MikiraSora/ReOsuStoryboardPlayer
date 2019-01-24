@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands
+namespace ReOsuStoryboardPlayer.Core.Commands
 {
     public abstract class Command : IComparable<Command>
     {
@@ -19,7 +19,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
 
         public int CompareTo(Command other) => StartTime-other.StartTime;
 
-        public abstract void Execute(StoryBoardObject @object, float time);
+        public abstract void Execute(StoryboardObject @object, float time);
 
         public override string ToString() => $"rline {RelativeLine}: {Event.ToString()} ({StartTime}~{EndTime})";
     }

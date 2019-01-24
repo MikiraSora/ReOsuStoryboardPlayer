@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Collection
+namespace ReOsuStoryboardPlayer.Core.Parser.Collection
 {
     /// <summary>
     /// 基于字符串连续字符匹配的字典

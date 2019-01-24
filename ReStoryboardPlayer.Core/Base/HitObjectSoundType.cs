@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Base
+namespace ReOsuStoryboardPlayer.Core.Base
 {
     /// <summary>
     /// 判断的时候None理论上默认为Normal

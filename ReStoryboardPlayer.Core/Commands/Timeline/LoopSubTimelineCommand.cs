@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands.Group;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands.Group;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands
+namespace ReOsuStoryboardPlayer.Core.Commands
 {
     internal class LoopSubTimelineCommand : Command
     {
@@ -27,7 +27,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
             RelativeLine=loop_command.RelativeLine;
         }
 
-        public override void Execute(StoryBoardObject @object, float current_value)
+        public override void Execute(StoryboardObject @object, float current_value)
         {
             float relative_time = current_value;
 

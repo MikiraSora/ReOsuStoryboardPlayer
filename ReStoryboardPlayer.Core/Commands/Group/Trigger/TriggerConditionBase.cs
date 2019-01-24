@@ -1,10 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
+namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 {
     //implement from osu!
     public abstract class TriggerConditionBase

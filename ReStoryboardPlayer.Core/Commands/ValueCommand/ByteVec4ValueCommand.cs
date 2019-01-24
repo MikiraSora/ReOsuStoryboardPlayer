@@ -1,14 +1,14 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands
+namespace ReOsuStoryboardPlayer.Core.Commands
 {
     internal class ColorCommand : ValueCommand<ByteVec4>
     {
         public ColorCommand() => Event=Event.Color;
 
-        public override void ApplyValue(StoryBoardObject @object, ByteVec4 value)
+        public override void ApplyValue(StoryboardObject @object, ByteVec4 value)
         {
             @object.Color.X=value.X;
             @object.Color.Y=value.Y;

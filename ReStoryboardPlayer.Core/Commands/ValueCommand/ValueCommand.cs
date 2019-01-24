@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands
+namespace ReOsuStoryboardPlayer.Core.Commands
 {
     public abstract class ValueCommand : Command
     {
@@ -25,7 +25,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
 
     public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
     {
-        public abstract void ApplyValue(StoryBoardObject @object, VALUE_TYPE value);
+        public abstract void ApplyValue(StoryboardObject @object, VALUE_TYPE value);
 
         public override IEqualityComparer EqualityComparer => EqualityComparer<VALUE_TYPE>.Default;
 
@@ -45,7 +45,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
                 return (float)Interpolation.ApplyEasing(Easing, (time-StartTime)/(EndTime-StartTime));
         }
 
-        public override void Execute(StoryBoardObject @object, float time)
+        public override void Execute(StoryboardObject @object, float time)
         {
             var val = CalculateValue(CalculateNormalizeValue(time));
 

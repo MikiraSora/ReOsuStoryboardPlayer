@@ -1,26 +1,26 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Commands.Group;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.TriggerConditionViewer;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Commands.Group;
+using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer;
+using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 {
     public partial class ObjectVisualizerWindow : Form
     {
-        private StoryBoardObject last_obj;
+        private StoryboardObject last_obj;
 
         private HashSet<TriggerCommand> trigger_status_cache = new HashSet<TriggerCommand>();
 
-        public StoryBoardObject SelectObject { get; set; }
+        public StoryboardObject SelectObject { get; set; }
 
         private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
         private readonly StoryboardInstance instance;

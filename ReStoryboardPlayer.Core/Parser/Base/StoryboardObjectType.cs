@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Core.Parser.Base
+﻿namespace ReOsuStoryboardPlayer.Core.Parser.Base
 {
     public enum StoryboardObjectType
     {

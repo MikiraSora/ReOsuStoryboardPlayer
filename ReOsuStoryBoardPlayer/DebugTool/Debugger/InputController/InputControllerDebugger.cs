@@ -1,8 +1,8 @@
 ﻿using OpenTK.Input;
-using ReOsuStoryBoardPlayer.Player;
+using ReOsuStoryboardPlayer.Player;
 using System;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.InputController
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.InputController
 {
     internal class InputControllerDebugger : DebuggerBase
     {

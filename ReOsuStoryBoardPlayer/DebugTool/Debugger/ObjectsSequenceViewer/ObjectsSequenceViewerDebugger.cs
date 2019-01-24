@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
+﻿namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 {
     public class ObjectsSequenceViewerDebugger : DebuggerBase
     {

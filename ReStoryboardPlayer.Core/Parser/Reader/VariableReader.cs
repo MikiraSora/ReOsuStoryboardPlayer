@@ -1,9 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+﻿using ReOsuStoryboardPlayer.Core.Parser.Stream;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
+namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 {
     public class VariableReader : IReader<StoryboardVariable>
     {

@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
+﻿namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     public struct Vec4
     {

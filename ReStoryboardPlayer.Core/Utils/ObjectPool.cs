@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ReOsuStoryBoardPlayer.Core.Utils
+namespace ReOsuStoryboardPlayer.Core.Utils
 {
     public abstract class ObjectPool
     {

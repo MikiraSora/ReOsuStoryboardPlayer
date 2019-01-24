@@ -1,12 +1,12 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
-using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryboardPlayer
 {
     [Serializable()]
     public class Shader

@@ -1,10 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
-using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser
+namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser.ValueCommandParser
 {
     public class Vec4CommandParser<CMD> : IValueCommandParser<Vec4, CMD> where CMD : ValueCommand<Vec4>, new()
     {

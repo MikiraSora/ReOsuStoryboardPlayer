@@ -1,15 +1,15 @@
-﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Commands.Group;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Commands.Group;
+using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Base
+namespace ReOsuStoryboardPlayer.Core.Base
 {
-    public class StoryBoardObject
+    public class StoryboardObject
     {
         public Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
@@ -23,7 +23,7 @@ namespace ReOsuStoryBoardPlayer.Core.Base
         /// <summary>
         /// 钦定这个物件的最初变换值，通过委托链可以覆盖初始值
         /// </summary>
-        public Action<StoryBoardObject> BaseTransformResetAction;
+        public Action<StoryboardObject> BaseTransformResetAction;
 
         public int FrameStartTime = int.MinValue, FrameEndTime;
 
@@ -183,7 +183,7 @@ namespace ReOsuStoryBoardPlayer.Core.Base
 
         #endregion Add/Remove Command
 
-        public StoryBoardObject()
+        public StoryboardObject()
         {
             BaseTransformResetAction=(obj) =>
          {

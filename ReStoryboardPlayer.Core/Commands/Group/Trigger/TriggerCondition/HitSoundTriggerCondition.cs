@@ -1,10 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition
+namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 {
     public class HitSoundTriggerCondition : TriggerConditionBase
     {

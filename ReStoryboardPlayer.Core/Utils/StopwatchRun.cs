@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace ReOsuStoryBoardPlayer.Core.Utils
+namespace ReOsuStoryboardPlayer.Core.Utils
 {
     public class StopwatchRun : IDisposable
     {

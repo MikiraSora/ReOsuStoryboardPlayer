@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Core.Parser.Extension
+﻿namespace ReOsuStoryboardPlayer.Core.Parser.Extension
 {
     public static class ParserExtension
     {

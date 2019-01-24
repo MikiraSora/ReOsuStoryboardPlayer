@@ -196,9 +196,9 @@
       <Project>{f0edccec-4b64-4ce8-801f-1377e3384dc4}</Project>
       <Name>common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ReStoryboardPlayer.Core\ReStoryboardPlayer.Core.csproj">
+    <ProjectReference Include="..\ReStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj">
       <Project>{31711b28-3825-4eb4-a6e7-959b699eb3ab}</Project>
-      <Name>ReStoryboardPlayer.Core</Name>
+      <Name>ReOsuStoryboardPlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
       <Project>{AB4CABA1-06E4-4A32-8A15-1FBE20ED5BC6}</Project>

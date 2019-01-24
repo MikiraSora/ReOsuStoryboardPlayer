@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+﻿using ReOsuStoryboardPlayer.Core.Parser.Stream;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
+namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 {
     public class SectionReader : IReader<string>
     {

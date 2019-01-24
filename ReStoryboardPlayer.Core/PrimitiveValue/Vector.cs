@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
+namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     [Serializable]
     public struct Vector : IEquatable<Vector>

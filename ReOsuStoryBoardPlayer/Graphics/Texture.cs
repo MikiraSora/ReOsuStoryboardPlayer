@@ -1,11 +1,11 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryboardPlayer
 {
     [Serializable]
     public class Texture : IDisposable

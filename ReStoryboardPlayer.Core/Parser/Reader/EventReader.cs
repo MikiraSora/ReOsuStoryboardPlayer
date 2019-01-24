@@ -1,10 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.Core.Parser.Collection;
-using ReOsuStoryBoardPlayer.Core.Parser.Extension;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
+﻿using ReOsuStoryboardPlayer.Core.Parser.Collection;
+using ReOsuStoryboardPlayer.Core.Parser.Extension;
+using ReOsuStoryboardPlayer.Core.Parser.Stream;
 using System;
 using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Reader
+namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 {
     public struct StoryboardPacket : IComparable<StoryboardPacket>
     {

@@ -2,15 +2,15 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.DebugTool;
-using ReOsuStoryBoardPlayer.Graphics;
-using ReOsuStoryBoardPlayer.Graphics.PostProcesses;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.OutputEncoding.Kernel;
-using ReOsuStoryBoardPlayer.Player;
+using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.Graphics;
+using ReOsuStoryboardPlayer.Graphics.PostProcesses;
+using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryboardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,13 +19,13 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryboardPlayer
 {
     public class StoryboardWindow : GameWindow
     {
         #region Field&Property
 
-        private const string TITLE = "Esu!StoryBoardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2} Objects: {8} {9}";
+        private const string TITLE = "Esu!StoryboardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2} Objects: {8} {9}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
         public float ViewWidth { get; private set; }
@@ -64,7 +64,7 @@ namespace ReOsuStoryBoardPlayer
 
         #endregion Field&Property
 
-        public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryBoardPlayer"
+        public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryboardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
             InitGraphics();
@@ -159,7 +159,7 @@ namespace ReOsuStoryBoardPlayer
             }
         }
 
-        internal StoryboardResource BuildDrawSpriteResources(IEnumerable<StoryBoardObject> StoryboardObjectList, string folder_path)
+        internal StoryboardResource BuildDrawSpriteResources(IEnumerable<StoryboardObject> StoryboardObjectList, string folder_path)
         {
             Dictionary<string, SpriteInstanceGroup> CacheDrawSpriteInstanceMap = new Dictionary<string, SpriteInstanceGroup>();
 
@@ -236,7 +236,7 @@ namespace ReOsuStoryBoardPlayer
                 if (tex!=null)
                 {
                     group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)PlayerSetting.DrawCallInstanceCountMax, file_path, tex);
-                    Log.Debug($"Created storyboard sprite instance from image file :{file_path}");
+                    Log.Debug($"Created Storyboard sprite instance from image file :{file_path}");
                 }
 
                 return group!=null;
@@ -356,7 +356,7 @@ namespace ReOsuStoryBoardPlayer
                 DebuggerManager.TrigBeforeRender();
                 _postProcessesManager.Begin();
                 {
-                    PostDrawStoryBoard();
+                    PostDrawStoryboard();
                     _postProcessesManager.Process();
                 }
                 _postProcessesManager.End();
@@ -434,17 +434,17 @@ namespace ReOsuStoryBoardPlayer
 
         #region Storyboard Rendering
 
-        private void PostDrawStoryBoard()
+        private void PostDrawStoryboard()
         {
             if (Instance.Updater.UpdatingStoryboardObjects.Count==0)
                 return;
 
-            DrawStoryBoardObjects(Instance.Updater.UpdatingStoryboardObjects);
+            DrawStoryboardObjects(Instance.Updater.UpdatingStoryboardObjects);
 
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
-        private void DrawStoryBoardObjects(List<StoryBoardObject> draw_list)
+        private void DrawStoryboardObjects(List<StoryboardObject> draw_list)
         {
             SpriteInstanceGroup group = Instance.Resource.GetSprite(draw_list.First().ImageFilePath);
 

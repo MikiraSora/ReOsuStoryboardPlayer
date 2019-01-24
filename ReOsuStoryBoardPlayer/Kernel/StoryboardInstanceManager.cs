@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Kernel
+﻿namespace ReOsuStoryboardPlayer.Kernel
 {
     public static class StoryboardInstanceManager
     {

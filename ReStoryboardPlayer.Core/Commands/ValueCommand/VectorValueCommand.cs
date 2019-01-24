@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands
+namespace ReOsuStoryboardPlayer.Core.Commands
 {
     public abstract class VectorValueCommand : ValueCommand<Vector>
     {
@@ -12,13 +12,13 @@ namespace ReOsuStoryBoardPlayer.Core.Commands
     {
         public MoveCommand() => Event=Event.Move;
 
-        public override void ApplyValue(StoryBoardObject @object, Vector value) => @object.Postion=value;
+        public override void ApplyValue(StoryboardObject @object, Vector value) => @object.Postion=value;
     }
 
     public class VectorScaleCommand : VectorValueCommand
     {
         public VectorScaleCommand() => Event=Event.VectorScale;
 
-        public override void ApplyValue(StoryBoardObject @object, Vector value) => @object.Scale=value;
+        public override void ApplyValue(StoryboardObject @object, Vector value) => @object.Scale=value;
     }
 }

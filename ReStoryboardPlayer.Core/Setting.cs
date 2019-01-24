@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer
+﻿namespace ReOsuStoryboardPlayer
 {
     public static class Setting
     {

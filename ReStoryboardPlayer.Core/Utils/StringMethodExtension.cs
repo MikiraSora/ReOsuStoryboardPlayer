@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Core.Utils
+﻿namespace ReOsuStoryboardPlayer.Core.Utils
 {
     public static class StringMethodExtension
     {

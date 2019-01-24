@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
+﻿namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel
 {
     partial class ControllerWindow
     {

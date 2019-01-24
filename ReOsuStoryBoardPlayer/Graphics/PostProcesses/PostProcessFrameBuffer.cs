@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using System;
 
-namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses
+namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 {
     public class PostProcessFrameBuffer : IDisposable
     {

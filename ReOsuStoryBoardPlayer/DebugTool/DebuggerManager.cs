@@ -1,11 +1,11 @@
 ﻿using OpenTK.Input;
-using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace ReOsuStoryBoardPlayer.DebugTool
+namespace ReOsuStoryboardPlayer.DebugTool
 {
     public static class DebuggerManager
     {

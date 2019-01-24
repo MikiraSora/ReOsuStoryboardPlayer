@@ -1,12 +1,12 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands
+namespace ReOsuStoryboardPlayer.Core.Commands
 {
     public abstract class StateCommand : Command
     {
-        public abstract void ApplyValue(StoryBoardObject @object, bool value);
+        public abstract void ApplyValue(StoryboardObject @object, bool value);
 
-        public override void Execute(StoryBoardObject @object, float time)
+        public override void Execute(StoryboardObject @object, float time)
         {
             if (StartTime==EndTime||(StartTime<time&&time<EndTime))
                 ApplyValue(@object, true);

@@ -1,10 +1,10 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
+namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 {
     public class TriggerCommand : GroupCommand
     {
@@ -12,7 +12,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
 
         private Dictionary<Event, TriggerSubTimelineCommand> cache_timline_wrapper = new Dictionary<Event, TriggerSubTimelineCommand>();
 
-        private StoryBoardObject bind_object;
+        private StoryboardObject bind_object;
 
         public int GroupID;
 
@@ -28,7 +28,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
             Condition=condition??throw new ArgumentNullException(nameof(condition));
         }
 
-        public override void Execute(StoryBoardObject @object, float time)
+        public override void Execute(StoryboardObject @object, float time)
         {
             if (Trigged)
             {
@@ -45,9 +45,9 @@ namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
         /// 钦定触发器绑定的物件，一次性的
         /// </summary>
         /// <param name="obj"></param>
-        public void BindObject(StoryBoardObject obj)
+        public void BindObject(StoryboardObject obj)
         {
-            Debug.Assert(bind_object==null, "Not allow trigger command bind more storyboard objects");
+            Debug.Assert(bind_object==null, "Not allow trigger command bind more Storyboard objects");
 
             bind_object=obj??throw new ArgumentNullException(nameof(obj));
         }
@@ -137,6 +137,6 @@ namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
         /// 有触发器的物件默认不显示(之前默认显示),不懂ppy想法，magic
         /// 比如440423的歌词
         /// </summary>
-        public readonly static Action<StoryBoardObject> OverrideDefaultValue = obj => obj.Color.W=0;
+        public readonly static Action<StoryboardObject> OverrideDefaultValue = obj => obj.Color.W=0;
     }
 }

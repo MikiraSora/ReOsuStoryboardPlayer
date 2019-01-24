@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Core.Commands;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
 
-namespace ReOsuStoryBoardPlayer.Core.Base
+namespace ReOsuStoryboardPlayer.Core.Base
 {
-    public class StoryboardBackgroundObject : StoryBoardObject
+    public class StoryboardBackgroundObject : StoryboardObject
     {
         public StoryboardBackgroundObject()
         {

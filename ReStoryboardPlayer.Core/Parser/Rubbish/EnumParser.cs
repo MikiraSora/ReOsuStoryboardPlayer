@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Parser.Collection;
+﻿using ReOsuStoryboardPlayer.Core.Parser.Collection;
 using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Rubbish
+namespace ReOsuStoryboardPlayer.Core.Parser.Rubbish
 {
     //我他妈撸这个玩意干嘛?
     public class EnumParser<T>

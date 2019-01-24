@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Core
+﻿namespace ReOsuStoryboardPlayer.Core
 {
     internal class MoveCommandParameters
     {

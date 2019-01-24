@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.DebugTool
+﻿namespace ReOsuStoryboardPlayer.DebugTool
 {
     public abstract class DebuggerBase
     {

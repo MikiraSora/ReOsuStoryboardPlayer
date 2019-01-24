@@ -53,7 +53,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
-namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
+namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     /// <summary>
     /// The name Half is derived from half-precision floating-point number.

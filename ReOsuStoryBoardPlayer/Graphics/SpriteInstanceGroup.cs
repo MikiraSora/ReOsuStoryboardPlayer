@@ -1,11 +1,11 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
 using System.Runtime.CompilerServices;
 using Half = OpenTK.Half;
 
-namespace ReOsuStoryBoardPlayer
+namespace ReOsuStoryboardPlayer
 {
     public class SpriteInstanceGroup : IDisposable
     {

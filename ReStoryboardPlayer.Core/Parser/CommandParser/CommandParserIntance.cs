@@ -1,12 +1,12 @@
-﻿using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Commands.Group;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Core.Parser.CommandParser.ValueCommandParser;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Commands.Group;
+using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryboardPlayer.Core.Parser.CommandParser.ValueCommandParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser
+namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
 {
     public class CommandParserIntance
     {

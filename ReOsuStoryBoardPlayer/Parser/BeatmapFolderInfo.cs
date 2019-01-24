@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Parser;
-using ReOsuStoryBoardPlayer.Core.Parser.Reader;
-using ReOsuStoryBoardPlayer.Core.Parser.Stream;
-using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Parser;
+using ReOsuStoryboardPlayer.Core.Parser.Reader;
+using ReOsuStoryboardPlayer.Core.Parser.Stream;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ReOsuStoryBoardPlayer.Parser
+namespace ReOsuStoryboardPlayer.Parser
 {
     public class BeatmapFolderInfo
     {

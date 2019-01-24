@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Core.Base
+﻿namespace ReOsuStoryboardPlayer.Core.Base
 {
     public enum SampleSetType
     {

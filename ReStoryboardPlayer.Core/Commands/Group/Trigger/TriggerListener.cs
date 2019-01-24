@@ -1,23 +1,23 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
+namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 {
     /// <summary>
     /// 用于管控SB里面所有Trigger,通过此类(默认Default)可以直接触发已经绑定的TriggerCommand.
     /// </summary>
     public class TriggerListener
     {
-        private HashSet<StoryBoardObject> register_trigger_objects = new HashSet<StoryBoardObject>();
+        private HashSet<StoryboardObject> register_trigger_objects = new HashSet<StoryboardObject>();
 
-        public void Add(StoryBoardObject @object)
+        public void Add(StoryboardObject @object)
         {
             register_trigger_objects.Add(@object);
         }
 
-        public void Remove(StoryBoardObject @object)
+        public void Remove(StoryboardObject @object)
         {
             register_trigger_objects.Remove(@object);
         }

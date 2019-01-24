@@ -1,13 +1,13 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Kernel;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Graphics;
-using ReOsuStoryBoardPlayer.Parser;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Kernel;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Graphics;
+using ReOsuStoryboardPlayer.Parser;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Kernel
+namespace ReOsuStoryboardPlayer.Kernel
 {
     /// <summary>
     /// 表示一个完整的Storyboard实例，包括SB物件和SB相关信息等
@@ -30,28 +30,28 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
             using (StopwatchRun.Count("Load and Parse osb/osu file"))
             {
-                List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs = new List<StoryBoardObject>();
+                List<StoryboardObject> temp_objs_list = new List<StoryboardObject>(), parse_osb_Storyboard_objs = new List<StoryboardObject>();
 
                 //get objs from osu file
-                List<StoryBoardObject> parse_osu_storyboard_objs = string.IsNullOrWhiteSpace(info.osu_file_path) ? new List<StoryBoardObject>() : StoryboardParserHelper.GetStoryBoardObjects(info.osu_file_path);
-                AdjustZ(parse_osu_storyboard_objs, 0);
+                List<StoryboardObject> parse_osu_Storyboard_objs = string.IsNullOrWhiteSpace(info.osu_file_path) ? new List<StoryboardObject>() : StoryboardParserHelper.GetStoryboardObjects(info.osu_file_path);
+                AdjustZ(parse_osu_Storyboard_objs, 0);
 
                 if ((!string.IsNullOrWhiteSpace(info.osb_file_path))&&File.Exists(info.osb_file_path))
                 {
-                    parse_osb_storyboard_objs=StoryboardParserHelper.GetStoryBoardObjects(info.osb_file_path);
-                    AdjustZ(parse_osb_storyboard_objs, 0);
+                    parse_osb_Storyboard_objs=StoryboardParserHelper.GetStoryboardObjects(info.osb_file_path);
+                    AdjustZ(parse_osb_Storyboard_objs, 0);
                 }
 
-                temp_objs_list=CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
+                temp_objs_list=CombineStoryboardObjects(parse_osb_Storyboard_objs, parse_osu_Storyboard_objs);
 
-                void AdjustZ(List<StoryBoardObject> list, int base_z)
+                void AdjustZ(List<StoryboardObject> list, int base_z)
                 {
                     list.Sort((a, b) => (int)(a.FileLine-b.FileLine));
                 }
 
-                List<StoryBoardObject> CombineStoryBoardObjects(List<StoryBoardObject> osb_list, List<StoryBoardObject> osu_list)
+                List<StoryboardObject> CombineStoryboardObjects(List<StoryboardObject> osb_list, List<StoryboardObject> osu_list)
                 {
-                    List<StoryBoardObject> result = new List<StoryBoardObject>();
+                    List<StoryboardObject> result = new List<StoryboardObject>();
 
                     Add(Layout.Background);
                     Add(Layout.Fail);

@@ -1,11 +1,11 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger;
-using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReOsuStoryBoardPlayer.Core.Kernel
+namespace ReOsuStoryboardPlayer.Core.Kernel
 {
     /// <summary>
     /// SB更新物件的核心，通过Update()来更新物件
@@ -15,40 +15,40 @@ namespace ReOsuStoryBoardPlayer.Core.Kernel
         /// <summary>
         /// 已加载的物件集合
         /// </summary>
-        public LinkedList<StoryBoardObject> StoryboardObjectList { get; private set; }
+        public LinkedList<StoryboardObject> StoryboardObjectList { get; private set; }
 
-        private LinkedListNode<StoryBoardObject> CurrentScanNode;
+        private LinkedListNode<StoryboardObject> CurrentScanNode;
 
         /// <summary>
         /// 正在执行的物件集合
         /// </summary>
-        public List<StoryBoardObject> UpdatingStoryboardObjects { get; private set; }
+        public List<StoryboardObject> UpdatingStoryboardObjects { get; private set; }
 
         private ParallelOptions parallel_options = new ParallelOptions() { MaxDegreeOfParallelism=Setting.UpdateThreadCount };
 
-        public StoryboardUpdater(List<StoryBoardObject> objects)
+        public StoryboardUpdater(List<StoryboardObject> objects)
         {
-            StoryboardObjectList=new LinkedList<StoryBoardObject>();
+            StoryboardObjectList=new LinkedList<StoryboardObject>();
 
             //int audioLeadIn = 0;
             /*
             using (StopwatchRun.Count("Load and Parse osb/osu file"))
             {
-                List<StoryBoardObject> temp_objs_list = new List<StoryBoardObject>(), parse_osb_storyboard_objs = new List<StoryBoardObject>();
+                List<StoryboardObject> temp_objs_list = new List<StoryboardObject>(), parse_osb_Storyboard_objs = new List<StoryboardObject>();
 
                 //get objs from osu file
-                List<StoryBoardObject> parse_osu_storyboard_objs = string.IsNullOrWhiteSpace(info.osu_file_path)?new List<StoryBoardObject>():StoryboardParserHelper.GetStoryBoardObjects(info.osu_file_path);
-                AdjustZ(parse_osu_storyboard_objs, 0);
+                List<StoryboardObject> parse_osu_Storyboard_objs = string.IsNullOrWhiteSpace(info.osu_file_path)?new List<StoryboardObject>():StoryboardParserHelper.GetStoryboardObjects(info.osu_file_path);
+                AdjustZ(parse_osu_Storyboard_objs, 0);
 
                 if ((!string.IsNullOrWhiteSpace(info.osb_file_path))&&File.Exists(info.osb_file_path))
                 {
-                    parse_osb_storyboard_objs=StoryboardParserHelper.GetStoryBoardObjects(info.osb_file_path);
-                    AdjustZ(parse_osb_storyboard_objs, 0);
+                    parse_osb_Storyboard_objs=StoryboardParserHelper.GetStoryboardObjects(info.osb_file_path);
+                    AdjustZ(parse_osb_Storyboard_objs, 0);
                 }
 
-                temp_objs_list=CombineStoryBoardObjects(parse_osb_storyboard_objs, parse_osu_storyboard_objs);
+                temp_objs_list=CombineStoryboardObjects(parse_osb_Storyboard_objs, parse_osu_Storyboard_objs);
 
-                //delete Background object if there is a normal storyboard object which is same image file.
+                //delete Background object if there is a normal Storyboard object which is same image file.
                 var background_obj = temp_objs_list.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
                 if (temp_objs_list.Any(c => c.ImageFilePath==background_obj?.ImageFilePath&&(!(c is StoryboardBackgroundObject))))
                 {
@@ -75,7 +75,7 @@ namespace ReOsuStoryBoardPlayer.Core.Kernel
             }
             */
 
-            //delete Background object if there is a normal storyboard object which is same image file.
+            //delete Background object if there is a normal Storyboard object which is same image file.
             var background_obj = objects.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
             if (objects.Any(c => c.ImageFilePath==background_obj?.ImageFilePath&&(!(c is StoryboardBackgroundObject))))
             {
@@ -102,7 +102,7 @@ namespace ReOsuStoryBoardPlayer.Core.Kernel
 
             var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
 
-            UpdatingStoryboardObjects=new List<StoryBoardObject>(limit_update_count);
+            UpdatingStoryboardObjects=new List<StoryboardObject>(limit_update_count);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace ReOsuStoryBoardPlayer.Core.Kernel
 
         private bool Scan(float current_time)
         {
-            LinkedListNode<StoryBoardObject> LastAddNode = null;
+            LinkedListNode<StoryboardObject> LastAddNode = null;
 
             while (CurrentScanNode!=null&&CurrentScanNode.Value.FrameStartTime<=current_time/* && current_time <= CurrentScanNode.Value.FrameEndTime*/ )
             {

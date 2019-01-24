@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Base
+namespace ReOsuStoryboardPlayer.Core.Base
 {
     /// <summary>
     /// 表示用于触发TriggerListener绑定的触发器参数封装结构，塞了个时间方便Listener自寻触发对应的触发器

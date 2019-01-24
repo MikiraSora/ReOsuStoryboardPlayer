@@ -1,9 +1,9 @@
 ﻿using OpenTK;
-using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Kernel;
+using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Kernel;
 using System;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 {
     internal class ObjectVisualizerDebugger : DebuggerBase
     {
@@ -76,7 +76,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
         {
             int last_order_index = Window?.SelectObject?.Z??-1;
 
-            StoryBoardObject obj = null;
+            StoryboardObject obj = null;
 
             foreach (var temp in StoryboardInstanceManager.ActivityInstance.Updater.UpdatingStoryboardObjects)
             {
@@ -93,7 +93,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         private const float DEG2RAD = 0.017453292519943295f;
 
-        private bool IsPointInObjectArea(StoryBoardObject obj, float x, float y)
+        private bool IsPointInObjectArea(StoryboardObject obj, float x, float y)
         {
             Vector2 obj_pos = new Vector2(obj.Postion.X, obj.Postion.Y);
 

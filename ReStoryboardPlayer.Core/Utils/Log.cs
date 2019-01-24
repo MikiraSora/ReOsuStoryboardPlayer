@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace ReOsuStoryBoardPlayer.Core.Utils
+namespace ReOsuStoryboardPlayer.Core.Utils
 {
     public static class Log
     {

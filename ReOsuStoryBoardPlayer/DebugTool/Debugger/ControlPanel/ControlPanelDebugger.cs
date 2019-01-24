@@ -1,6 +1,6 @@
-﻿using ReOsuStoryBoardPlayer.Kernel;
+﻿using ReOsuStoryboardPlayer.Kernel;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ControlPanel
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel
 {
     public class ControlPanelDebugger : DebuggerBase
     {

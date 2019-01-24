@@ -24,7 +24,7 @@ SOFTWARE.
 #pragma warning disable IDE1006 // 命名样式
 
 using OpenTK.Graphics;
-using ReOsuStoryBoardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Core.Utils;
 using StorybrewCommon.Mapset;
 using StorybrewCommon.Util;
 using System;
@@ -32,7 +32,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace ReOsuStoryBoardPlayer.BeatmapParser
+namespace ReOsuStoryboardPlayer.BeatmapParser
 {
     public class EditorBeatmap : Beatmap
     {

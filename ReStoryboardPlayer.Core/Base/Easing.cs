@@ -23,7 +23,7 @@ THE SOFTWARE.
 
 using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Base
+namespace ReOsuStoryboardPlayer.Core.Base
 {
     public enum EasingTypes
     {

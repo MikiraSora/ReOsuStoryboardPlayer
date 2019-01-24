@@ -1,11 +1,11 @@
-﻿using ReOsuStoryBoardPlayer.DebugTool;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.AutoTriggerContoller;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Parser;
-using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.AutoTriggerContoller;
+using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.Parser;
+using ReOsuStoryboardPlayer.Player;
 using System;
 
-namespace ReOsuStoryBoardPlayer.Utils
+namespace ReOsuStoryboardPlayer.Utils
 {
     public static class StoryboardPlayerHelper
     {
@@ -20,7 +20,7 @@ namespace ReOsuStoryBoardPlayer.Utils
             MusicPlayerManager.ActivityPlayer?.Stop();
             MusicPlayerManager.ApplyPlayer(player);
 
-            //load storyboard objects
+            //load Storyboard objects
             var instance = StoryboardInstance.Load(info);
 
             var auto_trigger = DebuggerManager.GetOrCreateDebugger<AutoTrigger>();

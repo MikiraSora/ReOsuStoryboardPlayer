@@ -1,8 +1,8 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.Player;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,11 +10,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
+namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 {
     public partial class ObjectsSequenceViewer : Form
     {
-        private Dictionary<ListViewItem, StoryBoardObject> registed_map = new Dictionary<ListViewItem, StoryBoardObject>();
+        private Dictionary<ListViewItem, StoryboardObject> registed_map = new Dictionary<ListViewItem, StoryboardObject>();
 
         private Regex current_filter = null;
 
@@ -43,7 +43,7 @@ namespace ReOsuStoryBoardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
             listView1.Alignment=ListViewAlignment.Left;
         }
 
-        private IEnumerable<StoryBoardObject> RangeObjects;
+        private IEnumerable<StoryboardObject> RangeObjects;
 
         public void ApplyRangeFlush(Range range)
         {

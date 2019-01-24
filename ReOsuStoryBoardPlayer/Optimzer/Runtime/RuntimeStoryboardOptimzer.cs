@@ -1,28 +1,28 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Commands.Group;
-using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Commands.Group;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
+namespace ReOsuStoryboardPlayer.Optimzer.Runtime
 {
     public class RuntimeStoryboardOptimzer : OptimzerBase
     {
-        public override void Optimze(IEnumerable<StoryBoardObject> storyboard_objects)
+        public override void Optimze(IEnumerable<StoryboardObject> Storyboard_objects)
         {
             int effect_count = 0;
             using (StopwatchRun.Count(() => "TrimFrameTime() optimze count:"+effect_count))
-                TrimFrameTime(storyboard_objects, ref effect_count);
+                TrimFrameTime(Storyboard_objects, ref effect_count);
 
             effect_count=0;
             using (StopwatchRun.Count(() => "RemoveUnusedCommand() optimze count:"+effect_count))
-                RemoveUnusedCommand(storyboard_objects, ref effect_count);
+                RemoveUnusedCommand(Storyboard_objects, ref effect_count);
 
             effect_count=0;
             using (StopwatchRun.Count(() => "TrimInitalEffect() optimze count:"+effect_count))
-                TrimInitalEffect(storyboard_objects, ref effect_count);
+                TrimInitalEffect(Storyboard_objects, ref effect_count);
         }
 
         /// <summary>
@@ -40,11 +40,11 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         /// MY,0,208016,209286,520,-40   <----Actual obj.FrameEndTime
         ///
         /// </summary>
-        /// <param name="storyboard_objects"></param>
+        /// <param name="Storyboard_objects"></param>
         /// <param name="effect_count"></param>
-        public void TrimFrameTime(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
+        public void TrimFrameTime(IEnumerable<StoryboardObject> Storyboard_objects, ref int effect_count)
         {
-            foreach (var obj in storyboard_objects)
+            foreach (var obj in Storyboard_objects)
             {
                 if (obj==null
                     ||obj is StoryboardAnimation  //qnmd
@@ -96,9 +96,9 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
             }
         }
 
-        public void CombineCommands(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
+        public void CombineCommands(IEnumerable<StoryboardObject> Storyboard_objects, ref int effect_count)
         {
-            foreach (var obj in storyboard_objects)
+            foreach (var obj in Storyboard_objects)
             {
                 foreach (var pair in obj.CommandMap)
                 {
@@ -165,13 +165,13 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         /// MY,0,208016,209286,520,-40
         ///
         /// </summary>
-        /// <param name="storyboard_objects"></param>
+        /// <param name="Storyboard_objects"></param>
         /// <param name="effect_count"></param>
-        public void TrimInitalEffect(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
+        public void TrimInitalEffect(IEnumerable<StoryboardObject> Storyboard_objects, ref int effect_count)
         {
             var events = Enum.GetValues(typeof(Event));
 
-            foreach (var obj in storyboard_objects)
+            foreach (var obj in Storyboard_objects)
             {
                 //物件命令数量!=0 且 无Trigger对应类型的子命令
                 foreach (var timeline in obj.CommandMap.Where(x => x.Value.Count==1&&((!obj.ContainTrigger)||(
@@ -221,13 +221,13 @@ namespace ReOsuStoryBoardPlayer.Optimzer.Runtime
         ///
         ///
         /// </summary>
-        /// <param name="storyboard_objects"></param>
+        /// <param name="Storyboard_objects"></param>
         /// <param name="effect_count"></param>
-        public void RemoveUnusedCommand(IEnumerable<StoryBoardObject> storyboard_objects, ref int effect_count)
+        public void RemoveUnusedCommand(IEnumerable<StoryboardObject> Storyboard_objects, ref int effect_count)
         {
             Event[] skip_event = new[] { Event.Loop, Event.Trigger };
 
-            foreach (var obj in storyboard_objects)
+            foreach (var obj in Storyboard_objects)
             {
                 foreach (var timeline in obj.CommandMap.Where(x => !skip_event.Contains(x.Key)).Select(x => x.Value))
                 {

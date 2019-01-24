@@ -1,12 +1,12 @@
-﻿using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.Kernel;
-using ReOsuStoryBoardPlayer.Player;
+﻿using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.Player;
 using Saar.FFmpeg.CSharp;
 using System;
 using System.Linq;
 using System.Threading;
 
-namespace ReOsuStoryBoardPlayer.OutputEncoding
+namespace ReOsuStoryboardPlayer.OutputEncoding
 {
     public class DefaultEncodingWriter : EncodingWriterBase
     {

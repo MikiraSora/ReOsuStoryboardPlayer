@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger.TriggerCondition
+namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 {
     public class GameStateTriggerCondition : TriggerConditionBase
     {

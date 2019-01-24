@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Commands;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
 using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.CommandParser
+namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
 {
     public interface ICommandParser
     {

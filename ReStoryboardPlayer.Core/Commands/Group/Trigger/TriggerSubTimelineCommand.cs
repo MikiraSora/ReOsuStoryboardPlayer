@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
+namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 {
     public class TriggerSubTimelineCommand : Command
     {
@@ -28,7 +28,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands.Group.Trigger
             EndTime=(int)(StartTime+CostTime);
         }
 
-        public override void Execute(StoryBoardObject @object, float current_value)
+        public override void Execute(StoryboardObject @object, float current_value)
         {
             current_value-=StartTime;
 

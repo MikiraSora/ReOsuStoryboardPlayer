@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.OutputEncoding
+﻿namespace ReOsuStoryboardPlayer.OutputEncoding
 {
     public static class EncodingWriterFatory
     {

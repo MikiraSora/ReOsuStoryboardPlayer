@@ -1,9 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using StorybrewCommon.Mapset;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.BeatmapParser
+namespace ReOsuStoryboardPlayer.BeatmapParser
 {
     public static class HitSoundInfosHelpers
     {

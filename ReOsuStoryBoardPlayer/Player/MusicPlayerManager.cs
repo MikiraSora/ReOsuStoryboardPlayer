@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Player
+﻿namespace ReOsuStoryboardPlayer.Player
 {
     public static class MusicPlayerManager
     {

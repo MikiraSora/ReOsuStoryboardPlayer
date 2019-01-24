@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ReOsuStoryBoardPlayer.Core.Parser.Stream
+namespace ReOsuStoryboardPlayer.Core.Parser.Stream
 {
     public class OsuFileReader : IDisposable
     {

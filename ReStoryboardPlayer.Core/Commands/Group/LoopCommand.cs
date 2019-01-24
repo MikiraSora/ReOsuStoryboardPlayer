@@ -1,9 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.Core.Commands.Group
+namespace ReOsuStoryboardPlayer.Core.Commands.Group
 {
     internal class LoopCommand : GroupCommand
     {
@@ -13,7 +13,7 @@ namespace ReOsuStoryBoardPlayer.Core.Commands.Group
 
         public int LoopCount { get; set; }
 
-        public override void Execute(StoryBoardObject @object, float current_value)
+        public override void Execute(StoryboardObject @object, float current_value)
         {
             //咕咕哒
         }

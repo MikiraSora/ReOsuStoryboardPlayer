@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Core.Parser
+﻿namespace ReOsuStoryboardPlayer.Core.Parser
 {
     public enum Section
     {

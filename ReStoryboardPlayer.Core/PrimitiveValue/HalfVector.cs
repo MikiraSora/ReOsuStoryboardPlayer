@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Core.PrimitiveValue
+namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     [Serializable]
     public struct HalfVector : IEquatable<HalfVector>

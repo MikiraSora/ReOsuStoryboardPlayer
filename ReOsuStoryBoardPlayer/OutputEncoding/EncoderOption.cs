@@ -1,7 +1,7 @@
-﻿using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.ProgramCommandParser;
+﻿using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.ProgramCommandParser;
 
-namespace ReOsuStoryBoardPlayer.OutputEncoding
+namespace ReOsuStoryboardPlayer.OutputEncoding
 {
     public struct EncoderOption
     {

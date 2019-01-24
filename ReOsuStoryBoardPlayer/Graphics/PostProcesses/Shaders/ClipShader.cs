@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryBoardPlayer.Graphics.PostProcesses.Shaders
+﻿namespace ReOsuStoryboardPlayer.Graphics.PostProcesses.Shaders
 {
     internal class ClipShader : PostProcessShader
     {

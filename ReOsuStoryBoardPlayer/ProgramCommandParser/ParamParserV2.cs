@@ -1,9 +1,9 @@
-﻿using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryBoardPlayer.ProgramCommandParser
+namespace ReOsuStoryboardPlayer.ProgramCommandParser
 {
     public class ParamParserV2 : IParamParser
     {

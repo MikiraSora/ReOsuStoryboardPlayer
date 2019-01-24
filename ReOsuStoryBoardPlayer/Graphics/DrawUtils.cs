@@ -1,9 +1,9 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using ReOsuStoryBoardPlayer.Core.PrimitiveValue;
+using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
 
-namespace ReOsuStoryBoardPlayer.Graphics
+namespace ReOsuStoryboardPlayer.Graphics
 {
     //from https://github.com/MikiraSora/SimpleRenderFramework/blob/redesign/SimpleRenderFramework/Graphics/Drawing.cs
     public static class DrawUtils

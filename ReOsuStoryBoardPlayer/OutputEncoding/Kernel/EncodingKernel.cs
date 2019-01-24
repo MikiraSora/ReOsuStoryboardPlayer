@@ -1,11 +1,11 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using ReOsuStoryBoardPlayer.Core.Utils;
-using ReOsuStoryBoardPlayer.DebugTool;
-using ReOsuStoryBoardPlayer.OutputEncoding.Player;
-using ReOsuStoryBoardPlayer.Player;
+using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.OutputEncoding.Player;
+using ReOsuStoryboardPlayer.Player;
 using System;
 
-namespace ReOsuStoryBoardPlayer.OutputEncoding.Kernel
+namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 {
     /// <summary>
     /// 编码功能的核心，负责管控视频编码

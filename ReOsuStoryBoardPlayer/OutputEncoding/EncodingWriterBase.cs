@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReOsuStoryBoardPlayer.OutputEncoding
+namespace ReOsuStoryboardPlayer.OutputEncoding
 {
     public abstract class EncodingWriterBase
     {

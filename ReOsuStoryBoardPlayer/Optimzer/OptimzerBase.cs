@@ -1,13 +1,13 @@
-﻿using ReOsuStoryBoardPlayer.Core.Base;
-using ReOsuStoryBoardPlayer.Core.Commands;
-using ReOsuStoryBoardPlayer.Core.Utils;
+﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System.Collections.Generic;
 
-namespace ReOsuStoryBoardPlayer.Optimzer
+namespace ReOsuStoryboardPlayer.Optimzer
 {
     public abstract class OptimzerBase
     {
-        public abstract void Optimze(IEnumerable<StoryBoardObject> storyboard_objects);
+        public abstract void Optimze(IEnumerable<StoryboardObject> Storyboard_objects);
 
         public void Suggest(string message)
         {
@@ -17,7 +17,7 @@ namespace ReOsuStoryBoardPlayer.Optimzer
             }
         }
 
-        public void Suggest(StoryBoardObject obj, string message)
+        public void Suggest(StoryboardObject obj, string message)
         {
             Suggest($"在line {obj.FileLine}物件\"{obj.ImageFilePath}\","+message);
         }
