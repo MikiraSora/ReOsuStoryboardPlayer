@@ -114,8 +114,6 @@
     <Compile Include="OutputEncoding\EncodingWriterBase.cs" />
     <Compile Include="OutputEncoding\Kernel\EncodingKernel.cs" />
     <Compile Include="OutputEncoding\Player\EncodingProcessPlayer.cs" />
-    <Compile Include="Optimzer\OptimzerBase.cs" />
-    <Compile Include="Optimzer\Runtime\RuntimeStoryboardOptimzer.cs" />
     <Compile Include="BeatmapParser\HitObjectHelpers.cs" />
     <Compile Include="Parser\BeatmapFolderInfo.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />

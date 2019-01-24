@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryboardPlayer.Optimzer.Runtime
+namespace ReOsuStoryboardPlayer.Core.Optimzer.Runtime
 {
     public class RuntimeStoryboardOptimzer : OptimzerBase
     {

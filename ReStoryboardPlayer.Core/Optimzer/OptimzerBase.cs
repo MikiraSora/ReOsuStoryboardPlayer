@@ -3,7 +3,7 @@ using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Utils;
 using System.Collections.Generic;
 
-namespace ReOsuStoryboardPlayer.Optimzer
+namespace ReOsuStoryboardPlayer.Core.Optimzer
 {
     public abstract class OptimzerBase
     {

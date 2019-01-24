@@ -3,7 +3,7 @@ using ReOsuStoryboardPlayer.Core.Parser.Collection;
 using ReOsuStoryboardPlayer.Core.Parser.Reader;
 using ReOsuStoryboardPlayer.Core.Parser.Stream;
 using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.Optimzer.Runtime;
+using ReOsuStoryboardPlayer.Core.Optimzer.Runtime;
 using System.Collections.Generic;
 using System.Linq;
 
