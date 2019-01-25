@@ -82,7 +82,7 @@ namespace ReOsuStoryboardPlayer.Player
 
             prev_mp3_time=playback;
 
-            return prev_mp3_time+offset_watch.ElapsedMilliseconds;
+            return (long)(prev_mp3_time+offset_watch.ElapsedMilliseconds*PlaybackSpeed);
         }
 
         public override void Stop()
