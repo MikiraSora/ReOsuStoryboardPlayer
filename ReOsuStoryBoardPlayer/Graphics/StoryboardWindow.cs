@@ -430,9 +430,7 @@ namespace ReOsuStoryboardPlayer
 
             Clean();
 
-            ToolManager.Close();
-
-            Environment.Exit(0);
+            MainProgram.Exit();
         }
 
         #region Storyboard Rendering

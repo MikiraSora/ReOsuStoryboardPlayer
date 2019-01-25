@@ -118,6 +118,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
         public override void Term()
         {
             ToolManager.KeyboardPress-=OnKeyPress;
+            Abort();
         }
 
         public override void Update()
