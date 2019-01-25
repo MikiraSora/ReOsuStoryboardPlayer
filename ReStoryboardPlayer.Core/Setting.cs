@@ -26,7 +26,5 @@
         public static bool ShowProfileSuggest { get; set; } = false;
 
         public static bool DebugMode { get; set; } = false;
-
-        public static string UserSkinPath { get; set; } = string.Empty;
     }
 }

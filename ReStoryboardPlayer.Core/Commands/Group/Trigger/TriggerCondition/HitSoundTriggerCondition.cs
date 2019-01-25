@@ -8,7 +8,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 {
     public class HitSoundTriggerCondition : TriggerConditionBase
     {
-        public HitObjectSoundType HitSound = HitObjectSoundType.Whistle|HitObjectSoundType.Normal|HitObjectSoundType.Clap|HitObjectSoundType.Finish;
+        public HitObjectSoundType HitSound = HitObjectSoundType.All;
         public SampleSetType SampleSet = SampleSetType.All;
         public SampleSetType SampleSetAdditions = SampleSetType.All;
         public CustomSampleSetType CustomSampleSet = CustomSampleSetType.Default;
@@ -19,7 +19,8 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
              *
              * HitSound -> HitSound(All)(All)(Whistle|Normal|Clap|Finish)(Default)
              * HitSoundNormalWhistle -> HitSound(All)(Normal)Whistle(Default)
-             * HitSoundWhistle6 -> HitSound(All)(All)Whistle(CustomSampleSet 6)
+             * HitSoundWhistle6 -> HitSound(All)(All)Whistle CustomSampleSet6 
+             * HitSoundSoft -> HitSound(All)Soft(Whistle|Normal|Clap|Finish)(Default)
              *
              */
 
@@ -38,10 +39,17 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
                 SampleSet=SampleSetType.All;
             }
 
-            //assert check.
-            Debug.Assert(HitSound!=HitObjectSoundType.None&&(String.IsNullOrWhiteSpace(fix_trim_expr)||((HitObjectSoundType[])Enum.GetValues(typeof(HitObjectSoundType)))
-                .Where(x => HitSound.HasFlag(x))
-                .Any(x => description.Contains(x.ToString()))), "parse HitSoundTriggerCondition::HitSound wrong!");
+            //check.
+            var check_func = ((HitObjectSoundType[])Enum.GetValues(typeof(HitObjectSoundType)))
+                .Where(x => HitSound.HasFlag(x)&&(x!=HitObjectSoundType.All&&x!=HitObjectSoundType.None));
+
+            var hitsound_count = check_func.Where(x => description.Contains(x.ToString())).Count();
+
+            if (HitSound!=HitObjectSoundType.All && hitsound_count!=0)
+            {
+                Debug.Assert(HitSound!=HitObjectSoundType.None&&(String.IsNullOrWhiteSpace(fix_trim_expr)||check_func.All(x => description.Contains(x.ToString()))), "parse HitSoundTriggerCondition::HitSound wrong!");
+            }
+
             Debug.Assert(SampleSet==SampleSetType.All||SampleSet!=SampleSetType.None||description.Contains(SampleSet.ToString()), "parse HitSoundTriggerCondition::SampleSet wrong!");
             Debug.Assert(SampleSetAdditions==SampleSetType.All||SampleSetAdditions!=SampleSetType.None||description.Contains(SampleSetAdditions.ToString()), "parse HitSoundTriggerCondition::SampleSetAdditions wrong!");
             Debug.Assert(CustomSampleSet==CustomSampleSetType.Default||description.Contains(CustomSampleSet.ToString())||description.Contains(((int)CustomSampleSet).ToString()), "parse HitSoundTriggerCondition::CustomSampleSet wrong!");

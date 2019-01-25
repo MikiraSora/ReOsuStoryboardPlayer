@@ -229,7 +229,7 @@ namespace ReOsuStoryboardPlayer
 
                 if (!_load_tex(file_path, out var tex))
                 {
-                    file_path=Path.Combine(Setting.UserSkinPath, image_name);
+                    file_path=Path.Combine(PlayerSetting.UserSkinPath, image_name);
                     _load_tex(file_path, out tex);
                 }
 

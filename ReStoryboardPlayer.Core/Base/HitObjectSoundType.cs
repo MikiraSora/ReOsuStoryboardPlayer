@@ -12,6 +12,8 @@ namespace ReOsuStoryboardPlayer.Core.Base
         Normal = 1,
         Whistle = 2,
         Finish = 4,
-        Clap = 8
+        Clap = 8,
+
+        All=Normal|Whistle|Finish|Clap
     };
 }

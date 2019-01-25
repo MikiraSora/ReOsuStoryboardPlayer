@@ -10,7 +10,7 @@ namespace ReOsuStoryboardPlayer.Graphics
 
         public SpriteInstanceGroup GetSprite(string key)
         {
-            return CacheDrawSpriteInstanceMap[key];
+            return CacheDrawSpriteInstanceMap.TryGetValue(key,out var group)?group:null;
         }
 
         public SpriteInstanceGroup GetSprite(StoryboardObject obj) => GetSprite(obj.ImageFilePath);
