@@ -12,8 +12,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public LoopType LoopType;
 
-        //public SpriteInstanceGroup[] backup_group;
-
         private int prev_frame_index = -2857;
 
         public override void Update(float current_time)
@@ -29,7 +27,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
             if (prev_frame_index!=result)
             {
                 ImageFilePath=FrameBaseImagePath+result+FrameFileExtension;
-                //this.RenderGroup = backup_group[result];
             }
 
             prev_frame_index=result;

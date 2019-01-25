@@ -24,6 +24,7 @@ namespace ReOsuStoryboardPlayer.ProgramCommandParser
         {
             p=new Parameters();
             string argStr = args.Trim();
+
             p.SimpleArgs.AddRange(argStr.Split(' '));
             if (argStr=="")
             {

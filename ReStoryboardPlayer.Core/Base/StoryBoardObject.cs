@@ -27,8 +27,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public int FrameStartTime = int.MinValue, FrameEndTime;
 
-        //public SpriteInstanceGroup RenderGroup;
-
         public Layout layout;
 
         public int Z = -1;

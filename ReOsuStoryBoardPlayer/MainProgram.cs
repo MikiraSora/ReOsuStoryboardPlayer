@@ -16,6 +16,7 @@ using ReOsuStoryboardPlayer.ProgramCommandParser;
 using System;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -23,6 +24,8 @@ namespace ReOsuStoryboardPlayer
     {
         public static void Main(string[] argv)
         {
+            Debug.Assert(false);
+
             PlayerSetting.Init();
 
             var args = ParseProgramCommands(argv, out var beatmap_folder);
@@ -67,7 +70,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\416153";
+            beatmap_folder=@"G:\SBTest\440423 Kushi - Yuumeikyou o Wakatsu Koto";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

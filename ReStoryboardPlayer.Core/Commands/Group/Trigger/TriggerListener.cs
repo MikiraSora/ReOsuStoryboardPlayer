@@ -115,6 +115,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
             return false;
         }
 
-        public static TriggerListener DefaultListener { get; private set; } = new TriggerListener();
+        private static TriggerListener _instance;
+        public static TriggerListener DefaultListener { get => _instance??(_instance=new TriggerListener()); set => _instance=value; }
     }
 }
