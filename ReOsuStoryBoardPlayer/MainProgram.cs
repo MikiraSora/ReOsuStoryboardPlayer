@@ -205,18 +205,26 @@ namespace ReOsuStoryboardPlayer
         //程序退出
         public static void Exit(string error_reason = "")
         {
-            ToolManager.Close();
-            StoryboardWindow.CurrentWindow?.Close();
-
-            if ((!PlayerSetting.MiniMode)&&(!string.IsNullOrWhiteSpace(error_reason)))
+            try
             {
-                Console.BackgroundColor=ConsoleColor.Red;
-                Console.ForegroundColor=ConsoleColor.Yellow;
-                Console.WriteLine(error_reason);
-                Console.ResetColor();
-                Console.ReadKey();
+                ToolManager.Close();
+                StoryboardWindow.CurrentWindow?.Close();
 
-                Environment.Exit(2857);//2q1
+                if ((!PlayerSetting.MiniMode)&&(!string.IsNullOrWhiteSpace(error_reason)))
+                {
+                    Console.BackgroundColor=ConsoleColor.Red;
+                    Console.ForegroundColor=ConsoleColor.Yellow;
+                    Console.WriteLine(error_reason);
+                    Console.ResetColor();
+                    Console.ReadKey();
+
+                    Environment.Exit(2857);//2q1
+                }
+
+            }
+            catch (Exception e)
+            {
+                Log.Warn("Can't clean resource and others before exit :"+e.Message);
             }
 
             Environment.Exit(0);
