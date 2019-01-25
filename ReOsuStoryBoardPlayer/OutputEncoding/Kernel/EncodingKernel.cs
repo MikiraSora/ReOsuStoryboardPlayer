@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.Tools;
 using ReOsuStoryboardPlayer.OutputEncoding.Player;
 using ReOsuStoryboardPlayer.Player;
 using System;
@@ -10,7 +10,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
     /// <summary>
     /// 编码功能的核心，负责管控视频编码
     /// </summary>
-    public class EncodingKernel : DebuggerBase
+    public class EncodingKernel : ToolBase
     {
         private EncodingProcessPlayer time_control;
 
@@ -56,7 +56,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
                 time_control.Jump(option.StartTime, true);
             }
 
-            DebuggerManager.AfterRender+=OnAfterRender;
+            ToolManager.AfterRender+=OnAfterRender;
             prev_time=time_control.CurrentTime;
         }
 
@@ -105,19 +105,19 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
             {
                 Writer.OnFinish();
                 is_running=false;
-                DebuggerManager.AfterRender-=OnAfterRender;
+                ToolManager.AfterRender-=OnAfterRender;
                 Log.User($"Encoding abort");
             }
         }
 
         public override void Init()
         {
-            DebuggerManager.KeyboardPress+=OnKeyPress;
+            ToolManager.KeyboardPress+=OnKeyPress;
         }
 
         public override void Term()
         {
-            DebuggerManager.KeyboardPress-=OnKeyPress;
+            ToolManager.KeyboardPress-=OnKeyPress;
         }
 
         public override void Update()

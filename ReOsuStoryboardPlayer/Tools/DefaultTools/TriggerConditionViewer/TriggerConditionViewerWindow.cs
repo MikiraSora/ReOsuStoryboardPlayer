@@ -1,8 +1,8 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.AutoTriggerContoller;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.AutoTriggerContoller;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer;
 using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Player;
 using System;
@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.TriggerConditionViewer
 {
     public partial class TriggerConditionViewerWindow : Form
     {
@@ -71,7 +71,7 @@ namespace ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer
             var command = comboBox2.SelectedItem as TriggerCommand;
             var condition = command?.Condition as HitSoundTriggerCondition;
 
-            var hitsounds = DebuggerManager.GetDebugger<AutoTrigger>()?.HitSoundInfos;
+            var hitsounds = ToolManager.GetTool<AutoTrigger>()?.HitSoundInfos;
 
             if (!(comboBox1.SelectedItem is StoryboardObject obj)||hitsounds==null||hitsounds.Count==0||condition==null)
                 return;
@@ -90,7 +90,7 @@ namespace ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer
             if (hitsound!=null&&MusicPlayerManager.ActivityPlayer is MusicPlayer player)
             {
                 var obj = comboBox1.SelectedItem as StoryboardObject;
-                var object_info_window = DebuggerManager.GetDebugger<ObjectVisualizerDebugger>()?.Window;
+                var object_info_window = ToolManager.GetTool<ObjectVisualizerDebugger>()?.Window;
 
                 if (object_info_window!=null&&obj!=null)
                     object_info_window.SelectObject=obj;

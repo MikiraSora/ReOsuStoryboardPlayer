@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel
+﻿namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
 {
     partial class JumpToWindow
     {

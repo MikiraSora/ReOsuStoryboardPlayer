@@ -3,7 +3,7 @@ using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Commands.Group;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.TriggerConditionViewer;
 using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Player;
 using System;
@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
 {
     public partial class ObjectVisualizerWindow : Form
     {
@@ -199,7 +199,7 @@ namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var debugger = DebuggerManager.GetOrCreateDebugger<TriggerConditionViewerDebugger>();
+            var debugger = ToolManager.GetOrCreateTool<TriggerConditionViewerDebugger>();
 
             if (SelectObject?.ContainTrigger??false)
             {

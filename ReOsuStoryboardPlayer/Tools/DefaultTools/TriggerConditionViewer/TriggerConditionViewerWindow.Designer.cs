@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer
+﻿namespace ReOsuStoryboardPlayer.Tools.DefaultTools.TriggerConditionViewer
 {
     partial class TriggerConditionViewerWindow
     {

@@ -9,9 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.CLIController
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.CLIController
 {
-    public class CLIControllerDebugger : DebuggerBase
+    public class CLIControllerDebugger : ToolBase
     {
         private Thread thread;
         private CommandParser parser = new CommandParser(new ParamParserV2('-', '\"', '\''));

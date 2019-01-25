@@ -5,7 +5,7 @@ using OpenTK.Input;
 using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.DebugTool;
+using ReOsuStoryboardPlayer.Tools;
 using ReOsuStoryboardPlayer.Graphics;
 using ReOsuStoryboardPlayer.Graphics.PostProcesses;
 using ReOsuStoryboardPlayer.Kernel;
@@ -340,7 +340,7 @@ namespace ReOsuStoryboardPlayer
                 return;
 
             Instance.Updater.Update((float)time);
-            DebuggerManager.FrameUpdate();
+            ToolManager.FrameUpdate();
 
             _update_stopwatch.Stop();
         }
@@ -353,14 +353,14 @@ namespace ReOsuStoryboardPlayer
 
             if (ready)
             {
-                DebuggerManager.TrigBeforeRender();
+                ToolManager.TrigBeforeRender();
                 _postProcessesManager.Begin();
                 {
                     PostDrawStoryboard();
                     _postProcessesManager.Process();
                 }
                 _postProcessesManager.End();
-                DebuggerManager.TrigAfterRender();
+                ToolManager.TrigAfterRender();
             }
 
             SwapBuffers();
@@ -381,7 +381,7 @@ namespace ReOsuStoryboardPlayer
 
                 if (PlayerSetting.EncodingEnvironment)
                 {
-                    var kernel = DebuggerManager.GetDebugger<EncodingKernel>();
+                    var kernel = ToolManager.GetTool<EncodingKernel>();
                     title_encoding_part=$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp}";
                 }
 
@@ -427,7 +427,7 @@ namespace ReOsuStoryboardPlayer
 
             Clean();
 
-            DebuggerManager.Close();
+            ToolManager.Close();
 
             Environment.Exit(0);
         }
@@ -495,7 +495,7 @@ namespace ReOsuStoryboardPlayer
         //解决窗口失去/获得焦点时鼠标xjb移动
         protected override void OnFocusedChanged(EventArgs e) { }
 
-        protected override void OnKeyDown(KeyboardKeyEventArgs e) => DebuggerManager.TrigKeyPress(e.Key);
+        protected override void OnKeyDown(KeyboardKeyEventArgs e) => ToolManager.TrigKeyPress(e.Key);
 
         private int downX, downY;
         private bool mouseDown = false;
@@ -514,7 +514,7 @@ namespace ReOsuStoryboardPlayer
             }
             else
             {
-                DebuggerManager.TrigClick(e.X, e.Y, e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
+                ToolManager.TrigClick(e.X, e.Y, e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
             }
 
             mouseDown=true;
@@ -547,7 +547,7 @@ namespace ReOsuStoryboardPlayer
             }
             else
             {
-                DebuggerManager.TrigMove(e.X, e.Y);
+                ToolManager.TrigMove(e.X, e.Y);
             }
         }
 

@@ -1,5 +1,5 @@
-﻿using ReOsuStoryboardPlayer.DebugTool;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.AutoTriggerContoller;
+﻿using ReOsuStoryboardPlayer.Tools;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.AutoTriggerContoller;
 using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Parser;
 using ReOsuStoryboardPlayer.Player;
@@ -23,7 +23,7 @@ namespace ReOsuStoryboardPlayer.Utils
             //load Storyboard objects
             var instance = StoryboardInstance.Load(info);
 
-            var auto_trigger = DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
+            var auto_trigger = ToolManager.GetOrCreateTool<AutoTrigger>();
             auto_trigger.Load(info);
             auto_trigger.Trim();
 

@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
+﻿namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectsSequenceViewer
 {
     public struct Range
     {

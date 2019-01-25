@@ -1,8 +1,8 @@
 ﻿using ReOsuStoryboardPlayer.Kernel;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.TriggerConditionViewer
 {
-    internal class TriggerConditionViewerDebugger : DebuggerBase
+    internal class TriggerConditionViewerDebugger : ToolBase
     {
         public TriggerConditionViewerWindow Window { get; private set; }
         private StoryboardInstance instance;

@@ -80,24 +80,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeatmapParser\EditorBeatmap.cs" />
-    <Compile Include="DebugTool\Debugger\AutoTriggerContoller\AutoTrigger.cs" />
-    <Compile Include="DebugTool\Debugger\TriggerConditionViewer\TriggerConditionViewerWindow.cs">
+    <Compile Include="Tools\DefaultTools\AutoTriggerContoller\AutoTrigger.cs" />
+    <Compile Include="Tools\DefaultTools\TriggerConditionViewer\TriggerConditionViewerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\Debugger\TriggerConditionViewer\TriggerConditionViewerWindow.Designer.cs">
+    <Compile Include="Tools\DefaultTools\TriggerConditionViewer\TriggerConditionViewerWindow.Designer.cs">
       <DependentUpon>TriggerConditionViewerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugTool\Debugger\TriggerConditionViewer\TriggerConditionViewerWindowDebugger.cs" />
+    <Compile Include="Tools\DefaultTools\TriggerConditionViewer\TriggerConditionViewerWindowDebugger.cs" />
     <Compile Include="EnvironmentHelper.cs" />
-    <Compile Include="DebugTool\Debugger\InputController\InputControllerDebugger.cs" />
-    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerDebugger.cs" />
-    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.cs">
+    <Compile Include="Tools\DefaultTools\InputController\InputControllerDebugger.cs" />
+    <Compile Include="Tools\DefaultTools\ObjectsSequenceViewer\ObjectsSequenceViewerDebugger.cs" />
+    <Compile Include="Tools\DefaultTools\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.Designer.cs">
+    <Compile Include="Tools\DefaultTools\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.Designer.cs">
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugTool\Debugger\ObjectsSequenceViewer\Range.cs" />
+    <Compile Include="Tools\DefaultTools\ObjectsSequenceViewer\Range.cs" />
     <Compile Include="Graphics\PostProcesses\ClipPostProcess.cs" />
     <Compile Include="Graphics\PostProcesses\PostProcessFrameBuffer.cs" />
     <Compile Include="Graphics\PostProcesses\APostProcess.cs" />
@@ -124,36 +124,36 @@
     <Compile Include="ProgramCommandParser\ParametersWithCommand.cs" />
     <Compile Include="ProgramCommandParser\ParamParserV2.cs" />
     <Compile Include="ProgramCommandParser\Parameters.cs" />
-    <Compile Include="DebugTool\Debugger\CLIController\CLIControllerDebugger.cs" />
-    <Compile Include="DebugTool\Debugger\ControlPanel\ControllerWindow.cs">
+    <Compile Include="Tools\DefaultTools\CLIController\CLIControllerDebugger.cs" />
+    <Compile Include="Tools\DefaultTools\ControlPanel\ControllerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\Debugger\ControlPanel\ControllerWindow.Designer.cs">
+    <Compile Include="Tools\DefaultTools\ControlPanel\ControllerWindow.Designer.cs">
       <DependentUpon>ControllerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugTool\Debugger\ControlPanel\ControlPanelDebugger.cs" />
-    <Compile Include="DebugTool\Debugger\ControlPanel\JumpToWindow.cs">
+    <Compile Include="Tools\DefaultTools\ControlPanel\ControlPanelDebugger.cs" />
+    <Compile Include="Tools\DefaultTools\ControlPanel\JumpToWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\Debugger\ControlPanel\JumpToWindow.Designer.cs">
+    <Compile Include="Tools\DefaultTools\ControlPanel\JumpToWindow.Designer.cs">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectVisualizerDebugger.cs" />
-    <Compile Include="DebugTool\MouseInput.cs" />
+    <Compile Include="Tools\DefaultTools\ObjectInfoVisualizer\ObjectVisualizerDebugger.cs" />
+    <Compile Include="Tools\MouseInput.cs" />
     <Compile Include="Kernel\ExecutorSync.cs" />
     <Compile Include="Kernel\StoryboardInstanceManager.cs" />
     <Compile Include="Player\MusicPlayer.cs" />
     <Compile Include="Player\PlayerBase.cs" />
     <Compile Include="Player\MusicPlayerManager.cs" />
-    <Compile Include="DebugTool\DebuggerManager.cs" />
-    <Compile Include="DebugTool\DebuggerBase.cs" />
-    <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.cs">
+    <Compile Include="Tools\ToolManager.cs" />
+    <Compile Include="Tools\ToolBase.cs" />
+    <Compile Include="Tools\DefaultTools\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.Designer.cs">
+    <Compile Include="Tools\DefaultTools\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.Designer.cs">
       <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugTool\UpdatePriority.cs" />
+    <Compile Include="Tools\UpdatePriority.cs" />
     <Compile Include="Graphics\BatchShader.cs" />
     <Compile Include="Graphics\DrawUtils.cs" />
     <Compile Include="Graphics\Shader.cs" />
@@ -173,19 +173,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DebugTool\Debugger\ControlPanel\ControllerWindow.resx">
+    <EmbeddedResource Include="Tools\DefaultTools\ControlPanel\ControllerWindow.resx">
       <DependentUpon>ControllerWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugTool\Debugger\ControlPanel\JumpToWindow.resx">
+    <EmbeddedResource Include="Tools\DefaultTools\ControlPanel\JumpToWindow.resx">
       <DependentUpon>JumpToWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugTool\Debugger\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.resx">
+    <EmbeddedResource Include="Tools\DefaultTools\ObjectInfoVisualizer\ObjectInfoVisualizerWindow.resx">
       <DependentUpon>ObjectInfoVisualizerWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugTool\Debugger\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.resx">
+    <EmbeddedResource Include="Tools\DefaultTools\ObjectsSequenceViewer\ObjectsSequenceViewerWindow.resx">
       <DependentUpon>ObjectsSequenceViewerWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugTool\Debugger\TriggerConditionViewer\TriggerConditionViewerWindow.resx">
+    <EmbeddedResource Include="Tools\DefaultTools\TriggerConditionViewer\TriggerConditionViewerWindow.resx">
       <DependentUpon>TriggerConditionViewerWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

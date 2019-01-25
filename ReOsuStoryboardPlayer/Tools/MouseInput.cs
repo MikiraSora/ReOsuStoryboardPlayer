@@ -1,4 +1,4 @@
-﻿namespace ReOsuStoryboardPlayer.DebugTool
+﻿namespace ReOsuStoryboardPlayer.Tools
 {
     public enum MouseInput
     {

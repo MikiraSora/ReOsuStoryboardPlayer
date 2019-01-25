@@ -1,11 +1,11 @@
 ﻿using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.DebugTool;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.CLIController;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.InputController;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.TriggerConditionViewer;
+using ReOsuStoryboardPlayer.Tools;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.CLIController;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.InputController;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectsSequenceViewer;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.TriggerConditionViewer;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -13,8 +13,8 @@ namespace ReOsuStoryboardPlayer
     {
         private static void SetupCommonEnvironment()
         {
-            DebuggerManager.AddDebugger(new ControlPanelDebugger());
-            DebuggerManager.AddDebugger(new InputControllerDebugger());
+            ToolManager.AddTool(new ControlPanelDebugger());
+            ToolManager.AddTool(new InputControllerDebugger());
         }
 
         private static void SetupDebugEnvironment()
@@ -23,9 +23,9 @@ namespace ReOsuStoryboardPlayer
 
             SetupCommonEnvironment();
 
-            DebuggerManager.AddDebugger(new ObjectVisualizerDebugger());
-            DebuggerManager.AddDebugger(new ObjectsSequenceViewerDebugger());
-            DebuggerManager.AddDebugger(new TriggerConditionViewerDebugger());
+            ToolManager.AddTool(new ObjectVisualizerDebugger());
+            ToolManager.AddTool(new ObjectsSequenceViewerDebugger());
+            ToolManager.AddTool(new TriggerConditionViewerDebugger());
         }
 
         private static void SetupReleaseEnvironment()
@@ -35,7 +35,7 @@ namespace ReOsuStoryboardPlayer
 
         private static void SetupMiniEnvironment()
         {
-            DebuggerManager.AddDebugger(new CLIControllerDebugger());
+            ToolManager.AddTool(new CLIControllerDebugger());
         }
 
         public static void SetupEnvironment()

@@ -3,9 +3,9 @@ using ReOsuStoryboardPlayer.Core.Parser.Collection;
 using ReOsuStoryboardPlayer.Core.Parser.Reader;
 using ReOsuStoryboardPlayer.Core.Parser.Stream;
 using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.DebugTool;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.AutoTriggerContoller;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.CLIController;
+using ReOsuStoryboardPlayer.Tools;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.AutoTriggerContoller;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.CLIController;
 using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.OutputEncoding;
 using ReOsuStoryboardPlayer.OutputEncoding.Kernel;
@@ -44,7 +44,7 @@ namespace ReOsuStoryboardPlayer
                 player.Load(info.audio_file_path);
                 MusicPlayerManager.ApplyPlayer(player);
 
-                var auto_trigger = DebuggerManager.GetOrCreateDebugger<AutoTrigger>();
+                var auto_trigger = ToolManager.GetOrCreateTool<AutoTrigger>();
                 auto_trigger.Load(info);
                 auto_trigger.Trim();
             }
@@ -57,7 +57,7 @@ namespace ReOsuStoryboardPlayer
                 EncodingProcessPlayer encoding_player = new EncodingProcessPlayer(MusicPlayerManager.ActivityPlayer.Length, encoding_opt.FPS);
                 MusicPlayerManager.ActivityPlayer.Pause();
                 MusicPlayerManager.ApplyPlayer(encoding_player);
-                DebuggerManager.AddDebugger(encoding_kernel);
+                ToolManager.AddTool(encoding_kernel);
                 encoding_kernel.Start();
             }
 
@@ -138,7 +138,7 @@ namespace ReOsuStoryboardPlayer
                     PlayerSetting.DebugMode=true;
 
                 if (args.Switches.Any(k => k=="cli"))
-                    DebuggerManager.GetOrCreateDebugger<CLIControllerDebugger>();
+                    ToolManager.GetOrCreateTool<CLIControllerDebugger>();
 
                 //额外功能 - 提取解析好变量的文本
                 if (args.TryGetArg(out var parse_type, "parse"))
@@ -205,7 +205,7 @@ namespace ReOsuStoryboardPlayer
         //程序退出
         public static void Exit(string error_reason = "")
         {
-            DebuggerManager.Close();
+            ToolManager.Close();
             StoryboardWindow.CurrentWindow?.Close();
 
             if ((!PlayerSetting.MiniMode)&&(!string.IsNullOrWhiteSpace(error_reason)))

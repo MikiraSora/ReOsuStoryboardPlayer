@@ -4,7 +4,7 @@ using ReOsuStoryboardPlayer.Player;
 using System;
 using System.Windows.Forms;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
 {
     public partial class ControllerWindow : Form
     {

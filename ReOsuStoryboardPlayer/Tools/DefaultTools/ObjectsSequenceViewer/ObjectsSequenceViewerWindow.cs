@@ -1,6 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer;
+using ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer;
 using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Player;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectsSequenceViewer
 {
     public partial class ObjectsSequenceViewer : Form
     {
@@ -151,7 +151,7 @@ namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
 
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var visualizer = DebuggerManager.GetDebugger<ObjectVisualizerDebugger>();
+            var visualizer = ToolManager.GetTool<ObjectVisualizerDebugger>();
             var select_item = listView1.SelectedItems.OfType<ListViewItem>().FirstOrDefault();
 
             if (visualizer==null||select_item==null)

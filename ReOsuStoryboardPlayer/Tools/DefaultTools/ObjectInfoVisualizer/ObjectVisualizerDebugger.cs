@@ -3,9 +3,9 @@ using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Kernel;
 using System;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
 {
-    internal class ObjectVisualizerDebugger : DebuggerBase
+    internal class ObjectVisualizerDebugger : ToolBase
     {
         public ObjectVisualizerWindow Window { get; private set; }
 
@@ -19,9 +19,9 @@ namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
             Window=new ObjectVisualizerWindow(StoryboardInstanceManager.ActivityInstance);
             Window.Show();
 
-            DebuggerManager.MouseClick+=OnMouseClick;
-            DebuggerManager.BeforeRender+=OnBeforeRender;
-            DebuggerManager.AfterRender+=OnAfterRender;
+            ToolManager.MouseClick+=OnMouseClick;
+            ToolManager.BeforeRender+=OnBeforeRender;
+            ToolManager.AfterRender+=OnAfterRender;
         }
 
         private void OnAfterRender()
@@ -160,7 +160,7 @@ namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectInfoVisualizer
         public override void Term()
         {
             Window.Close();
-            DebuggerManager.MouseClick-=OnMouseClick;
+            ToolManager.MouseClick-=OnMouseClick;
         }
 
         public override void Update()

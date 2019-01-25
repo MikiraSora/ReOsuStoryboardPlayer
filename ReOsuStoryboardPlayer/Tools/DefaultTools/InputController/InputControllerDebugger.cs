@@ -2,13 +2,13 @@
 using ReOsuStoryboardPlayer.Player;
 using System;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.InputController
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.InputController
 {
-    internal class InputControllerDebugger : DebuggerBase
+    internal class InputControllerDebugger : ToolBase
     {
         public override void Init()
         {
-            DebuggerManager.KeyboardPress+=DebuggerManager_KeyBoardPress;
+            ToolManager.KeyboardPress+=DebuggerManager_KeyBoardPress;
         }
 
         private void DebuggerManager_KeyBoardPress(Key e)
@@ -52,7 +52,7 @@ namespace ReOsuStoryboardPlayer.DebugTool.Debugger.InputController
 
         public override void Term()
         {
-            DebuggerManager.KeyboardPress-=DebuggerManager_KeyBoardPress;
+            ToolManager.KeyboardPress-=DebuggerManager_KeyBoardPress;
         }
 
         public override void Update()

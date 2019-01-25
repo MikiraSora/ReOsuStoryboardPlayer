@@ -1,6 +1,6 @@
-﻿namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ObjectsSequenceViewer
+﻿namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectsSequenceViewer
 {
-    public class ObjectsSequenceViewerDebugger : DebuggerBase
+    public class ObjectsSequenceViewerDebugger : ToolBase
     {
         private ObjectsSequenceViewer window;
 

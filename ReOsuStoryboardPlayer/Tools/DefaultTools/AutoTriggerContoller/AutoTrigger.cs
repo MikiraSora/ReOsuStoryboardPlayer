@@ -8,10 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.AutoTriggerContoller
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.AutoTriggerContoller
 {
     //Part from osu! source code
-    public class AutoTrigger : DebuggerBase
+    public class AutoTrigger : ToolBase
     {
         public LinkedList<HitSoundInfo> HitSoundInfos { get; private set; }
         private LinkedListNode<HitSoundInfo> cur;

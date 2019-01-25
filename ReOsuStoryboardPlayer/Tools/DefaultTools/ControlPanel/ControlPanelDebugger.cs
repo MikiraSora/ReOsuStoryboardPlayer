@@ -1,8 +1,8 @@
 ﻿using ReOsuStoryboardPlayer.Kernel;
 
-namespace ReOsuStoryboardPlayer.DebugTool.Debugger.ControlPanel
+namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
 {
-    public class ControlPanelDebugger : DebuggerBase
+    public class ControlPanelDebugger : ToolBase
     {
         private ControllerWindow window;
 

@@ -1,4 +1,4 @@
-﻿using ReOsuStoryboardPlayer.DebugTool;
+﻿using ReOsuStoryboardPlayer.Tools;
 using ReOsuStoryboardPlayer.OutputEncoding.Kernel;
 using ReOsuStoryboardPlayer.Player;
 using System;
@@ -34,7 +34,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Player
 
         public override void Stop()
         {
-            DebuggerManager.GetDebugger<EncodingKernel>().Abort();
+            ToolManager.GetTool<EncodingKernel>().Abort();
         }
 
         private float time_step;
