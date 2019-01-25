@@ -111,6 +111,9 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
 
             var group = StoryboardInstanceManager.ActivityInstance.Resource.GetSprite(obj.ImageFilePath);
 
+            if (group==null)
+                return false;
+
             int w = (int)(group.Texture.Width*Math.Abs(obj.Scale.X));
             int h = (int)(group.Texture.Height*Math.Abs(obj.Scale.Y));
 

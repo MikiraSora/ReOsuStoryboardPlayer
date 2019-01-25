@@ -217,26 +217,27 @@ namespace ReOsuStoryboardPlayer
 
             bool _get(string image_name, out SpriteInstanceGroup group)
             {
+                var fix_image = image_name;
                 //for Flex
-                if (string.IsNullOrWhiteSpace(Path.GetExtension(image_name)))
-                    image_name+=".png";
+                if (string.IsNullOrWhiteSpace(Path.GetExtension(fix_image)))
+                    fix_image+=".png";
 
                 if (CacheDrawSpriteInstanceMap.TryGetValue(image_name, out group))
                     return true;
 
                 //load
-                string file_path = Path.Combine(folder_path, image_name);
+                string file_path = Path.Combine(folder_path, fix_image);
 
                 if (!_load_tex(file_path, out var tex))
                 {
-                    file_path=Path.Combine(PlayerSetting.UserSkinPath, image_name);
-                    _load_tex(file_path, out tex);
+                    file_path=Path.Combine(PlayerSetting.UserSkinPath, fix_image);
+                    _load_tex(fix_image, out tex);
                 }
 
                 if (tex!=null)
                 {
-                    group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)PlayerSetting.DrawCallInstanceCountMax, file_path, tex);
-                    Log.Debug($"Created Storyboard sprite instance from image file :{file_path}");
+                    group=CacheDrawSpriteInstanceMap[image_name]=new SpriteInstanceGroup((uint)PlayerSetting.DrawCallInstanceCountMax, fix_image, tex);
+                    Log.Debug($"Created Storyboard sprite instance from image file :{fix_image}");
                 }
 
                 return group!=null;
