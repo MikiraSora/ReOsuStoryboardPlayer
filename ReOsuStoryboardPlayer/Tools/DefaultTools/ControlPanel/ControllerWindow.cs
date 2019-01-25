@@ -20,16 +20,19 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
         private void button1_Click(object sender, EventArgs e)
         {
             MusicPlayerManager.ActivityPlayer.Play();
+            UpdateTimeText();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             MusicPlayerManager.ActivityPlayer.Pause();
+            UpdateTimeText();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             MusicPlayerManager.ActivityPlayer.Jump(0, true);
+            UpdateTimeText();
         }
 
         private float prev_display_time = float.MinValue;
@@ -38,6 +41,13 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
         {
             progressBar1.Value=(int)Math.Max(0, Math.Min(time*1.0f/MusicPlayerManager.ActivityPlayer.Length*progressBar1.Maximum, progressBar1.Maximum));
             prev_display_time=time;
+            UpdateTimeText();
+        }
+
+        private void UpdateTimeText()
+        {
+            prev_playback_display=MusicPlayerManager.ActivityPlayer.CurrentTime;
+            label3.Text=$"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
         }
 
         private float prev_playback_display = float.MinValue, prev_playspeed_display = float.MinValue;
@@ -58,8 +68,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
 
             if (Math.Abs(prev_playback_display-MusicPlayerManager.ActivityPlayer.CurrentTime)>250)
             {
-                prev_playback_display=MusicPlayerManager.ActivityPlayer.CurrentTime;
-                label3.Text=$"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
+                UpdateTimeText();
             }
 
             if (prev_playspeed_display!=MusicPlayerManager.ActivityPlayer.PlaybackSpeed)
@@ -105,6 +114,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
         {
             JumpToWindow windows = new JumpToWindow(CurrentStoryboardIntance);
             windows.ShowDialog(this);
+            UpdateTimeText();
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
