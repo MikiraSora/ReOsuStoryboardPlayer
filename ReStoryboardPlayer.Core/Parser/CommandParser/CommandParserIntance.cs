@@ -73,7 +73,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
 
     public class CommandParserIntance<COMMAND> where COMMAND : Command
     {
-        public static ICommandParser _instance;
+        private static ICommandParser _instance;
 
         public static ICommandParser Instance
         {

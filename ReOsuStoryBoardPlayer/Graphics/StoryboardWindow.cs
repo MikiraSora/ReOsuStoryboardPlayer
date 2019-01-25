@@ -284,6 +284,8 @@ namespace ReOsuStoryboardPlayer
 
             _timestamp=0;
 
+            instance.SetupBackgroundObject();
+
             ready=true;
         }
 

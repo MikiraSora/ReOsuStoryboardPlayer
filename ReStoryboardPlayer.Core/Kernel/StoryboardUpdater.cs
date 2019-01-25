@@ -13,67 +13,22 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
     public class StoryboardUpdater
     {
         /// <summary>
-        /// 已加载的物件集合
+        /// 已加载的物件集合,会按照FrameStartTime从小到大排列
         /// </summary>
         public LinkedList<StoryboardObject> StoryboardObjectList { get; private set; }
 
         private LinkedListNode<StoryboardObject> CurrentScanNode;
 
         /// <summary>
-        /// 正在执行的物件集合
+        /// 正在执行的物件集合,会按照渲染顺序Z排列
         /// </summary>
         public List<StoryboardObject> UpdatingStoryboardObjects { get; private set; }
 
-        private ParallelOptions parallel_options = new ParallelOptions() { MaxDegreeOfParallelism=Setting.UpdateThreadCount };
+        private readonly ParallelOptions parallel_options = new ParallelOptions() { MaxDegreeOfParallelism=Setting.UpdateThreadCount };
 
         public StoryboardUpdater(List<StoryboardObject> objects)
         {
             StoryboardObjectList=new LinkedList<StoryboardObject>();
-
-            //int audioLeadIn = 0;
-            /*
-            using (StopwatchRun.Count("Load and Parse osb/osu file"))
-            {
-                List<StoryboardObject> temp_objs_list = new List<StoryboardObject>(), parse_osb_Storyboard_objs = new List<StoryboardObject>();
-
-                //get objs from osu file
-                List<StoryboardObject> parse_osu_Storyboard_objs = string.IsNullOrWhiteSpace(info.osu_file_path)?new List<StoryboardObject>():StoryboardParserHelper.GetStoryboardObjects(info.osu_file_path);
-                AdjustZ(parse_osu_Storyboard_objs, 0);
-
-                if ((!string.IsNullOrWhiteSpace(info.osb_file_path))&&File.Exists(info.osb_file_path))
-                {
-                    parse_osb_Storyboard_objs=StoryboardParserHelper.GetStoryboardObjects(info.osb_file_path);
-                    AdjustZ(parse_osb_Storyboard_objs, 0);
-                }
-
-                temp_objs_list=CombineStoryboardObjects(parse_osb_Storyboard_objs, parse_osu_Storyboard_objs);
-
-                //delete Background object if there is a normal Storyboard object which is same image file.
-                var background_obj = temp_objs_list.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
-                if (temp_objs_list.Any(c => c.ImageFilePath==background_obj?.ImageFilePath&&(!(c is StoryboardBackgroundObject))))
-                {
-                    Log.User($"Found another same background image object and delete all background objects.");
-                    temp_objs_list.RemoveAll(x=>x is StoryboardBackgroundObject);
-                }
-                else
-                {
-                    if (background_obj!=null)
-                        background_obj.Z=-1;
-                }
-
-                temp_objs_list.Sort((a, b) =>
-                {
-                    return a.FrameStartTime-b.FrameStartTime;
-                });
-
-                foreach (var obj in temp_objs_list)
-                    StoryboardObjectList.AddLast(obj);
-
-                StoryboardObjectList.AsParallel().ForAll(c => c.SortCommands());
-
-                CurrentScanNode=StoryboardObjectList.First;
-            }
-            */
 
             //delete Background object if there is a normal Storyboard object which is same image file.
             var background_obj = objects.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
@@ -97,12 +52,12 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
                 StoryboardObjectList.AddLast(obj);
 
             StoryboardObjectList.AsParallel().ForAll(c => c.SortCommands());
-
-            CurrentScanNode=StoryboardObjectList.First;
-
+            
             var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
 
             UpdatingStoryboardObjects=new List<StoryboardObject>(limit_update_count);
+
+            Flush();
         }
 
         /// <summary>
@@ -189,6 +144,7 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
 
         ~StoryboardUpdater()
         {
+
         }
 
         //public override string ToString() => $"{Info.folder_path}";
