@@ -500,9 +500,7 @@ namespace ReOsuStoryboardPlayer
 
         private int downX, downY;
         private bool mouseDown = false;
-
-#if DEBUG
-
+        
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -542,17 +540,10 @@ namespace ReOsuStoryboardPlayer
             base.OnMouseMove(e);
 
             if (mouseDown&&WindowBorder==WindowBorder.Hidden)
-            {
                 Location=new Point(e.X+Location.X-downX, e.Y+Location.Y-downY);
-                //Log.User($"X: ${e.X} Y:${e.Y}");
-            }
             else
-            {
                 ToolManager.TrigMove(e.X, e.Y);
-            }
         }
-
-#endif
 
         #endregion Input Process
     }
