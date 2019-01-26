@@ -16,13 +16,23 @@ using ReOsuStoryboardPlayer.ProgramCommandParser;
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ReOsuStoryboardPlayer
 {
     public class MainProgram
     {
+        internal delegate bool ControlCtrlDelegate(int CtrlType);
+        [DllImport("kernel32.dll")]
+        internal static extern bool SetConsoleCtrlHandler(ControlCtrlDelegate HandlerRoutine, bool Add);
+
         public static void Main(string[] argv)
         {
+            SetConsoleCtrlHandler(type => {
+                Exit();
+                return true;
+            },false);
+
             PlayerSetting.Init();
 
             var args = ParseProgramCommands(argv, out var beatmap_folder);
