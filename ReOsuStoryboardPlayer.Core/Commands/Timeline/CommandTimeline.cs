@@ -14,7 +14,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public bool Overlay { get; set; }
 
-        public Event Event = Event.Unknown;
+        public Event Event => first_command?.Event??Event.Unknown;
 
         private Command last_command, first_command;
 
@@ -36,10 +36,32 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
             base.Add(command);
 
+            UpdateFirstLastCommand();
+        }
+
+        public void SortCommand()
+        {
+            Sort((x, y) =>
+            {
+                var z = x.StartTime-y.StartTime;
+
+                if (z!=0)
+                    return z;
+
+                return x.EndTime-y.EndTime;
+            });
+            
+            UpdateFirstLastCommand();
+        }
+
+        public new void Sort() => SortCommand();
+
+        private void UpdateFirstLastCommand()
+        {
             //update StartTime/EndTime and command caches.
             first_command=this.First();
             last_command=this.Last();
-            StartTime =/*Math.Min(StartTime, command.StartTime)*/first_command.StartTime;
+            StartTime=/*Math.Min(StartTime, command.StartTime)*/first_command.StartTime;
             EndTime=/*Math.Max(EndTime, command.EndTime)*/last_command.EndTime;
         }
 

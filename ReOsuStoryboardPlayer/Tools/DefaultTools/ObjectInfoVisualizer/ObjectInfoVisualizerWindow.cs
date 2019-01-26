@@ -25,10 +25,9 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
         private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
         private readonly StoryboardInstance instance;
 
-        public ObjectVisualizerWindow(StoryboardInstance instance)
+        public ObjectVisualizerWindow()
         {
             InitializeComponent();
-            this.instance=instance;
         }
 
         public void UpdateCurrentStoryboardObject()
@@ -58,7 +57,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
                     try
                     {
                         pictureBox1.Image=null;
-                        var path = instance.Resource.GetSprite(SelectObject.ImageFilePath).ImagePath;
+                        var path = StoryboardInstanceManager.ActivityInstance.Resource.GetSprite(SelectObject).Texture.filePath;
                         var img = Bitmap.FromFile(path);
 
                         if (img!=null)
@@ -92,7 +91,10 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
                     Log.Error(e.Message);
                 }
 
-                AngleLabel.Text=(SelectObject.Rotate*180/Math.PI).ToString();
+                var a = SelectObject.Rotate*180/Math.PI;
+                a=a>360 ? a%360 : (a<0?(360-((-a)%360)):a);
+
+                AngleLabel.Text=$"{a}°";
                 AlphaLabel.Text=SelectObject.Color.W.ToString();
                 ScaleLabel.Text=SelectObject.Scale.ToString();
 

@@ -120,15 +120,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
         public void SortCommands()
         {
             foreach (var time in CommandMap.Values)
-                time.Sort((x, y) =>
-                {
-                    var z = x.StartTime-y.StartTime;
-
-                    if (z!=0)
-                        return z;
-
-                    return x.EndTime-y.EndTime;
-                });
+                time.SortCommand();
         }
 
         public void RemoveCommand(Command command)
@@ -206,6 +198,11 @@ namespace ReOsuStoryboardPlayer.Core.Base
             ExecutedCommands.ForEach(c => c.IsExecuted=false);
             ExecutedCommands.Clear();
 #endif
+            if (FileLine==300956)
+            {
+
+            }
+
             foreach (var pair in CommandMap)
             {
                 var timeline = pair.Value;

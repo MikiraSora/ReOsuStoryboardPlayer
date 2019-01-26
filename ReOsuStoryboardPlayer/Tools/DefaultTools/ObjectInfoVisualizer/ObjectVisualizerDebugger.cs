@@ -16,7 +16,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
 
         public override void Init()
         {
-            Window=new ObjectVisualizerWindow(StoryboardInstanceManager.ActivityInstance);
+            Window=new ObjectVisualizerWindow();
             Window.Show();
 
             ToolManager.MouseClick+=OnMouseClick;
