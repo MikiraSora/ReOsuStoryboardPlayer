@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Half = OpenTK.Half;
 
 namespace ReOsuStoryboardPlayer
@@ -228,7 +229,7 @@ namespace ReOsuStoryboardPlayer
                     Half* hp = (Half*)(ptr+8);
                     hp[0]=horizon_flip ? HalfNegativeOne : HalfOne;
                     hp[1]=vertical_flip ? HalfNegativeOne : HalfOne;
-
+                    
                     Unsafe.CopyBlock(ptr+12, &model.Row0.X, 2*3*sizeof(float));
                 }
             }
