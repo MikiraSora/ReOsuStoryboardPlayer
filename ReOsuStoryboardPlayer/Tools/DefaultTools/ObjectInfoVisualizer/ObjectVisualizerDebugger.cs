@@ -35,7 +35,6 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
         }
 
         private byte backup_alpha;
-        private float count;
 
         private void OnBeforeRender()
         {
@@ -43,14 +42,13 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
 
             if (select_object==null)
             {
-                count=0;
                 return;
             }
 
-            count+=0.00045f*DateTime.Now.Second;
-
+            var time = DateTime.Now.Millisecond;
+            
             backup_alpha=select_object.Color.W;
-            select_object.Color.W=(byte)Math.Min(255, Math.Abs(255*Math.Cos(count)));
+            select_object.Color.W=(byte)Math.Max(0,Math.Min(255, 127.5*Math.Cos(time*0.005)+127.5));
         }
 
         private void OnMouseClick(int x, int y, MouseInput input)
