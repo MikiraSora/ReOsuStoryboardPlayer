@@ -34,10 +34,13 @@ namespace ReOsuStoryboardPlayer
             //init window
             StoryboardWindow window = new StoryboardWindow(PlayerSetting.Width, PlayerSetting.Height);
 
+            Log.User($"Start to parse folder :{beatmap_folder}");
+
             if (Directory.Exists(beatmap_folder))
             {
                 var info = BeatmapFolderInfo.Parse(beatmap_folder, args);
                 var instance = StoryboardInstance.Load(info);
+
                 window.LoadStoryboardInstance(instance);
 
                 var player = new MusicPlayer();
@@ -47,6 +50,10 @@ namespace ReOsuStoryboardPlayer
                 var auto_trigger = ToolManager.GetOrCreateTool<AutoTrigger>();
                 auto_trigger.Load(info);
                 auto_trigger.Trim();
+            }
+            else
+            {
+                Exit($"You have to select a beatmap folder which contains storyboard to play");
             }
 
             if (PlayerSetting.EncodingEnvironment)

@@ -97,7 +97,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
 
         private void ControllerWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Environment.Exit(0);
+
         }
 
         private void button5_Click(object sender, EventArgs e)
