@@ -119,7 +119,7 @@ namespace ReOsuStoryboardPlayer.Parser
                     .FullName;
             }
 
-            if (((_check(info.osu_file_path)||_check(info.osb_file_path)))&&_check(info.audio_file_path))
+            if (!(_check(info.osu_file_path)||_check(info.osb_file_path))&&_check(info.audio_file_path))
             {
                 MainProgram.Exit($"missing files such as .osu/.osb and audio file which is registered in .osu");
             }
