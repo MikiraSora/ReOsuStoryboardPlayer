@@ -372,6 +372,9 @@ namespace ReOsuStoryboardPlayer
             FrameRateLimit();
         }
 
+        int prev_playing_time;
+        DateTime prev_encoding_time=DateTime.Now;
+
         private void FrameRateLimit()
         {
             long total_time = _title_update_stopwatch.ElapsedMilliseconds;
@@ -385,7 +388,21 @@ namespace ReOsuStoryboardPlayer
                 if (PlayerSetting.EncodingEnvironment)
                 {
                     var kernel = ToolManager.GetTool<EncodingKernel>();
-                    title_encoding_part=$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp}";
+
+                    //calc ETA
+                    var now_time = DateTime.Now;
+                    var encoded_time = (now_time-prev_encoding_time).TotalMilliseconds;
+                    prev_encoding_time=now_time;
+
+                    var time=(int)(MusicPlayerManager.ActivityPlayer?.CurrentTime??0);
+                    var end_time = kernel.Option.IsExplicitTimeRange ? (uint)kernel.Option.EndTime : MusicPlayerManager.ActivityPlayer.Length;
+                    var past_time = (time-prev_playing_time);
+                    prev_playing_time=time;
+
+                    var eta = encoded_time*((end_time-time)/past_time);
+                    var span = TimeSpan.FromMilliseconds(eta);
+
+                    title_encoding_part =$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp} ETA:{span}";
                 }
 
                 Title=string.Format(TITLE, Width, Height,

@@ -17,7 +17,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
         //Thread thread;
         public EncodingWriterBase Writer { get; private set; }
 
-        private EncoderOption option;
+        public EncoderOption Option { get; private set; }
 
         private float prev_time;
 
@@ -27,7 +27,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 
         public EncodingKernel(EncoderOption option)
         {
-            this.option=option;
+            this.Option=option;
         }
 
         private void OnKeyPress(OpenTK.Input.Key obj)
@@ -44,16 +44,16 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
                 throw new Exception("Current player isn't EncodingProcessPlayer!");
 
             Writer=EncodingWriterFatory.Create();
-            Writer.OnStart(option);
+            Writer.OnStart(Option);
 
             Log.User($"Start encoding....");
 
-            buffer=new byte[option.Width*option.Height*4];
+            buffer=new byte[Option.Width*Option.Height*4];
             is_running=true;
 
-            if (option.IsExplicitTimeRange)
+            if (Option.IsExplicitTimeRange)
             {
-                time_control.Jump(option.StartTime, true);
+                time_control.Jump(Option.StartTime, true);
             }
 
             ToolManager.AfterRender+=OnAfterRender;
@@ -65,7 +65,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
             time_control.GetNextFrameTime();
 
             //超出时间，结束
-            if (time_control.CurrentTime>=(option.IsExplicitTimeRange ? Math.Min(time_control.Length, option.EndTime) : time_control.Length))
+            if (time_control.CurrentTime>=(Option.IsExplicitTimeRange ? Math.Min(time_control.Length, Option.EndTime) : time_control.Length))
             {
                 Abort();
                 return;
@@ -79,16 +79,16 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 
             Log.Debug($"Process time : {time_control.CurrentTime} ({(time_control.CurrentTime/time_control.Length*100).ToString("F2")})");
 
-            GL.ReadPixels(0, 0, option.Width, option.Height, PixelFormat.Bgra, PixelType.UnsignedByte, ref buffer[0]);
+            GL.ReadPixels(0, 0, Option.Width, Option.Height, PixelFormat.Bgra, PixelType.UnsignedByte, ref buffer[0]);
 
-            for (int i = 0; i<option.Height/2; i++)
+            for (int i = 0; i<Option.Height/2; i++)
             {
-                var l = option.Height-i-1;
+                var l = Option.Height-i-1;
 
-                var src = i*option.Width*4;
-                var dist = l*option.Width*4;
+                var src = i*Option.Width*4;
+                var dist = l*Option.Width*4;
 
-                for (int x = 0; x<option.Width*4; x++)
+                for (int x = 0; x<Option.Width*4; x++)
                 {
                     var z = buffer[src+x];
                     buffer[src+x]=buffer[dist+x];
@@ -96,7 +96,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
                 }
             }
 
-            Writer.OnNextFrame(buffer, option.Width, option.Height);
+            Writer.OnNextFrame(buffer, Option.Width, Option.Height);
         }
 
         public void Abort()
