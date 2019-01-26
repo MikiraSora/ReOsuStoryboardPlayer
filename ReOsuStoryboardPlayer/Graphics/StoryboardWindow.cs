@@ -399,7 +399,7 @@ namespace ReOsuStoryboardPlayer
                     var past_time = (time-prev_playing_time);
                     prev_playing_time=time;
 
-                    var eta = encoded_time*((end_time-time)/past_time);
+                    var eta = past_time==0?0:encoded_time*((end_time-time)/past_time);
                     var span = TimeSpan.FromMilliseconds(eta);
 
                     title_encoding_part =$" Encoding Frame:{kernel.Writer.ProcessedFrameCount} Timestamp:{kernel.Writer.ProcessedTimestamp} ETA:{span}";

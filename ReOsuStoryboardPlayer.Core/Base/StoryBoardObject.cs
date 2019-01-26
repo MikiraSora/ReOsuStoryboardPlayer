@@ -208,7 +208,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
         internal List<Command> ExecutedCommands = new List<Command>();
 
         public bool DebugShow = true;
-        private bool command_change_block;
 
         internal void MarkCommandExecuted(Command command, bool is_exec = true)
         {
@@ -218,11 +217,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 ExecutedCommands.Remove(command);
 
             command.IsExecuted=is_exec;
-        }
-
-        public void BlockCommandsChange()
-        {
-            command_change_block=true;
         }
 
 #endif

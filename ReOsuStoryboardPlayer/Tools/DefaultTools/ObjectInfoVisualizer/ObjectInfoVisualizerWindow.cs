@@ -23,7 +23,6 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
         public StoryboardObject SelectObject { get; set; }
 
         private Dictionary<Command, TreeNode> command_node_map = new Dictionary<Command, TreeNode>();
-        private readonly StoryboardInstance instance;
 
         public ObjectVisualizerWindow()
         {

@@ -31,10 +31,6 @@ namespace ReOsuStoryboardPlayer.Parser
                 foreach (var obj in list)
                 {
                     obj.CalculateAndApplyBaseFrameTime();
-#if DEBUG
-                    //objects are all ready to execute. so block ::AddCommand()/::RemoveCommand() for safe.
-                    obj.BlockCommandsChange();
-#endif
                 }
 
                 if (PlayerSetting.EnableRuntimeOptimzeObjects)
