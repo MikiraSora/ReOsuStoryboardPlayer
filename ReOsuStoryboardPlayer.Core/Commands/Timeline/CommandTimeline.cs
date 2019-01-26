@@ -20,10 +20,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public new void Add(Command command)
         {
-            if(!((Event==Event.Unknown ? (Event=command.Event) : Event)==Event)&&Event==command.Event){
-                throw new Exception("Not allow to add different event command");
-            }
-
             //check overlay
             if (Count>=1)
             {
