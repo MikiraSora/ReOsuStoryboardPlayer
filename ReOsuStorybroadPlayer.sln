@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryboardPlayer", "ReOsuStoryBoardPlayer\ReOsuStoryboardPlayer.csproj", "{5116D93A-A7D9-4312-B052-FBC2FE5D0444}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryboardPlayer", "ReOsuStoryboardPlayer\ReOsuStoryboardPlayer.csproj", "{5116D93A-A7D9-4312-B052-FBC2FE5D0444}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaarFFmpeg", "SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj", "{AB4CABA1-06E4-4A32-8A15-1FBE20ED5BC6}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storybrew", "Storybrew", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common", "..\storybrew\common\common.csproj", "{F0EDCCEC-4B64-4CE8-801F-1377E3384DC4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReOsuStoryboardPlayer.Core", "ReStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj", "{31711B28-3825-4EB4-A6E7-959B699EB3AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReOsuStoryboardPlayer.Core", "ReOsuStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj", "{31711B28-3825-4EB4-A6E7-959B699EB3AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
