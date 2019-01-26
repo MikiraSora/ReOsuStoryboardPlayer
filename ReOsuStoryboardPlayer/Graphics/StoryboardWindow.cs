@@ -177,7 +177,7 @@ namespace ReOsuStoryboardPlayer
                         if (group!=null)
                         {
                             var scale = SB_HEIGHT/group.Texture.Height;
-                            background.InternalAddCommand(new ScaleCommand()
+                            background.AddCommand(new ScaleCommand()
                             {
                                 Easing=/*EasingConverter.CacheEasingInterpolatorMap[Easing.Linear]*/EasingTypes.None,
                                 StartTime=-2857,

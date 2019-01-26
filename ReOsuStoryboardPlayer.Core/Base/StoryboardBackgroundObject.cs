@@ -57,7 +57,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             var scale_commands=CommandParserIntance<ScaleCommand>.Instance.Parse($" S,0,{FrameStartTime},{FrameEndTime},{scale}".Split(','));
 
             foreach (var cmd in scale_commands)
-                InternalAddCommand(cmd);
+                AddCommand(cmd);
         }
     }
 }

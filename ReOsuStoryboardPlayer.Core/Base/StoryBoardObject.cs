@@ -57,14 +57,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public void AddCommand(Command command)
         {
-#if DEBUG
-            Debug.Assert(!command_change_block, "Can't add any commands when BlockCommandAdd() was called.");
-#endif
-            InternalAddCommand(command);
-        }
-
-        public void InternalAddCommand(Command command)
-        {
             switch (command)
             {
                 case LoopCommand loop:
@@ -91,7 +83,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             {
                 //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
                 foreach (var cmd in loop_command.SubCommandExpand())
-                    InternalAddCommand(cmd);
+                    AddCommand(cmd);
             }
             else
             {
@@ -99,7 +91,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 foreach (var @event in loop_command.SubCommands.Keys)
                 {
                     var sub_command_wrapper = new LoopSubTimelineCommand(loop_command, @event);
-                    InternalAddCommand(sub_command_wrapper);
+                    AddCommand(sub_command_wrapper);
                 }
             }
         }
@@ -124,14 +116,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
         }
 
         public void RemoveCommand(Command command)
-        {
-#if DEBUG
-            Debug.Assert(!command_change_block, "Can't remove any commands when BlockCommandAdd() was called.");
-#endif
-            InternalRemoveCommand(command);
-        }
-
-        internal void InternalRemoveCommand(Command command)
         {
             switch (command)
             {

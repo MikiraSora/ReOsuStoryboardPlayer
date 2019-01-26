@@ -79,9 +79,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
         {
             foreach (var wrapper in cache_timline_wrapper)
             {
-                bind_object.InternalRemoveCommand(wrapper.Value);
+                bind_object.RemoveCommand(wrapper.Value);
                 wrapper.Value.UpdateOffset((int)time);
-                bind_object.InternalAddCommand(wrapper.Value);
+                bind_object.AddCommand(wrapper.Value);
             }
         }
 
@@ -92,7 +92,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
         private void DetachSubCommands(bool magic = false)
         {
             foreach (var wrapper in cache_timline_wrapper.Where(x => !magic||(x.Value.StartTime==x.Value.EndTime&&x.Value.StartTime==0)))
-                bind_object.InternalRemoveCommand(wrapper.Value);
+                bind_object.RemoveCommand(wrapper.Value);
         }
 
         /// <summary>
