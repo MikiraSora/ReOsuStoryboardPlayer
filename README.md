@@ -17,7 +17,7 @@
 
 #### 已知问题
 * 部分Sb铺面不能完全支持(可能有执行逻辑的bug)
-* 部分老爷机不能支持部分铺面的执行(Vulkan在做了.gugugu)
+* 部分老爷机不能支持部分铺面的执行(~~Vulkan在做了.gugugu~~)
 * TriggerCommand可能执行有误(**但因为屙屎目前实现细节和以前不同**,比如TriggerGroup,所以可能有所差异)
 
 #### 计划(咕)
@@ -25,6 +25,9 @@
 * 实现帮助文档
 * .Net Framework -> .Net Core
 * ReStoryboardPlayer on Brosewer with Blazor
+
+#### 系统要求
+* .net framework 4.7.1
 
 #### 截图:
 ![](https://puu.sh/xku6E/3671305f79.jpg)
@@ -47,4 +50,4 @@ Oldvervion:
 
 
 #### Special Thanks
-****麻花****(43size),Damnae，鹅苗，外服大师 ,[kj415j45](https://github.com/kj415j45)，****[毛毛](https://github.com/KedamaOvO)****,pEpPY，量子玫瑰 and all of 恶俗麻婆****2857****吹比黄图群
+****麻花****(43size),Damnae，鹅苗，外服大师 ,[kj415j45](https://github.com/kj415j45)，****[毛毛](https://github.com/KedamaOvO)****,peppy，量子玫瑰 and all of 恶俗麻婆****2857****吹比黄图群
