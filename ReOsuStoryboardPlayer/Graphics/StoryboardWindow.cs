@@ -173,21 +173,12 @@ namespace ReOsuStoryboardPlayer
                     case StoryboardBackgroundObject background:
                         if (!_get(obj.ImageFilePath.ToLower(), out group))
                             Log.Warn($"not found image:{obj.ImageFilePath}");
-
-                        /*
+                        
                         if (group!=null)
                         {
-                            var scale = SB_HEIGHT/group.Texture.Height;
-                            background.AddCommand(new ScaleCommand()
-                            {
-                                Easing=EasingTypes.None,
-                                StartTime=-2857,
-                                EndTime=-2857,
-                                StartValue=scale,
-                                EndValue=scale
-                            });
+                            background.AdjustScale(group.Texture.Height);
                         }
-                        */
+                        
                         break;
 
                     case StoryboardAnimation animation:
@@ -285,8 +276,6 @@ namespace ReOsuStoryboardPlayer
             }
 
             _timestamp=0;
-
-            instance.SetupBackgroundObject();
 
             ready=true;
         }

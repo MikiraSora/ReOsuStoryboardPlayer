@@ -83,20 +83,5 @@ namespace ReOsuStoryboardPlayer.Kernel
 
             return instance;
         }
-
-        public void SetupBackgroundObject()
-        {
-            Debug.Assert(Updater!=null&&Resource!=null, "Can't initialize storyboard background objects before Updater and Resource are set");
-
-            foreach (var obj in Updater.StoryboardObjectList.OfType<StoryboardBackgroundObject>())
-            {
-                if (Resource.GetSprite(obj) is SpriteInstanceGroup group)
-                {
-                    var height = group.Texture.Height;
-
-                    obj.AdjustScale(height);
-                }
-            }
-        }
     }
 }
