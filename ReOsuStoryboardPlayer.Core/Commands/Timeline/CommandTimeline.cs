@@ -74,7 +74,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             StartTime=first_command?.StartTime??0;
             EndTime=Overlay ? this.Max(x => x.EndTime) : Math.Max(EndTime, last_command?.EndTime??EndTime);
 
-            pick_command_cache=default
+            pick_command_cache=default;
         }
 
         private (int cache_start_time, int cache_end_time, Command cache_selected_command) pick_command_cache = default;

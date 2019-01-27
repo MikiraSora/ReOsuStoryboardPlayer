@@ -50,9 +50,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
             trick_init=true;
 
-            var tex = 480/height;
-
-            float scale = 0;
+            float scale = 480.0f/height;
 
             var scale_commands=CommandParserIntance<ScaleCommand>.Instance.Parse($" S,0,{FrameStartTime},{FrameEndTime},{scale}".Split(','));
 

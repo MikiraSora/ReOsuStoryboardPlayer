@@ -174,18 +174,20 @@ namespace ReOsuStoryboardPlayer
                         if (!_get(obj.ImageFilePath.ToLower(), out group))
                             Log.Warn($"not found image:{obj.ImageFilePath}");
 
+                        /*
                         if (group!=null)
                         {
                             var scale = SB_HEIGHT/group.Texture.Height;
                             background.AddCommand(new ScaleCommand()
                             {
-                                Easing=/*EasingConverter.CacheEasingInterpolatorMap[Easing.Linear]*/EasingTypes.None,
+                                Easing=EasingTypes.None,
                                 StartTime=-2857,
                                 EndTime=-2857,
                                 StartValue=scale,
                                 EndValue=scale
                             });
                         }
+                        */
                         break;
 
                     case StoryboardAnimation animation:
