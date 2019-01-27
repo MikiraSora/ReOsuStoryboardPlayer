@@ -23,7 +23,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
         public virtual void UpdateSubCommand()
         {
             foreach (var list in SubCommands.Values)
-                list.Sort();
+                list.SortCommands();
         }
     }
 }

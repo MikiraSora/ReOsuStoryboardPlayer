@@ -39,7 +39,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             UpdateFirstLastCommand();
         }
 
-        public void SortCommand()
+        public void SortCommands()
         {
             Sort((x, y) =>
             {
@@ -54,15 +54,25 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             UpdateFirstLastCommand();
         }
 
-        public new void Sort() => SortCommand();
+        public new void Remove(Command command)
+        {
+            base.Remove(command);
+            UpdateFirstLastCommand();
+        }
+
+        public new void Insert(int index, Command command)
+        {
+            base.Insert(index, command);
+            UpdateFirstLastCommand();
+        }
 
         private void UpdateFirstLastCommand()
         {
             //update StartTime/EndTime and command caches.
-            first_command=this.First();
-            last_command=this.Last();
-            StartTime=/*Math.Min(StartTime, command.StartTime)*/first_command.StartTime;
-            EndTime=/*Math.Max(EndTime, command.EndTime)*/last_command.EndTime;
+            first_command=this.FirstOrDefault();
+            last_command=this.LastOrDefault();
+            StartTime=first_command?.StartTime??0;
+            EndTime=Overlay ? this.Max(x => x.EndTime) : Math.Max(EndTime, last_command?.EndTime??EndTime);
         }
 
         private Command selected_command;
