@@ -182,6 +182,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             ExecutedCommands.ForEach(c => c.IsExecuted=false);
             ExecutedCommands.Clear();
 #endif  
+
             foreach (var pair in CommandMap)
             {
                 var timeline = pair.Value;

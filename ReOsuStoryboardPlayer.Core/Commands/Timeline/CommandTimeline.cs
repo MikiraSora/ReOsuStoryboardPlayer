@@ -36,7 +36,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
             base.Add(command);
 
-            UpdateFirstLastCommand();
+            CleanCacheAndRecalculateTime();
         }
 
         public void SortCommands()
@@ -51,50 +51,70 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 return x.EndTime-y.EndTime;
             });
             
-            UpdateFirstLastCommand();
+            CleanCacheAndRecalculateTime();
         }
 
         public new void Remove(Command command)
         {
             base.Remove(command);
-            UpdateFirstLastCommand();
+            CleanCacheAndRecalculateTime();
         }
 
         public new void Insert(int index, Command command)
         {
             base.Insert(index, command);
-            UpdateFirstLastCommand();
+            CleanCacheAndRecalculateTime();
         }
 
-        private void UpdateFirstLastCommand()
+        private void CleanCacheAndRecalculateTime()
         {
             //update StartTime/EndTime and command caches.
             first_command=this.FirstOrDefault();
             last_command=this.LastOrDefault();
             StartTime=first_command?.StartTime??0;
             EndTime=Overlay ? this.Max(x => x.EndTime) : Math.Max(EndTime, last_command?.EndTime??EndTime);
+
+            pick_command_cache=default
         }
 
-        private Command selected_command;
+        private (int cache_start_time, int cache_end_time, Command cache_selected_command) pick_command_cache = default;
 
-        public Command PickCommand(float current_time)
+        public Command PickCommand(float current_time) => Overlay ? PickCommandOverlay(current_time) : PickCommandNormal(current_time);
+
+        public Command PickCommandNormal(float current_time)
         {
-            //Debug.Assert(!float.IsNaN(current_time), $"current_time is not a number");
-
-            if (Count==0)
-                return null;
-
             //cache
-            if (selected_command!=null
-                &&TimeInCommand(selected_command)
-                &&(!Overlay))
-                return selected_command;
+            if (pick_command_cache.cache_selected_command!=null
+                &&pick_command_cache.cache_start_time<=current_time&&current_time<=pick_command_cache.cache_end_time)
+                return pick_command_cache.cache_selected_command;
 
+            for (int i = 0; i<Count-1; i++)
+            {
+                var cmd = this[i];
+                var next_cmd = this[i+1];
+
+                if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
+                    return UpdatePickCache(cmd.StartTime, next_cmd.StartTime, cmd);
+            }
+
+            if (current_time<=first_command.StartTime)
+                return UpdatePickCache(int.MinValue, first_command.StartTime, first_command);
+
+            if (current_time>=last_command.StartTime)
+                return UpdatePickCache(last_command.StartTime, int.MaxValue, last_command);
+
+            return UpdatePickCache(0, 0, null);
+
+            Command UpdatePickCache(int start_time, int end_time, Command command) => (pick_command_cache=(start_time, end_time, command)).cache_selected_command;
+        }
+
+        public Command PickCommandOverlay(float current_time)
+        {
             if (current_time<StartTime)
-                return selected_command=first_command;
+                return first_command;
 
             if (current_time>EndTime)
-                return selected_command=last_command;
+                return last_command;
 
             for (int i = 0; i<Count; i++)
             {
@@ -111,16 +131,16 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                             continue;
                     }
 
-                    return selected_command=cmd;
+                    return cmd;
                 }
                 //时间夹在两个命令之间，那就选择前者
                 else if (next_cmd!=null&&current_time>=cmd.EndTime&&current_time<=next_cmd.StartTime)
-                    return selected_command=cmd;
+                    return cmd;
             }
 
-            return selected_command=null;
+            return null;
 
-            bool TimeInCommand(Command c) => (c.StartTime<=current_time&&current_time<=c.EndTime);
+            bool TimeInCommand(Command c) => c.StartTime<=current_time&&current_time<=c.EndTime;
         }
 
         public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(Overlay ? "Overlay" : string.Empty)}";
