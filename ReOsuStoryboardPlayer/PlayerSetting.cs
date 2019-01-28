@@ -81,7 +81,7 @@ namespace ReOsuStoryboardPlayer
             if (MiniMode)
                 return;
 
-            var props = typeof(Setting).GetProperties();
+            var props = typeof(PlayerSetting).GetProperties();
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("=======Setting=======");
 
