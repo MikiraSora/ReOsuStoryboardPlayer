@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
@@ -20,6 +21,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public new void Add(Command command)
         {
+            //todo fix logic
             //check overlay
             if (Count>=1)
             {
@@ -74,6 +76,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             StartTime=first_command?.StartTime??0;
             EndTime=Overlay ? this.Max(x => x.EndTime) : Math.Max(EndTime, last_command?.EndTime??EndTime);
 
+            //clear cache
             pick_command_cache=default;
         }
 
@@ -105,17 +108,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 else
                     min=i+1;
             }
-
-            /*
-            for (int i = 0; i<Count-1; i++)
-            {
-                var cmd = this[i];
-                var next_cmd = this[i+1];
-
-                if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
-                    return UpdatePickCache(cmd.StartTime, next_cmd.StartTime, cmd);
-            }
-            */
 
             if (current_time<=first_command.StartTime)
                 return UpdatePickCache(int.MinValue, first_command.StartTime, first_command);
