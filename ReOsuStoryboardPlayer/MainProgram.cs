@@ -84,7 +84,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\46268 Ryu_ - Sakura Reflection";
+            beatmap_folder=@"G:\SBTest\829646 Camellia - Quaoar";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

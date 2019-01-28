@@ -88,6 +88,25 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 &&pick_command_cache.cache_start_time<=current_time&&current_time<=pick_command_cache.cache_end_time)
                 return pick_command_cache.cache_selected_command;
 
+            int min = 0, max = Count-2;
+
+            while (min<=max)
+            {
+                int i = (max+min)/2;
+
+                var cmd = this[i];
+                var next_cmd = this[i+1];
+
+                if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
+                    return UpdatePickCache(cmd.StartTime, next_cmd.StartTime, cmd);
+
+                if (cmd.StartTime>=current_time)
+                    max=i-1;
+                else
+                    min=i+1;
+            }
+
+            /*
             for (int i = 0; i<Count-1; i++)
             {
                 var cmd = this[i];
@@ -96,6 +115,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
                     return UpdatePickCache(cmd.StartTime, next_cmd.StartTime, cmd);
             }
+            */
 
             if (current_time<=first_command.StartTime)
                 return UpdatePickCache(int.MinValue, first_command.StartTime, first_command);

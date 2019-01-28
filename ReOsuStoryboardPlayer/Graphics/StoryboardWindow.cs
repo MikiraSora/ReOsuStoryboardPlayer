@@ -460,10 +460,8 @@ namespace ReOsuStoryboardPlayer
             bool additive_trigger;
             ChangeAdditiveStatus(draw_list.First().IsAdditive);
 
-            for (int i = 0; i<draw_list.Count; i++)
+            foreach (var obj in draw_list)
             {
-                var obj = draw_list[i];
-
                 if (!obj.IsVisible)
                     continue;
 #if DEBUG
