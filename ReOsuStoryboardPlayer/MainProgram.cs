@@ -17,17 +17,24 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using ReOsuStoryboardPlayer.Utils;
 
 namespace ReOsuStoryboardPlayer
 {
     public class MainProgram
     {
+        #region Console Close Event
+
         internal delegate bool ControlCtrlDelegate(int CtrlType);
         [DllImport("kernel32.dll")]
         internal static extern bool SetConsoleCtrlHandler(ControlCtrlDelegate HandlerRoutine, bool Add);
 
+        #endregion
+
         public static void Main(string[] argv)
         {
+            Environment.CurrentDirectory=System.AppDomain.CurrentDomain.BaseDirectory;
+
             SetConsoleCtrlHandler(type => {
                 Exit();
                 return true;
@@ -38,6 +45,11 @@ namespace ReOsuStoryboardPlayer
             var args = ParseProgramCommands(argv, out var beatmap_folder);
 
             EnvironmentHelper.SetupEnvironment();
+
+            if (PlayerSetting.EnableUpdateCheck)
+                ProgramUpdater.UpdateCheck();
+
+            ProgramUpdater.CleanTemp();
 
             PlayerSetting.PrintSettings();
 
@@ -82,6 +94,8 @@ namespace ReOsuStoryboardPlayer
             window.Run();
         }
 
+        #region ProgramCommands
+
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
             beatmap_folder=@"G:\SBTest\829646 Camellia - Quaoar";
@@ -95,6 +109,14 @@ namespace ReOsuStoryboardPlayer
                 {
                     Console.WriteLine("please visit here: https://github.com/MikiraSora/OsuStoryboardPlayer/wiki/Program-command-options");
                     Exit("");
+                }
+
+                if (args.TryGetSwitch("program_update"))
+                {
+                    int id = 0;
+                    var x = int.TryParse(args.FreeArgs.FirstOrDefault(), out id);
+
+                    ProgramUpdater.ApplyUpdate(x ? id : 0);
                 }
 
                 if (args.FreeArgs!=null)
@@ -148,6 +170,9 @@ namespace ReOsuStoryboardPlayer
                 if (args.Switches.Any(k => k=="disable_runtime_optimze"))
                     PlayerSetting.EnableRuntimeOptimzeObjects=false;
 
+                if (args.TryGetSwitch("disable_update_check"))
+                    PlayerSetting.EnableUpdateCheck=false;
+
                 if (args.Switches.Any(k => k=="disable_hp_fps_limit"))
                     PlayerSetting.EnableHighPrecisionFPSLimit=false;
 
@@ -175,8 +200,6 @@ namespace ReOsuStoryboardPlayer
 
             return args;
         }
-
-        #region ProgramCommands
 
         //将解析好的内容再序列化成osb文件格式的文本内容
         private static void SerializeDecodeStoryboardContent(string beatmap_folder, bool parse_osb, string output_path)

@@ -43,6 +43,8 @@ namespace ReOsuStoryboardPlayer
 
         public static bool EncodingEnvironment { get; set; } = false;
 
+        public static bool EnableUpdateCheck { get; set; } = true;
+
         #region Core Settings
 
         /// <summary>
