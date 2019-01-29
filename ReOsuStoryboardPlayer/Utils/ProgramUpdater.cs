@@ -33,7 +33,6 @@ namespace ReOsuStoryboardPlayer.Utils
         {
             try
             {
-
                 var asm = Assembly.GetExecutingAssembly();
                 var program_version = asm.GetName().Version;
 
@@ -90,7 +89,7 @@ namespace ReOsuStoryboardPlayer.Utils
                             return;
                         }
 
-                        using (ZipArchive archive = ZipFile.Open(TEMP_DIR_NAME, ZipArchiveMode.Read))
+                        using (ZipArchive archive = ZipFile.Open(DOWNLOAD_ZIP, ZipArchiveMode.Read))
                         {
                             if (!Directory.Exists(TEMP_DIR_NAME))
                                 Directory.CreateDirectory(TEMP_DIR_NAME);
@@ -123,10 +122,9 @@ namespace ReOsuStoryboardPlayer.Utils
 
                         Process.Start(new ProcessStartInfo(updater_exe_file, $"\"{Process.GetCurrentProcess().Id}\" -program_update -disable_update_check"));
 
+                        MainProgram.Exit();
                     }
                 }
-
-                MainProgram.Exit();
             }
             catch (Exception e)
             {
