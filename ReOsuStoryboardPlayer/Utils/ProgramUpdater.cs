@@ -77,53 +77,56 @@ namespace ReOsuStoryboardPlayer.Utils
 
                 if (release_version>program_version)
                 {
-                    if (MessageBox.Show($"There is a new version available to update.", "Program Updater", MessageBoxButtons.YesNo)==DialogResult.Yes)
+                    await Task.Run(() =>
                     {
-                        var client = new WebClient();
-
-                        client.DownloadFile(new Uri(download_url), DOWNLOAD_ZIP);
-
-                        if (!File.Exists(DOWNLOAD_ZIP))
+                        if (MessageBox.Show(null, $"There is a new version available to update.", "Program Updater", MessageBoxButtons.YesNo)==DialogResult.Yes)
                         {
-                            Log.Error($"Can't download update zip file.");
-                            return;
-                        }
+                            var client = new WebClient();
 
-                        using (ZipArchive archive = ZipFile.Open(DOWNLOAD_ZIP, ZipArchiveMode.Read))
-                        {
-                            if (!Directory.Exists(TEMP_DIR_NAME))
-                                Directory.CreateDirectory(TEMP_DIR_NAME);
-                            else
+                            client.DownloadFile(new Uri(download_url), DOWNLOAD_ZIP);
+
+                            if (!File.Exists(DOWNLOAD_ZIP))
                             {
-                                //clean
-                                foreach (var file in Directory.EnumerateFiles(TEMP_DIR_NAME))
-                                    if (Directory.Exists(file))
-                                        Directory.Delete(file);
-                                    else
-                                        File.Delete(file);
+                                Log.Error($"Can't download update zip file.");
+                                return;
                             }
 
-                            archive.ExtractToDirectory(TEMP_DIR_NAME);
+                            using (ZipArchive archive = ZipFile.Open(DOWNLOAD_ZIP, ZipArchiveMode.Read))
+                            {
+                                if (!Directory.Exists(TEMP_DIR_NAME))
+                                    Directory.CreateDirectory(TEMP_DIR_NAME);
+                                else
+                                {
+                                    //clean
+                                    foreach (var file in Directory.EnumerateFiles(TEMP_DIR_NAME))
+                                        if (Directory.Exists(file))
+                                            Directory.Delete(file);
+                                        else
+                                            File.Delete(file);
+                                }
+
+                                archive.ExtractToDirectory(TEMP_DIR_NAME);
+                            }
+
+                            var exe_file = Directory.EnumerateFiles(TEMP_DIR_NAME, EXE_NAME).First();
+
+                            if (!File.Exists(exe_file))
+                            {
+                                Log.Error($"Can't find the exe file \"{EXE_NAME}\" as program updater，please redownload or manually copy files/directories of folder \"{TEMP_DIR_NAME}\" to current program folder");
+                                return;
+                            }
+
+                            var updater_exe_file = Path.Combine(TEMP_DIR_NAME, UPDATE_EXE_NAME);
+                            File.Copy(exe_file, updater_exe_file, true);
+
+                            if (File.Exists(DOWNLOAD_ZIP))
+                                File.Delete(DOWNLOAD_ZIP);
+
+                            Process.Start(new ProcessStartInfo(updater_exe_file, $"\"{Process.GetCurrentProcess().Id}\" -program_update -disable_update_check"));
+
+                            MainProgram.Exit();
                         }
-
-                        var exe_file = Directory.EnumerateFiles(TEMP_DIR_NAME, EXE_NAME).First();
-
-                        if (!File.Exists(exe_file))
-                        {
-                            Log.Error($"Can't find the exe file \"{EXE_NAME}\" as program updater，please redownload or manually copy files/directories of folder \"{TEMP_DIR_NAME}\" to current program folder");
-                            return;
-                        }
-
-                        var updater_exe_file = Path.Combine(TEMP_DIR_NAME, UPDATE_EXE_NAME);
-                        File.Copy(exe_file, updater_exe_file, true);
-
-                        if (File.Exists(DOWNLOAD_ZIP))
-                            File.Delete(DOWNLOAD_ZIP);
-
-                        Process.Start(new ProcessStartInfo(updater_exe_file, $"\"{Process.GetCurrentProcess().Id}\" -program_update -disable_update_check"));
-
-                        MainProgram.Exit();
-                    }
+                    });
                 }
             }
             catch (Exception e)
