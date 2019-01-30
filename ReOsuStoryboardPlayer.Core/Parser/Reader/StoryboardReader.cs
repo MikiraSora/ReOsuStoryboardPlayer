@@ -6,6 +6,7 @@ using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using ReOsuStoryboardPlayer.Core.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -141,7 +142,9 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 
         private void BuildCommandMapAndSetup(StoryboardObject obj, List<string> lines)
         {
-            var list = lines.Count >= Setting.ParallelParseCommandLimitCount && Setting.ParallelParseCommandLimitCount!=0 ? ParallelParseCommands(lines) : ParseCommands(lines, obj.FileLine);
+            var list = lines.Count >= Setting.ParallelParseCommandLimitCount && Setting.ParallelParseCommandLimitCount!=0 ? 
+                ParallelParseCommands(lines,obj.FileLine) :
+                ParseCommands(lines, obj.FileLine);
 
             foreach (var cmd in list)
                 obj.AddCommand(cmd);
@@ -192,32 +195,40 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
             return commands;
         }
 
-        public IEnumerable<Command> ParallelParseCommands(List<string> lines)
+        public IEnumerable<Command> ParallelParseCommands(List<string> lines, long base_line)
         {
-            System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)> result_list = new System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)>();
+            ConcurrentBag<(long index, Command[] cmds, bool is_sub)> result_list = new ConcurrentBag<(long index, Command[] cmds, bool is_sub)>();
 
             Parallel.For(0, lines.Count, parallel_options, i =>
             {
+                var file_line = i+base_line;
                 var line = lines[i];
                 var data_arr = line.Split(',');
                 var is_sub_cmds = data_arr.First().StartsWith("  ")||data_arr.First().StartsWith("__");
 
                 var temp_list = CommandParserIntance.Parse(data_arr);
 
-                result_list.Add((i, temp_list.ToArray(), is_sub_cmds));
+                foreach (var c in temp_list)
+                    c.RelativeLine=file_line;
+
+                result_list.Add((file_line, temp_list.ToArray(), is_sub_cmds));
             });
 
             var result = result_list.SelectMany(p => p.cmds.Select(cmd => (p.index, cmd, p.is_sub))).OrderBy(z => z.index);
             var sub_cmds = result.Where(x => x.is_sub);
+            var groups = result.Where(x=>x.cmd is GroupCommand&&!x.is_sub).Select(x=>x.cmd).OfType<GroupCommand>();
             var fin_list = result.Except(sub_cmds.Where(sub_cmd =>
             {
-                var r = result.FirstOrDefault(z => z.index==sub_cmd.index-1);
+                var r = groups.LastOrDefault(z => z.RelativeLine<sub_cmd.index);
 
-                if (r.cmd is GroupCommand group)
-                    group.AddSubCommand(sub_cmd.cmd);
+                r?.AddSubCommand(sub_cmd.cmd);
 
+                //return true and this sub_command will be removed (from main commands)
                 return true;
-            })).Select(p => p.cmd);
+            })).Select(p => p.cmd).ToList();
+
+            foreach (var group in groups)
+                group.UpdateSubCommand();
 
             return fin_list;
         }
