@@ -46,9 +46,11 @@ namespace ReOsuStoryboardPlayer
 
             EnvironmentHelper.SetupEnvironment();
 
+            //Update check
             if (PlayerSetting.EnableUpdateCheck)
                 ProgramUpdater.UpdateCheck();
 
+            //clean temp folder if updated just now.
             ProgramUpdater.CleanTemp();
 
             PlayerSetting.PrintSettings();
@@ -98,7 +100,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\829646 Camellia - Quaoar";
+            beatmap_folder=@"G:\SBTest\406217 Chata - enn";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

@@ -109,12 +109,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 BaseTransformResetAction+=TriggerCommand.OverrideDefaultValue;
         }
 
-        public void SortCommands()
-        {
-            foreach (var time in CommandMap.Values)
-                time.SortCommands();
-        }
-
         public void RemoveCommand(Command command)
         {
             switch (command)

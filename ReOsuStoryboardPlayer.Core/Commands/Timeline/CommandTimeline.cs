@@ -19,53 +19,116 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         private Command last_command, first_command;
 
-        public new void Add(Command command)
+        private int BinarySearchInsertableIndex(float current_time)
         {
-            //todo fix logic
-            //check overlay
-            if (Count>=1)
+            int min = 0, max = Count-2;
+
+            //fast check for appending
+            if (current_time>=last_command?.StartTime)
+                return Count;
+
+            while (min<=max)
             {
-                var prev_cmd = this.Last();
+                int i = (max+min)/2;
 
-                if (command.EndTime<=prev_cmd.EndTime||command.StartTime<prev_cmd.EndTime)
-                {
-                    Overlay=true;
+                var cmd = this[i];
+                var next_cmd = this[i+1];
 
-                    if (Setting.ShowProfileSuggest&&(command.StartTime!=command.EndTime))
-                        Log.User($"{command} is conflict with {prev_cmd}");
-                }
+                if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
+                    return i+1;
+
+                if (cmd.StartTime>=current_time)
+                    max=i-1;
+                else
+                    min=i+1;
             }
 
-            base.Add(command);
-
-            CleanCacheAndRecalculateTime();
+            return 0;
         }
 
-        public void SortCommands()
+        /// <summary>
+        /// 检查是否存在命令冲突
+        /// **必须确保此集合已排序**
+        /// O(n)
+        /// </summary>
+        /// <param name="fast_index"></param>
+        private void FastOverlayCheck()
         {
-            Sort((x, y) =>
+            /*
+             |----------------| cmd
+                              |----|  itor1
+                                     |---| itor2
+             */
+
+            Overlay=false;
+
+            for (int i = 0; i<Count; i++)
             {
-                var z = x.StartTime-y.StartTime;
+                var cmd = this[i];
 
-                if (z!=0)
-                    return z;
+                var itor_i = i+1;
 
-                return x.EndTime-y.EndTime;
-            });
+                while (itor_i<Count)
+                {
+                    var itor = this[itor_i];
+
+                    if (itor.StartTime>=cmd.EndTime)
+                        break;
+
+                    Overlay=true;
+                    return;
+                }
+            }
+        }
+
+        public new void Add(Command command)
+        {
+            var insert_index = BinarySearchInsertableIndex(command.StartTime);
+
+            Insert(insert_index, command);
             
+            FastOverlayCheck();
+
             CleanCacheAndRecalculateTime();
         }
 
+        public new void AddRange(IEnumerable<Command> commands)
+        {
+            //todo:还能平衡一下
+            if (commands.Count()<100)
+            {
+                foreach (var command in commands)
+                {
+                    var insert_index = BinarySearchInsertableIndex(command.StartTime);
+                    Insert(insert_index, command);
+                }
+            }
+            else
+            {
+                base.AddRange(commands);
+                Sort();
+            }
+
+            FastOverlayCheck();
+
+            CleanCacheAndRecalculateTime();
+        }
+        
         public new void Remove(Command command)
         {
             base.Remove(command);
+
             CleanCacheAndRecalculateTime();
+            FastOverlayCheck();
         }
 
-        public new void Insert(int index, Command command)
+        public void RemoveRange(IEnumerable<Command> commands)
         {
-            base.Insert(index, command);
+            foreach (var command in commands)
+                base.Remove(command);
+
             CleanCacheAndRecalculateTime();
+            FastOverlayCheck();
         }
 
         private void CleanCacheAndRecalculateTime()
@@ -83,7 +146,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         private (int cache_start_time, int cache_end_time, Command cache_selected_command) pick_command_cache = default;
 
         public Command PickCommand(float current_time) => Overlay ? PickCommandOverlay(current_time) : PickCommandNormal(current_time);
-
+        
         public Command PickCommandNormal(float current_time)
         {
             //cache

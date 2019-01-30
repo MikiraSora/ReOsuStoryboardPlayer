@@ -22,5 +22,23 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         public abstract void Execute(StoryboardObject @object, float time);
 
         public override string ToString() => $"rline {RelativeLine}: {Event.ToString()} ({StartTime}~{EndTime})";
+
+        public bool IsCommandConflict(Command b)
+        {
+            var a = this;
+
+            /*
+             |---------| a
+                |------------------| b
+             */
+            if (b.StartTime<=a.StartTime)
+            {
+                var t = a;
+                a=b;
+                b=t;
+            }
+
+            return b.StartTime<a.EndTime;
+        }
     }
 }

@@ -20,10 +20,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
                 AddSubCommand(command);
         }
 
-        public virtual void UpdateSubCommand()
-        {
-            foreach (var list in SubCommands.Values)
-                list.SortCommands();
-        }
+        public abstract void UpdateSubCommand();
     }
 }

@@ -63,9 +63,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
             AttachSubCommands(time);
 
-            //todo:优化掉这货
-            bind_object.SortCommands();
-
             bind_object.CalculateAndApplyBaseFrameTime();
 
             Trigged=true;
@@ -121,8 +118,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
         public override void UpdateSubCommand()
         {
-            base.UpdateSubCommand();
-
             CostTime=SubCommands.Values.SelectMany(l => l).Max(p => p.EndTime);
 
             cache_timline_wrapper.Clear();

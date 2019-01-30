@@ -20,8 +20,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
 
         public override void UpdateSubCommand()
         {
-            base.UpdateSubCommand();
-
             var commands = SubCommands.SelectMany(l => l.Value);
 
             var offset = commands.Count()==0 ? 0 : commands.Min(x => x.StartTime);

@@ -50,8 +50,6 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
 
             foreach (var obj in objects)
                 StoryboardObjectList.AddLast(obj);
-
-            StoryboardObjectList.AsParallel().ForAll(c => c.SortCommands());
             
             var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
 

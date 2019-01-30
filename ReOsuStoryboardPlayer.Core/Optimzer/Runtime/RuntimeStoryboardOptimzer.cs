@@ -139,7 +139,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.Runtime
                             real_timeline.Remove(next_cmd);
 
                             //insert new
-                            real_timeline.Insert(index, new_cmd);
+                            real_timeline.Add(new_cmd);
 
                             //skip next command
                             i++;
