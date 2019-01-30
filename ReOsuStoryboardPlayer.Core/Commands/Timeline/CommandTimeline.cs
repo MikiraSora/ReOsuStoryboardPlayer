@@ -22,9 +22,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         public int EndTime;
 
         public bool Overlay { get; set; }
-
+        
         public int Count => commands.Count;
-
+        
         public Command this[int index]=>commands[index];
 
         public IEnumerator<Command> GetEnumerator()=>((IEnumerable<Command>)commands).GetEnumerator();
@@ -33,18 +33,18 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         private int BinarySearchInsertableIndex(float current_time)
         {
-            int min = 0, max = Count-2;
+            int min = 0, max = commands.Count-2;
 
             //fast check for appending
             if (current_time>=last_command?.StartTime)
-                return Count;
+                return commands.Count;
 
             while (min<=max)
             {
                 int i = (max+min)/2;
 
-                var cmd = this[i];
-                var next_cmd = this[i+1];
+                var cmd = commands[i];
+                var next_cmd = commands[i+1];
 
                 if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
                     return i+1;
@@ -74,15 +74,15 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
             Overlay=false;
 
-            for (int i = 0; i<Count; i++)
+            for (int i = 0; i<commands.Count; i++)
             {
-                var cmd = this[i];
+                var cmd = commands[i];
 
                 var itor_i = i+1;
 
-                while (itor_i<Count)
+                while (itor_i<commands.Count)
                 {
-                    var itor = this[itor_i];
+                    var itor = commands[itor_i];
 
                     if (itor.StartTime>=cmd.EndTime)
                         break;
@@ -171,14 +171,14 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 &&pick_command_cache.cache_start_time<=current_time&&current_time<=pick_command_cache.cache_end_time)
                 return pick_command_cache.cache_selected_command;
 
-            int min = 0, max = Count-2;
+            int min = 0, max = commands.Count-2;
 
             while (min<=max)
             {
                 int i = (max+min)/2;
 
-                var cmd = this[i];
-                var next_cmd = this[i+1];
+                var cmd = commands[i];
+                var next_cmd = commands[i+1];
 
                 if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
                     return UpdatePickCache(cmd.StartTime, next_cmd.StartTime, cmd);
@@ -208,10 +208,10 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             if (current_time>EndTime)
                 return last_command;
 
-            for (int i = 0; i<Count; i++)
+            for (int i = 0; i<commands.Count; i++)
             {
-                var cmd = this[i];
-                var next_cmd = (i<Count-1) ? this[i+1] : null;
+                var cmd = commands[i];
+                var next_cmd = (i<commands.Count-1) ? commands[i+1] : null;
 
                 //尝试选取在时间范围内的命令
                 if (TimeInCommand(cmd))
@@ -235,7 +235,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             bool TimeInCommand(Command c) => c.StartTime<=current_time&&current_time<=c.EndTime;
         }
 
-        public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(Overlay ? "Overlay" : string.Empty)}";
+        public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{commands.Count} {(Overlay ? "Overlay" : string.Empty)}";
 
     }
 }
