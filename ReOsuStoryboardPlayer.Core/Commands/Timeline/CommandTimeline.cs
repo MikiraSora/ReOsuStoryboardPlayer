@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,16 +9,27 @@ using System.Runtime.CompilerServices;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
-    public class CommandTimeline : List<Command>
+    public class CommandTimeline:IEnumerable<Command>
     {
-        public int StartTime = int.MaxValue;
-        public int EndTime;
-
-        public bool Overlay { get; set; }
+        public List<Command> commands = new List<Command>();
 
         public Event Event => first_command?.Event??Event.Unknown;
 
         private Command last_command, first_command;
+
+        public int StartTime = int.MaxValue;
+
+        public int EndTime;
+
+        public bool Overlay { get; set; }
+
+        public int Count => commands.Count;
+
+        public Command this[int index]=>commands[index];
+
+        public IEnumerator<Command> GetEnumerator()=>((IEnumerable<Command>)commands).GetEnumerator();
+        
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private int BinarySearchInsertableIndex(float current_time)
         {
@@ -81,18 +93,31 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             }
         }
 
-        public new void Add(Command command)
+        private void CleanCacheAndRecalculateTime()
+        {
+            //update StartTime/EndTime and command caches.
+            first_command=commands.FirstOrDefault();
+            last_command=commands.LastOrDefault(); StartTime=first_command?.StartTime??0;
+            EndTime=Overlay ? this.Max(x => x.EndTime) : Math.Max(EndTime, last_command?.EndTime??EndTime);
+            
+            //clear cache
+            pick_command_cache=default;
+        }
+
+        #region Collection Methods
+
+        public void Add(Command command)
         {
             var insert_index = BinarySearchInsertableIndex(command.StartTime);
 
-            Insert(insert_index, command);
+            commands.Insert(insert_index, command);
             
             FastOverlayCheck();
 
             CleanCacheAndRecalculateTime();
         }
 
-        public new void AddRange(IEnumerable<Command> commands)
+        public void AddRange(IEnumerable<Command> commands)
         {
             //todo:还能平衡一下
             if (commands.Count()<100)
@@ -100,13 +125,13 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 foreach (var command in commands)
                 {
                     var insert_index = BinarySearchInsertableIndex(command.StartTime);
-                    Insert(insert_index, command);
+                    this.commands.Insert(insert_index, command);
                 }
             }
             else
             {
-                base.AddRange(commands);
-                Sort();
+                this.commands.AddRange(commands);
+                this.commands.Sort();
             }
 
             FastOverlayCheck();
@@ -114,9 +139,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             CleanCacheAndRecalculateTime();
         }
         
-        public new void Remove(Command command)
+        public void Remove(Command command)
         {
-            base.Remove(command);
+            commands.Remove(command);
 
             CleanCacheAndRecalculateTime();
             FastOverlayCheck();
@@ -125,23 +150,15 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         public void RemoveRange(IEnumerable<Command> commands)
         {
             foreach (var command in commands)
-                base.Remove(command);
+                this.commands.Remove(command);
 
             CleanCacheAndRecalculateTime();
             FastOverlayCheck();
         }
-
-        private void CleanCacheAndRecalculateTime()
-        {
-            //update StartTime/EndTime and command caches.
-            first_command=this.FirstOrDefault();
-            last_command=this.LastOrDefault();
-            StartTime=first_command?.StartTime??0;
-            EndTime=Overlay ? this.Max(x => x.EndTime) : Math.Max(EndTime, last_command?.EndTime??EndTime);
-
-            //clear cache
-            pick_command_cache=default;
-        }
+        
+        public int IndexOf(Command cmd) => commands.IndexOf(cmd);
+        
+        #endregion
 
         private (int cache_start_time, int cache_end_time, Command cache_selected_command) pick_command_cache = default;
 
@@ -219,5 +236,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         }
 
         public override string ToString() => $"{Event} Timeline({StartTime} ~ {EndTime}) Count:{Count} {(Overlay ? "Overlay" : string.Empty)}";
+
     }
 }
