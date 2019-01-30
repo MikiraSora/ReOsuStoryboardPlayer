@@ -26,6 +26,8 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
             return Reader.EnumValues().Select(p => ParsePacket(p));
         }
 
+        private ParallelOptions parallel_options = new ParallelOptions() { MaxDegreeOfParallelism=Setting.UpdateThreadCount };
+
         private StoryboardObject ParsePacket(StoryboardPacket packet)
         {
             //try
@@ -139,7 +141,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 
         private void BuildCommandMapAndSetup(StoryboardObject obj, List<string> lines)
         {
-            var list = /*lines.Count >= Setting.ParallelParseCommandLimitCount ? ParallelParseCommands(lines) : */ ParseCommands(lines, obj.FileLine);
+            var list = lines.Count >= Setting.ParallelParseCommandLimitCount && Setting.ParallelParseCommandLimitCount!=0 ? ParallelParseCommands(lines) : ParseCommands(lines, obj.FileLine);
 
             foreach (var cmd in list)
                 obj.AddCommand(cmd);
@@ -194,7 +196,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
         {
             System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)> result_list = new System.Collections.Concurrent.ConcurrentBag<(int index, Command[] cmds, bool is_sub)>();
 
-            Parallel.For(0, lines.Count, i =>
+            Parallel.For(0, lines.Count, parallel_options, i =>
             {
                 var line = lines[i];
                 var data_arr = line.Split(',');

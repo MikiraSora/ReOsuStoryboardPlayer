@@ -55,7 +55,7 @@ namespace ReOsuStoryboardPlayer
         /// <summary>
         /// 对指定以上的数量的物件进行并行更新
         /// </summary>
-        public static int ParallelUpdateObjectsLimitCount { get => Setting.ParallelParseCommandLimitCount; set => Setting.ParallelParseCommandLimitCount=value; }
+        public static int ParallelUpdateObjectsLimitCount { get => Setting.ParallelUpdateObjectsLimitCount; set => Setting.ParallelUpdateObjectsLimitCount=value; }
 
         public static bool EnableSplitMoveScaleCommand { get => Setting.EnableSplitMoveScaleCommand; set => Setting.EnableSplitMoveScaleCommand=value; }
 
