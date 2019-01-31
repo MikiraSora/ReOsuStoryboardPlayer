@@ -33,9 +33,9 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public bool IsVisible { get; private set; }
 
-        public bool ContainTrigger => CommandMap.TryGetValue(Event.Trigger, out var _);
+        public bool ContainTrigger => CommandMap.ContainsKey(Event.Trigger);
 
-        public bool ContainLoop => CommandMap.TryGetValue(Event.Loop, out var l)&&l.Any();
+        public bool ContainLoop => CommandMap.ContainsKey(Event.Loop);
 
         public bool ContainNonValueCommand => ContainLoop||ContainTrigger;
 
