@@ -36,7 +36,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             int min = 0, max = commands.Count-2;
 
             //fast check for appending
-            if (current_time>=last_command?.StartTime)
+            if (current_time>=commands.LastOrDefault()?.StartTime)
                 return commands.Count;
 
             while (min<=max)

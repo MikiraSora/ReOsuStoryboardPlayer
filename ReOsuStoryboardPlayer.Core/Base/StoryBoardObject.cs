@@ -53,18 +53,35 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         #endregion Transform
 
+        public StoryboardObject()
+        {
+            BaseTransformResetAction=(obj) =>
+            {
+                obj.Postion=new Vector(320, 240);
+                obj.Scale=new Vector(1, 1);
+
+                obj.Color=new ByteVec4(255, 255, 255, 255);
+
+                obj.Rotate=0;
+
+                obj.IsAdditive=false;
+                obj.IsHorizonFlip=false;
+                obj.IsVerticalFlip=false;
+            };
+        }
+
         #region Add/Remove Command
 
         public void AddCommand(Command command)
         {
-            switch (command)
+            switch (command.Event)
             {
-                case LoopCommand loop:
-                    AddLoopCommand(loop);
+                case Event.Loop:
+                    AddLoopCommand((LoopCommand)command);
                     break;
 
-                case TriggerCommand trigger:
-                    AddTriggerCommand(trigger);
+                case Event.Trigger:
+                    AddTriggerCommand((TriggerCommand)command);
                     break;
 
                 default:
@@ -75,6 +92,28 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 timeline=CommandMap[command.Event]=new CommandTimeline();
 
             timeline.Add(command);
+        }
+
+        public void AddCommandRange(IEnumerable<Command> commands)
+        {
+            foreach (var pair in commands.GroupBy(x=>x.Event))
+            {
+                switch (pair.Key)
+                {
+                    case Event.Loop:
+                    case Event.Trigger:
+                        foreach (var command in pair)
+                            AddCommand(command);
+                        continue;
+                    default:
+                        break;
+                }
+
+                if (!CommandMap.TryGetValue(pair.Key, out var timeline))
+                    timeline=CommandMap[pair.Key]=new CommandTimeline();
+
+                timeline.AddRange(pair);
+            }
         }
 
         private void AddLoopCommand(LoopCommand loop_command)
@@ -150,24 +189,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
         }
 
         #endregion Add/Remove Command
-
-        public StoryboardObject()
-        {
-            BaseTransformResetAction=(obj) =>
-         {
-             obj.Postion=new Vector(320, 240);
-             obj.Scale=new Vector(1, 1);
-
-             obj.Color=new ByteVec4(255, 255, 255, 255);
-
-             obj.Rotate=0;
-
-             obj.IsAdditive=false;
-             obj.IsHorizonFlip=false;
-             obj.IsVerticalFlip=false;
-         };
-        }
-
+        
         public void ResetTransform() => BaseTransformResetAction(this);
 
         public virtual void Update(float current_time)

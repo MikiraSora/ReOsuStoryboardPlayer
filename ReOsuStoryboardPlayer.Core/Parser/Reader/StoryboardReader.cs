@@ -146,8 +146,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
                 ParallelParseCommands(lines,obj.FileLine) :
                 ParseCommands(lines, obj.FileLine);
 
-            foreach (var cmd in list)
-                obj.AddCommand(cmd);
+            obj.AddCommandRange(list);
         }
 
         public List<Command> ParseCommands(List<string> lines, long base_line)
