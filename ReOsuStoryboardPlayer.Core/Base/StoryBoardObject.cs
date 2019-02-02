@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Commands.Group;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
+using ReOsuStoryboardPlayer.Core.Kernel;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         //表示此物件拥有的Trigger集合，Key为GroupID
         public Dictionary<int, HashSet<TriggerCommand>> Triggers = new Dictionary<int, HashSet<TriggerCommand>>();
+
+        //表示此时驱动更新物件的Update
+        public StoryboardUpdater CurrentUpdater { get; internal set; }
 
         public string ImageFilePath;
 
@@ -244,13 +248,18 @@ namespace ReOsuStoryboardPlayer.Core.Base
             if (commands.Count()==0)
                 return;
 
-            var start = FrameStartTime==int.MinValue ? commands.Min(p => p.StartTime) : FrameStartTime;
+            var start = commands.Min(p => p.StartTime);
             var end = commands.Max(p => p.EndTime);
 
-            Debug.Assert(FrameStartTime==int.MinValue||FrameStartTime==start||this is StoryboardBackgroundObject||Z<0, "目前实现不能再次更变FrameStartTime");
+            //Debug.Assert(FrameStartTime==int.MinValue||FrameStartTime==start||this is StoryboardBackgroundObject||Z<0, "目前实现不能再次更变FrameStartTime");
+
+            var need_resort = start!=FrameStartTime;
 
             FrameStartTime=start;
             FrameEndTime=end;
+
+            if (need_resort)
+                CurrentUpdater?.AddNeedResortObject(this);
         }
 
         public long FileLine { get; set; }

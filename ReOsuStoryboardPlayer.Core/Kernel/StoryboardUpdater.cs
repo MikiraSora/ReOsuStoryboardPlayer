@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using ReOsuStoryboardPlayer.Core.Utils;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,9 +16,11 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
         /// <summary>
         /// 已加载的物件集合,会按照FrameStartTime从小到大排列
         /// </summary>
-        public LinkedList<StoryboardObject> StoryboardObjectList { get; private set; }
+        public List<StoryboardObject> StoryboardObjectList { get; private set; }
 
-        private LinkedListNode<StoryboardObject> CurrentScanNode;
+        private int current_index = 0;
+
+        private ConcurrentBag<StoryboardObject> need_resort_objects = new ConcurrentBag<StoryboardObject>();
 
         /// <summary>
         /// 正在执行的物件集合,会按照渲染顺序Z排列
@@ -28,7 +31,7 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
 
         public StoryboardUpdater(List<StoryboardObject> objects)
         {
-            StoryboardObjectList=new LinkedList<StoryboardObject>();
+            StoryboardObjectList=new List<StoryboardObject>();
 
             //delete Background object if there is a normal Storyboard object which is same image file.
             var background_obj = objects.Where(c => c is StoryboardBackgroundObject).FirstOrDefault();
@@ -48,9 +51,8 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
                 return a.FrameStartTime-b.FrameStartTime;
             });
 
-            foreach (var obj in objects)
-                StoryboardObjectList.AddLast(obj);
-            
+            StoryboardObjectList=objects;
+
             var limit_update_count = StoryboardObjectList.CalculateMaxUpdatingObjectsCount();
 
             UpdatingStoryboardObjects=new List<StoryboardObject>(limit_update_count);
@@ -65,7 +67,7 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
         {
             UpdatingStoryboardObjects.Clear();
 
-            CurrentScanNode=StoryboardObjectList.First;
+            current_index=0;
 
             //重置触发器状态
             TriggerListener.DefaultListener.Reset();
@@ -73,35 +75,74 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
 
         private bool Scan(float current_time)
         {
-            LinkedListNode<StoryboardObject> LastAddNode = null;
+            bool add = false;
 
-            while (CurrentScanNode!=null&&CurrentScanNode.Value.FrameStartTime<=current_time/* && current_time <= CurrentScanNode.Value.FrameEndTime*/ )
+            foreach (var obj in need_resort_objects)
+                StoryboardObjectList.Remove(obj);
+
+            while (need_resort_objects.TryTake(out var obj))
             {
-                var obj = CurrentScanNode.Value;
+                var i = BinarySearchInsertableIndex(obj.FrameStartTime);
+                StoryboardObjectList.Insert(i, obj);
 
-                if (current_time>obj.FrameEndTime)
+                if (obj.FrameStartTime<=current_index)
+                    Add(obj);
+
+                //Log.Debug($"Object ({obj}) FrameTime had been changed({obj.FrameStartTime} - {obj.FrameEndTime})");
+            }
+
+            while (current_index<StoryboardObjectList.Count)
+            {
+                var obj = StoryboardObjectList[current_index];
+
+                if (obj.FrameStartTime>current_time)
+                    break;
+
+                Add(obj);
+
+                current_index++;
+            }
+            
+            return add;
+
+            void Add(StoryboardObject obj)
+            {
+                obj.ResetTransform();
+                obj.CurrentUpdater=this;
+                UpdatingStoryboardObjects.Add(obj);
+                add=true;
+            }
+            
+            int BinarySearchInsertableIndex(float time)
+            {
+                int min = 0, max = StoryboardObjectList.Count-2;
+
+                int insert = 0;
+
+                //fast check for appending
+                if (time>=StoryboardObjectList.LastOrDefault()?.FrameStartTime)
+                    insert=StoryboardObjectList.Count;
+                else
                 {
-                    CurrentScanNode=CurrentScanNode.Next;
-                    continue;
+                    while (min<=max)
+                    {
+                        int i = (max+min)/2;
+
+                        var cmd = StoryboardObjectList[i];
+                        var next_cmd = StoryboardObjectList[i+1];
+
+                        if (cmd.FrameStartTime<=time&&time<=next_cmd.FrameStartTime)
+                            return i+1;
+
+                        if (cmd.FrameStartTime>=time)
+                            max=i-1;
+                        else
+                            min=i+1;
+                    }
                 }
 
-                //重置物件变换初始值
-                obj.ResetTransform();
-
-                //添加到更新列表
-                UpdatingStoryboardObjects.Add(obj);
-
-                LastAddNode=CurrentScanNode;
-
-                CurrentScanNode=CurrentScanNode.Next;
+                return insert;
             }
-
-            if (LastAddNode!=null)
-            {
-                CurrentScanNode=LastAddNode.Next;
-            }
-
-            return LastAddNode!=null;
         }
 
         private float prev_time = int.MinValue;
@@ -115,7 +156,8 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
             if (current_time<prev_time)
                 Flush();
             else
-                UpdatingStoryboardObjects.RemoveAll((obj) => current_time>obj.FrameEndTime||current_time<obj.FrameStartTime);
+                UpdatingStoryboardObjects.RemoveAll((obj) => (current_time>obj.FrameEndTime||current_time<obj.FrameStartTime)
+                &&(obj.CurrentUpdater=null)==null/*clean CurrentUpdater*/);
 
             prev_time=current_time;
 
@@ -138,6 +180,11 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
                 foreach (var obj in UpdatingStoryboardObjects)
                     obj.Update(current_time);
             }
+        }
+
+        internal void AddNeedResortObject(StoryboardObject obj)
+        {
+
         }
 
         ~StoryboardUpdater()
