@@ -79,6 +79,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.Runtime
                         var trigger_time = obj.ContainTrigger ? obj.CommandMap[Event.Trigger].Min(x => x.StartTime) : int.MaxValue;
                         var trim_start_time = Math.Min(trigger_time, front_fade.StartTime);
 
+                        obj.BaseTransformResetAction+=x=>x.FrameStartTime=trim_start_time;
                         obj.FrameStartTime=trim_start_time;
                         Suggest(obj, $"FrameTime可优化成{front_fade.StartTime}");
                         effect_count++;

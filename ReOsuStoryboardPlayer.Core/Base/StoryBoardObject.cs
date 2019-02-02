@@ -244,7 +244,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             if (commands.Count()==0)
                 return;
 
-            var start = commands.Min(p => p.StartTime);
+            var start = FrameStartTime==int.MinValue ? commands.Min(p => p.StartTime) : FrameStartTime;
             var end = commands.Max(p => p.EndTime);
 
             Debug.Assert(FrameStartTime==int.MinValue||FrameStartTime==start||this is StoryboardBackgroundObject||Z<0, "目前实现不能再次更变FrameStartTime");
