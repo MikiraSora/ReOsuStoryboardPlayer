@@ -86,7 +86,7 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
                 StoryboardObjectList.Insert(i, obj);
 
                 if (obj.FrameStartTime<=current_index)
-                    Add(obj);
+                    TryAdd(obj);
 
                 //Log.Debug($"Object ({obj}) FrameTime had been changed({obj.FrameStartTime} - {obj.FrameEndTime})");
             }
@@ -98,15 +98,18 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
                 if (obj.FrameStartTime>current_time)
                     break;
 
-                Add(obj);
+                TryAdd(obj);
 
                 current_index++;
             }
             
             return add;
 
-            void Add(StoryboardObject obj)
+            void TryAdd(StoryboardObject obj)
             {
+                if (current_time>obj.FrameEndTime)
+                    return;
+
                 obj.ResetTransform();
                 obj.CurrentUpdater=this;
                 UpdatingStoryboardObjects.Add(obj);
