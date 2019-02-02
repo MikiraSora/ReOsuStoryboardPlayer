@@ -31,31 +31,47 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private int BinarySearchInsertableIndex(float current_time)
+        private int BinarySearchInsertableIndex(Command command)
         {
+            var current_time = command.StartTime;
             int min = 0, max = commands.Count-2;
+            
+            int insert = 0;
 
             //fast check for appending
             if (current_time>=commands.LastOrDefault()?.StartTime)
-                return commands.Count;
-
-            while (min<=max)
+                insert=commands.Count;
+            else
             {
-                int i = (max+min)/2;
+                while (min<=max)
+                {
+                    int i = (max+min)/2;
 
-                var cmd = commands[i];
-                var next_cmd = commands[i+1];
+                    var cmd = commands[i];
+                    var next_cmd = commands[i+1];
 
-                if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
-                    return i+1;
+                    if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
+                        return i+1;
 
-                if (cmd.StartTime>=current_time)
-                    max=i-1;
-                else
-                    min=i+1;
+                    if (cmd.StartTime>=current_time)
+                        max=i-1;
+                    else
+                        min=i+1;
+                }
             }
 
-            return 0;
+            //check if there are some conflict command which StartTime is same ,and it will be sort by command fileline.
+            while (insert>0)
+            {
+                var prev = commands[insert-1];
+
+                if (prev.StartTime!=command.StartTime || command.RelativeLine>=prev.RelativeLine)
+                    break;
+
+                insert--;
+            }
+
+            return insert;
         }
 
         /// <summary>
@@ -108,7 +124,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public void Add(Command command)
         {
-            var insert_index = BinarySearchInsertableIndex(command.StartTime);
+            var insert_index = BinarySearchInsertableIndex(command);
 
             commands.Insert(insert_index, command);
             
@@ -124,13 +140,14 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             {
                 foreach (var command in commands)
                 {
-                    var insert_index = BinarySearchInsertableIndex(command.StartTime);
+                    var insert_index = BinarySearchInsertableIndex(command);
                     this.commands.Insert(insert_index, command);
                 }
             }
             else
             {
                 this.commands.AddRange(commands);
+
                 this.commands.Sort();
             }
 
@@ -208,6 +225,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             if (current_time>EndTime)
                 return last_command;
 
+            main_loop:
             for (int i = 0; i<commands.Count; i++)
             {
                 var cmd = commands[i];
@@ -216,10 +234,34 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 //尝试选取在时间范围内的命令
                 if (TimeInCommand(cmd))
                 {
-                    if (Overlay&&next_cmd!=null)
+                    if (next_cmd!=null)
                     {
-                        //判断下一个命令(可能是overlay command)是否也是在范围内，是的话就跳到下一个命令判断
-                        if (TimeInCommand(next_cmd))
+                        //判断被覆盖的命令有没有在范围内，是的话就跳到下一个命令判断
+                        /* LINQ WILL TAKE YOU INTO GC HELL
+                        var is_overlay_others = Enumerable
+                            .Range(i+1, commands.Count)
+                            .Select(x => commands[x])
+                            .TakeWhile(x => x.StartTime<=cmd.EndTime)
+                            .Any(x=>TimeInCommand(x));
+                        */
+
+                        bool is_overlay_others = false;
+
+                        for (int x = i+1; x<commands.Count; x++)
+                        {
+                            var check_overlay_cmd = commands[x];
+
+                            if (check_overlay_cmd.StartTime>cmd.EndTime)
+                                break;
+
+                            if (TimeInCommand(check_overlay_cmd))
+                            {
+                                is_overlay_others=true;
+                                break;
+                            }
+                        }
+
+                        if (is_overlay_others)
                             continue;
                     }
 
