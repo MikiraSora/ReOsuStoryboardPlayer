@@ -25,18 +25,6 @@ namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
             command.StartValue=StartValue;
             command.EndValue=EndValue;
 
-            /*             
-             *  MX,0,94938,130595,320     ---simplify--->     MX,0,94938,94938,320,320
-             *  it could avoid a part cause about command conflict:
-             *  
-             *  MX,0,94938,130595,320
-             *  M,20,95008,95078,320,240,322.9271,226.3689
-             *  M,20,95078,95148,322.9271,226.3689,320.6659,236.2696
-             *  M,20,95148,95218,320.6659,236.2696,321.3301,232.5321
-             */
-            if (EqualityComparer<T>.Default.Equals(StartValue,EndValue))
-                command.EndTime=command.StartTime;
-
             return command;
         }
 
