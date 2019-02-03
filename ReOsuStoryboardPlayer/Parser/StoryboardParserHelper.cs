@@ -1,16 +1,20 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Optimzer;
 using ReOsuStoryboardPlayer.Core.Parser.Collection;
 using ReOsuStoryboardPlayer.Core.Parser.Reader;
 using ReOsuStoryboardPlayer.Core.Parser.Stream;
 using ReOsuStoryboardPlayer.Core.Utils;
-using ReOsuStoryboardPlayer.Core.Optimzer.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReOsuStoryboardPlayer.Parser
 {
     public static class StoryboardParserHelper
     {
+        private static bool optimzer_add = false;
+
         public static List<StoryboardObject> GetStoryboardObjects(string path)
         {
             OsuFileReader reader = new OsuFileReader(path);
@@ -33,14 +37,41 @@ namespace ReOsuStoryboardPlayer.Parser
                     obj.CalculateAndApplyBaseFrameTime();
                 }
 
-                if (PlayerSetting.EnableRuntimeOptimzeObjects)
+                if (PlayerSetting.StoryboardObjectOptimzeLevel>0)
                 {
-                    var optimzer = new RuntimeStoryboardOptimzer();
-                    optimzer.Optimze(list);
+                    if (!optimzer_add)
+                        InitOptimzerManager();
+
+                    StoryboardOptimzerManager.Optimze(PlayerSetting.StoryboardObjectOptimzeLevel,list);
                 }
             }
 
             return list;
+        }
+
+        private static void InitOptimzerManager()
+        {
+            var base_type = typeof(OptimzerBase);
+
+            var need_load_optimzer = AppDomain.CurrentDomain.GetAssemblies()
+                .Select(x => x.GetTypes())
+                .SelectMany(l => l)
+                .Where(x => x.IsClass&&!x.IsAbstract&&x.IsSubclassOf(base_type)).Select(x=> {
+                    try
+                    {
+                        return Activator.CreateInstance(x);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn($"Can't load optimzer \"{x.Name}\" :"+e.Message);
+                        return null;
+                    }
+                }).OfType<OptimzerBase>();
+
+            foreach (var optimzer in need_load_optimzer)
+                StoryboardOptimzerManager.AddOptimzer(optimzer);
+
+            optimzer_add=true;
         }
     }
 }

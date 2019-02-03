@@ -14,8 +14,8 @@ namespace ReOsuStoryboardPlayer
         /// 最小化
         /// </summary>
         public static bool MiniMode { get; set; } = false;
-
-        public static bool EnableRuntimeOptimzeObjects { get; set; } = true;
+        
+        public static int StoryboardObjectOptimzeLevel { get; set; } = 2;
 
         public static bool EnableBorderless { get; set; } = false;
 

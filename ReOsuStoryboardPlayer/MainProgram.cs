@@ -169,8 +169,8 @@ namespace ReOsuStoryboardPlayer
                 if (args.Switches.Any(k => k=="fun_reverse_easing"))
                     PlayerSetting.FunReverseEasing=true;
 
-                if (args.Switches.Any(k => k=="disable_runtime_optimze"))
-                    PlayerSetting.EnableRuntimeOptimzeObjects=false;
+                if (args.TryGetArg(out var ol,"optimzer_level" ,"o"))
+                    PlayerSetting.StoryboardObjectOptimzeLevel=ol.ToInt();
 
                 if (args.TryGetSwitch("disable_update_check"))
                     PlayerSetting.EnableUpdateCheck=false;
