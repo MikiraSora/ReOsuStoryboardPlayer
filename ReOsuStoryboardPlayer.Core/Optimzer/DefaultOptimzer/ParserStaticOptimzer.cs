@@ -18,6 +18,13 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                 using (StopwatchRun.Count(() => "RemoveUnusedCommand() optimze count:"+effect_count))
                     RemoveUnusedCommand(Storyboard_objects, ref effect_count);
             }
+
+            if (level>=4)
+            {
+                int effect_count = 0;
+                using (StopwatchRun.Count(() => "CombineCommands() optimze count:"+effect_count))
+                    CombineCommands(Storyboard_objects, ref effect_count);
+            }
         }
 
         public void CombineCommands(IEnumerable<StoryboardObject> Storyboard_objects, ref int effect_count)
