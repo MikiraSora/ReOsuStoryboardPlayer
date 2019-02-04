@@ -13,10 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common", "..\storybrew\comm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReOsuStoryboardPlayer.Core", "ReOsuStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj", "{31711B28-3825-4EB4-A6E7-959B699EB3AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{56F1D494-AF03-4014-BFDA-66F13B641A89}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -74,6 +73,18 @@ Global
 		{31711B28-3825-4EB4-A6E7-959B699EB3AB}.Release|x64.Build.0 = Release|Any CPU
 		{31711B28-3825-4EB4-A6E7-959B699EB3AB}.Release|x86.ActiveCfg = Release|Any CPU
 		{31711B28-3825-4EB4-A6E7-959B699EB3AB}.Release|x86.Build.0 = Release|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Debug|x64.Build.0 = Debug|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Debug|x86.Build.0 = Debug|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|x64.ActiveCfg = Release|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|x64.Build.0 = Release|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|x86.ActiveCfg = Release|Any CPU
+		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +94,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF763B3D-CD0D-43F0-A8E4-E56C4520F279}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
