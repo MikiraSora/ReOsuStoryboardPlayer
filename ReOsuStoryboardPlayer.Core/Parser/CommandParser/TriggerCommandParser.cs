@@ -13,8 +13,9 @@ namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
             var condition_text = data_arr.ElementAt(1);
             var condition = TriggerConditionBase.Parse(condition_text);
 
-            TriggerCommand command = new TriggerCommand(condition);
+            TriggerCommand command = new TriggerCommand();
 
+            command.Condition=condition;
             command.StartTime=data_arr.ElementAt(2).ToInt();
             command.EndTime=string.IsNullOrWhiteSpace(data_arr.ElementAt(3)) ? command.StartTime : data_arr.ElementAt(3).ToInt();
             command.GroupID=data_arr.Count()>4 ? (string.IsNullOrWhiteSpace(data_arr.ElementAt(4)) ? 0 : data_arr.ElementAt(4).ToInt()) : 0;

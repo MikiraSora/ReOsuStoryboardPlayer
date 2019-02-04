@@ -1,6 +1,8 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ReOsuStoryboardPlayer.Core.Commands.Group
@@ -69,5 +71,24 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
         }
 
         public override string ToString() => $"{base.ToString()} (Times:{LoopCount} CostPerLoop:{CostTime})";
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            base.OnSerialize(stream);
+
+            CostTime.OnSerialize(stream);
+            LoopCount.OnSerialize(stream);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            base.OnDeserialize(stream);
+
+            var x = CostTime;
+            x.OnDeserialize(stream); CostTime=x;
+            x.OnDeserialize(stream); LoopCount=x;
+
+            UpdateSubCommand();
+        }
     }
 }

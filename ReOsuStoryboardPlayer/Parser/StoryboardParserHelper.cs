@@ -3,9 +3,11 @@ using ReOsuStoryboardPlayer.Core.Optimzer;
 using ReOsuStoryboardPlayer.Core.Parser.Collection;
 using ReOsuStoryboardPlayer.Core.Parser.Reader;
 using ReOsuStoryboardPlayer.Core.Parser.Stream;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -15,7 +17,22 @@ namespace ReOsuStoryboardPlayer.Parser
     {
         private static bool optimzer_add = false;
 
-        public static List<StoryboardObject> GetStoryboardObjects(string path)
+        public static List<StoryboardObject> GetStoryboardObjects(string file_path)
+        {
+            if (Path.GetExtension(file_path).ToLower()==".osbin")
+                return GetStoryboardObjectsFromOsbin(file_path);
+            return GetStoryboardObjectsFromOsb(file_path);
+        }
+
+        private static List<StoryboardObject> GetStoryboardObjectsFromOsbin(string path)
+        {
+            using (var stream = File.OpenRead(path))
+            {
+                return StoryboardSerializationHelper.Deserialize(stream).ToList();
+            }
+        }
+
+        private static List<StoryboardObject> GetStoryboardObjectsFromOsb(string path)
         {
             OsuFileReader reader = new OsuFileReader(path);
 

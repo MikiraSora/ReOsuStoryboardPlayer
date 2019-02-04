@@ -1,9 +1,11 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
-    public abstract class Command : IComparable<Command>
+    public abstract class Command : IComparable<Command>,IStoryboardSerializable
     {
 #if DEBUG
         public bool IsExecuted = false;
@@ -43,6 +45,23 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             }
 
             return b.StartTime<a.EndTime;
+        }
+
+        public virtual void OnSerialize(BinaryWriter stream)
+        {
+            //this is read by CommandDeserializtionFactory::Create()
+            ((int)Event).OnSerialize(stream);
+
+            RelativeLine.OnSerialize(stream);
+            StartTime.OnSerialize(stream);
+            EndTime.OnSerialize(stream);
+        }
+
+        public virtual void OnDeserialize(BinaryReader stream)
+        {
+            RelativeLine.OnDeserialize(stream);
+            StartTime.OnDeserialize(stream);
+            EndTime.OnDeserialize(stream);
         }
     }
 }

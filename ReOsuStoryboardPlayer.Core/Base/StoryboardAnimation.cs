@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ReOsuStoryboardPlayer.Core.Serialization;
+using System;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Base
 {
@@ -30,6 +32,28 @@ namespace ReOsuStoryboardPlayer.Core.Base
             }
 
             prev_frame_index=result;
+        }
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            base.OnSerialize(stream);
+
+            FrameCount.OnSerialize(stream);
+            FrameDelay.OnSerialize(stream);
+            FrameBaseImagePath.OnSerialize(stream);
+            FrameFileExtension.OnSerialize(stream);
+            ((byte)LoopType).OnSerialize(stream);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            base.OnDeserialize(stream);
+
+            FrameCount.OnDeserialize(stream);
+            FrameDelay.OnDeserialize(stream);
+            FrameBaseImagePath=stream.ReadString();
+            FrameFileExtension=stream.ReadString();
+            LoopType=(LoopType)stream.ReadByte();
         }
     }
 }

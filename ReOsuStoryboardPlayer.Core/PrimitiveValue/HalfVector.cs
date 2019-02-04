@@ -1,10 +1,12 @@
-﻿using System;
+﻿using ReOsuStoryboardPlayer.Core.Serialization;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     [Serializable]
-    public struct HalfVector : IEquatable<HalfVector>
+    public struct HalfVector : IEquatable<HalfVector>,IStoryboardSerializable
     {
         public Half X { get; set; }
         public Half Y { get; set; }
@@ -139,6 +141,18 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             hashCode=hashCode*-1521134295+EqualityComparer<Half>.Default.GetHashCode(X);
             hashCode=hashCode*-1521134295+EqualityComparer<Half>.Default.GetHashCode(Y);
             return hashCode;
+        }
+
+        public void OnSerialize(BinaryWriter stream)
+        {
+            X.OnSerialize(stream);
+            Y.OnSerialize(stream);
+        }
+
+        public void OnDeserialize(BinaryReader stream)
+        {
+            X.OnDeserialize(stream);
+            Y.OnDeserialize(stream);
         }
     }
 }

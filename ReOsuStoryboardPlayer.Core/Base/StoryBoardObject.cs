@@ -3,14 +3,17 @@ using ReOsuStoryboardPlayer.Core.Commands.Group;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using ReOsuStoryboardPlayer.Core.Kernel;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
+using ReOsuStoryboardPlayer.Core.Serialization;
+using ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace ReOsuStoryboardPlayer.Core.Base
 {
-    public class StoryboardObject
+    public class StoryboardObject:IStoryboardSerializable
     {
         public Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
@@ -262,8 +265,76 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 CurrentUpdater?.AddNeedResortObject(this);
         }
 
-        public long FileLine { get; set; }
+        public long FileLine;
 
         public override string ToString() => $"line {(FromOsbFile ? "osb" : "osu")}:{FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
+
+        #region Serialization
+
+        /* Binary Layout:
+         * int: Addable command count
+         * ~~~~ : command binary data
+         * ....
+         */
+
+        public virtual void OnSerialize(BinaryWriter stream)
+        {
+            //normal commands
+            var commands = CommandMap.Values.SelectMany(l => l).Where(x=>!(x is LoopSubTimelineCommand || x is TriggerSubTimelineCommand));
+
+            stream.Write(commands.Count());
+
+            foreach (var command in commands)
+                command.OnSerialize(stream);
+
+            ImageFilePath.OnSerialize(stream);
+            FromOsbFile.OnSerialize(stream);
+            FrameStartTime.OnSerialize(stream);
+            FrameEndTime.OnSerialize(stream);
+            ((byte)layout).OnSerialize(stream);
+            Z.OnSerialize(stream);
+
+            Postion.OnSerialize(stream);
+            Scale.OnSerialize(stream);
+            Color.OnSerialize(stream);
+            Anchor.OnSerialize(stream);
+
+            IsAdditive.OnSerialize(stream);
+            IsHorizonFlip.OnSerialize(stream);
+            IsVerticalFlip.OnSerialize(stream);
+
+            FileLine.OnSerialize(stream);
+        }
+
+        public virtual void OnDeserialize(BinaryReader stream)
+        {
+            var count = stream.ReadInt32();
+
+            for (int i = 0; i<count; i++)
+            {
+                var command = CommandDeserializtionFactory.Create(stream);
+                AddCommand(command);//todo: use AddCommandRange()
+            }
+
+            ImageFilePath=stream.ReadString();
+            FromOsbFile.OnDeserialize(stream);
+            FrameStartTime.OnDeserialize(stream);
+            FrameEndTime.OnDeserialize(stream);
+            layout=(Layout)stream.ReadByte();
+            Z.OnDeserialize(stream);
+
+            Postion.OnDeserialize(stream);
+            Scale.OnDeserialize(stream);
+            Color.OnDeserialize(stream);
+            Anchor.OnDeserialize(stream);
+
+            IsAdditive.OnDeserialize(stream);
+            IsHorizonFlip.OnDeserialize(stream);
+            IsVerticalFlip.OnDeserialize(stream);
+
+            FileLine.OnDeserialize(stream);
+        }
+
+        #endregion
     }
 }

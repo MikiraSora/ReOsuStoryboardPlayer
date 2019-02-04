@@ -1,13 +1,15 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 {
     //implement from osu!
-    public abstract class TriggerConditionBase
+    public abstract class TriggerConditionBase:IStoryboardSerializable
     {
         #region Parse
 
@@ -34,6 +36,10 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
             throw new FormatException($"\"{condition_expr}\" not a vaild trigger type value.");
         }
+
+        public abstract void OnDeserialize(BinaryReader stream);
+
+        public abstract void OnSerialize(BinaryWriter stream);
 
         #endregion Parse
     }

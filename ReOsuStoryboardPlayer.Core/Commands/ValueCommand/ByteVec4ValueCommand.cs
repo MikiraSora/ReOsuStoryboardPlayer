@@ -1,10 +1,11 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using System;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
-    internal class ColorCommand : ValueCommand<ByteVec4>
+    public class ColorCommand : ValueCommand<ByteVec4>
     {
         public ColorCommand() => Event=Event.Color;
 
@@ -32,6 +33,22 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             };
 
             return temp;
+        }
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            base.OnSerialize(stream);
+
+            StartValue.OnSerialize(stream);
+            EndValue.OnSerialize(stream);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            base.OnDeserialize(stream);
+            
+            StartValue.OnDeserialize(stream);
+            EndValue.OnDeserialize(stream);
         }
     }
 }

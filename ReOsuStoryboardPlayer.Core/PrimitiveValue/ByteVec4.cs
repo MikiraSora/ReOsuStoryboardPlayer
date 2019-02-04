@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ReOsuStoryboardPlayer.Core.Serialization;
+using System;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     [Serializable]
-    public struct ByteVec4 : IEquatable<ByteVec4>
+    public struct ByteVec4 : IEquatable<ByteVec4>,IStoryboardSerializable
     {
         public byte X { get; set; }
         public byte Y { get; set; }
@@ -156,6 +158,22 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             hashCode=hashCode*-1521134295+Z.GetHashCode();
             hashCode=hashCode*-1521134295+W.GetHashCode();
             return hashCode;
+        }
+
+        public void OnSerialize(BinaryWriter stream)
+        {
+            stream.Write(X);
+            stream.Write(Y);
+            stream.Write(Z);
+            stream.Write(W);
+        }
+
+        public void OnDeserialize(BinaryReader stream)
+        {
+            X=stream.ReadByte();
+            Y=stream.ReadByte();
+            Z=stream.ReadByte();
+            W=stream.ReadByte();
         }
     }
 }

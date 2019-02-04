@@ -1,7 +1,9 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
@@ -22,10 +24,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
         private float last_trigged_time = 0;
 
-        public TriggerCommand(TriggerConditionBase condition)
+        public TriggerCommand()
         {
             Event=Event.Trigger;
-            Condition=condition??throw new ArgumentNullException(nameof(condition));
         }
 
         public override void Execute(StoryboardObject @object, float time)
@@ -133,5 +134,22 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
         /// 比如440423的歌词
         /// </summary>
         public readonly static Action<StoryboardObject> OverrideDefaultValue = obj => obj.Color.W=0;
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            base.OnSerialize(stream);
+
+            GroupID.OnSerialize(stream);
+            last_trigged_time.OnSerialize(stream);
+
+            Condition.OnSerialize(stream);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            base.OnDeserialize(stream);
+
+            UpdateSubCommand();
+        }
     }
 }

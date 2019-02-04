@@ -47,6 +47,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
 using System.Globalization;
 using System.IO;
@@ -71,7 +72,7 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Half : ISerializable, IComparable<Half>, IFormattable, IEquatable<Half>
+    public struct Half : ISerializable, IComparable<Half>, IFormattable, IEquatable<Half>,IStoryboardSerializable
     {
         private ushort _bits;
 
@@ -586,6 +587,16 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             Half h;
             h._bits=BitConverter.ToUInt16(value, startIndex);
             return h;
+        }
+
+        public void OnSerialize(BinaryWriter stream)
+        {
+            stream.Write(_bits);
+        }
+
+        public void OnDeserialize(BinaryReader stream)
+        {
+            _bits=stream.ReadUInt16();
         }
     }
 }

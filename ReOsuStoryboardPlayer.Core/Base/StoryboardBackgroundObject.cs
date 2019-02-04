@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
+using ReOsuStoryboardPlayer.Core.Serialization;
 
 namespace ReOsuStoryboardPlayer.Core.Base
 {
@@ -56,6 +58,18 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
             foreach (var cmd in scale_commands)
                 AddCommand(cmd);
+        }
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            base.OnSerialize(stream);
+            trick_init.OnSerialize(stream);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            base.OnDeserialize(stream);
+            trick_init.OnDeserialize(stream);
         }
     }
 }

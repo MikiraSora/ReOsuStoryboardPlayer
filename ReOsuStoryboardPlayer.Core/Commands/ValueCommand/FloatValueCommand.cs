@@ -1,10 +1,29 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Serialization;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
     public abstract class FloatValueCommand : ValueCommand<float>
     {
         public override float CalculateValue(float normalize_value) => StartValue+(EndValue-StartValue)*normalize_value;
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            base.OnSerialize(stream);
+
+            StartValue.OnSerialize(stream);
+            EndValue.OnSerialize(stream);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            base.OnDeserialize(stream);
+
+            var v= StartValue;
+            v.OnDeserialize(stream); StartValue=v;
+            v.OnDeserialize(stream); EndValue=v;
+        }
     }
 
     public class FadeCommand : FloatValueCommand

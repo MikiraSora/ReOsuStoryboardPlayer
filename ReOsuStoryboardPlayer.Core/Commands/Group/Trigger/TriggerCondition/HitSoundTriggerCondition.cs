@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -12,6 +13,11 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
         public SampleSetType SampleSet = SampleSetType.All;
         public SampleSetType SampleSetAdditions = SampleSetType.All;
         public CustomSampleSetType CustomSampleSet = CustomSampleSetType.Default;
+
+        public HitSoundTriggerCondition()
+        {
+
+        }
 
         public HitSoundTriggerCondition(string description)
         {
@@ -98,6 +104,22 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
             bool ContainFlagEnum<T>(T source, T compare_with) where T : Enum =>
                 Enum.GetValues(typeof(T)).Cast<T>().Any(val => source.HasFlag(val)&&compare_with.HasFlag(val)&&Convert.ToInt32(val)!=0);
+        }
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            stream.Write((byte)HitSound);
+            stream.Write((byte)SampleSet);
+            stream.Write((byte)SampleSetAdditions);
+            stream.Write((int)CustomSampleSet);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            HitSound=(HitObjectSoundType)stream.ReadByte();
+            SampleSet=(SampleSetType)stream.ReadByte();
+            SampleSetAdditions=(SampleSetType)stream.ReadByte();
+            CustomSampleSet=(CustomSampleSetType)stream.ReadInt32();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
@@ -21,6 +23,20 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         public T GetStartValue<T>() => (T)GetStartValue();
 
         #endregion Evil Methods
+
+        public override void OnSerialize(BinaryWriter stream)
+        {
+            base.OnSerialize(stream);
+
+            ((byte)Easing).OnSerialize(stream);
+        }
+
+        public override void OnDeserialize(BinaryReader stream)
+        {
+            base.OnDeserialize(stream);
+
+            Easing=(EasingTypes)stream.ReadByte();
+        }
     }
 
     public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
