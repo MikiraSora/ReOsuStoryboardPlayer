@@ -98,6 +98,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
             {
                 foreach (var timeline in obj.CommandMap.Where(x => !skip_event.Contains(x.Key)).Select(x => x.Value))
                 {
+                    /*
                     for (int i = timeline.Count-1; i>=0; i--)
                     {
                         var cmd = timeline[i]; //待检查的命令
@@ -111,14 +112,9 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                             var itor = timeline[x]; //遍历的命令
 
                             /*
-                            if (itor.StartTime>cmd.StartTime)
-                                break;
-                                */
-
-                            /*
                              *line n-1 (itor): |--------------------------|
                              *line n   (cmd) :             |--------------|       <--- Kill , biatch
-                             */
+                             * /
                             if (cmd.EndTime<=itor.EndTime
                                 &&cmd.StartTime>=itor.StartTime
                                 &&itor.RelativeLine<cmd.RelativeLine
@@ -132,6 +128,33 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
 
                                 //已被制裁
                                 break;
+                            }
+                        }
+                    }
+                    */
+
+                    for (int i = 0; timeline.Overlay && i<timeline.Count-1; i++)
+                    {
+                        var cmd = timeline[i];
+
+                        /*
+                         *line n-1 (cmd): |--------------------------|
+                         *line n   (next_cmd) :      |--------------|       <--- Killed , biatch
+                         */
+                        for (int t = i+1;timeline.Overlay && t<timeline.Count; t++)
+                        {
+                            var next_cmd = timeline[t];
+
+                            if (next_cmd.StartTime>cmd.EndTime)
+                                break;
+
+                            if (next_cmd.EndTime<=cmd.EndTime && next_cmd.EndTime!=next_cmd.StartTime && cmd.RelativeLine<next_cmd.RelativeLine)
+                            {
+                                timeline.Remove(next_cmd);
+
+                                Log.Debug($"Remove unused command ({next_cmd}) in ({obj})，compare with ({cmd})");
+                                Suggest(next_cmd, $"此命令被\"{cmd}\"命令覆盖而不被执行到，可删除");
+                                effect_count++;
                             }
                         }
                     }
