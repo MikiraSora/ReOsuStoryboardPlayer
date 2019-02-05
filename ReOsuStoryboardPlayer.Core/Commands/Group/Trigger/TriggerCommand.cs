@@ -135,19 +135,19 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
         /// </summary>
         public readonly static Action<StoryboardObject> OverrideDefaultValue = obj => obj.Color.W=0;
 
-        public override void OnSerialize(BinaryWriter stream)
+        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
-            base.OnSerialize(stream);
+            base.OnSerialize(stream,map);
 
             GroupID.OnSerialize(stream);
             last_trigged_time.OnSerialize(stream);
 
-            Condition.OnSerialize(stream);
+            Condition.OnSerialize(stream,map);
         }
 
-        public override void OnDeserialize(BinaryReader stream)
+        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
-            base.OnDeserialize(stream);
+            base.OnDeserialize(stream,map);
 
             UpdateSubCommand();
         }

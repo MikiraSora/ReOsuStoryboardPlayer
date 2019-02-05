@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
@@ -60,15 +61,15 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 AddCommand(cmd);
         }
 
-        public override void OnSerialize(BinaryWriter stream)
+        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
-            base.OnSerialize(stream);
+            base.OnSerialize(stream,map);
             trick_init.OnSerialize(stream);
         }
 
-        public override void OnDeserialize(BinaryReader stream)
+        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
-            base.OnDeserialize(stream);
+            base.OnDeserialize(stream,map);
             trick_init.OnDeserialize(stream);
         }
     }

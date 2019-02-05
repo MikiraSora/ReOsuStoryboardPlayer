@@ -37,9 +37,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
             throw new FormatException($"\"{condition_expr}\" not a vaild trigger type value.");
         }
 
-        public abstract void OnDeserialize(BinaryReader stream);
+        public abstract void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map);
 
-        public abstract void OnSerialize(BinaryWriter stream);
+        public abstract void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map);
 
         #endregion Parse
     }

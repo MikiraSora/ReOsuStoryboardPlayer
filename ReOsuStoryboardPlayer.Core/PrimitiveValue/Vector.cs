@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
@@ -136,13 +137,13 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             return hashCode;
         }
 
-        public void OnSerialize(BinaryWriter stream)
+        public void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
             stream.Write(X);
             stream.Write(Y);
         }
 
-        public void OnDeserialize(BinaryReader stream)
+        public void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
             X=stream.ReadSingle();
             Y=stream.ReadSingle();

@@ -3,18 +3,19 @@ using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Commands.Group;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory
 {
     public class CommandDeserializtionFactory
     {
-        public static Command Create(BinaryReader stream)
+        public static Command Create(BinaryReader stream,Dictionary<uint,string> map)
         {
             Event e =(Event)stream.ReadInt32();
             var command = CreateCommand(e);
 
-            command.OnDeserialize(stream);
+            command.OnDeserialize(stream, map);
 
             return command;
         }

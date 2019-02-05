@@ -26,9 +26,11 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
 
             MemoryStream stream = new MemoryStream();
 
+            Dictionary<string, uint> map=new Dictionary<string, uint>();
+
             using (var writer=new BinaryWriter(stream))
             {
-                command.OnSerialize(writer);
+                command.OnSerialize(writer, map);
             }
 
             var bytes = stream.ToArray();
@@ -36,9 +38,11 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
 
             stream=new MemoryStream(bytes);
 
+            var reverse_map = map.ToDictionary(x => x.Value, x => x.Key);
+
             using (var reader=new BinaryReader(stream))
             {
-                var fade = CommandDeserializtionFactory.Create(reader);
+                var fade = CommandDeserializtionFactory.Create(reader, reverse_map);
 
                 Assert.AreEqual(command.StartTime, fade.StartTime);
                 Assert.AreEqual(command.EndTime, fade.EndTime);

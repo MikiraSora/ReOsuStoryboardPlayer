@@ -277,7 +277,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
          * ....
          */
 
-        public virtual void OnSerialize(BinaryWriter stream)
+        public virtual void OnSerialize(BinaryWriter stream, Dictionary<string, uint> map)
         {
             //normal commands
             var commands = CommandMap.Values.SelectMany(l => l).Where(x=>!(x is LoopSubTimelineCommand || x is TriggerSubTimelineCommand));
@@ -285,19 +285,22 @@ namespace ReOsuStoryboardPlayer.Core.Base
             stream.Write(commands.Count());
 
             foreach (var command in commands)
-                command.OnSerialize(stream);
+                command.OnSerialize(stream, map);
 
-            ImageFilePath.OnSerialize(stream);
+            //ImageFilePath.OnSerialize(stream);
+            var image_string_id = map.GetStringCacheId(ImageFilePath);
+            stream.Write(image_string_id);
+
             FromOsbFile.OnSerialize(stream);
             FrameStartTime.OnSerialize(stream);
             FrameEndTime.OnSerialize(stream);
             ((byte)layout).OnSerialize(stream);
             Z.OnSerialize(stream);
 
-            Postion.OnSerialize(stream);
-            Scale.OnSerialize(stream);
-            Color.OnSerialize(stream);
-            Anchor.OnSerialize(stream);
+            Postion.OnSerialize(stream, map);
+            Scale.OnSerialize(stream, map);
+            Color.OnSerialize(stream, map);
+            Anchor.OnSerialize(stream, map);
 
             IsAdditive.OnSerialize(stream);
             IsHorizonFlip.OnSerialize(stream);
@@ -306,27 +309,29 @@ namespace ReOsuStoryboardPlayer.Core.Base
             FileLine.OnSerialize(stream);
         }
 
-        public virtual void OnDeserialize(BinaryReader stream)
+        public virtual void OnDeserialize(BinaryReader stream, Dictionary<uint,string> map)
         {
             var count = stream.ReadInt32();
 
             for (int i = 0; i<count; i++)
             {
-                var command = CommandDeserializtionFactory.Create(stream);
+                var command = CommandDeserializtionFactory.Create(stream, map);
                 AddCommand(command);//todo: use AddCommandRange()
             }
 
-            ImageFilePath=stream.ReadString();
+            //ImageFilePath=stream.ReadString();
+            ImageFilePath=map.GetStringCache(stream.ReadUInt32());
+
             FromOsbFile.OnDeserialize(stream);
             FrameStartTime.OnDeserialize(stream);
             FrameEndTime.OnDeserialize(stream);
             layout=(Layout)stream.ReadByte();
             Z.OnDeserialize(stream);
 
-            Postion.OnDeserialize(stream);
-            Scale.OnDeserialize(stream);
-            Color.OnDeserialize(stream);
-            Anchor.OnDeserialize(stream);
+            Postion.OnDeserialize(stream,map);
+            Scale.OnDeserialize(stream, map);
+            Color.OnDeserialize(stream, map);
+            Anchor.OnDeserialize(stream, map);
 
             IsAdditive.OnDeserialize(stream);
             IsHorizonFlip.OnDeserialize(stream);

@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
@@ -21,7 +22,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
         public bool CheckCondition(GameState state) => listen_state==state;
 
-        public override void OnSerialize(BinaryWriter stream)
+        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
             //read by TriggerConditionDeserializationFactory::Create()
             0.OnSerialize(stream);
@@ -29,7 +30,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
             ((byte)listen_state).OnSerialize(stream);
         }
 
-        public override void OnDeserialize(BinaryReader stream)
+        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
             listen_state=(GameState)stream.ReadByte();
         }

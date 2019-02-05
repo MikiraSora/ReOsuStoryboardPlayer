@@ -24,16 +24,16 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         #endregion Evil Methods
 
-        public override void OnSerialize(BinaryWriter stream)
+        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
-            base.OnSerialize(stream);
+            base.OnSerialize(stream,map);
 
             ((byte)Easing).OnSerialize(stream);
         }
 
-        public override void OnDeserialize(BinaryReader stream)
+        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
-            base.OnDeserialize(stream);
+            base.OnDeserialize(stream,map);
 
             Easing=(EasingTypes)stream.ReadByte();
         }

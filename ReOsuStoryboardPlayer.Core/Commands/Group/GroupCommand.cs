@@ -26,27 +26,27 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
 
         public abstract void UpdateSubCommand();
 
-        public override void OnSerialize(BinaryWriter stream)
+        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
-            base.OnSerialize(stream);
+            base.OnSerialize(stream,map);
 
             var commands = SubCommands.Values.SelectMany(l => l);
 
             commands.Count().OnSerialize(stream);
 
             foreach (var command in commands)
-                command.OnSerialize(stream);
+                command.OnSerialize(stream,map);
         }
 
-        public override void OnDeserialize(BinaryReader stream)
+        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
-            base.OnDeserialize(stream);
+            base.OnDeserialize(stream,map);
 
             var count = stream.ReadInt32();
 
             for (int i = 0; i<count; i++)
             {
-                var command = CommandDeserializtionFactory.Create(stream);
+                var command = CommandDeserializtionFactory.Create(stream,map);
                 AddSubCommand(command);
             }
         }

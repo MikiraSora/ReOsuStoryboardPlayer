@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
@@ -8,20 +9,20 @@ namespace ReOsuStoryboardPlayer.Core.Commands
     {
         public override Vector CalculateValue(float normalize_value) => StartValue+(EndValue-StartValue)*normalize_value;
 
-        public override void OnSerialize(BinaryWriter stream)
+        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
-            base.OnSerialize(stream);
+            base.OnSerialize(stream,map);
 
-            StartValue.OnSerialize(stream);
-            EndValue.OnSerialize(stream);
+            StartValue.OnSerialize(stream, map);
+            EndValue.OnSerialize(stream, map);
         }
 
-        public override void OnDeserialize(BinaryReader stream)
+        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
-            base.OnDeserialize(stream);
+            base.OnDeserialize(stream,map);
 
-            StartValue.OnDeserialize(stream);
-            EndValue.OnDeserialize(stream);
+            StartValue.OnDeserialize(stream, map);
+            EndValue.OnDeserialize(stream, map);
         }
     }
 

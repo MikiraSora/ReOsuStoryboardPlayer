@@ -49,6 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -589,14 +590,14 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             return h;
         }
 
-        public void OnSerialize(BinaryWriter stream)
+        public void OnSerialize(BinaryWriter stream, Dictionary<string, uint> map)
         {
-            stream.Write(_bits);
+            _bits.OnSerialize(stream);
         }
 
-        public void OnDeserialize(BinaryReader stream)
+        public void OnDeserialize(BinaryReader stream, Dictionary<uint,string> map)
         {
-            _bits=stream.ReadUInt16();
+            _bits.OnDeserialize(stream);
         }
     }
 }

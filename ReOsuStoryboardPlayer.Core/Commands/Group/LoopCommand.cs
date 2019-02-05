@@ -72,17 +72,17 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
 
         public override string ToString() => $"{base.ToString()} (Times:{LoopCount} CostPerLoop:{CostTime})";
 
-        public override void OnSerialize(BinaryWriter stream)
+        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
         {
-            base.OnSerialize(stream);
+            base.OnSerialize(stream,map);
 
             CostTime.OnSerialize(stream);
             LoopCount.OnSerialize(stream);
         }
 
-        public override void OnDeserialize(BinaryReader stream)
+        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
         {
-            base.OnDeserialize(stream);
+            base.OnDeserialize(stream,map);
 
             var x = CostTime;
             x.OnDeserialize(stream); CostTime=x;

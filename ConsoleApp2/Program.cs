@@ -19,11 +19,11 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            //Write();
+            Write();
 
-            //Read();
+            Read();
 
-            Test();
+            //Test();
         }
 
         private static void Test()
