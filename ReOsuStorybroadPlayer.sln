@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReOsuStoryboardPlayer.Core"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{56F1D494-AF03-4014-BFDA-66F13B641A89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryboardPlayer.Core.UnitTest", "ReOsuStoryboardPlayer.Core.UnitTest\ReOsuStoryboardPlayer.Core.UnitTest.csproj", "{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,18 @@ Global
 		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|x64.Build.0 = Release|Any CPU
 		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|x86.ActiveCfg = Release|Any CPU
 		{56F1D494-AF03-4014-BFDA-66F13B641A89}.Release|x86.Build.0 = Release|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Debug|x64.Build.0 = Debug|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Debug|x86.Build.0 = Debug|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Release|x64.ActiveCfg = Release|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Release|x64.Build.0 = Release|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Release|x86.ActiveCfg = Release|Any CPU
+		{01732EC9-C11F-4009-BFAC-E1A3EA2C0323}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

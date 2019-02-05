@@ -45,9 +45,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public override IEqualityComparer EqualityComparer => EqualityComparer<VALUE_TYPE>.Default;
 
-        public VALUE_TYPE StartValue { get; set; }
+        public VALUE_TYPE StartValue;
 
-        public VALUE_TYPE EndValue { get; set; }
+        public VALUE_TYPE EndValue;
 
         public abstract VALUE_TYPE CalculateValue(float normalize_value);
 

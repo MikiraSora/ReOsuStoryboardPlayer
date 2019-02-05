@@ -1,4 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
 using ReOsuStoryboardPlayer.Core.Serialization;
 using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Parser;
@@ -17,10 +19,41 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            Write();
+            //Write();
 
             //Read();
+
+            Test();
         }
+
+        private static void Test()
+        {
+            var text = new[]{
+                " F,0,6109,6435,0,1",
+                " M,0,6109,11652,425,328,440,328",
+                " F,0,6435,11326,1",
+                " F,0,11326,11652,1,0",
+                " S,0,22739,,1"
+            };
+
+            var commands = text.Select(l => CommandParserIntance.Parse(l.Split(','))).SelectMany(l => l);
+
+            StoryboardObject obj = new StoryboardObject();
+            obj.ImageFilePath=@"SB\2.png";
+            obj.AddCommandRange(commands);
+            obj.CalculateAndApplyBaseFrameTime();
+
+            var list = new List<StoryboardObject>();
+            list.Add(obj);
+
+            MemoryStream stream = new MemoryStream();
+
+            StoryboardSerializationHelper.Serialize(list, stream);
+
+            stream.Position=0;
+
+            var new_list=StoryboardSerializationHelper.Deserialize(stream).ToList();
+            }
 
         private static void Read()
         {
