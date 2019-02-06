@@ -11,8 +11,6 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 {
     public static class StoryboardSerializationHelper
     {
-        private static IFormatter sysbuild_formatter = new BinaryFormatter();
-
         public static void Serialize(IEnumerable<StoryboardObject> objects, Stream stream)
         {
             var count = objects.Count();
@@ -30,9 +28,20 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             }
 
             var map_writer = new BinaryWriter(stream);
-            //write map data
-            sysbuild_formatter.Serialize(stream, map);
 
+            //write map data
+            #region Write Map Data
+
+            map_writer.Write(map.Count);
+
+            foreach (var pair in map)
+            {
+                map_writer.Write(pair.Key);
+                map_writer.Write(pair.Value);
+            }
+
+            #endregion
+            
             //write main data
             temp_stream.Seek(0, SeekOrigin.Begin);
             temp_stream.CopyTo(stream);
@@ -40,9 +49,23 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 
         public static IEnumerable<StoryboardObject> Deserialize(Stream stream)
         {
-            var map = (sysbuild_formatter.Deserialize(stream) as Dictionary<string, uint>).ToDictionary(x=>x.Value,x=>x.Key); 
-
             BinaryReader reader = new BinaryReader(stream);
+
+            #region Read Map Data
+
+            int map_count = reader.ReadInt32();
+
+            var map = new Dictionary<uint, string>(map_count);
+
+            for (int i = 0; i<map_count; i++)
+            {
+                var str = reader.ReadString();
+                var id = reader.ReadUInt32();
+
+                map.Add(id, str);
+            }
+
+            #endregion
             
             var count = reader.ReadInt32();
 

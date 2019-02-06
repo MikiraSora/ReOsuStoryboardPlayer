@@ -42,7 +42,7 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
     {
         static string[] test_cases = new[]
         {
-            ""
+            @".\TestData\Hatsuki Yura - Fuuga (Lan wings).osb"
         };
 
         List<StoryboardObject> objectsA;

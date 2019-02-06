@@ -7,6 +7,7 @@ using ReOsuStoryboardPlayer.Parser;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -21,7 +22,7 @@ namespace ConsoleApp2
         {
             Write();
 
-            Read();
+            //Read();
 
             //Test();
         }
@@ -65,7 +66,7 @@ namespace ConsoleApp2
         private static void Write()
         {
             var objects = StoryboardParserHelper
-                   .GetStoryboardObjects(@"G:\SBTest\94790 Hatsuki Yura - Fuuga\Hatsuki Yura - Fuuga (Lan wings).osb");
+                   .GetStoryboardObjects(@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion\Camellia vs Akira Complex - Reality Distortion (rrtyui).osb");
 
             File.Delete("test.osbin");
             var stream = File.OpenWrite("test.osbin");
