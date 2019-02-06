@@ -9,7 +9,7 @@ using System.Linq;
 namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 {
     //implement from osu!
-    public abstract class TriggerConditionBase:IStoryboardSerializable
+    public abstract class TriggerConditionBase:IStoryboardSerializable,IEquatable<TriggerConditionBase>
     {
         #region Parse
 
@@ -36,6 +36,8 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
             throw new FormatException($"\"{condition_expr}\" not a vaild trigger type value.");
         }
+
+        public abstract bool Equals(TriggerConditionBase other);
 
         public abstract void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map);
 

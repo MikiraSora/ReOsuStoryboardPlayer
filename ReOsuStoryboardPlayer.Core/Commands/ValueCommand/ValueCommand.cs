@@ -37,6 +37,11 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
             Easing=(EasingTypes)stream.ReadByte();
         }
+
+        public override bool Equals(Command command)
+        {
+            return base.Equals(command)&&Easing==((ValueCommand)command).Easing;
+        }
     }
 
     public abstract class ValueCommand<VALUE_TYPE> : ValueCommand
@@ -69,5 +74,13 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         }
 
         public override string ToString() => $"{base.ToString()} {Easing.ToString()} ({StartValue}~{EndValue})";
+
+        public override bool Equals(Command command)
+        {
+            return base.Equals(command)
+                &&command is ValueCommand<VALUE_TYPE> v
+                &&EqualityComparer.Equals(v.StartValue,StartValue)
+                &&EqualityComparer.Equals(v.EndValue, EndValue);
+        }
     }
 }

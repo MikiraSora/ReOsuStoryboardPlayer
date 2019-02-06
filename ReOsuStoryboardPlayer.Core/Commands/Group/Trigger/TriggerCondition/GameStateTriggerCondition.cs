@@ -34,5 +34,10 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
         {
             listen_state=(GameState)stream.ReadByte();
         }
+
+        public override bool Equals(TriggerConditionBase other)
+        {
+            return other is GameStateTriggerCondition game_cond && game_cond.listen_state==listen_state;
+        }
     }
 }

@@ -56,5 +56,10 @@ namespace ReOsuStoryboardPlayer.Core.Base
             FrameFileExtension=stream.ReadString();
             LoopType=(LoopType)stream.ReadByte();
         }
+
+        public override bool Equals(StoryboardObject other)
+        {
+            return base.Equals(other)&&other is StoryboardAnimation;
+        }
     }
 }

@@ -19,9 +19,12 @@ namespace ReOsuStoryboardPlayer.Parser
 
         public static List<StoryboardObject> GetStoryboardObjects(string file_path)
         {
-            if (Path.GetExtension(file_path).ToLower()==".osbin")
-                return GetStoryboardObjectsFromOsbin(file_path);
-            return GetStoryboardObjectsFromOsb(file_path);
+            using (StopwatchRun.Count($"Parse&Optimze Storyboard Objects/Commands from {file_path}"))
+            {
+                if (Path.GetExtension(file_path).ToLower()==".osbin")
+                    return GetStoryboardObjectsFromOsbin(file_path);
+                return GetStoryboardObjectsFromOsb(file_path);
+            }
         }
 
         private static List<StoryboardObject> GetStoryboardObjectsFromOsbin(string path)
@@ -44,23 +47,18 @@ namespace ReOsuStoryboardPlayer.Parser
 
             List<StoryboardObject> list;
 
-            using (StopwatchRun.Count($"Parse&Optimze Storyboard Objects/Commands from {path}"))
+            list=StoryboardReader.EnumValues().ToList();
+            list.RemoveAll(c => c==null);
+
+            foreach (var obj in list)
+                obj.CalculateAndApplyBaseFrameTime();
+
+            if (PlayerSetting.StoryboardObjectOptimzeLevel>0)
             {
-                list=StoryboardReader.EnumValues().ToList();
-                list.RemoveAll(c => c==null);
+                if (!optimzer_add)
+                    InitOptimzerManager();
 
-                foreach (var obj in list)
-                {
-                    obj.CalculateAndApplyBaseFrameTime();
-                }
-
-                if (PlayerSetting.StoryboardObjectOptimzeLevel>0)
-                {
-                    if (!optimzer_add)
-                        InitOptimzerManager();
-
-                    StoryboardOptimzerManager.Optimze(PlayerSetting.StoryboardObjectOptimzeLevel,list);
-                }
+                StoryboardOptimzerManager.Optimze(PlayerSetting.StoryboardObjectOptimzeLevel, list);
             }
 
             return list;

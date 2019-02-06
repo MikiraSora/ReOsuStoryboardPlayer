@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace ReOsuStoryboardPlayer.Core.Base
 {
-    public class StoryboardObject:IStoryboardSerializable
+    public class StoryboardObject:IStoryboardSerializable,IEquatable<StoryboardObject>
     {
         public Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
@@ -239,7 +239,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
         }
 
 #endif
-
         /// <summary>
         /// 计算物件的FrameTime
         /// (此方法必须确保计算出来的物件时间是基于命令的真实的有效时间，不能因为Trigger而提前计算，FrameStartTime必须是一次性算好固定的值(否则Scan炸了，理论上也没什么玩意可以变更此参数))
@@ -279,6 +278,11 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public virtual void OnSerialize(BinaryWriter stream, Dictionary<string, uint> map)
         {
+            /*
+             因为BaseTransformResetAction无法被序列化，因此只能先计算出来然后再将物件的各个变换值作为反序列化时生成新的初始化回调
+             */
+            ResetTransform();
+
             //normal commands
             var commands = CommandMap.Values.SelectMany(l => l).Where(x=>!(x is LoopSubTimelineCommand || x is TriggerSubTimelineCommand));
 
@@ -301,6 +305,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             Scale.OnSerialize(stream, map);
             Color.OnSerialize(stream, map);
             Anchor.OnSerialize(stream, map);
+            Rotate.OnSerialize(stream);
 
             IsAdditive.OnSerialize(stream);
             IsHorizonFlip.OnSerialize(stream);
@@ -332,12 +337,57 @@ namespace ReOsuStoryboardPlayer.Core.Base
             Scale.OnDeserialize(stream, map);
             Color.OnDeserialize(stream, map);
             Anchor.OnDeserialize(stream, map);
+            Rotate.OnDeserialize(stream);
 
             IsAdditive.OnDeserialize(stream);
             IsHorizonFlip.OnDeserialize(stream);
             IsVerticalFlip.OnDeserialize(stream);
 
             FileLine.OnDeserialize(stream);
+
+            //try to rebuild base trasform reset action
+            var pos = Postion;
+            var start = FrameStartTime;
+            var end = FrameEndTime;
+            var color = Color;
+            var scale = Scale;
+            var additive = IsAdditive;
+            var rotate = Rotate;
+            var horizon = IsHorizonFlip;
+            var vertical = IsVerticalFlip;
+
+            BaseTransformResetAction+= (StoryboardObject obj) =>
+            {
+                obj.Postion=pos;
+                obj.FrameStartTime=start;
+                obj.FrameEndTime=end;
+                obj.Color=color;
+                obj.Scale=scale;
+                obj.IsAdditive=additive;
+                obj.IsHorizonFlip=horizon;
+                obj.IsVerticalFlip=vertical;
+                obj.Rotate=rotate;
+            };
+        }
+
+        public virtual bool Equals(StoryboardObject other)
+        {
+            return other.ImageFilePath==ImageFilePath
+                &&other.FromOsbFile==FromOsbFile
+                &&other.FrameStartTime==FrameStartTime
+                &&other.FrameEndTime==FrameEndTime
+                &&other.layout==layout
+                &&other.Z==Z
+                &&other.Postion==Postion
+                &&other.Scale==Scale
+                &&other.Color==Color
+                &&other.Rotate==Rotate
+                &&other.Anchor==Anchor
+                &&other.IsAdditive==IsAdditive
+                &&other.IsHorizonFlip==IsHorizonFlip
+                &&other.IsVerticalFlip==IsVerticalFlip
+                &&other.FileLine==FileLine
+                &&other.CommandMap.Values.SelectMany(l=>l).All(x=>CommandMap.Values.SelectMany(l=>l).Any(y=>y.Equals(x)));
         }
 
         #endregion

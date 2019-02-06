@@ -20,8 +20,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
         public bool Trigged { get; private set; }
 
-        public int CostTime { get; private set; }
-
         private float last_trigged_time = 0;
 
         public TriggerCommand()
@@ -150,6 +148,15 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
             base.OnDeserialize(stream,map);
 
             UpdateSubCommand();
+        }
+
+        public override bool Equals(Command command)
+        {
+            return base.Equals(command)
+                && command is TriggerCommand triger
+                && triger.Condition.Equals(Condition)
+                && triger.GroupID==GroupID
+                && triger.CostTime==CostTime;
         }
     }
 }

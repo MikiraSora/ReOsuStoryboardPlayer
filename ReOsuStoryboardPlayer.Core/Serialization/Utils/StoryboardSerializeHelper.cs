@@ -19,25 +19,23 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             Dictionary<string, uint> map = new Dictionary<string, uint>();
 
             MemoryStream temp_stream = new MemoryStream();
-            
+
             BinaryWriter writer = new BinaryWriter(temp_stream);
             count.OnSerialize(writer);
 
             foreach (var obj in objects)
             {
                 StoryboardObjectDeserializationFactory.GetObjectTypeId(obj).OnSerialize(writer);
-                obj.OnSerialize(writer,map);
+                obj.OnSerialize(writer, map);
             }
 
-            using (var map_writer=new BinaryWriter(stream))
-            {
-                //write map data
-                sysbuild_formatter.Serialize(stream, map);
+            var map_writer = new BinaryWriter(stream);
+            //write map data
+            sysbuild_formatter.Serialize(stream, map);
 
-                //write main data
-                temp_stream.Seek(0, SeekOrigin.Begin);
-                temp_stream.CopyTo(stream);
-            }
+            //write main data
+            temp_stream.Seek(0, SeekOrigin.Begin);
+            temp_stream.CopyTo(stream);
         }
 
         public static IEnumerable<StoryboardObject> Deserialize(Stream stream)

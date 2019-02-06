@@ -122,5 +122,14 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
             SampleSetAdditions=(SampleSetType)stream.ReadByte();
             CustomSampleSet=(CustomSampleSetType)stream.ReadInt32();
         }
+
+        public override bool Equals(TriggerConditionBase other)
+        {
+            return other is HitSoundTriggerCondition sound_cond
+                &&sound_cond.CustomSampleSet==CustomSampleSet
+                &&sound_cond.SampleSet==SampleSet
+                &&sound_cond.SampleSetAdditions==SampleSetAdditions
+                &&sound_cond.HitSound==HitSound;
+        }
     }
 }

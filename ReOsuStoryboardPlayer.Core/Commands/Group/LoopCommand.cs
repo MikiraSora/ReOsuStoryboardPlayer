@@ -11,8 +11,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
     {
         public LoopCommand() => Event=Event.Loop;
 
-        public int CostTime { get; private set; }
-
         public int LoopCount { get; set; }
 
         public override void Execute(StoryboardObject @object, float current_value)
@@ -89,6 +87,13 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
             x.OnDeserialize(stream); LoopCount=x;
 
             UpdateSubCommand();
+        }
+
+        public override bool Equals(Command command)
+        {
+            return base.Equals(command) 
+                && command is LoopCommand loop
+                && loop.LoopCount==LoopCount;
         }
     }
 }

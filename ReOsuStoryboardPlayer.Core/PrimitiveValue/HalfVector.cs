@@ -8,8 +8,8 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
     [Serializable]
     public struct HalfVector : IEquatable<HalfVector>,IStoryboardSerializable
     {
-        public Half X { get; set; }
-        public Half Y { get; set; }
+        public Half X;
+        public Half Y;
 
         public static HalfVector Zero { get { return new HalfVector(new Half(0f), new Half(0f)); } }
         public static HalfVector One { get { return new HalfVector(new Half(0f), new Half(0f)); } }

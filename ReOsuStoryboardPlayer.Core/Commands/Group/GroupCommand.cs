@@ -11,6 +11,8 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
     {
         public Dictionary<Event, CommandTimeline> SubCommands { get; set; } = new Dictionary<Event, CommandTimeline>();
 
+        public int CostTime;
+
         public virtual void AddSubCommand(Command command)
         {
             if (!SubCommands.ContainsKey(command.Event))
@@ -49,6 +51,15 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
                 var command = CommandDeserializtionFactory.Create(stream,map);
                 AddSubCommand(command);
             }
+        }
+
+        public override bool Equals(Command command)
+        {
+            return base.Equals(command)
+                && command is GroupCommand group
+                && group.CostTime==CostTime
+                //确保所有子命令命令都对应
+                && group.SubCommands.Values.SelectMany(l=>l).All(x=>SubCommands.Values.SelectMany(l=>l).Any(y=>y.Equals(x)));
         }
     }
 }

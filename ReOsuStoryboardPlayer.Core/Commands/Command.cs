@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
-    public abstract class Command : IComparable<Command>,IStoryboardSerializable
+    public abstract class Command : IComparable<Command>,IStoryboardSerializable,IEquatable<Command>
     {
 #if DEBUG
         public bool IsExecuted = false;
@@ -63,6 +63,18 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             RelativeLine.OnDeserialize(stream);
             StartTime.OnDeserialize(stream);
             EndTime.OnDeserialize(stream);
+        }
+
+        /// <summary>
+        /// 指引用不同的两个命令对象是否内容完全相同
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public virtual bool Equals(Command command)
+        {
+            return Event==command.Event
+                   &&StartTime==command.StartTime
+                   &&EndTime==command.EndTime;
         }
     }
 }

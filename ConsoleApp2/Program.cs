@@ -67,6 +67,7 @@ namespace ConsoleApp2
             var objects = StoryboardParserHelper
                    .GetStoryboardObjects(@"G:\SBTest\94790 Hatsuki Yura - Fuuga\Hatsuki Yura - Fuuga (Lan wings).osb");
 
+            File.Delete("test.osbin");
             var stream = File.OpenWrite("test.osbin");
 
             StoryboardSerializationHelper.Serialize(objects, stream);

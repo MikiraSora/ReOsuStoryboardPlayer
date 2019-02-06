@@ -72,5 +72,10 @@ namespace ReOsuStoryboardPlayer.Core.Base
             base.OnDeserialize(stream,map);
             trick_init.OnDeserialize(stream);
         }
+
+        public override bool Equals(StoryboardObject other)
+        {
+            return base.Equals(other)&&other is StoryboardBackgroundObject;
+        }
     }
 }
