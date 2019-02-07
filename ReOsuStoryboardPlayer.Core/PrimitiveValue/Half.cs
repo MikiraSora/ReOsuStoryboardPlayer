@@ -590,12 +590,12 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             return h;
         }
 
-        public void OnSerialize(BinaryWriter stream, Dictionary<string, uint> map)
+        public void OnSerialize(BinaryWriter stream, StringCacheTable _)
         {
             _bits.OnSerialize(stream);
         }
 
-        public void OnDeserialize(BinaryReader stream, Dictionary<uint,string> map)
+        public void OnDeserialize(BinaryReader stream, StringCacheTable _)
         {
             _bits.OnDeserialize(stream);
         }

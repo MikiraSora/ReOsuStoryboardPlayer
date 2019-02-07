@@ -137,13 +137,13 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             return hashCode;
         }
 
-        public void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
+        public void OnSerialize(BinaryWriter stream, StringCacheTable _)
         {
             stream.Write(X);
             stream.Write(Y);
         }
 
-        public void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
+        public void OnDeserialize(BinaryReader stream, StringCacheTable _)
         {
             X=stream.ReadSingle();
             Y=stream.ReadSingle();

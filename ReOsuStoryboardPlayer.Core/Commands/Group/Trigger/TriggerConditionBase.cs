@@ -39,9 +39,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
         public abstract bool Equals(TriggerConditionBase other);
 
-        public abstract void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map);
+        public abstract void OnDeserialize(BinaryReader stream, StringCacheTable cache_table);
 
-        public abstract void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map);
+        public abstract void OnSerialize(BinaryWriter stream, StringCacheTable cache_table);
 
         #endregion Parse
     }

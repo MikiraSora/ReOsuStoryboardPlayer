@@ -276,7 +276,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
          * ....
          */
 
-        public virtual void OnSerialize(BinaryWriter stream, Dictionary<string, uint> map)
+        public virtual void OnSerialize(BinaryWriter stream, StringCacheTable cache_table)
         {
             /*
              因为BaseTransformResetAction无法被序列化，因此只能先计算出来然后再将物件的各个变换值作为反序列化时生成新的初始化回调
@@ -289,10 +289,10 @@ namespace ReOsuStoryboardPlayer.Core.Base
             stream.Write(commands.Count());
 
             foreach (var command in commands)
-                command.OnSerialize(stream, map);
+                command.OnSerialize(stream, cache_table);
 
             //ImageFilePath.OnSerialize(stream);
-            var image_string_id = map.GetStringCacheId(ImageFilePath);
+            var image_string_id = cache_table[ImageFilePath];
             stream.Write(image_string_id);
 
             FromOsbFile.OnSerialize(stream);
@@ -301,10 +301,10 @@ namespace ReOsuStoryboardPlayer.Core.Base
             ((byte)layout).OnSerialize(stream);
             Z.OnSerialize(stream);
 
-            Postion.OnSerialize(stream, map);
-            Scale.OnSerialize(stream, map);
-            Color.OnSerialize(stream, map);
-            Anchor.OnSerialize(stream, map);
+            Postion.OnSerialize(stream, cache_table);
+            Scale.OnSerialize(stream, cache_table);
+            Color.OnSerialize(stream, cache_table);
+            Anchor.OnSerialize(stream, cache_table);
             Rotate.OnSerialize(stream);
 
             IsAdditive.OnSerialize(stream);
@@ -314,18 +314,18 @@ namespace ReOsuStoryboardPlayer.Core.Base
             FileLine.OnSerialize(stream);
         }
 
-        public virtual void OnDeserialize(BinaryReader stream, Dictionary<uint,string> map)
+        public virtual void OnDeserialize(BinaryReader stream, StringCacheTable cache_table)
         {
             var count = stream.ReadInt32();
 
             for (int i = 0; i<count; i++)
             {
-                var command = CommandDeserializtionFactory.Create(stream, map);
+                var command = CommandDeserializtionFactory.Create(stream, cache_table);
                 AddCommand(command);//todo: use AddCommandRange()
             }
 
             //ImageFilePath=stream.ReadString();
-            ImageFilePath=map.GetStringCache(stream.ReadUInt32());
+            ImageFilePath=cache_table[stream.ReadUInt32()];
 
             FromOsbFile.OnDeserialize(stream);
             FrameStartTime.OnDeserialize(stream);
@@ -333,10 +333,10 @@ namespace ReOsuStoryboardPlayer.Core.Base
             layout=(Layout)stream.ReadByte();
             Z.OnDeserialize(stream);
 
-            Postion.OnDeserialize(stream,map);
-            Scale.OnDeserialize(stream, map);
-            Color.OnDeserialize(stream, map);
-            Anchor.OnDeserialize(stream, map);
+            Postion.OnDeserialize(stream,cache_table);
+            Scale.OnDeserialize(stream, cache_table);
+            Color.OnDeserialize(stream, cache_table);
+            Anchor.OnDeserialize(stream, cache_table);
             Rotate.OnDeserialize(stream);
 
             IsAdditive.OnDeserialize(stream);

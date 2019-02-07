@@ -10,12 +10,12 @@ namespace ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory
 {
     public class CommandDeserializtionFactory
     {
-        public static Command Create(BinaryReader stream,Dictionary<uint,string> map)
+        public static Command Create(BinaryReader stream, StringCacheTable cache)
         {
             Event e =(Event)stream.ReadInt32();
             var command = CreateCommand(e);
 
-            command.OnDeserialize(stream, map);
+            command.OnDeserialize(stream, cache);
 
             return command;
         }

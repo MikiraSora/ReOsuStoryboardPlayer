@@ -35,9 +35,9 @@ namespace ReOsuStoryboardPlayer.Core.Base
             prev_frame_index=result;
         }
 
-        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
+        public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,map);
+            base.OnSerialize(stream,cache);
 
             FrameCount.OnSerialize(stream);
             FrameDelay.OnSerialize(stream);
@@ -46,9 +46,9 @@ namespace ReOsuStoryboardPlayer.Core.Base
             ((byte)LoopType).OnSerialize(stream);
         }
 
-        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
+        public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,map);
+            base.OnDeserialize(stream,cache);
 
             FrameCount.OnDeserialize(stream);
             FrameDelay.OnDeserialize(stream);

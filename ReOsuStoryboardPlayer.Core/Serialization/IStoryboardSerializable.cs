@@ -7,7 +7,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 {   
     public interface IStoryboardSerializable
     {
-        void OnSerialize(BinaryWriter stream,Dictionary<string,uint> map);
-        void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map);
+        void OnSerialize(BinaryWriter stream,StringCacheTable table);
+        void OnDeserialize(BinaryReader stream, StringCacheTable table);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,11 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
 
             MemoryStream stream = new MemoryStream();
 
-            Dictionary<string, uint> map=new Dictionary<string, uint>();
+            StringCacheTable cache = new StringCacheTable();
 
             using (var writer=new BinaryWriter(stream))
             {
-                command.OnSerialize(writer, map);
+                command.OnSerialize(writer, cache);
             }
 
             var bytes = stream.ToArray();
@@ -38,11 +39,9 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
 
             stream=new MemoryStream(bytes);
 
-            var reverse_map = map.ToDictionary(x => x.Value, x => x.Key);
-
             using (var reader=new BinaryReader(stream))
             {
-                var fade = CommandDeserializtionFactory.Create(reader, reverse_map);
+                var fade = CommandDeserializtionFactory.Create(reader, cache);
 
                 Assert.AreEqual(command.StartTime, fade.StartTime);
                 Assert.AreEqual(command.EndTime, fade.EndTime);

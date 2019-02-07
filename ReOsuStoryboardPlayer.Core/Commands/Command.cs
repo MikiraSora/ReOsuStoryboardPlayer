@@ -48,7 +48,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             return b.StartTime<a.EndTime;
         }
 
-        public virtual void OnSerialize(BinaryWriter stream, Dictionary<string, uint> map)
+        public virtual void OnSerialize(BinaryWriter stream, StringCacheTable _)
         {
             //this is read by CommandDeserializtionFactory::Create()
             ((int)Event).OnSerialize(stream);
@@ -58,7 +58,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
             EndTime.OnSerialize(stream);
         }
 
-        public virtual void OnDeserialize(BinaryReader stream, Dictionary<uint,string> map)
+        public virtual void OnDeserialize(BinaryReader stream, StringCacheTable _)
         {
             RelativeLine.OnDeserialize(stream);
             StartTime.OnDeserialize(stream);

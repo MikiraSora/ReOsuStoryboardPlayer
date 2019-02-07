@@ -9,7 +9,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory
 {
     public static class TriggerConditionDeserializationFactory
     {
-        public static TriggerConditionBase Create(BinaryReader reader,Dictionary<uint,string> map)
+        public static TriggerConditionBase Create(BinaryReader reader, StringCacheTable cache)
         {
             int i = 0;
             i.OnDeserialize(reader);
@@ -27,7 +27,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory
                     break;
             }
 
-            condition?.OnDeserialize(reader,map);
+            condition?.OnDeserialize(reader,cache);
             
             return condition;//todo
         }

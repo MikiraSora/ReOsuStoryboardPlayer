@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization;
+using ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -133,19 +134,24 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
         /// </summary>
         public readonly static Action<StoryboardObject> OverrideDefaultValue = obj => obj.Color.W=0;
 
-        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
+        public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,map);
+            base.OnSerialize(stream,cache);
 
             GroupID.OnSerialize(stream);
             last_trigged_time.OnSerialize(stream);
 
-            Condition.OnSerialize(stream,map);
+            Condition.OnSerialize(stream,cache);
         }
 
-        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
+        public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,map);
+            base.OnDeserialize(stream,cache);
+
+            GroupID.OnDeserialize(stream);
+            last_trigged_time.OnDeserialize(stream);
+
+            Condition=TriggerConditionDeserializationFactory.Create(stream, cache);
 
             UpdateSubCommand();
         }

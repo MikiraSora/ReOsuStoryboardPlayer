@@ -9,17 +9,17 @@ namespace ReOsuStoryboardPlayer.Core.Commands
     {
         public override float CalculateValue(float normalize_value) => StartValue+(EndValue-StartValue)*normalize_value;
 
-        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
+        public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,map);
+            base.OnSerialize(stream,cache);
 
             StartValue.OnSerialize(stream);
             EndValue.OnSerialize(stream);
         }
 
-        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
+        public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,map);
+            base.OnDeserialize(stream,cache);
 
             var v= StartValue;
             v.OnDeserialize(stream); StartValue=v;

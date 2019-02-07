@@ -143,16 +143,16 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
             return hashCode;
         }
 
-        public void OnSerialize(BinaryWriter stream, Dictionary<string, uint> map)
+        public void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            X.OnSerialize(stream,map);
-            Y.OnSerialize(stream,map);
+            X.OnSerialize(stream,cache);
+            Y.OnSerialize(stream,cache);
         }
 
-        public void OnDeserialize(BinaryReader stream, Dictionary<uint,string> map)
+        public void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            X.OnDeserialize(stream,map);
-            Y.OnDeserialize(stream,map);
+            X.OnDeserialize(stream,cache);
+            Y.OnDeserialize(stream,cache);
         }
     }
 }

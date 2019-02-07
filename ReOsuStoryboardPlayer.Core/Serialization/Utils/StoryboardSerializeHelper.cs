@@ -1,21 +1,55 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Serialization.FileInfo;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization
 {
     public static class StoryboardSerializationHelper
     {
-        public static void Serialize(IEnumerable<StoryboardObject> objects, Stream stream)
+        /*  .osbin format:
+         *  -----------------
+         *  string : "OSBIN" (case-sensitive)
+         *  -----------------
+         *  byte : Feature flags
+         *  -----------------
+         *  ---Compressed data (option by Feature flag)
+         *  |    -----------------
+         *  |    Statistics data (option by Feature flag)
+         *  |    -----------------
+         *  |    String cache table
+         *  |    -----------------
+         *  |    Storyboard object/command data
+         *  ---
+         */
+
+        public static void Serialize(Feature feature,IEnumerable<StoryboardObject> objects, Stream stream)
         {
             var count = objects.Count();
-            Dictionary<string, uint> map = new Dictionary<string, uint>();
+            StringCacheTable string_cache_table = new StringCacheTable();
 
+            var osbin_writer = new BinaryWriter(stream);
+
+            #region Build .osbin format
+            
+            //signture
+            osbin_writer.Write("OSBIN");
+
+            //feature flag
+            osbin_writer.Write((byte)feature);
+
+            //normal stream switch to gzip compression stream if feature IsCompression was set
+            if (feature.HasFlag(Feature.IsCompression))
+                osbin_writer=new BinaryWriter(new GZipStream(stream,CompressionMode.Compress));
+
+            //storyboard object/command data
             MemoryStream temp_stream = new MemoryStream();
 
             BinaryWriter writer = new BinaryWriter(temp_stream);
@@ -24,54 +58,48 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             foreach (var obj in objects)
             {
                 StoryboardObjectDeserializationFactory.GetObjectTypeId(obj).OnSerialize(writer);
-                obj.OnSerialize(writer, map);
+                obj.OnSerialize(writer, string_cache_table);
             }
 
-            var map_writer = new BinaryWriter(stream);
-
-            //write map data
-            #region Write Map Data
-
-            map_writer.Write(map.Count);
-
-            foreach (var pair in map)
-            {
-                map_writer.Write(pair.Key);
-                map_writer.Write(pair.Value);
-            }
-
-            #endregion
+            //statistics data
             
-            //write main data
+            //string cache tables
+            string_cache_table.OnSerialize(osbin_writer, null);
+
             temp_stream.Seek(0, SeekOrigin.Begin);
             temp_stream.CopyTo(stream);
+
+            #endregion
         }
 
         public static IEnumerable<StoryboardObject> Deserialize(Stream stream)
         {
             BinaryReader reader = new BinaryReader(stream);
 
-            #region Read Map Data
+            var signture = reader.ReadString();
 
-            int map_count = reader.ReadInt32();
+            //signture
+            if (signture!="OSBIN")
+                throw new InvalidFormatOsbinFormatException();
 
-            var map = new Dictionary<uint, string>(map_count);
+            //feature
+            Feature feature = (Feature)reader.ReadByte();
 
-            for (int i = 0; i<map_count; i++)
-            {
-                var str = reader.ReadString();
-                var id = reader.ReadUInt32();
+            //convert to gzip stream if IsCompression was set
+            if (feature.HasFlag(Feature.IsCompression))
+                reader=new BinaryReader(new GZipStream(stream,CompressionMode.Decompress));
 
-                map.Add(id, str);
-            }
+            //statistics data
 
-            #endregion
+            //string cache table
+            StringCacheTable cache_table = new StringCacheTable();
+            cache_table.OnDeserialize(reader, null);
             
+            //storyboard object/command data
             var count = reader.ReadInt32();
-
             for (int i = 0; i<count; i++)
             {
-                var obj = StoryboardObjectDeserializationFactory.Create(reader,map);
+                var obj = StoryboardObjectDeserializationFactory.Create(reader, cache_table);
                 yield return obj;
             }
         }

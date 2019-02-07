@@ -1,4 +1,5 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
+using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -107,7 +108,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
                 Enum.GetValues(typeof(T)).Cast<T>().Any(val => source.HasFlag(val)&&compare_with.HasFlag(val)&&Convert.ToInt32(val)!=0);
         }
 
-        public override void OnSerialize(BinaryWriter stream, Dictionary<string,uint> map)
+        public override void OnSerialize(BinaryWriter stream, StringCacheTable _)
         {
             stream.Write((byte)HitSound);
             stream.Write((byte)SampleSet);
@@ -115,7 +116,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
             stream.Write((int)CustomSampleSet);
         }
 
-        public override void OnDeserialize(BinaryReader stream, Dictionary<uint, string> map)
+        public override void OnDeserialize(BinaryReader stream, StringCacheTable _)
         {
             HitSound=(HitObjectSoundType)stream.ReadByte();
             SampleSet=(SampleSetType)stream.ReadByte();

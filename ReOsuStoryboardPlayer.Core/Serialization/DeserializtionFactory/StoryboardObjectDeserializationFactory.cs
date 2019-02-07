@@ -8,7 +8,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 {
     public static class StoryboardObjectDeserializationFactory
     {
-        public static StoryboardObject Create(BinaryReader reader,Dictionary<uint, string> map)
+        public static StoryboardObject Create(BinaryReader reader,StringCacheTable cache)
         {
             StoryboardObject obj = null;
             var id = reader.ReadByte();
@@ -26,7 +26,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
                     break;
             }
 
-            obj.OnDeserialize(reader,map);
+            obj.OnDeserialize(reader,cache);
             return obj;
         }
 

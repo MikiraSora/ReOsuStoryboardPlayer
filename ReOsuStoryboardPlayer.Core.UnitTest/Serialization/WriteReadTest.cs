@@ -89,7 +89,7 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
         {
             objectsA=StoryboardParserHelper.GetStoryboardObjects(file_path);
             
-            StoryboardSerializationHelper.Serialize(objectsA, stream);
+            StoryboardSerializationHelper.Serialize(0,objectsA, stream);
         }
     }
 }

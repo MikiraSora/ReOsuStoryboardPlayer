@@ -2,6 +2,7 @@
 using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
 using ReOsuStoryboardPlayer.Core.Serialization;
+using ReOsuStoryboardPlayer.Core.Serialization.FileInfo;
 using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Parser;
 using System;
@@ -22,7 +23,7 @@ namespace ConsoleApp2
         {
             Write();
 
-            //Read();
+            Read();
 
             //Test();
         }
@@ -49,7 +50,7 @@ namespace ConsoleApp2
 
             MemoryStream stream = new MemoryStream();
 
-            StoryboardSerializationHelper.Serialize(list, stream);
+            StoryboardSerializationHelper.Serialize(0, list, stream);
 
             stream.Position=0;
 
@@ -66,12 +67,13 @@ namespace ConsoleApp2
         private static void Write()
         {
             var objects = StoryboardParserHelper
-                   .GetStoryboardObjects(@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion\Camellia vs Akira Complex - Reality Distortion (rrtyui).osb");
+                   .GetStoryboardObjects(@"G:\OsuStoryBroadPlayer\ReOsuStoryboardPlayer.Core.UnitTest\TestData\Hatsuki Yura - Fuuga (Lan wings).osb");
 
             File.Delete("test.osbin");
             var stream = File.OpenWrite("test.osbin");
 
-            StoryboardSerializationHelper.Serialize(objects, stream);
+            StoryboardSerializationHelper.Serialize(0,objects, stream);
+            stream.Dispose();
         }
     }
 }
