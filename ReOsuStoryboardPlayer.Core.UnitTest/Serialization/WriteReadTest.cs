@@ -46,7 +46,8 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
             @".\TestData\fripSide - Hesitation Snow (Kawayi Rika) [Normal].osu",
             @".\TestData\Hatsuki Yura - Fuuga (Lan wings).osb",
             @".\TestData\IOSYS feat. 3L - Miracle-Hinacle (_lolipop).osb",
-            @".\TestData\NOMA - LOUDER MACHINE (Skystar).osb"
+            @".\TestData\NOMA - LOUDER MACHINE (Skystar).osb",
+            @".\TestData\Camellia vs Akira Complex - Reality Distortion (rrtyui).osb"
         };
 
         List<StoryboardObject> objectsA;
@@ -76,6 +77,11 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
             {
                 //fast find
                 var objA = objectsA.FirstOrDefault(x=>x.FromOsbFile==objB.FromOsbFile&&x.FileLine==objB.FileLine);
+
+                if (objA.FileLine==130219)
+                {
+
+                }
 
                 //compare
                 Assert.IsTrue(objB.Equals(objA));

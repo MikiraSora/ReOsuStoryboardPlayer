@@ -110,6 +110,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable _)
         {
+            //read by TriggerConditionDeserializationFactory::Create()
+            1.OnSerialize(stream);
+
             stream.Write((byte)HitSound);
             stream.Write((byte)SampleSet);
             stream.Write((byte)SampleSetAdditions);

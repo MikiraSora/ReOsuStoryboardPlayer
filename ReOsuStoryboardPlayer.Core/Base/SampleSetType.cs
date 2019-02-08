@@ -2,7 +2,7 @@
 {
     public enum SampleSetType
     {
-        All = -1,
+        All = 4,
         None = 0,
         Normal = 1,
         Soft = 2,
