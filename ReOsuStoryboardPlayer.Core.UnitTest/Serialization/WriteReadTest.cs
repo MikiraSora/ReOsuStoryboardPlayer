@@ -43,7 +43,10 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
     {
         static string[] test_cases = new[]
         {
-            @".\TestData\Hatsuki Yura - Fuuga (Lan wings).osb"
+            @".\TestData\fripSide - Hesitation Snow (Kawayi Rika) [Normal].osu",
+            @".\TestData\Hatsuki Yura - Fuuga (Lan wings).osb",
+            @".\TestData\IOSYS feat. 3L - Miracle-Hinacle (_lolipop).osb",
+            @".\TestData\NOMA - LOUDER MACHINE (Skystar).osb"
         };
 
         List<StoryboardObject> objectsA;
