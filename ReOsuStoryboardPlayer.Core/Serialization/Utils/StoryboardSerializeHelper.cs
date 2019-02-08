@@ -46,8 +46,14 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             osbin_writer.Write((byte)feature);
 
             //normal stream switch to gzip compression stream if feature IsCompression was set
+
+            GZipStream zip_stream = null;
+
             if (feature.HasFlag(Feature.IsCompression))
-                osbin_writer=new BinaryWriter(new GZipStream(stream,CompressionMode.Compress));
+            {
+                zip_stream=new GZipStream(stream, CompressionMode.Compress);
+                osbin_writer =new BinaryWriter(zip_stream);
+            }
 
             //storyboard object/command data
             MemoryStream temp_stream = new MemoryStream();
@@ -69,6 +75,9 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             temp_stream.Seek(0, SeekOrigin.Begin);
             temp_stream.CopyTo(stream);
 
+            temp_stream.Flush();
+            temp_stream.Dispose();
+            
             #endregion
         }
 
@@ -87,7 +96,9 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 
             //convert to gzip stream if IsCompression was set
             if (feature.HasFlag(Feature.IsCompression))
-                reader=new BinaryReader(new GZipStream(stream,CompressionMode.Decompress));
+            {
+                reader=new BinaryReader(new GZipStream(stream, CompressionMode.Decompress));
+            }
 
             //statistics data
 

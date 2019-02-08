@@ -72,7 +72,7 @@ namespace ConsoleApp2
             File.Delete("test.osbin");
             var stream = File.OpenWrite("test.osbin");
 
-            StoryboardSerializationHelper.Serialize(0,objects, stream);
+            StoryboardSerializationHelper.Serialize(Feature.IsCompression,objects, stream);
             stream.Dispose();
         }
     }

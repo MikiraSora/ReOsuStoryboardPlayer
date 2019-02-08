@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization;
+using ReOsuStoryboardPlayer.Core.Serialization.FileInfo;
 using ReOsuStoryboardPlayer.Parser;
 using System;
 using System.Collections.Generic;
@@ -47,14 +48,16 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
 
         List<StoryboardObject> objectsA;
         IEnumerable<StoryboardObject> objectsB;
-        MemoryStream stream=new MemoryStream();
+        MemoryStream stream;
 
         [TestMethod]
         public void MainReadWriteTest()
         {
             foreach (var file_path in test_cases)
             {
-                GenerateOsbin(file_path);
+                stream=new MemoryStream();
+
+                GenerateOsbin(file_path,0);
 
                 stream.Position=0;
 
@@ -85,11 +88,28 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
             objectsB = StoryboardSerializationHelper.Deserialize(stream).ToList();
         }
 
-        private void GenerateOsbin(string file_path)
+        private void GenerateOsbin(string file_path,Feature feature)
         {
             objectsA=StoryboardParserHelper.GetStoryboardObjects(file_path);
             
-            StoryboardSerializationHelper.Serialize(0,objectsA, stream);
+            StoryboardSerializationHelper.Serialize(feature,objectsA, stream);
+        }
+
+        [TestMethod]
+        public void CompressionReadWriteTest()
+        {
+            foreach (var file_path in test_cases)
+            {
+                stream=new MemoryStream();
+
+                GenerateOsbin(file_path, Feature.IsCompression);
+
+                stream.Position=0;
+
+                Parser();
+
+                Judge();
+            }
         }
     }
 }
