@@ -12,8 +12,10 @@ using System.Threading.Tasks;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization
 {
-    public static class StoryboardSerializationHelper
+    public static class StoryboardBinaryFormatter
     {
+        static readonly byte[] GZIPHEADER = Encoding.UTF8.GetBytes("OSBIN_GZIP");
+
         /*  .osbin format:
          *  -----------------
          *  string : "OSBIN" (case-sensitive)
@@ -30,6 +32,12 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
          *  ---
          */
 
+        /// <summary>
+        /// Serialize a list storyobjects as .osbin format to writable stream
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <param name="objects"></param>
+        /// <param name="stream">output stream</param>
         public static void Serialize(Feature feature,IEnumerable<StoryboardObject> objects, Stream stream)
         {
             var count = objects.Count();
@@ -44,16 +52,6 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 
             //feature flag
             osbin_writer.Write((byte)feature);
-
-            //normal stream switch to gzip compression stream if feature IsCompression was set
-
-            GZipStream zip_stream = null;
-
-            if (feature.HasFlag(Feature.IsCompression))
-            {
-                zip_stream=new GZipStream(stream, CompressionMode.Compress);
-                osbin_writer =new BinaryWriter(zip_stream);
-            }
 
             //storyboard object/command data
             MemoryStream temp_stream = new MemoryStream();
@@ -81,6 +79,11 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             #endregion
         }
 
+        /// <summary>
+        /// Deserialize .osbin format binary data from any readable stream  
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
         public static IEnumerable<StoryboardObject> Deserialize(Stream stream)
         {
             BinaryReader reader = new BinaryReader(stream);
@@ -93,13 +96,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 
             //feature
             Feature feature = (Feature)reader.ReadByte();
-
-            //convert to gzip stream if IsCompression was set
-            if (feature.HasFlag(Feature.IsCompression))
-            {
-                reader=new BinaryReader(new GZipStream(stream, CompressionMode.Decompress));
-            }
-
+           
             //statistics data
 
             //string cache table
@@ -113,6 +110,31 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
                 var obj = StoryboardObjectDeserializationFactory.Create(reader, cache_table);
                 yield return obj;
             }
+        }
+
+        public static void ZipSerialize(Feature feature, IEnumerable<StoryboardObject> objects, Stream stream)
+        {
+            stream.Write(GZIPHEADER, 0, GZIPHEADER.Length);
+
+            var zip_stream=new GZipStream(stream, CompressionMode.Compress);
+
+            Serialize(feature, objects, zip_stream);
+
+            zip_stream.Close();
+        }
+
+        public static IEnumerable<StoryboardObject> UnzipDeserialize(Stream stream)
+        {
+            byte[] buffer = new byte[GZIPHEADER.Length];
+
+            var read=stream.Read(buffer, 0, buffer.Length);
+
+            if (read!=buffer.Length && !Enumerable.Range(0,buffer.Length).All(i=>buffer[i]==GZIPHEADER[i]))
+                throw new InvalidFormatOsbinFormatException();
+
+            var unzip_stream = new GZipStream(stream, CompressionMode.Decompress);
+
+            return Deserialize(unzip_stream);
         }
     }
 }

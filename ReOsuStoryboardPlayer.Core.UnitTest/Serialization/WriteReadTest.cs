@@ -94,31 +94,14 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
 
         private void Parser()
         {
-            objectsB = StoryboardSerializationHelper.Deserialize(stream).ToList();
+            objectsB = StoryboardBinaryFormatter.Deserialize(stream).ToList();
         }
 
         private void GenerateOsbin(string file_path,Feature feature)
         {
             objectsA=StoryboardParserHelper.GetStoryboardObjects(file_path);
             
-            StoryboardSerializationHelper.Serialize(feature,objectsA, stream);
-        }
-
-        [TestMethod]
-        public void CompressionReadWriteTest()
-        {
-            foreach (var file_path in test_cases)
-            {
-                stream=new MemoryStream();
-
-                GenerateOsbin(file_path, Feature.IsCompression);
-
-                stream.Position=0;
-
-                Parser();
-
-                Judge();
-            }
+            StoryboardBinaryFormatter.Serialize(feature,objectsA, stream);
         }
     }
 }

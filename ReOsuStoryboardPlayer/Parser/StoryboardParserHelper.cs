@@ -31,7 +31,7 @@ namespace ReOsuStoryboardPlayer.Parser
         {
             using (var stream = File.OpenRead(path))
             {
-                return StoryboardSerializationHelper.Deserialize(stream).ToList();
+                return StoryboardBinaryFormatter.Deserialize(stream).ToList();
             }
         }
 

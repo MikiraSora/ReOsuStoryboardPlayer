@@ -50,18 +50,18 @@ namespace ConsoleApp2
 
             MemoryStream stream = new MemoryStream();
 
-            StoryboardSerializationHelper.Serialize(0, list, stream);
+            StoryboardBinaryFormatter.Serialize(0, list, stream);
 
             stream.Position=0;
 
-            var new_list=StoryboardSerializationHelper.Deserialize(stream).ToList();
+            var new_list=StoryboardBinaryFormatter.Deserialize(stream).ToList();
             }
 
         private static void Read()
         {
             var stream = File.OpenRead("test.osbin");
 
-            var objs=StoryboardSerializationHelper.Deserialize(stream).ToList();
+            var objs=StoryboardBinaryFormatter.UnzipDeserialize(stream).ToList();
         }
 
         private static void Write()
@@ -72,7 +72,7 @@ namespace ConsoleApp2
             File.Delete("test.osbin");
             var stream = File.OpenWrite("test.osbin");
 
-            StoryboardSerializationHelper.Serialize(Feature.IsCompression,objects, stream);
+            StoryboardBinaryFormatter.ZipSerialize(0,objects, stream);
             stream.Dispose();
         }
     }
