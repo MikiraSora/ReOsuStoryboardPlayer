@@ -116,11 +116,16 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
         {
             stream.Write(GZIPHEADER, 0, GZIPHEADER.Length);
 
-            var zip_stream=new GZipStream(stream, CompressionMode.Compress);
+            using (var sbgzip = new MemoryStream())
+            {
+                using (var zip_stream = new GZipStream(sbgzip, CompressionMode.Compress))
+                {
+                    Serialize(feature, objects, zip_stream);
+                }
 
-            Serialize(feature, objects, zip_stream);
-
-            zip_stream.Close();
+                using (var sbgzip2 = new MemoryStream(sbgzip.GetBuffer()))
+                    sbgzip2.CopyTo(stream);
+            }
         }
 
         public static IEnumerable<StoryboardObject> UnzipDeserialize(Stream stream)

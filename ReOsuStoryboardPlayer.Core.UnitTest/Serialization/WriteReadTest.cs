@@ -100,8 +100,37 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
         private void GenerateOsbin(string file_path,Feature feature)
         {
             objectsA=StoryboardParserHelper.GetStoryboardObjects(file_path);
-            
-            StoryboardBinaryFormatter.Serialize(feature,objectsA, stream);
+
+            StoryboardBinaryFormatter.Serialize(feature, objectsA, stream);
+        }
+
+        [TestMethod]
+        public void CompressionReadWriteTest()
+        {
+            foreach (var file_path in test_cases)
+            {
+                stream=new MemoryStream();
+
+                GenerateCompressionOsbin(file_path, 0);
+
+                stream.Position=0;
+
+                CompressionParser();
+
+                Judge();
+            }
+        }
+
+        private void CompressionParser()
+        {
+            objectsB=StoryboardBinaryFormatter.UnzipDeserialize(stream).ToList();
+        }
+
+        private void GenerateCompressionOsbin(string file_path, int v)
+        {
+            objectsA=StoryboardParserHelper.GetStoryboardObjects(file_path);
+
+            StoryboardBinaryFormatter.ZipSerialize(0, objectsA, stream);
         }
     }
 }
