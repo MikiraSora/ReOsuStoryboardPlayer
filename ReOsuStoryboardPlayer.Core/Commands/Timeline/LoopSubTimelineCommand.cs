@@ -30,15 +30,13 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         public override void Execute(StoryboardObject @object, float current_value)
         {
             float relative_time = current_value;
-
+            
             if (current_value<StartTime)
-                relative_time=timeline.StartTime;
+                relative_time=timeline.StartTime-1;
             else if (current_value>EndTime)
-                relative_time=timeline.EndTime;
+                relative_time=timeline.EndTime+1;
             else if (CostTime!=0)
                 relative_time=(current_value-StartTime)%CostTime;
-
-            //if (StartTime<=current_value&&current_value<=EndTime&&)
 
             var command = timeline.PickCommand(relative_time);
 
