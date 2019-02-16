@@ -100,7 +100,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\798443 Ahiru - HEARTBEAT (USAO Remix)";
+            beatmap_folder=@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

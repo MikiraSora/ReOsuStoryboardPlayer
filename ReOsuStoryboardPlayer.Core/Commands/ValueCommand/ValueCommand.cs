@@ -40,7 +40,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public override bool Equals(Command command)
         {
-            return base.Equals(command)&&Easing==((ValueCommand)command).Easing;
+            return base.Equals(command)&&command is ValueCommand v&&Easing==v.Easing;
         }
     }
 
