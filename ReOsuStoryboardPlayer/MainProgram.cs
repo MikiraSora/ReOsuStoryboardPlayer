@@ -100,7 +100,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\94790 Hatsuki Yura - Fuuga";
+            beatmap_folder=@"G:\SBTest\499488 Kana Nishino - Sweet Dreams (11t dnb mix)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
