@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using ReOsuStoryboardPlayer.Core.Commands;
+﻿using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
 using ReOsuStoryboardPlayer.Core.Serialization;
+using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Base
 {
     public class StoryboardBackgroundObject : StoryboardObject
     {
-        bool trick_init = false;
+        private bool trick_init = false;
 
         public StoryboardBackgroundObject()
         {
@@ -17,7 +15,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
             AddCommand(new FadeCommand()
             {
-                Easing= EasingTypes.None,
+                Easing=EasingTypes.None,
                 StartTime=-2857,
                 EndTime=-2857,
                 StartValue=1,
@@ -26,7 +24,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
             AddCommand(new FadeCommand()
             {
-                Easing= EasingTypes.None,
+                Easing=EasingTypes.None,
                 StartTime=int.MaxValue-2857,
                 EndTime=int.MaxValue-2857,
                 StartValue=1,
@@ -55,7 +53,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
             float scale = 480.0f/height;
 
-            var scale_commands=CommandParserIntance<ScaleCommand>.Instance.Parse($" S,0,{FrameStartTime},{FrameEndTime},{scale}".Split(','));
+            var scale_commands = CommandParserIntance<ScaleCommand>.Instance.Parse($" S,0,{FrameStartTime},{FrameEndTime},{scale}".Split(','));
 
             foreach (var cmd in scale_commands)
                 AddCommand(cmd);
@@ -63,13 +61,13 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,cache);
+            base.OnSerialize(stream, cache);
             trick_init.OnSerialize(stream);
         }
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,cache);
+            base.OnDeserialize(stream, cache);
             trick_init.OnDeserialize(stream);
         }
 

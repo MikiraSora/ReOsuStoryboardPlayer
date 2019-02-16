@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization
 {
-    public class StringCacheTable:IStoryboardSerializable
+    public class StringCacheTable : IStoryboardSerializable
     {
-        private Dictionary<string, uint> table=new Dictionary<string, uint>();
+        private Dictionary<string, uint> table = new Dictionary<string, uint>();
 
         public uint this[string str] => GetStringCacheId(str);
 

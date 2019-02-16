@@ -1,14 +1,11 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization
 {
     public static class StoryboardObjectDeserializationFactory
     {
-        public static StoryboardObject Create(BinaryReader reader,StringCacheTable cache)
+        public static StoryboardObject Create(BinaryReader reader, StringCacheTable cache)
         {
             StoryboardObject obj = null;
             var id = reader.ReadByte();
@@ -18,15 +15,17 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
                 case 1:
                     obj=new StoryboardAnimation();
                     break;
+
                 case 2:
                     obj=new StoryboardBackgroundObject();
                     break;
+
                 default:
                     obj=new StoryboardObject();
                     break;
             }
 
-            obj.OnDeserialize(reader,cache);
+            obj.OnDeserialize(reader, cache);
             return obj;
         }
 

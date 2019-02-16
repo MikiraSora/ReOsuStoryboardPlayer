@@ -1,12 +1,11 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
-    public abstract class Command : IComparable<Command>,IStoryboardSerializable,IEquatable<Command>
+    public abstract class Command : IComparable<Command>, IStoryboardSerializable, IEquatable<Command>
     {
 #if DEBUG
         public bool IsExecuted = false;

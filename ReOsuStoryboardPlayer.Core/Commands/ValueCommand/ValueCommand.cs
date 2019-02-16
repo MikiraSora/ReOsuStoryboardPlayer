@@ -26,14 +26,14 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,cache);
+            base.OnSerialize(stream, cache);
 
             ((byte)Easing).OnSerialize(stream);
         }
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,cache);
+            base.OnDeserialize(stream, cache);
 
             Easing=(EasingTypes)stream.ReadByte();
         }
@@ -79,7 +79,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         {
             return base.Equals(command)
                 &&command is ValueCommand<VALUE_TYPE> v
-                &&EqualityComparer.Equals(v.StartValue,StartValue)
+                &&EqualityComparer.Equals(v.StartValue, StartValue)
                 &&EqualityComparer.Equals(v.EndValue, EndValue);
         }
     }

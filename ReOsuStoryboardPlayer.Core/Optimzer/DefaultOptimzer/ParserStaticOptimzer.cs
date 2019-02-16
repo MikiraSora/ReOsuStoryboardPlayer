@@ -1,16 +1,14 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
 {
-    public class ParserStaticOptimzer:OptimzerBase
+    public class ParserStaticOptimzer : OptimzerBase
     {
-        public override void Optimze(int level,IEnumerable<StoryboardObject> Storyboard_objects)
+        public override void Optimze(int level, IEnumerable<StoryboardObject> Storyboard_objects)
         {
             if (level>=3)
             {
@@ -133,7 +131,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                     }
                     */
 
-                    for (int i = 0; timeline.Overlay && i<timeline.Count-1; i++)
+                    for (int i = 0; timeline.Overlay&&i<timeline.Count-1; i++)
                     {
                         var cmd = timeline[i];
 
@@ -141,14 +139,14 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                          *line n-1 (cmd): |--------------------------|
                          *line n   (next_cmd) :      |--------------|       <--- Killed , biatch
                          */
-                        for (int t = i+1;timeline.Overlay && t<timeline.Count; t++)
+                        for (int t = i+1; timeline.Overlay&&t<timeline.Count; t++)
                         {
                             var next_cmd = timeline[t];
 
                             if (next_cmd.StartTime>cmd.EndTime)
                                 break;
 
-                            if (next_cmd.EndTime<=cmd.EndTime && next_cmd.EndTime!=next_cmd.StartTime && cmd.RelativeLine<next_cmd.RelativeLine)
+                            if (next_cmd.EndTime<=cmd.EndTime&&next_cmd.EndTime!=next_cmd.StartTime&&cmd.RelativeLine<next_cmd.RelativeLine)
                             {
                                 timeline.Remove(next_cmd);
 

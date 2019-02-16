@@ -102,7 +102,7 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
 
                 current_index++;
             }
-            
+
             return add;
 
             void TryAdd(StoryboardObject obj)
@@ -115,7 +115,7 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
                 UpdatingStoryboardObjects.Add(obj);
                 add=true;
             }
-            
+
             int BinarySearchInsertableIndex(float time)
             {
                 int min = 0, max = StoryboardObjectList.Count-2;
@@ -187,12 +187,10 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
 
         internal void AddNeedResortObject(StoryboardObject obj)
         {
-
         }
 
         ~StoryboardUpdater()
         {
-
         }
 
         //public override string ToString() => $"{Info.folder_path}";

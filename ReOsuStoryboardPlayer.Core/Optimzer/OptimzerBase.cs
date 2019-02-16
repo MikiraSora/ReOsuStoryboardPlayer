@@ -7,7 +7,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer
 {
     public abstract class OptimzerBase
     {
-        public abstract void Optimze(int level,IEnumerable<StoryboardObject> Storyboard_objects);
+        public abstract void Optimze(int level, IEnumerable<StoryboardObject> Storyboard_objects);
 
         public void Suggest(string message)
         {

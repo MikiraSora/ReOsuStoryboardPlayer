@@ -72,7 +72,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,cache);
+            base.OnSerialize(stream, cache);
 
             CostTime.OnSerialize(stream);
             LoopCount.OnSerialize(stream);
@@ -80,7 +80,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,cache);
+            base.OnDeserialize(stream, cache);
 
             var x = CostTime;
             x.OnDeserialize(stream); CostTime=x;
@@ -91,9 +91,9 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
 
         public override bool Equals(Command command)
         {
-            return base.Equals(command) 
-                && command is LoopCommand loop
-                && loop.LoopCount==LoopCount;
+            return base.Equals(command)
+                &&command is LoopCommand loop
+                &&loop.LoopCount==LoopCount;
         }
     }
 }

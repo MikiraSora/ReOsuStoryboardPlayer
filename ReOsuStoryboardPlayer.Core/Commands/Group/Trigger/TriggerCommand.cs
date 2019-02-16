@@ -136,17 +136,17 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,cache);
+            base.OnSerialize(stream, cache);
 
             GroupID.OnSerialize(stream);
             last_trigged_time.OnSerialize(stream);
 
-            Condition.OnSerialize(stream,cache);
+            Condition.OnSerialize(stream, cache);
         }
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,cache);
+            base.OnDeserialize(stream, cache);
 
             GroupID.OnDeserialize(stream);
             last_trigged_time.OnDeserialize(stream);
@@ -159,10 +159,10 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
         public override bool Equals(Command command)
         {
             return base.Equals(command)
-                && command is TriggerCommand triger
-                && triger.Condition.Equals(Condition)
-                && triger.GroupID==GroupID
-                && triger.CostTime==CostTime;
+                &&command is TriggerCommand triger
+                &&triger.Condition.Equals(Condition)
+                &&triger.GroupID==GroupID
+                &&triger.CostTime==CostTime;
         }
     }
 }

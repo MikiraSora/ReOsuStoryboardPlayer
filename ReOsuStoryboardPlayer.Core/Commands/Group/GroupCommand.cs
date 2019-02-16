@@ -30,25 +30,25 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,cache);
+            base.OnSerialize(stream, cache);
 
             var commands = SubCommands.Values.SelectMany(l => l);
 
             commands.Count().OnSerialize(stream);
 
             foreach (var command in commands)
-                command.OnSerialize(stream,cache);
+                command.OnSerialize(stream, cache);
         }
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,cache);
+            base.OnDeserialize(stream, cache);
 
             var count = stream.ReadInt32();
 
             for (int i = 0; i<count; i++)
             {
-                var command = CommandDeserializtionFactory.Create(stream,cache);
+                var command = CommandDeserializtionFactory.Create(stream, cache);
                 AddSubCommand(command);
             }
         }
@@ -56,10 +56,10 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
         public override bool Equals(Command command)
         {
             return base.Equals(command)
-                && command is GroupCommand group
-                && group.CostTime==CostTime
+                &&command is GroupCommand group
+                &&group.CostTime==CostTime
                 //确保所有子命令命令都对应
-                && group.SubCommands.Values.SelectMany(l=>l).All(x=>SubCommands.Values.SelectMany(l=>l).Any(y=>y.Equals(x)));
+                &&group.SubCommands.Values.SelectMany(l => l).All(x => SubCommands.Values.SelectMany(l => l).Any(y => y.Equals(x)));
         }
     }
 }

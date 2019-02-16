@@ -1,7 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using ReOsuStoryboardPlayer.Core.Serialization;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
@@ -12,7 +11,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            base.OnSerialize(stream,cache);
+            base.OnSerialize(stream, cache);
 
             StartValue.OnSerialize(stream, cache);
             EndValue.OnSerialize(stream, cache);
@@ -20,7 +19,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            base.OnDeserialize(stream,cache);
+            base.OnDeserialize(stream, cache);
 
             StartValue.OnDeserialize(stream, cache);
             EndValue.OnDeserialize(stream, cache);

@@ -9,7 +9,7 @@ using System.Linq;
 namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger
 {
     //implement from osu!
-    public abstract class TriggerConditionBase:IStoryboardSerializable,IEquatable<TriggerConditionBase>
+    public abstract class TriggerConditionBase : IStoryboardSerializable, IEquatable<TriggerConditionBase>
     {
         #region Parse
 

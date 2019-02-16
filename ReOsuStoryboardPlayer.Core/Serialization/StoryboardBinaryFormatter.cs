@@ -1,20 +1,16 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization.FileInfo;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization
 {
     public static class StoryboardBinaryFormatter
     {
-        static readonly byte[] GZIPHEADER = Encoding.UTF8.GetBytes("OSBIN_GZIP");
+        private static readonly byte[] GZIPHEADER = Encoding.UTF8.GetBytes("OSBIN_GZIP");
 
         /*  .osbin format:
          *  -----------------
@@ -38,7 +34,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
         /// <param name="feature"></param>
         /// <param name="objects"></param>
         /// <param name="stream">output stream</param>
-        public static void Serialize(Feature feature,IEnumerable<StoryboardObject> objects, Stream stream)
+        public static void Serialize(Feature feature, IEnumerable<StoryboardObject> objects, Stream stream)
         {
             var count = objects.Count();
             StringCacheTable string_cache_table = new StringCacheTable();
@@ -46,7 +42,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             var osbin_writer = new BinaryWriter(stream);
 
             #region Build .osbin format
-            
+
             //signture
             osbin_writer.Write("OSBIN");
 
@@ -66,7 +62,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
             }
 
             //statistics data
-            
+
             //string cache tables
             string_cache_table.OnSerialize(osbin_writer, null);
 
@@ -75,12 +71,12 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 
             temp_stream.Flush();
             temp_stream.Dispose();
-            
-            #endregion
+
+            #endregion Build .osbin format
         }
 
         /// <summary>
-        /// Deserialize .osbin format binary data from any readable stream  
+        /// Deserialize .osbin format binary data from any readable stream
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -96,13 +92,13 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 
             //feature
             Feature feature = (Feature)reader.ReadByte();
-           
+
             //statistics data
 
             //string cache table
             StringCacheTable cache_table = new StringCacheTable();
             cache_table.OnDeserialize(reader, null);
-            
+
             //storyboard object/command data
             var count = reader.ReadInt32();
             for (int i = 0; i<count; i++)
@@ -132,9 +128,9 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
         {
             byte[] buffer = new byte[GZIPHEADER.Length];
 
-            var read=stream.Read(buffer, 0, buffer.Length);
+            var read = stream.Read(buffer, 0, buffer.Length);
 
-            if (read!=buffer.Length && !Enumerable.Range(0,buffer.Length).All(i=>buffer[i]==GZIPHEADER[i]))
+            if (read!=buffer.Length&&!Enumerable.Range(0, buffer.Length).All(i => buffer[i]==GZIPHEADER[i]))
                 throw new InvalidFormatOsbinFormatException();
 
             var unzip_stream = new GZipStream(stream, CompressionMode.Decompress);

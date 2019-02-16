@@ -142,8 +142,8 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 
         private void BuildCommandMapAndSetup(StoryboardObject obj, List<string> lines)
         {
-            var list = lines.Count >= Setting.ParallelParseCommandLimitCount && Setting.ParallelParseCommandLimitCount!=0 ? 
-                ParallelParseCommands(lines,obj.FileLine) :
+            var list = lines.Count>=Setting.ParallelParseCommandLimitCount&&Setting.ParallelParseCommandLimitCount!=0 ?
+                ParallelParseCommands(lines, obj.FileLine) :
                 ParseCommands(lines, obj.FileLine);
 
             obj.AddCommandRange(list);
@@ -215,7 +215,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 
             var result = result_list.SelectMany(p => p.cmds.Select(cmd => (p.index, cmd, p.is_sub))).OrderBy(z => z.index);
             var sub_cmds = result.Where(x => x.is_sub);
-            var groups = result.Where(x=>x.cmd is GroupCommand&&!x.is_sub).Select(x=>x.cmd).OfType<GroupCommand>();
+            var groups = result.Where(x => x.cmd is GroupCommand&&!x.is_sub).Select(x => x.cmd).OfType<GroupCommand>();
             var fin_list = result.Except(sub_cmds.Where(sub_cmd =>
             {
                 var r = groups.LastOrDefault(z => z.RelativeLine<sub_cmd.index);

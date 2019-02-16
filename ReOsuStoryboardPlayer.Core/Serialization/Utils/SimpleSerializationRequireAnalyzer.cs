@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Text;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization
 {
     public static class SimpleSerializationRequireAnalyzer
     {
-        public static IEnumerable<Type> ScanNeedSerializeTypes(Type type,HashSet<Type> record=null)
+        public static IEnumerable<Type> ScanNeedSerializeTypes(Type type, HashSet<Type> record = null)
         {
             if (record==null)
                 record=new HashSet<Type>();
-            
+
             if (type.IsGenericType)
                 foreach (var t in type.GenericTypeArguments.Select(x => ScanNeedSerializeTypes(x, record)).SelectMany(l => l))
                     yield return t;
@@ -37,14 +35,15 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
                 .Where(x => x is PropertyInfo||x is FieldInfo)
                 .Where(x => x.GetCustomAttribute<NonSerializedAttribute>()==null)
                 .Where(x => !record.Contains(x))
-                .Where(x => {
+                .Where(x =>
+                {
                     if (x is PropertyInfo prop&&x.GetCustomAttribute<AutoSerializableAttribute>()!=null)
                         return prop.CanRead&&prop.CanWrite;
                     return true;
                 })
                 .Select(x => SerializationHelper.GetMemberObjectType(x))
                 .OfType<Type>()
-                .SelectMany(l => ScanNeedSerializeTypes(l,record)))
+                .SelectMany(l => ScanNeedSerializeTypes(l, record)))
                 yield return item;
 
             var sub_types = AppDomain.CurrentDomain.GetAssemblies()

@@ -49,7 +49,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -73,7 +72,7 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
     /// </remarks>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Half : ISerializable, IComparable<Half>, IFormattable, IEquatable<Half>,IStoryboardSerializable
+    public struct Half : ISerializable, IComparable<Half>, IFormattable, IEquatable<Half>, IStoryboardSerializable
     {
         private ushort _bits;
 

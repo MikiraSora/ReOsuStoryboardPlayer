@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ReOsuStoryboardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Commands.Group;
 using ReOsuStoryboardPlayer.Core.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
 {
@@ -14,7 +13,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
     /// </summary>
     public class RuntimeOptimzer : OptimzerBase
     {
-        public override void Optimze(int level,IEnumerable<StoryboardObject> Storyboard_objects)
+        public override void Optimze(int level, IEnumerable<StoryboardObject> Storyboard_objects)
         {
             if (level>=1)
             {

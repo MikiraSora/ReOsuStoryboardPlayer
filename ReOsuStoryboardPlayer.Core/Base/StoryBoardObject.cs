@@ -7,13 +7,12 @@ using ReOsuStoryboardPlayer.Core.Serialization;
 using ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace ReOsuStoryboardPlayer.Core.Base
 {
-    public class StoryboardObject:IStoryboardSerializable,IEquatable<StoryboardObject>
+    public class StoryboardObject : IStoryboardSerializable, IEquatable<StoryboardObject>
     {
         public Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
 
@@ -103,7 +102,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public void AddCommandRange(IEnumerable<Command> commands)
         {
-            foreach (var pair in commands.GroupBy(x=>x.Event))
+            foreach (var pair in commands.GroupBy(x => x.Event))
             {
                 switch (pair.Key)
                 {
@@ -196,7 +195,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
         }
 
         #endregion Add/Remove Command
-        
+
         public void ResetTransform() => BaseTransformResetAction(this);
 
         public virtual void Update(float current_time)
@@ -204,7 +203,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 #if DEBUG
             ExecutedCommands.ForEach(c => c.IsExecuted=false);
             ExecutedCommands.Clear();
-#endif  
+#endif
 
             foreach (var pair in CommandMap)
             {
@@ -239,6 +238,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
         }
 
 #endif
+
         /// <summary>
         /// 计算物件的FrameTime
         /// (此方法必须确保计算出来的物件时间是基于命令的真实的有效时间，不能因为Trigger而提前计算，FrameStartTime必须是一次性算好固定的值(否则Scan炸了，理论上也没什么玩意可以变更此参数))
@@ -284,7 +284,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             ResetTransform();
 
             //normal commands
-            var commands = CommandMap.Values.SelectMany(l => l).Where(x=>!(x is LoopSubTimelineCommand || x is TriggerSubTimelineCommand));
+            var commands = CommandMap.Values.SelectMany(l => l).Where(x => !(x is LoopSubTimelineCommand||x is TriggerSubTimelineCommand));
 
             stream.Write(commands.Count());
 
@@ -333,7 +333,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             layout=(Layout)stream.ReadByte();
             Z.OnDeserialize(stream);
 
-            Postion.OnDeserialize(stream,cache_table);
+            Postion.OnDeserialize(stream, cache_table);
             Scale.OnDeserialize(stream, cache_table);
             Color.OnDeserialize(stream, cache_table);
             Anchor.OnDeserialize(stream, cache_table);
@@ -356,18 +356,18 @@ namespace ReOsuStoryboardPlayer.Core.Base
             var horizon = IsHorizonFlip;
             var vertical = IsVerticalFlip;
 
-            BaseTransformResetAction+= (StoryboardObject obj) =>
-            {
-                obj.Postion=pos;
-                obj.FrameStartTime=start;
-                obj.FrameEndTime=end;
-                obj.Color=color;
-                obj.Scale=scale;
-                obj.IsAdditive=additive;
-                obj.IsHorizonFlip=horizon;
-                obj.IsVerticalFlip=vertical;
-                obj.Rotate=rotate;
-            };
+            BaseTransformResetAction+=(StoryboardObject obj) =>
+           {
+               obj.Postion=pos;
+               obj.FrameStartTime=start;
+               obj.FrameEndTime=end;
+               obj.Color=color;
+               obj.Scale=scale;
+               obj.IsAdditive=additive;
+               obj.IsHorizonFlip=horizon;
+               obj.IsVerticalFlip=vertical;
+               obj.Rotate=rotate;
+           };
         }
 
         public virtual bool Equals(StoryboardObject other)
@@ -387,9 +387,9 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 &&other.IsHorizonFlip==IsHorizonFlip
                 &&other.IsVerticalFlip==IsVerticalFlip
                 &&other.FileLine==FileLine
-                &&other.CommandMap.Values.SelectMany(l=>l).All(x=>CommandMap.Values.SelectMany(l=>l).Any(y=>y.Equals(x)));
+                &&other.CommandMap.Values.SelectMany(l => l).All(x => CommandMap.Values.SelectMany(l => l).Any(y => y.Equals(x)));
         }
 
-        #endregion
+        #endregion Serialization
     }
 }

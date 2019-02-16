@@ -1,7 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,7 +17,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
         public HitSoundTriggerCondition()
         {
-
         }
 
         public HitSoundTriggerCondition(string description)
@@ -27,7 +25,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
              *
              * HitSound -> HitSound(All)(All)(Whistle|Normal|Clap|Finish)(Default)
              * HitSoundNormalWhistle -> HitSound(All)(Normal)Whistle(Default)
-             * HitSoundWhistle6 -> HitSound(All)(All)Whistle CustomSampleSet6 
+             * HitSoundWhistle6 -> HitSound(All)(All)Whistle CustomSampleSet6
              * HitSoundSoft -> HitSound(All)Soft(Whistle|Normal|Clap|Finish)(Default)
              *
              */
@@ -53,7 +51,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
             var hitsound_count = check_func.Where(x => description.Contains(x.ToString())).Count();
 
-            if (HitSound!=HitObjectSoundType.All && hitsound_count!=0)
+            if (HitSound!=HitObjectSoundType.All&&hitsound_count!=0)
             {
                 Debug.Assert(HitSound!=HitObjectSoundType.None&&(String.IsNullOrWhiteSpace(fix_trim_expr)||check_func.All(x => description.Contains(x.ToString()))), "parse HitSoundTriggerCondition::HitSound wrong!");
             }

@@ -5,15 +5,15 @@ using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization
 {
-    public class SerializationStatisticsInfo:IStoryboardSerializable,IEnumerable<KeyValuePair<Type,int>>
+    public class SerializationStatisticsInfo : IStoryboardSerializable, IEnumerable<KeyValuePair<Type, int>>
     {
-        Dictionary<Type, int> statistics = new Dictionary<Type, int>();
+        private Dictionary<Type, int> statistics = new Dictionary<Type, int>();
 
         public int CachedTypeCount => statistics.Count;
 
         public int GetSerializedObjectCount<T>() => statistics.TryGetValue(typeof(T), out var count) ? count : 0;
 
-        public void RegistedSerializedObject<T>(T obj) where T : class , ICloneable , new()
+        public void RegistedSerializedObject<T>(T obj) where T : class, ICloneable, new()
         {
             var count = GetSerializedObjectCount<T>();
 

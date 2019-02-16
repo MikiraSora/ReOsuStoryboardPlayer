@@ -3,17 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization.FileInfo
 {
     public class ObjectGenerator
     {
-        SerializationStatisticsInfo statistics;
+        private SerializationStatisticsInfo statistics;
 
-        Dictionary<Type, List<object>> object_caches;
-      
+        private Dictionary<Type, List<object>> object_caches;
+
         public ObjectGenerator(SerializationStatisticsInfo statisticsInfo)
         {
             statistics=statisticsInfo;
@@ -27,9 +25,9 @@ namespace ReOsuStoryboardPlayer.Core.Serialization.FileInfo
 
             foreach (var pair in statistics)
             {
-                var list= new List<object>(pair.Value);
+                var list = new List<object>(pair.Value);
 
-                var base_obj=Activator.CreateInstance(pair.Key) as ICloneable;
+                var base_obj = Activator.CreateInstance(pair.Key) as ICloneable;
                 Debug.Assert(base_obj!=null);
 
                 list.Add(base_obj);
@@ -42,9 +40,9 @@ namespace ReOsuStoryboardPlayer.Core.Serialization.FileInfo
             }
         }
 
-        public T TakeObject<T>() where T:class,new()
+        public T TakeObject<T>() where T : class, new()
         {
-            if (object_caches.TryGetValue(typeof(T),out var list))
+            if (object_caches.TryGetValue(typeof(T), out var list))
             {
                 var obj = list.First();
                 list.Remove(obj);

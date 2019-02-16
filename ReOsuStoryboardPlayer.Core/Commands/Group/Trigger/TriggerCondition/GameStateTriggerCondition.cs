@@ -1,7 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
@@ -12,7 +11,6 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
         public GameStateTriggerCondition()
         {
-
         }
 
         public GameStateTriggerCondition(string description)
@@ -37,7 +35,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
         public override bool Equals(TriggerConditionBase other)
         {
-            return other is GameStateTriggerCondition game_cond && game_cond.listen_state==listen_state;
+            return other is GameStateTriggerCondition game_cond&&game_cond.listen_state==listen_state;
         }
     }
 }

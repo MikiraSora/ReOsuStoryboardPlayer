@@ -6,7 +6,7 @@ using System.IO;
 namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     [Serializable]
-    public struct HalfVector : IEquatable<HalfVector>,IStoryboardSerializable
+    public struct HalfVector : IEquatable<HalfVector>, IStoryboardSerializable
     {
         public Half X;
         public Half Y;
@@ -145,14 +145,14 @@ namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 
         public void OnSerialize(BinaryWriter stream, StringCacheTable cache)
         {
-            X.OnSerialize(stream,cache);
-            Y.OnSerialize(stream,cache);
+            X.OnSerialize(stream, cache);
+            Y.OnSerialize(stream, cache);
         }
 
         public void OnDeserialize(BinaryReader stream, StringCacheTable cache)
         {
-            X.OnDeserialize(stream,cache);
-            Y.OnDeserialize(stream,cache);
+            X.OnDeserialize(stream, cache);
+            Y.OnDeserialize(stream, cache);
         }
     }
 }

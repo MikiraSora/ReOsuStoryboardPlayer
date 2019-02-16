@@ -1,12 +1,11 @@
 ﻿using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.PrimitiveValue
 {
     [Serializable]
-    public struct Vector : IEquatable<Vector>,IStoryboardSerializable
+    public struct Vector : IEquatable<Vector>, IStoryboardSerializable
     {
         public float X { get; set; }
         public float Y { get; set; }

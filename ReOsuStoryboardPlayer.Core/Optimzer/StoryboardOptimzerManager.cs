@@ -1,15 +1,13 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ReOsuStoryboardPlayer.Core.Optimzer
 {
     public static class StoryboardOptimzerManager
     {
-        static HashSet<OptimzerBase> optimzers=new HashSet<OptimzerBase>();
+        private static HashSet<OptimzerBase> optimzers = new HashSet<OptimzerBase>();
 
         public static void AddOptimzer<T>() where T : OptimzerBase, new()
         {
@@ -39,14 +37,14 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer
             Log.User($"Remove optimzer : {optimzer.GetType().Name}");
         }
 
-        public static void RemoveOptimzer<T>() where T:OptimzerBase
+        public static void RemoveOptimzer<T>() where T : OptimzerBase
         {
             var type = typeof(T);
 
             RemoveOptimzer(optimzers.FirstOrDefault(x => type.IsInstanceOfType(x)));
         }
 
-        public static void Optimze(int level,IEnumerable<StoryboardObject> objects)
+        public static void Optimze(int level, IEnumerable<StoryboardObject> objects)
         {
             foreach (var opzimer in optimzers)
             {

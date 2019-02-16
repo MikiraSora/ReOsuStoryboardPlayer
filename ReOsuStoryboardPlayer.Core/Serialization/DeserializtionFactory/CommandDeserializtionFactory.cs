@@ -3,7 +3,6 @@ using ReOsuStoryboardPlayer.Core.Commands;
 using ReOsuStoryboardPlayer.Core.Commands.Group;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory
@@ -12,7 +11,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory
     {
         public static Command Create(BinaryReader stream, StringCacheTable cache)
         {
-            Event e =(Event)stream.ReadInt32();
+            Event e = (Event)stream.ReadInt32();
             var command = CreateCommand(e);
 
             command.OnDeserialize(stream, cache);
@@ -26,30 +25,43 @@ namespace ReOsuStoryboardPlayer.Core.Serialization.DeserializationFactory
             {
                 case Event.Fade:
                     return new FadeCommand();
+
                 case Event.Move:
                     return new MoveCommand();
+
                 case Event.Scale:
                     return new ScaleCommand();
+
                 case Event.VectorScale:
                     return new VectorScaleCommand();
+
                 case Event.Rotate:
                     return new RotateCommand();
+
                 case Event.Color:
                     return new ColorCommand();
+
                 case Event.MoveX:
                     return new MoveXCommand();
+
                 case Event.MoveY:
                     return new MoveYCommand();
+
                 case Event.Loop:
                     return new LoopCommand();
+
                 case Event.Trigger:
                     return new TriggerCommand();
+
                 case Event.VerticalFlip:
                     return new VerticalFlipCommand();
+
                 case Event.HorizonFlip:
                     return new HorizonFlipCommand();
+
                 case Event.AdditiveBlend:
                     return new AdditiveBlendCommand();
+
                 default:
                     throw new Exception("Unknown/Unsupport deserialize event:"+e);
             }
