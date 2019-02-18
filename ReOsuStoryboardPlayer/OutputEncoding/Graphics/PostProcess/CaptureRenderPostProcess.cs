@@ -4,6 +4,8 @@ using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Graphics.PostProcesses;
 using ReOsuStoryboardPlayer.Graphics.PostProcesses.Shaders;
 using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryboardPlayer.OutputEncoding.Kernel;
+using ReOsuStoryboardPlayer.Tools;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,13 +20,17 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess
     public class CaptureRenderPostProcess : APostProcess
     {
         PostProcessFrameBuffer frame_buffer = new PostProcessFrameBuffer(PlayerSetting.Width, PlayerSetting.Height);
-        Bitmap bitmap = new Bitmap(PlayerSetting.Width, PlayerSetting.Height,System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+        public byte[] RenderPixels { get; } = new byte[PlayerSetting.Width*3*PlayerSetting.Height];
 
         int store_prev_fbo = 0;
         int[] store_prev_viewport = new int[4];
 
         private Shader _output_shader = new VectialFlipShader();
         private Shader _final_shader = new FinalShader();
+
+        private EncodingKernel encoding_kernel;
+        public EncodingKernel Kernal => encoding_kernel??(encoding_kernel=ToolManager.GetTool<EncodingKernel>());
 
         public CaptureRenderPostProcess()
         {
@@ -55,28 +61,11 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess
             GL.Viewport(store_prev_viewport[0], store_prev_viewport[1], store_prev_viewport[2], store_prev_viewport[3]);
             
             GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
-        }
 
-        public void TakeScreenshot()
-        {
-            ExecutorSync.PostTask(() => {
-                GL.BindTexture(TextureTarget.Texture2D, frame_buffer.ColorTexture);
-                {
-                    var data = bitmap.LockBits(new Rectangle(0, 0, PlayerSetting.Width, PlayerSetting.Height),System.Drawing.Imaging.ImageLockMode.WriteOnly,System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                    GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
-                    bitmap.UnlockBits(data);
-
-                    try
-                    {
-                        bitmap.Save(@"H:\save.jpeg", ImageFormat.Jpeg);
-                    }
-                    catch
-                    {
-
-                    }
-                }
-                GL.BindTexture(TextureTarget.Texture2D, 0);
-            });
+            //output
+            GL.BindTexture(TextureTarget.Texture2D, frame_buffer.ColorTexture);
+            GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgr, PixelType.UnsignedByte, RenderPixels);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
     }
 }

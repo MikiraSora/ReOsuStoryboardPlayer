@@ -5,6 +5,9 @@ using ReOsuStoryboardPlayer.OutputEncoding.Player;
 using ReOsuStoryboardPlayer.Player;
 using System;
 using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
+using System.Diagnostics;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 {
@@ -20,11 +23,11 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 
         public EncoderOption Option { get; private set; }
 
+        CaptureRenderPostProcess capturer;
+
         private float prev_time;
 
         private bool is_running = false;
-
-        private byte[] buffer;
 
         public EncodingKernel(EncoderOption option)
         {
@@ -35,11 +38,31 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
         {
             if (obj==OpenTK.Input.Key.E)
                 Abort();
+            else
+            {
+                using (var bitmap=new Bitmap(PlayerSetting.Width,PlayerSetting.Height,System.Drawing.Imaging.PixelFormat.Format24bppRgb))
+                {
+                    var data = bitmap.LockBits(new Rectangle(0, 0, PlayerSetting.Width, PlayerSetting.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+                    Marshal.Copy(capturer.RenderPixels, 0, data.Scan0, capturer.RenderPixels.Length);
+
+                    bitmap.UnlockBits(data);
+
+                    bitmap.Save(@"H:\save.png");
+                }
+            }
         }
 
         public void Start()
         {
             time_control=MusicPlayerManager.ActivityPlayer as EncodingProcessPlayer;
+
+            if (capturer==null)
+            {
+                //init capturer post process
+                capturer=new CaptureRenderPostProcess();
+                StoryboardWindow.CurrentWindow.PostProcessesManager.AddPostProcess(capturer);
+            }
 
             if (time_control==null)
                 throw new Exception("Current player isn't EncodingProcessPlayer!");
@@ -49,7 +72,6 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 
             Log.User($"Start encoding....");
 
-            buffer=new byte[Option.Width*Option.Height*4];
             is_running=true;
 
             if (Option.IsExplicitTimeRange)
@@ -80,6 +102,10 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 
             Log.Debug($"Process time : {time_control.CurrentTime} ({(time_control.CurrentTime/time_control.Length*100).ToString("F2")})");
 
+            var buffer = capturer.RenderPixels;
+
+            /*
+             * 
             GL.ReadPixels(0, 0, Option.Width, Option.Height, PixelFormat.Bgra, PixelType.UnsignedByte, ref buffer[0]);
 
             for (int i = 0; i<Option.Height/2; i++)
@@ -96,6 +122,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
                     buffer[dist+x]=z;
                 }
             }
+            */
 
             Writer.OnNextFrame(buffer, Option.Width, Option.Height);
         }

@@ -75,7 +75,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding
 
             #region Video Init
 
-            var video_format = new VideoFormat(option.Width, option.Height, AVPixelFormat.Bgra);
+            var video_format = new VideoFormat(option.Width, option.Height, AVPixelFormat.Bgr24);
             var video_param = new VideoEncoderParameters() { FrameRate=new Fraction(option.FPS), BitRate=option.BitRate };
 
             video_encoder=new VideoEncoder(option.EncoderName, video_format, video_param);

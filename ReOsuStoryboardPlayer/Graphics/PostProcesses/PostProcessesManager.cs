@@ -8,22 +8,30 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
     public class PostProcessesManager
     {
         private SortedList<int, APostProcess> _postProcesses = new SortedList<int, APostProcess>();
-        private static APostProcess _finalProcess = new FinalPostProcess();
-        private int _maxOrder;
+        private static APostProcess _finalProcess;
+        private int _maxOrder=0;
 
         private int _currentIndex = 1;
         private PostProcessFrameBuffer[] _fbos = new PostProcessFrameBuffer[2];
         private PostProcessFrameBuffer _prevFbo = null;
-
-        public PostProcessesManager(int w, int h)
+        
+        public void Init()
         {
+            _finalProcess = new FinalPostProcess();
+            AddPostProcess(_finalProcess, int.MaxValue);
+        }
+
+        public void Resize(int w,int h)
+        {
+            int sample = 1<<PlayerSetting.SsaaLevel;
+            w*=sample;
+            h*=sample;
+
             for (int i = 0; i<_fbos.Length; i++)
             {
+                _fbos[i]?.Dispose();
                 _fbos[i]=new PostProcessFrameBuffer(w, h);
             }
-
-            AddPostProcess(_finalProcess, int.MaxValue);
-            _maxOrder=0;
         }
 
         public void AddPostProcess(APostProcess postProcess, int order)
@@ -34,6 +42,9 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 
         public void AddPostProcess(APostProcess postProcess)
         {
+            if (_postProcesses.ContainsValue(postProcess))
+                return;
+
             _postProcesses.Add(++_maxOrder, postProcess);
         }
 

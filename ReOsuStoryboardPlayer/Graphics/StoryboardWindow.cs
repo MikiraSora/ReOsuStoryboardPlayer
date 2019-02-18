@@ -35,12 +35,10 @@ namespace ReOsuStoryboardPlayer
         public StoryboardInstance Instance { get; private set; }
 
         private bool ready = false;
-
-        private bool _existClipPostProcess = false;
+        
         private ClipPostProcess _clipPostProcess;
-        private PostProcessesManager _postProcessesManager;
 
-        public PostProcessesManager PostProcessesManager => _postProcessesManager;
+        public PostProcessesManager PostProcessesManager { get; private set; } = new PostProcessesManager();
 
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
 
@@ -72,6 +70,7 @@ namespace ReOsuStoryboardPlayer
         {
             InitGraphics();
             DrawUtils.Init();
+            PostProcessesManager.Init();
             VSync=VSyncMode.Off;
             CurrentWindow=this;
 
@@ -139,27 +138,19 @@ namespace ReOsuStoryboardPlayer
             ProjectionMatrix=Matrix4.Identity*Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
             CameraViewMatrix=Matrix4.Identity;
 
-            int sample = 1<<PlayerSetting.SsaaLevel;
-            _postProcessesManager=new PostProcessesManager(Width*sample, Height*sample);
-            _postProcessesManager.AddPostProcess(new CaptureRenderPostProcess());
+            PostProcessesManager.Resize(Width, Height);
             SetupClipPostProcesses();
         }
 
         private void SetupClipPostProcesses()
         {
-            if (_existClipPostProcess)
-            {
-                _postProcessesManager.RemovePostProcess(_clipPostProcess);
-                _existClipPostProcess=false;
-            }
-
             if (Instance.Info.IsWidescreenStoryboard==false)
             {
-                if (_postProcessesManager!=null)
-                {
-                    _postProcessesManager.AddPostProcess(_clipPostProcess);
-                    _existClipPostProcess=true;
-                }
+                PostProcessesManager.AddPostProcess(_clipPostProcess);
+            }
+            else
+            {
+                PostProcessesManager.RemovePostProcess(_clipPostProcess);
             }
         }
 
@@ -352,12 +343,12 @@ namespace ReOsuStoryboardPlayer
             if (ready)
             {
                 ToolManager.TrigBeforeRender();
-                _postProcessesManager.Begin();
+                PostProcessesManager.Begin();
                 {
                     PostDrawStoryboard();
-                    _postProcessesManager.Process();
+                    PostProcessesManager.Process();
                 }
-                _postProcessesManager.End();
+                PostProcessesManager.End();
                 ToolManager.TrigAfterRender();
             }
 
@@ -508,8 +499,6 @@ namespace ReOsuStoryboardPlayer
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
-            StoryboardWindow.CurrentWindow.PostProcessesManager.GetPostProcesser<CaptureRenderPostProcess>().TakeScreenshot();
-
             ToolManager.TrigKeyPress(e.Key);
         }
 
