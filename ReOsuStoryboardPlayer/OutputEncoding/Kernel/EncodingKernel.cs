@@ -4,6 +4,7 @@ using ReOsuStoryboardPlayer.Tools;
 using ReOsuStoryboardPlayer.OutputEncoding.Player;
 using ReOsuStoryboardPlayer.Player;
 using System;
+using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
 
 namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 {

@@ -74,5 +74,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
                 _currentIndex=(_currentIndex+1)%_fbos.Length;
             }
         }
+
+        public T GetPostProcesser<T>() => _postProcesses.Select(l=>l.Value).OfType<T>().FirstOrDefault();
     }
 }

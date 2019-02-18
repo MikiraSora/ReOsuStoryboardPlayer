@@ -18,6 +18,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -38,6 +39,8 @@ namespace ReOsuStoryboardPlayer
         private bool _existClipPostProcess = false;
         private ClipPostProcess _clipPostProcess;
         private PostProcessesManager _postProcessesManager;
+
+        public PostProcessesManager PostProcessesManager => _postProcessesManager;
 
         public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
 
@@ -138,6 +141,7 @@ namespace ReOsuStoryboardPlayer
 
             int sample = 1<<PlayerSetting.SsaaLevel;
             _postProcessesManager=new PostProcessesManager(Width*sample, Height*sample);
+            _postProcessesManager.AddPostProcess(new CaptureRenderPostProcess());
             SetupClipPostProcesses();
         }
 
@@ -502,7 +506,12 @@ namespace ReOsuStoryboardPlayer
         //解决窗口失去/获得焦点时鼠标xjb移动
         protected override void OnFocusedChanged(EventArgs e) { }
 
-        protected override void OnKeyDown(KeyboardKeyEventArgs e) => ToolManager.TrigKeyPress(e.Key);
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            StoryboardWindow.CurrentWindow.PostProcessesManager.GetPostProcesser<CaptureRenderPostProcess>().TakeScreenshot();
+
+            ToolManager.TrigKeyPress(e.Key);
+        }
 
         private int downX, downY;
         private bool mouseDown = false;

@@ -62,6 +62,11 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
         {
         }
 
+        protected virtual void OnRender()
+        {
+            GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
+        }
+
         protected virtual void OnPostRender()
         {
         }
@@ -72,7 +77,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
             GL.BindVertexArray(s_vao);
             {
                 OnPreRender();
-                GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
+                OnRender();
                 OnPostRender();
             }
             GL.BindVertexArray(0);

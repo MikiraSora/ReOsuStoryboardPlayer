@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using ReOsuStoryboardPlayer.Utils;
+using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -93,6 +94,7 @@ namespace ReOsuStoryboardPlayer
             }
 
             MusicPlayerManager.ActivityPlayer?.Play();
+
             window.Run();
         }
 
@@ -100,7 +102,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\582089 Camellia vs Akira Complex - Reality Distortion";
+            beatmap_folder=@"G:\SBTest\181957 kors k - Insane Techniques (Extended)";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

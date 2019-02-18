@@ -116,6 +116,8 @@
     <Compile Include="OutputEncoding\EncodingWriterFatory.cs" />
     <Compile Include="OutputEncoding\EncoderOption.cs" />
     <Compile Include="OutputEncoding\EncodingWriterBase.cs" />
+    <Compile Include="OutputEncoding\Graphics\PostProcess\CaptureRenderPostProcess.cs" />
+    <Compile Include="OutputEncoding\Graphics\PostProcess\VectialFlipShader.cs" />
     <Compile Include="OutputEncoding\Kernel\EncodingKernel.cs" />
     <Compile Include="OutputEncoding\Player\EncodingProcessPlayer.cs" />
     <Compile Include="BeatmapParser\HitObjectHelpers.cs" />
