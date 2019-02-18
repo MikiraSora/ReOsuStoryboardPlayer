@@ -67,5 +67,12 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess
             GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgr, PixelType.UnsignedByte, RenderPixels);
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
+
+        public override void OnResize()
+        {
+            base.OnResize();
+
+
+        }
     }
 }

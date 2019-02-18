@@ -54,6 +54,11 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
             GL.BindVertexArray(0);
         }
 
+        public virtual void OnResize()
+        {
+
+        }
+
         public PostProcessFrameBuffer PrevFrameBuffer;
 
         protected abstract void OnUseShader();

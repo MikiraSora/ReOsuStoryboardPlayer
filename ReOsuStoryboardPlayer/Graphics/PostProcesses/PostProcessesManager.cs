@@ -24,13 +24,18 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
         public void Resize(int w,int h)
         {
             int sample = 1<<PlayerSetting.SsaaLevel;
-            w*=sample;
-            h*=sample;
+            var nw=w*sample;
+            var nh=h*sample;
 
             for (int i = 0; i<_fbos.Length; i++)
             {
                 _fbos[i]?.Dispose();
-                _fbos[i]=new PostProcessFrameBuffer(w, h);
+                _fbos[i]=new PostProcessFrameBuffer(nw, nh);
+            }
+
+            foreach (var process in _postProcesses)
+            {
+                process.Value.OnResize();
             }
         }
 
