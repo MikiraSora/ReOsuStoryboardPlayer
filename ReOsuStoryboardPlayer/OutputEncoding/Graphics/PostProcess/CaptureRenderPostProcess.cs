@@ -68,7 +68,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess
 
                     try
                     {
-                        bitmap.Save(@"H:\save.png", ImageFormat.Jpeg);
+                        bitmap.Save(@"H:\save.jpeg", ImageFormat.Jpeg);
                     }
                     catch
                     {
