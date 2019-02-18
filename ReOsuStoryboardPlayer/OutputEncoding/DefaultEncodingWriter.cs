@@ -61,7 +61,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding
                 writer.Write(video_frame);
             }
 
-            Log.User($"{video_encoder.FullName} ---> ({video_encoder.InputFrames}) {video_encoder.InputTimestamp}");
+            Log.Debug($"{video_encoder.FullName} ---> ({video_encoder.InputFrames}) {video_encoder.InputTimestamp}");
         }
 
         public override void OnStart(EncoderOption option)
@@ -141,7 +141,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding
                     writer.Write(audio_frame);
                 }
 
-                Log.User($"{audio_encoder.FullName} ---> ({audio_encoder.InputFrames}) {audio_encoder.InputTimestamp}");
+                Log.Debug($"{audio_encoder.FullName} ---> ({audio_encoder.InputFrames}) {audio_encoder.InputTimestamp}");
             }
 
             Log.User($"Finish audio encoding...");

@@ -38,19 +38,6 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
         {
             if (obj==OpenTK.Input.Key.E)
                 Abort();
-            else
-            {
-                using (var bitmap=new Bitmap(PlayerSetting.Width,PlayerSetting.Height,System.Drawing.Imaging.PixelFormat.Format24bppRgb))
-                {
-                    var data = bitmap.LockBits(new Rectangle(0, 0, PlayerSetting.Width, PlayerSetting.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-                    Marshal.Copy(capturer.RenderPixels, 0, data.Scan0, capturer.RenderPixels.Length);
-
-                    bitmap.UnlockBits(data);
-
-                    bitmap.Save(@"H:\save.png");
-                }
-            }
         }
 
         public void Start()
@@ -101,30 +88,8 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
             prev_time=time_control.CurrentTime;
 
             Log.Debug($"Process time : {time_control.CurrentTime} ({(time_control.CurrentTime/time_control.Length*100).ToString("F2")})");
-
-            var buffer = capturer.RenderPixels;
-
-            /*
-             * 
-            GL.ReadPixels(0, 0, Option.Width, Option.Height, PixelFormat.Bgra, PixelType.UnsignedByte, ref buffer[0]);
-
-            for (int i = 0; i<Option.Height/2; i++)
-            {
-                var l = Option.Height-i-1;
-
-                var src = i*Option.Width*4;
-                var dist = l*Option.Width*4;
-
-                for (int x = 0; x<Option.Width*4; x++)
-                {
-                    var z = buffer[src+x];
-                    buffer[src+x]=buffer[dist+x];
-                    buffer[dist+x]=z;
-                }
-            }
-            */
-
-            Writer.OnNextFrame(buffer, Option.Width, Option.Height);
+            
+            Writer.OnNextFrame(capturer.RenderPixels, Option.Width, Option.Height);
         }
 
         public void Abort()
