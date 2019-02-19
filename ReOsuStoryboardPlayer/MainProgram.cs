@@ -102,7 +102,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\181957 kors k - Insane Techniques (Extended)";
+            beatmap_folder=@"G:\SBTest\151720 ginkiha - EOS";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);

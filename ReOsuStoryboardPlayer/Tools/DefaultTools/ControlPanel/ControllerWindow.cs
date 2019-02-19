@@ -46,11 +46,12 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
 
         private void UpdateTimeText()
         {
-            prev_playback_display=MusicPlayerManager.ActivityPlayer.CurrentTime;
+            prev_playback_display=DateTime.Now;
             label3.Text=$"Time:{MusicPlayerManager.ActivityPlayer.CurrentTime}/{MusicPlayerManager.ActivityPlayer.Length}";
         }
 
-        private float prev_playback_display = float.MinValue, prev_playspeed_display = float.MinValue;
+        private DateTime prev_playback_display = DateTime.Now;
+        private float prev_playspeed_display = float.MinValue;
         private BeatmapFolderInfo prev_info_display = null;
 
         public void UpdateInfo()
@@ -66,7 +67,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
                 label2.Text=prev_info_display.folder_path;
             }
 
-            if (Math.Abs(prev_playback_display-MusicPlayerManager.ActivityPlayer.CurrentTime)>250)
+            if (Math.Abs((prev_playback_display-DateTime.Now).TotalMilliseconds)>250)
             {
                 UpdateTimeText();
             }
