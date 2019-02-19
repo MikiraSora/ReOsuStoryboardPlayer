@@ -1,4 +1,5 @@
 ﻿using OpenTK.Graphics.OpenGL;
+using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
             var nw=w*sample;
             var nh=h*sample;
 
+            Log.Debug($"Window resize ({w},{h}) -> ({nw},{nh})");
+
             for (int i = 0; i<_fbos.Length; i++)
             {
                 _fbos[i]?.Dispose();
@@ -50,14 +53,19 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
             if (_postProcesses.ContainsValue(postProcess))
                 return;
 
+            Log.Debug($"Added {postProcess.GetType().Name}");
             _postProcesses.Add(++_maxOrder, postProcess);
         }
 
         public void RemovePostProcess(APostProcess postProcess)
         {
             var p = _postProcesses.FirstOrDefault(v => v.Value==postProcess);
+
             if (p.Value!=null)
+            {
                 _postProcesses.Remove(p.Key);
+                Log.Debug($"Removed {postProcess.GetType().Name}");
+            }
         }
 
         public void Begin()
