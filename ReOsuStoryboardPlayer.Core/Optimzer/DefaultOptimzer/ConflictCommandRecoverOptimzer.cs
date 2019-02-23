@@ -29,29 +29,33 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
 
         private void TrimHoldingStatusCommand(IEnumerable<StoryboardObject> storyboard_objects, ref int effect_count)
         {
-            foreach (var obj in storyboard_objects)
-            {
-                foreach (CommandTimeline timeline in obj.CommandMap.Values)
-                {
-                    if (!timeline.Overlay)
-                        continue;
+            var x = 0;
+            ParallelableForeachExecutor.Foreach(true, storyboard_objects, obj =>
+              {
+                  foreach (CommandTimeline timeline in obj.CommandMap.Values)
+                  {
+                      if (!timeline.Overlay)
+                          continue;
 
-                    for (int i = 0; i<timeline.Count; i++)
-                    {
-                        if (timeline[i] is ValueCommand cmd)
-                        {
-                            if (cmd.EqualityComparer.Equals(cmd.GetEndValue(), cmd.GetStartValue())&&cmd.Easing==EasingTypes.None)
-                            {
-                                timeline.Remove(cmd);
-                                cmd.EndTime=cmd.StartTime;
-                                timeline.Add(cmd);
+                      for (int i = 0; i<timeline.Count; i++)
+                      {
+                          if (timeline[i] is ValueCommand cmd)
+                          {
+                              if (cmd.EqualityComparer.Equals(cmd.GetEndValue(), cmd.GetStartValue())&&cmd.Easing==EasingTypes.None)
+                              {
+                                  timeline.Remove(cmd);
+                                  cmd.EndTime=cmd.StartTime;
+                                  timeline.Add(cmd);
 
-                                effect_count++;
-                            }
-                        }
-                    }
-                }
-            }
+                                  x++;
+                              }
+                          }
+                      }
+                  }
+
+              });
+
+            effect_count=x;
         }
     }
 }

@@ -27,8 +27,6 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
         /// </summary>
         public List<StoryboardObject> UpdatingStoryboardObjects { get; private set; }
 
-        private readonly ParallelOptions parallel_options = new ParallelOptions() { MaxDegreeOfParallelism=Setting.UpdateThreadCount };
-
         public StoryboardUpdater(List<StoryboardObject> objects)
         {
             StoryboardObjectList=new List<StoryboardObject>();
@@ -174,15 +172,8 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
                 });
             }
 
-            if (UpdatingStoryboardObjects.Count>=Setting.ParallelUpdateObjectsLimitCount&&Setting.ParallelUpdateObjectsLimitCount!=0)
-            {
-                Parallel.ForEach(UpdatingStoryboardObjects, parallel_options, obj => obj.Update(current_time));
-            }
-            else
-            {
-                foreach (var obj in UpdatingStoryboardObjects)
-                    obj.Update(current_time);
-            }
+            var need_parallel = UpdatingStoryboardObjects.Count>=Setting.ParallelUpdateObjectsLimitCount&&Setting.ParallelUpdateObjectsLimitCount!=0;
+            ParallelableForeachExecutor.Foreach(need_parallel, UpdatingStoryboardObjects, obj => obj.Update(current_time));
         }
 
         internal void AddNeedResortObject(StoryboardObject obj)

@@ -46,8 +46,8 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
         /// <param name="effect_count"></param>
         public void TrimFrameTime(IEnumerable<StoryboardObject> Storyboard_objects, ref int effect_count)
         {
-            foreach (var obj in Storyboard_objects)
-            {
+            var t = 0;
+            ParallelableForeachExecutor.Foreach(true, Storyboard_objects, obj => {
                 if (obj==null
                     ||obj is StoryboardAnimation  //qnmd
                     ||!obj.CommandMap.TryGetValue(Event.Fade, out var fade_list)
@@ -55,7 +55,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                     ||fade_list.Overlay
                     ||fade_list.Count<=1
                     )
-                    continue;
+                    return;
 
                 var first_fade = fade_list.First() as FadeCommand;
 
@@ -84,7 +84,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                         obj.BaseTransformResetAction+=x => x.FrameStartTime=trim_start_time;
                         obj.FrameStartTime=trim_start_time;
                         Suggest(obj, $"FrameTime可优化成{front_fade.StartTime}");
-                        effect_count++;
+                        t++;
                     }
                 }
 
@@ -94,9 +94,11 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                 {
                     obj.FrameEndTime=last_fade.EndTime;
                     Suggest(obj, $"EndTime可优化成{last_fade.StartTime}.");
-                    effect_count++;
+                    t++;
                 }
-            }
+            });
+
+            effect_count=t;
         }
 
         /// <summary>
@@ -119,7 +121,9 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
         {
             var events = Enum.GetValues(typeof(Event));
 
-            foreach (var obj in Storyboard_objects)
+
+            var t = 0;
+            ParallelableForeachExecutor.Foreach(true, Storyboard_objects, obj =>
             {
                 //物件命令数量!=0 且 无Trigger对应类型的子命令
                 foreach (var timeline in obj.CommandMap.Where(x => x.Value.Count==1&&((!obj.ContainTrigger)||(
@@ -149,7 +153,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                             cmd.Execute(target, cmd.EndTime+1);
                         };
 
-                        effect_count++;
+                        t++;
                     }
                 }
 
@@ -158,9 +162,12 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                     if (obj.CommandMap.TryGetValue(e, out var timeline)&&timeline.Count==0)
                     {
                         obj.CommandMap.Remove(e);
-                        effect_count++;
+                        t++;
                     }
-            }
+
+            });
+
+            effect_count=t;
         }
     }
 }
