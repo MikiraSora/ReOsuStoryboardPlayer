@@ -219,7 +219,12 @@ namespace ReOsuStoryboardPlayer
                 if (!_load_tex(file_path, out var tex))
                 {
                     file_path=Path.Combine(PlayerSetting.UserSkinPath, fix_image);
-                    _load_tex(fix_image, out tex);
+
+                    if (!_load_tex(file_path, out tex))
+                    {
+                        if ((!image_name.EndsWith("-0"))&&_get(image_name+"-0", out group))
+                            return true;
+                    }
                 }
 
                 if (tex!=null)
@@ -237,6 +242,9 @@ namespace ReOsuStoryboardPlayer
 
                 try
                 {
+                    if (!File.Exists(file_path))
+                        return false;
+
                     texture=new Texture(file_path);
                 }
                 catch (Exception e)

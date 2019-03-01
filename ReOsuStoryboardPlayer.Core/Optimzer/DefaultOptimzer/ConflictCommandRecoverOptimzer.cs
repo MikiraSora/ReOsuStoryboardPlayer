@@ -52,7 +52,6 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                           }
                       }
                   }
-
               });
 
             effect_count=x;
