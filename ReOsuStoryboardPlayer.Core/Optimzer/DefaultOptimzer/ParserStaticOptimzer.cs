@@ -99,48 +99,13 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                 {
                     foreach (var timeline in obj.CommandMap.Where(x => !skip_event.Contains(x.Key)).Select(x => x.Value))
                     {
-                        /*
-                        for (int i = timeline.Count-1; i>=0; i--)
-                        {
-                            var cmd = timeline[i]; //待检查的命令
-
-                            //立即命令就跳过
-                            if (cmd.StartTime==cmd.EndTime)
-                                continue;
-
-                            for (int x = i; x>=0; x--)
-                            {
-                                var itor = timeline[x]; //遍历的命令
-
-                                /*
-                                 *line n-1 (itor): |--------------------------|
-                                 *line n   (cmd) :             |--------------|       <--- Kill , biatch
-                                 * /
-                                if (cmd.EndTime<=itor.EndTime
-                                    &&cmd.StartTime>=itor.StartTime
-                                    &&itor.RelativeLine<cmd.RelativeLine
-                                    )
-                                {
-                                    timeline.Remove(cmd);
-
-                                    Log.Debug($"Remove unused command ({cmd}) in ({obj})，compare with ({itor})");
-                                    Suggest(cmd, $"此命令被\"{itor}\"命令覆盖而不被执行到，可删除");
-                                    effect_count++;
-
-                                    //已被制裁
-                                    break;
-                                }
-                            }
-                        }
-                        */
-
                         for (int i = 0; timeline.Overlay&&i<timeline.Count-1; i++)
                         {
                             var cmd = timeline[i];
 
                             /*
-                             *line n-1 (cmd): |--------------------------|
-                             *line n   (next_cmd) :      |--------------|       <--- Killed , biatch
+                             *(cmd)      : |--------------------------|
+                             *(next_cmd) :             |--------------|       <--- Killed , biatch
                              */
                             for (int t = i+1; timeline.Overlay&&t<timeline.Count; t++)
                             {
@@ -149,7 +114,10 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                                 if (next_cmd.StartTime>cmd.EndTime)
                                     break;
 
-                                if (next_cmd.EndTime<=cmd.EndTime&&next_cmd.EndTime!=next_cmd.StartTime&&cmd.RelativeLine<next_cmd.RelativeLine)
+                                if (
+                                next_cmd.EndTime<=cmd.EndTime &&
+                                next_cmd.EndTime!=next_cmd.StartTime &&
+                                cmd.CompareTo(next_cmd)<0)
                                 {
                                     timeline.Remove(next_cmd);
 

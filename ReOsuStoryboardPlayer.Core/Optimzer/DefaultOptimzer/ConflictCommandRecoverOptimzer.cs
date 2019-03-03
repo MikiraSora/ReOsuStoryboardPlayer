@@ -19,8 +19,8 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
 
         /*
          *  MX,0,94938,130595,320     ---simplify--->     MX,0,94938,94938,320,320
+         *  
          *  it could avoid a part cause about command conflict:
-         *
          *  MX,0,94938,130595,320
          *  M,20,95008,95078,320,240,322.9271,226.3689
          *  M,20,95078,95148,322.9271,226.3689,320.6659,236.2696
