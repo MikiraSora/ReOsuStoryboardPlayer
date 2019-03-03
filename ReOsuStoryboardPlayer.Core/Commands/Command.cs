@@ -22,7 +22,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         public int CompareTo(Command b)
         {
             var cmp = StartTime.CompareTo(b.StartTime);
-            return cmp==0 ? RelativeLine.CompareTo(b.RelativeLine) : cmp;
+            return cmp==0 ? EndTime.CompareTo(b.EndTime) : cmp;
         }
 
         public abstract void Execute(StoryboardObject @object, float time);

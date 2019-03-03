@@ -30,44 +30,8 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         private int BinarySearchInsertableIndex(Command command)
         {
-            var current_time = command.StartTime;
-            int min = 0, max = commands.Count-2;
-
-            int insert = 0;
-
-            //fast check for appending
-            if (current_time>=commands.LastOrDefault()?.StartTime)
-                insert=commands.Count;
-            else
-            {
-                while (min<=max)
-                {
-                    int i = (max+min)/2;
-
-                    var cmd = commands[i];
-                    var next_cmd = commands[i+1];
-
-                    if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
-                        return i+1;
-
-                    if (cmd.StartTime>=current_time)
-                        max=i-1;
-                    else
-                        min=i+1;
-                }
-            }
-
-            //check if there are some conflict command which StartTime is same ,and it will be sort by command fileline.
-            while (insert>0)
-            {
-                var prev = commands[insert-1];
-
-                if (prev.StartTime!=command.StartTime||command.RelativeLine>=prev.RelativeLine)
-                    break;
-
-                insert--;
-            }
-
+            var insert = commands.BinarySearch(command);
+            insert=insert<0 ? ~insert : insert;
             return insert;
         }
 
@@ -221,8 +185,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
             if (current_time>EndTime)
                 return last_command;
-
-            main_loop:
+            
             for (int i = 0; i<commands.Count; i++)
             {
                 var cmd = commands[i];

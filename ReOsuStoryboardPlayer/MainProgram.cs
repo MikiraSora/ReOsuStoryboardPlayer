@@ -102,7 +102,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\Culprate - Acid Rain (Oversized Raccoon)";
+            beatmap_folder=@"G:\SBTest\349062 yuiko & Meis Clauson - Aozora Memories";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
             var args = sb.Parse(argv);
