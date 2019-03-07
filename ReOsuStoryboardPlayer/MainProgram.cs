@@ -127,13 +127,19 @@ namespace ReOsuStoryboardPlayer
                     beatmap_folder=args.FreeArgs.FirstOrDefault()??beatmap_folder;
 
                 if (args.TryGetArg(out var valW, "width", "w"))
-                    PlayerSetting.Width=int.Parse(valW);
-
-                if (args.TryGetArg(out var draw_count, "multi_instance_render", "mtr"))
-                    PlayerSetting.DrawCallInstanceCountMax=int.Parse(draw_count);
+                    PlayerSetting.FrameWidth = PlayerSetting.Width = int.Parse(valW);
 
                 if (args.TryGetArg(out var valH, "height", "h"))
-                    PlayerSetting.Height=int.Parse(valH);
+                    PlayerSetting.FrameHeight = PlayerSetting.Height = int.Parse(valH);
+
+                if (args.TryGetArg(out var valFW, "freame_width", "fw"))
+                    PlayerSetting.FrameWidth = int.Parse(valFW);
+
+                if (args.TryGetArg(out var valFH, "freame_height", "fh"))
+                    PlayerSetting.FrameHeight = int.Parse(valFH);
+
+                if (args.TryGetArg(out var draw_count, "multi_instance_render", "mtr"))
+                    PlayerSetting.DrawCallInstanceCountMax = int.Parse(draw_count);
 
                 if (args.TryGetArg(out var folder, "folder", "f"))
                     beatmap_folder=folder;

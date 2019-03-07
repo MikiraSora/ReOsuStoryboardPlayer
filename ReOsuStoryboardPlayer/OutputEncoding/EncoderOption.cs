@@ -23,8 +23,8 @@ namespace ReOsuStoryboardPlayer.OutputEncoding
 
         public EncoderOption(Parameters args)
         {
-            Width=PlayerSetting.Width;
-            Height=PlayerSetting.Height;
+            Width=PlayerSetting.FrameWidth;
+            Height=PlayerSetting.FrameHeight;
 
             FPS=args.TryGetArg(out var fps, "encoding_fps") ? fps.ToInt() : 60;
 

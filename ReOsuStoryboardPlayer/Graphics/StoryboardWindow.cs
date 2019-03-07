@@ -138,7 +138,11 @@ namespace ReOsuStoryboardPlayer
             ProjectionMatrix=Matrix4.Identity*Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
             CameraViewMatrix=Matrix4.Identity;
 
-            PostProcessesManager.Resize(Width, Height);
+            if (PlayerSetting.FrameHeight != Height ||
+                PlayerSetting.FrameWidth != Width)
+                PostProcessesManager.Resize(PlayerSetting.FrameWidth, PlayerSetting.FrameHeight);
+            else
+                PostProcessesManager.Resize(Width, Height);
             SetupClipPostProcesses();
         }
 

@@ -19,9 +19,9 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess
 {
     public class CaptureRenderPostProcess : APostProcess
     {
-        PostProcessFrameBuffer frame_buffer = new PostProcessFrameBuffer(PlayerSetting.Width, PlayerSetting.Height);
+        PostProcessFrameBuffer frame_buffer = new PostProcessFrameBuffer(PlayerSetting.FrameWidth, PlayerSetting.FrameHeight);
 
-        public byte[] RenderPixels { get; } = new byte[PlayerSetting.Width*3*PlayerSetting.Height];
+        public byte[] RenderPixels { get; } = new byte[PlayerSetting.FrameWidth * 3*PlayerSetting.FrameHeight];
 
         int store_prev_fbo = 0;
         int[] store_prev_viewport = new int[4];
@@ -52,7 +52,7 @@ namespace ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess
             store_prev_fbo=GL.GetInteger(GetPName.FramebufferBinding);
 
             frame_buffer.Bind();
-            GL.Viewport(0, 0, StoryboardWindow.CurrentWindow.Width, StoryboardWindow.CurrentWindow.Height);
+            GL.Viewport(0, 0, PlayerSetting.FrameWidth, PlayerSetting.FrameHeight);
 
             GL.DrawArrays(PrimitiveType.TriangleFan, 0, 4);
 

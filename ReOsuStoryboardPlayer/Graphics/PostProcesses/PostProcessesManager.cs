@@ -15,7 +15,10 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
         private int _currentIndex = 1;
         private PostProcessFrameBuffer[] _fbos = new PostProcessFrameBuffer[2];
         private PostProcessFrameBuffer _prevFbo = null;
-        
+
+        public int Width { get; private set; }
+        public int Heigth { get; private set; }
+
         public void Init()
         {
             _finalProcess = new FinalPostProcess();
@@ -24,16 +27,17 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 
         public void Resize(int w,int h)
         {
-            int sample = 1<<PlayerSetting.SsaaLevel;
-            var nw=w*sample;
-            var nh=h*sample;
+            int sample = 1 << PlayerSetting.SsaaLevel;
+            Width = w * sample;
+            Heigth = h * sample;
+            
 
-            Log.Debug($"Window resize ({w},{h}) -> ({nw},{nh})");
+            Log.Debug($"Window resize ({w}x{h}) -> ({Width}x{Heigth})");
 
             for (int i = 0; i<_fbos.Length; i++)
             {
                 _fbos[i]?.Dispose();
-                _fbos[i]=new PostProcessFrameBuffer(nw, nh);
+                _fbos[i]=new PostProcessFrameBuffer(Width, Heigth);
             }
 
             foreach (var process in _postProcesses)
@@ -75,8 +79,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
             GL.Clear(ClearBufferMask.ColorBufferBit);
             _currentIndex=1;//reset to 1
 
-            int sample = 1<<PlayerSetting.SsaaLevel;
-            GL.Viewport(0, 0, StoryboardWindow.CurrentWindow.Width*sample, StoryboardWindow.CurrentWindow.Height*sample);
+            GL.Viewport(0, 0, Width, Heigth);
         }
 
         public void End()

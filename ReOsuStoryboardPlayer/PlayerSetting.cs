@@ -25,6 +25,10 @@ namespace ReOsuStoryboardPlayer
 
         public static int Height { get; set; } = 480;
 
+        public static int FrameWidth { get; set; } = 854;
+
+        public static int FrameHeight { get; set; } = 480;
+
         /// <summary>
         /// 一次渲染同贴图同Blend的物件数量
         /// </summary>
