@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands;
+using ReOsuStoryboardPlayer.Core.Commands.Group;
 using ReOsuStoryboardPlayer.Core.Parser.CommandParser;
 using ReOsuStoryboardPlayer.Core.Serialization;
 using ReOsuStoryboardPlayer.Core.Serialization.FileInfo;
@@ -21,59 +22,24 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            Write();
-
-            Read();
-
-            //Test();
-        }
-
-        private static void Test()
-        {
             var text = new[]{
-                " F,0,6109,6435,0,1",
-                " M,0,6109,11652,425,328,440,328",
-                " F,0,6435,11326,1",
-                " F,0,11326,11652,1,0",
-                " S,0,22739,,1"
+                " L,18952,65",
+                " V,0,0,300,1.25,1.25",
+                " P,0,75,225,H",
+                " P,0,150,300,V"
             };
 
-            var commands = text.Select(l => CommandParserIntance.Parse(l.Split(','))).SelectMany(l => l);
-
-            StoryboardObject obj = new StoryboardObject();
-            obj.ImageFilePath=@"SB\2.png";
-            obj.AddCommandRange(commands);
-            obj.CalculateAndApplyBaseFrameTime();
-
-            var list = new List<StoryboardObject>();
-            list.Add(obj);
-
-            MemoryStream stream = new MemoryStream();
-
-            StoryboardBinaryFormatter.Serialize(0, list, stream);
-
-            stream.Position=0;
-
-            var new_list=StoryboardBinaryFormatter.Deserialize(stream).ToList();
+            var c = CommandParserIntance.Parse(text[0]).First() as LoopCommand;
+            foreach (var item in text.Skip(1))
+            {
+                var v = CommandParserIntance.Parse(item);
+                foreach (var vv in v)
+                    c.AddSubCommand(vv);
             }
 
-        private static void Read()
-        {
-            var stream = File.OpenRead("test.osbin");
+            c.UpdateSubCommand();
 
-            var objs=StoryboardBinaryFormatter.UnzipDeserialize(stream).ToList();
-        }
-
-        private static void Write()
-        {
-            var objects = StoryboardParserHelper
-                   .GetStoryboardObjects(@"G:\OsuStoryBroadPlayer\ReOsuStoryboardPlayer.Core.UnitTest\TestData\Hatsuki Yura - Fuuga (Lan wings).osb");
-
-            File.Delete("test.osbin");
-            var stream = File.OpenWrite("test.osbin");
-
-            StoryboardBinaryFormatter.ZipSerialize(0,objects, stream);
-            stream.Dispose();
+            var expand = c.SubCommandExpand();
         }
     }
 }

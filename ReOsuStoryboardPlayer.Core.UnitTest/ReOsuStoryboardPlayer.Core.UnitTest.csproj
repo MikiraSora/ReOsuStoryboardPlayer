@@ -51,10 +51,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\LoopCommand\LoopUnrollingTest.cs" />
     <Compile Include="Optimzer\SimpleRuntimeCompareTest.cs" />
     <Compile Include="Serialization\MainTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\WriteReadTest.cs" />
+    <Compile Include="Utils\ExecuteComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

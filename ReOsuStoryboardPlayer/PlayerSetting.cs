@@ -63,7 +63,7 @@ namespace ReOsuStoryboardPlayer
 
         public static bool EnableSplitMoveScaleCommand { get => Setting.EnableSplitMoveScaleCommand; set => Setting.EnableSplitMoveScaleCommand=value; }
 
-        public static bool EnableLoopCommandExpand { get => Setting.EnableLoopCommandExpand; set => Setting.EnableLoopCommandExpand=value; }
+        public static bool EnableLoopCommandUnrolling { get => Setting.EnableLoopCommandUnrolling; set => Setting.EnableLoopCommandUnrolling=value; }
 
         public static bool FunReverseEasing { get => Setting.FunReverseEasing; set => Setting.FunReverseEasing=value; }
 

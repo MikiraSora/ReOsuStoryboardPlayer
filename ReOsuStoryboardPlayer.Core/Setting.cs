@@ -14,7 +14,7 @@
 
         public static bool EnableSplitMoveScaleCommand { get; set; } = true;
 
-        public static bool EnableLoopCommandExpand { get; set; } = false;
+        public static bool EnableLoopCommandUnrolling { get; set; } = false;
 
         public static bool FunReverseEasing { get; set; } = false;
 

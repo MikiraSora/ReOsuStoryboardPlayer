@@ -165,8 +165,8 @@ namespace ReOsuStoryboardPlayer
                 if (args.Switches.Any(k => k=="borderless"))
                     PlayerSetting.EnableBorderless=true;
 
-                if (args.Switches.Any(k => k=="enable_loop_expand"))
-                    PlayerSetting.EnableLoopCommandExpand=true;
+                if (args.Switches.Any(k => k=="enable_loop_unrolling"||k=="enable_loop_unwinding"))
+                    PlayerSetting.EnableLoopCommandUnrolling=true;
 
                 if (args.Switches.Any(k => k=="mini"))
                     PlayerSetting.MiniMode=true;

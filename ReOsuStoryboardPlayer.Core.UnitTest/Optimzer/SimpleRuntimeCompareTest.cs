@@ -47,7 +47,7 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Optimzer
             Assert.AreEqual(raw_objects.Count, couple.Count);
             Assert.AreEqual(optimzed_objects.Count, couple.Count);
 
-            couple.AsParallel().ForAll(x => CompareStoryboardObjects(x.a, x.b));
+            couple.AsParallel().ForAll(x => Utils.ExecuteComparer.CompareStoryboardObjects(x.a, x.b));
         }
         
         private static void InitOptimzerManager()
@@ -102,39 +102,6 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Optimzer
             }
 
             return list;
-        }
-
-        public void CompareStoryboardObjects(StoryboardObject raw,StoryboardObject optimzed)
-        {
-            raw.ResetTransform();
-            optimzed.ResetTransform();
-
-            //选取optimzed范围内的raw物件的命令作为时间参照，否则optimzer时间范围外面的命令/时间,因为有优化器提前对optimzer计算导致对比失败
-            foreach (var command in optimzed.CommandMap.Values.SelectMany(l=>l).Where(x=>optimzed.FrameStartTime<=x.StartTime&&x.EndTime<=optimzed.FrameEndTime))
-            {
-                var time = command.StartTime!=command.EndTime?(command.StartTime+command.EndTime)*0.5f : command.EndTime+1;
-
-                Update(time);
-
-                CompareStoryboardObjectTransform(raw, optimzed);
-            }
-
-            void Update(float t)
-            {
-                raw.Update(t);
-                optimzed.Update(t);
-            }
-        }
-
-        public void CompareStoryboardObjectTransform(StoryboardObject raw, StoryboardObject optimzed)
-        {
-            Assert.AreEqual(raw.Color.ToString(), optimzed.Color.ToString());
-            Assert.AreEqual(raw.IsAdditive, optimzed.IsAdditive);
-            Assert.AreEqual(raw.IsHorizonFlip, optimzed.IsHorizonFlip);
-            Assert.AreEqual(raw.IsVerticalFlip, optimzed.IsVerticalFlip);
-            Assert.AreEqual(raw.Rotate.ToString(), optimzed.Rotate.ToString());
-            Assert.AreEqual(raw.Scale.ToString(), optimzed.Scale.ToString());
-            Assert.AreEqual(raw.Postion.ToString(), optimzed.Postion.ToString());
         }
     }
 }

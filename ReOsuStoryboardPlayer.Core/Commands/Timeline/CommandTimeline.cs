@@ -146,7 +146,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         {
             //cache
             if (pick_command_cache.cache_selected_command!=null
-                &&pick_command_cache.cache_start_time<=current_time&&current_time<=pick_command_cache.cache_end_time)
+                &&pick_command_cache.cache_start_time<=current_time&&current_time<pick_command_cache.cache_end_time)
                 return pick_command_cache.cache_selected_command;
 
             int min = 0, max = commands.Count-2;
@@ -158,7 +158,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
                 var cmd = commands[i];
                 var next_cmd = commands[i+1];
 
-                if (cmd.StartTime<=current_time&&current_time<=next_cmd.StartTime)
+                if (cmd.StartTime<=current_time&&current_time<next_cmd.StartTime)
                     return UpdatePickCache(cmd.StartTime, next_cmd.StartTime, cmd);
 
                 if (cmd.StartTime>=current_time)

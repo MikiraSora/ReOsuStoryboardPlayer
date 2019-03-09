@@ -124,7 +124,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         private void AddLoopCommand(LoopCommand loop_command)
         {
-            if (Setting.EnableLoopCommandExpand)
+            if (Setting.EnableLoopCommandUnrolling)
             {
                 //将Loop命令各个类型的子命令时间轴封装成一个命令，并添加到物件本体各个时间轴上
                 foreach (var cmd in loop_command.SubCommandExpand())

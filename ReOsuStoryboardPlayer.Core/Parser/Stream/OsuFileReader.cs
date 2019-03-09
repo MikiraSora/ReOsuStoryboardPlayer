@@ -11,6 +11,11 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Stream
 
         public int FileLine = 0;
 
+        public OsuFileReader(System.IO.Stream base_stream)
+        {
+            reader=new StreamReader(base_stream);
+        }
+
         public OsuFileReader(string file_path)
         {
             reader=new StreamReader(file_path);

@@ -76,12 +76,7 @@ namespace ReOsuStoryboardPlayer.Core.UnitTest.Serialization
             foreach (var objB in objectsB)
             {
                 //fast find
-                var objA = objectsA.FirstOrDefault(x=>x.FromOsbFile==objB.FromOsbFile&&x.FileLine==objB.FileLine);
-
-                if (objA.FileLine==130219)
-                {
-
-                }
+                var objA = objectsA.FirstOrDefault(x=>x.FileLine==objB.FileLine);
 
                 //compare
                 Assert.IsTrue(objB.Equals(objA));

@@ -10,6 +10,8 @@ namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
 {
     public class CommandParserIntance
     {
+        public static IEnumerable<Command> Parse(string command_line) => Parse(command_line.Split(','));
+
         public static IEnumerable<Command> Parse(IEnumerable<string> data_arr)
         {
             var command_event = data_arr.First().TrimStart(' ', '_');
