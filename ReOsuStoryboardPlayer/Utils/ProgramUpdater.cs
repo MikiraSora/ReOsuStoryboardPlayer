@@ -27,8 +27,7 @@ namespace ReOsuStoryboardPlayer.Utils
         private const string DOWNLOAD_ZIP = "update.zip";
         private const string EXE_NAME = "ReOsuStoryBoardPlayer.exe";
         private const string UPDATE_EXE_NAME = "updater_temp.exe";
-
-
+        
         public static async void UpdateCheck()
         {
             try
@@ -79,7 +78,7 @@ namespace ReOsuStoryboardPlayer.Utils
                 {
                     await Task.Run(() =>
                     {
-                        if (MessageBox.Show(null, $"There is a new version available to update.", "Program Updater", MessageBoxButtons.YesNo)==DialogResult.Yes)
+                        if (MessageBox.Show(null, $"There is a new version available to update.\ncurrent version:{program_version} \nlatest version:{release_version}", "Program Updater", MessageBoxButtons.YesNo)==DialogResult.Yes)
                         {
                             var client = new WebClient();
 
@@ -162,8 +161,6 @@ namespace ReOsuStoryboardPlayer.Utils
 
             try
             {
-
-
                 Log.User($"Waiting for all players were shutdown....");
 
                 while (Process.GetProcessesByName("ReOsuStoryBoardPlayer").Any())
