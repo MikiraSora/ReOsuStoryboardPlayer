@@ -131,11 +131,10 @@ namespace ReOsuStoryboardPlayer.Utils
             }
             catch (Exception e)
             {
-                Log.Error("Update check failed:"+e.Message);
+                Log.Error($"Update check failed:{e.Message} , you can go to https://github.com/MikiraSora/ReOsuStoryboardPlayer/releases/latest and check manually");
             }
         }
     
-
         internal static void CleanTemp()
         {
             try
