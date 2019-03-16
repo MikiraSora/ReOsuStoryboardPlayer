@@ -104,7 +104,7 @@ namespace ReOsuStoryboardPlayer
         {
             beatmap_folder=@"G:\SBTest\695053 BlackY - Double Pendulum";
 
-            var sb = new ArgParser(new ParamParserV2('-', '\"', '\''));
+            var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);
 
             if (args!=null)
