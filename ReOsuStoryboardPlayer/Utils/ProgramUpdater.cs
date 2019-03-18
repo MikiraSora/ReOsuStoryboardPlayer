@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.IO.Compression;
 using System.Diagnostics;
 using System.Threading;
+using ReOsuStoryboardPlayer.ProgramCommandParser;
 
 namespace ReOsuStoryboardPlayer.Utils
 {
@@ -32,6 +33,9 @@ namespace ReOsuStoryboardPlayer.Utils
         {
             try
             {
+                if (Directory.Exists(TEMP_DIR_NAME))
+                    Directory.Delete(TEMP_DIR_NAME);
+
                 var asm = Assembly.GetExecutingAssembly();
                 var program_version = asm.GetName().Version;
 
@@ -107,21 +111,24 @@ namespace ReOsuStoryboardPlayer.Utils
                                 archive.ExtractToDirectory(TEMP_DIR_NAME);
                             }
 
-                            var exe_file = Directory.EnumerateFiles(TEMP_DIR_NAME, EXE_NAME).First();
+                            var exe_file_path = Directory.EnumerateFiles(TEMP_DIR_NAME, EXE_NAME,SearchOption.AllDirectories).FirstOrDefault();
+                            var exe_path = Path.GetDirectoryName(exe_file_path);
 
-                            if (!File.Exists(exe_file))
+                            if (!File.Exists(exe_file_path))
                             {
                                 Log.Error($"Can't find the exe file \"{EXE_NAME}\" as program updater，please redownload or manually copy files/directories of folder \"{TEMP_DIR_NAME}\" to current program folder");
                                 return;
                             }
 
-                            var updater_exe_file = Path.Combine(TEMP_DIR_NAME, UPDATE_EXE_NAME);
-                            File.Copy(exe_file, updater_exe_file, true);
+                            var updater_exe_file = Path.Combine(exe_path, UPDATE_EXE_NAME);
+                            File.Copy(exe_file_path, updater_exe_file, true);
 
                             if (File.Exists(DOWNLOAD_ZIP))
                                 File.Delete(DOWNLOAD_ZIP);
+                            
+                            var current_path = AppDomain.CurrentDomain.BaseDirectory;
 
-                            Process.Start(new ProcessStartInfo(updater_exe_file, $"\"{Process.GetCurrentProcess().Id}\" -program_update -disable_update_check"));
+                            Process.Start(new ProcessStartInfo(updater_exe_file, $"\"{Process.GetCurrentProcess().Id}\" -program_update \"{current_path}\" -disable_update_check"));
 
                             MainProgram.Exit();
                         }
@@ -150,7 +157,7 @@ namespace ReOsuStoryboardPlayer.Utils
             }
         }
 
-        public static void ApplyUpdate(int raw_proc_id)
+        public static void ApplyUpdate(int raw_proc_id, string dest_path)
         {
             try
             {
@@ -162,14 +169,19 @@ namespace ReOsuStoryboardPlayer.Utils
             try
             {
                 Log.User($"Waiting for all players were shutdown....");
-
+                
                 while (Process.GetProcessesByName("ReOsuStoryBoardPlayer").Any())
                     Thread.Sleep(500);
-
+                
                 var current_exe_name = Path.GetFileName(Process.GetCurrentProcess().Modules[0].FileName);
                 var current_path = AppDomain.CurrentDomain.BaseDirectory;
 
-                var prev_path = new DirectoryInfo(current_path).Parent.FullName;
+                if(!Directory.Exists(dest_path))
+                {
+                    MainProgram.Exit("program_update must set a directory path.");
+                }
+                
+                Log.User($"Copy files to {dest_path}");
 
                 bool success_fully = true;
                 var files = Directory.EnumerateFiles(current_path).Where(x => Path.GetFileName(x)!=current_exe_name).ToArray();
@@ -182,8 +194,8 @@ namespace ReOsuStoryboardPlayer.Utils
                     try
                     {
                         display_file_path=RelativePath(current_path, source_file);
-                        Log.User($"Copy file({i}/{files.Length}):{display_file_path}");
-                        CopyRelativeFile(source_file, current_path, prev_path);
+                        Log.User($"Copy file({i+1}/{files.Length}):{display_file_path}");
+                        CopyRelativeFile(source_file, current_path, dest_path);
                     }
                     catch (Exception e)
                     {
@@ -193,7 +205,9 @@ namespace ReOsuStoryboardPlayer.Utils
                 }
 
                 if (success_fully)
+                {
                     Log.User("Program update successfully!");
+                }
                 else
                     Log.Warn("Program update isn't successful even failed,but you can copy the files/directories of \"update_temp\" folder to current program folder");
 

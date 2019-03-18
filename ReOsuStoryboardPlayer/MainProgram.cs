@@ -115,12 +115,12 @@ namespace ReOsuStoryboardPlayer
                     Exit("");
                 }
 
-                if (args.TryGetSwitch("program_update"))
+                if (args.TryGetArg("program_update",out var update_dest_path))
                 {
                     int id = 0;
                     var x = int.TryParse(args.FreeArgs.FirstOrDefault(), out id);
 
-                    ProgramUpdater.ApplyUpdate(x ? id : 0);
+                    ProgramUpdater.ApplyUpdate(x ? id : 0, update_dest_path);
                 }
 
                 if (args.FreeArgs!=null)
