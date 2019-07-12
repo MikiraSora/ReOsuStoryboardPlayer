@@ -123,6 +123,7 @@
     <Compile Include="BeatmapParser\HitObjectHelpers.cs" />
     <Compile Include="Parser\BeatmapFolderInfo.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />
+    <Compile Include="Player\LoopPlayer.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />
     <Compile Include="ProgramCommandParser\CommandParser.cs" />
     <Compile Include="ProgramCommandParser\IParamParser.cs" />

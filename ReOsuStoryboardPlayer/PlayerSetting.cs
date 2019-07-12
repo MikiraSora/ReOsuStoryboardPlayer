@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
+#pragma warning disable IDE1006 // 命名样式
+
 namespace ReOsuStoryboardPlayer
 {
     public static class PlayerSetting
@@ -79,6 +81,14 @@ namespace ReOsuStoryboardPlayer
         public static string UserSkinPath { get; set; }
 
         #endregion Core Settings
+
+        #region Internal Use
+
+        internal static float? _Vol { get; set; }
+        internal static uint? _LoopPlayStartTime { get; set; } = default;
+        internal static uint? _LoopPlayEndTime { get; set; } = default;
+
+        #endregion
 
         #region Extendsion
 

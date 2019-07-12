@@ -93,6 +93,23 @@ namespace ReOsuStoryboardPlayer
                 encoding_kernel.Start();
             }
 
+            #region Setup Loop Playback
+
+            if ((PlayerSetting._LoopPlayStartTime != null || PlayerSetting._LoopPlayEndTime!=null) && MusicPlayerManager.ActivityPlayer is MusicPlayer mp)
+            {
+                var len = mp.Length;
+
+                LoopPlayer lp = new LoopPlayer(PlayerSetting._LoopPlayStartTime??0, PlayerSetting._LoopPlayEndTime??len);
+
+                Log.User($"Loop playback : {lp}");
+
+                MusicPlayerManager.ApplyPlayer(lp);
+            }
+
+            #endregion
+
+            MusicPlayerManager.ActivityPlayer.Volume = PlayerSetting._Vol ?? 1;
+
             MusicPlayerManager.ActivityPlayer?.Play();
 
             window.Run();
@@ -102,7 +119,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder=@"G:\SBTest\695053 BlackY - Double Pendulum";
+            beatmap_folder= @"G:\SBTest\695053 BlackY - Double Pendulum";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);
@@ -128,6 +145,18 @@ namespace ReOsuStoryboardPlayer
 
                 if (args.TryGetArg(out var valW, "width", "w"))
                     PlayerSetting.FrameWidth = PlayerSetting.Width = int.Parse(valW);
+
+                if (args.TryGetArg(out var vol, "volume"))
+                    PlayerSetting._Vol=float.Parse(vol);
+
+                if (args.TryGetArg(out var ls, "loop_start_time"))
+                    PlayerSetting._LoopPlayStartTime = uint.Parse(ls);
+
+                if (args.Switches.Any(x => x == "loop"))
+                    PlayerSetting._LoopPlayStartTime = 0;
+
+                if (args.TryGetArg(out var le, "loop_end_time"))
+                    PlayerSetting._LoopPlayEndTime = uint.Parse(le);
 
                 if (args.TryGetArg(out var valH, "height", "h"))
                     PlayerSetting.FrameHeight = PlayerSetting.Height = int.Parse(valH);
