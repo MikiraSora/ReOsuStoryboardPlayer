@@ -16,10 +16,17 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
     public class StoryboardReader : IReader<StoryboardObject>
     {
         public EventReader Reader { get; }
+        public CommandParserIntance Parser { get; }
 
-        public StoryboardReader(EventReader reader)
+        /// <summary>
+        /// 读取文本并解析成对应的SB物件/命令
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="manager">会默认新建</param>
+        public StoryboardReader(EventReader reader,CommandParserIntance parser=null)
         {
             Reader=reader;
+            Parser = parser ?? CommandParserIntanceBuilder.CreateDefault().Build();
         }
 
         public IEnumerable<StoryboardObject> EnumValues()
@@ -161,7 +168,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 
                 var is_sub_cmd = data_arr.First().StartsWith("  ")||data_arr.First().StartsWith("__");
 
-                foreach (var cmd in CommandParserIntance.Parse(data_arr))
+                foreach (var cmd in Parser.Parse(data_arr))
                 {
                     cmd.RelativeLine=base_line++;
 
@@ -205,7 +212,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
                 var data_arr = line.Split(',');
                 var is_sub_cmds = data_arr.First().StartsWith("  ")||data_arr.First().StartsWith("__");
 
-                var temp_list = CommandParserIntance.Parse(data_arr);
+                var temp_list = Parser.Parse(data_arr);
 
                 foreach (var c in temp_list)
                     c.RelativeLine=file_line;
