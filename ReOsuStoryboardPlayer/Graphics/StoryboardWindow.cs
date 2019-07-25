@@ -487,7 +487,7 @@ namespace ReOsuStoryboardPlayer
                     group=obj_group;
                 }
 
-                group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale, obj.Anchor, obj.Color, obj.IsVerticalFlip, obj.IsHorizonFlip);
+                group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale, obj.OriginOffset, obj.Color, obj.IsVerticalFlip, obj.IsHorizonFlip);
             }
 
             //ChangeAdditiveStatus(false);

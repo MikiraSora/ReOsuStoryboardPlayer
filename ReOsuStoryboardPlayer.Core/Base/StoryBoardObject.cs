@@ -53,7 +53,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public float Rotate;
 
-        public HalfVector Anchor = new HalfVector(0f, 0f);
+        public HalfVector OriginOffset = new HalfVector(0f, 0f);
 
         public bool IsAdditive, IsHorizonFlip, IsVerticalFlip;
 
@@ -304,7 +304,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             Postion.OnSerialize(stream, cache_table);
             Scale.OnSerialize(stream, cache_table);
             Color.OnSerialize(stream, cache_table);
-            Anchor.OnSerialize(stream, cache_table);
+            OriginOffset.OnSerialize(stream, cache_table);
             Rotate.OnSerialize(stream);
 
             IsAdditive.OnSerialize(stream);
@@ -336,7 +336,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             Postion.OnDeserialize(stream, cache_table);
             Scale.OnDeserialize(stream, cache_table);
             Color.OnDeserialize(stream, cache_table);
-            Anchor.OnDeserialize(stream, cache_table);
+            OriginOffset.OnDeserialize(stream, cache_table);
             Rotate.OnDeserialize(stream);
 
             IsAdditive.OnDeserialize(stream);
@@ -382,7 +382,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 &&other.Scale==Scale
                 &&other.Color==Color
                 &&other.Rotate==Rotate
-                &&other.Anchor==Anchor
+                &&other.OriginOffset==OriginOffset
                 &&other.IsAdditive==IsAdditive
                 &&other.IsHorizonFlip==IsHorizonFlip
                 &&other.IsVerticalFlip==IsVerticalFlip

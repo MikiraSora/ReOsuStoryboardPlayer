@@ -115,7 +115,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
             int w = (int)(group.Texture.Width*Math.Abs(obj.Scale.X));
             int h = (int)(group.Texture.Height*Math.Abs(obj.Scale.Y));
 
-            Vector2 anchor = new Vector2(obj.Anchor.X, obj.Anchor.Y)+new Vector2(0.5f, 0.5f);
+            Vector2 anchor = new Vector2(obj.OriginOffset.X, obj.OriginOffset.Y)+new Vector2(0.5f, 0.5f);
             anchor.X*=w;
             anchor.Y*=h;
 

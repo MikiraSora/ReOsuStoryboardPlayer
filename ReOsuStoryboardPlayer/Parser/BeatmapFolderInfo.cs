@@ -116,7 +116,7 @@ namespace ReOsuStoryboardPlayer.Parser
                     .Select(x => new FileInfo(x))
                     .OrderByDescending(x => x.Length)
                     .FirstOrDefault()
-                    .FullName;
+                    ?.FullName;
             }
 
             if (!(_check(info.osu_file_path)||_check(info.osb_file_path))&&_check(info.audio_file_path))
@@ -139,7 +139,7 @@ namespace ReOsuStoryboardPlayer.Parser
 
         ~BeatmapFolderInfo()
         {
-            reader.Dispose();
+            reader?.Dispose();
         }
     }
 }

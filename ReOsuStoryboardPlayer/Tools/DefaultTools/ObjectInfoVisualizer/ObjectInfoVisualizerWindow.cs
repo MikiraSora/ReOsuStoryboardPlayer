@@ -40,7 +40,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
                     //这里是物件装载一次的
 
                     Text=SelectObject.ImageFilePath;
-                    AnchorLabel.Text=SelectObject.Anchor.ToString();
+                    AnchorLabel.Text=SelectObject.OriginOffset.ToString();
                     OrderLabel.Text=SelectObject.Z.ToString();
                     TimeLabel.Text=$"{SelectObject.FrameStartTime}~{SelectObject.FrameEndTime}";
 
