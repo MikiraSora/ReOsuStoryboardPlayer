@@ -42,8 +42,8 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
 
                         //ValueCommand<TYPE_VALUE>我敲里吗
                         var type = normal_timeline.First().GetType();
-                        var end_value_prop = type.GetProperty("EndValue");
-                        var start_value_prop = type.GetProperty("StartValue");
+                        var end_value_prop = type.GetField("EndValue");
+                        var start_value_prop = type.GetField("StartValue");
 
                         for (int i = 0; i<normal_timeline.Count()-1; i++)
                         {
