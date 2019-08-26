@@ -119,7 +119,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder= @"G:\SBTest\695053 BlackY - Double Pendulum";
+            beatmap_folder= @"G:\SBTest\470977 Mili - worldexecute(me);";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);
@@ -161,10 +161,10 @@ namespace ReOsuStoryboardPlayer
                 if (args.TryGetArg(out var valH, "height", "h"))
                     PlayerSetting.FrameHeight = PlayerSetting.Height = int.Parse(valH);
 
-                if (args.TryGetArg(out var valFW, "freame_width", "fw"))
+                if (args.TryGetArg(out var valFW, "frame_width", "fw"))
                     PlayerSetting.FrameWidth = int.Parse(valFW);
 
-                if (args.TryGetArg(out var valFH, "freame_height", "fh"))
+                if (args.TryGetArg(out var valFH, "frame_height", "fh"))
                     PlayerSetting.FrameHeight = int.Parse(valFH);
 
                 if (args.TryGetArg(out var draw_count, "multi_instance_render", "mtr"))

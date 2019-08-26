@@ -436,10 +436,7 @@ namespace ReOsuStoryboardPlayer
         {
             base.OnMouseWheel(e);
 
-            var time = -e.DeltaPrecise*125;
-
-            if (MusicPlayerManager.ActivityPlayer is MusicPlayer player)
-                player.Jump(player.CurrentTime+time, true);
+            ToolManager.TrigMouseWheel(e);
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)

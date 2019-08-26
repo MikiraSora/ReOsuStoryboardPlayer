@@ -12,10 +12,20 @@ namespace ReOsuStoryboardPlayer
 {
     public static class PlayerSetting
     {
+        private static bool _mini_mode = false;
         /// <summary>
         /// 最小化
         /// </summary>
-        public static bool MiniMode { get; set; } = false;
+        public static bool MiniMode
+        {
+            get { return _mini_mode; }
+
+            set
+            {
+                _mini_mode = value;
+                Log.AbleLog = !value;
+            }
+        }
         
         public static int StoryboardObjectOptimzeLevel { get; set; } = 2;
 

@@ -9,6 +9,15 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.InputController
         public override void Init()
         {
             ToolManager.KeyboardPress+=DebuggerManager_KeyBoardPress;
+            ToolManager.MouseWheel += ToolManager_MouseWheel;
+        }
+
+        private void ToolManager_MouseWheel(MouseWheelEventArgs e)
+        {
+            var time = -e.DeltaPrecise * 125;
+
+            if (MusicPlayerManager.ActivityPlayer is MusicPlayer player)
+                player.Jump(player.CurrentTime + time, true);
         }
 
         private void DebuggerManager_KeyBoardPress(Key e)

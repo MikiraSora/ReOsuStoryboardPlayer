@@ -87,6 +87,8 @@ namespace ReOsuStoryboardPlayer.Tools
 
         public static event Action<Key> KeyboardPress;
 
+        public static event Action<MouseWheelEventArgs> MouseWheel;
+
         public static event Action BeforeRender;
 
         public static event Action AfterRender;
@@ -94,6 +96,8 @@ namespace ReOsuStoryboardPlayer.Tools
         internal static void TrigClick(int x, int y, MouseInput input) => MouseClick?.Invoke(x, y, input);
 
         internal static void TrigMove(int x, int y) => MouseMove?.Invoke(x, y);
+
+        internal static void TrigMouseWheel(MouseWheelEventArgs e) => MouseWheel?.Invoke(e);
 
         internal static void TrigBeforeRender() => BeforeRender?.Invoke();
 
