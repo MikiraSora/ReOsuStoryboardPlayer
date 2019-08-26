@@ -108,7 +108,7 @@ namespace ReOsuStoryboardPlayer
 
             #endregion
 
-            MusicPlayerManager.ActivityPlayer.Volume = PlayerSetting._Vol ?? 1;
+            MusicPlayerManager.ActivityPlayer.Volume = PlayerSetting.Volume;
 
             MusicPlayerManager.ActivityPlayer?.Play();
 
@@ -147,7 +147,7 @@ namespace ReOsuStoryboardPlayer
                     PlayerSetting.FrameWidth = PlayerSetting.Width = int.Parse(valW);
 
                 if (args.TryGetArg(out var vol, "volume"))
-                    PlayerSetting._Vol=float.Parse(vol);
+                    PlayerSetting.Volume =float.Parse(vol);
 
                 if (args.TryGetArg(out var ls, "loop_start_time"))
                     PlayerSetting._LoopPlayStartTime = uint.Parse(ls);

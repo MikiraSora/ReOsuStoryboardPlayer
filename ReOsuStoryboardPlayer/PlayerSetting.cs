@@ -61,6 +61,8 @@ namespace ReOsuStoryboardPlayer
 
         public static bool EnableUpdateCheck { get; set; } = true;
 
+        public static float Volume  { get; set; } = 1;
+
         #region Core Settings
 
         /// <summary>
@@ -92,9 +94,8 @@ namespace ReOsuStoryboardPlayer
 
         #endregion Core Settings
 
-        #region Internal Use
+        #region Internal Config (Only command use,not for config file persistence)
 
-        internal static float? _Vol { get; set; }
         internal static uint? _LoopPlayStartTime { get; set; } = default;
         internal static uint? _LoopPlayEndTime { get; set; } = default;
 
