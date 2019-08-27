@@ -86,51 +86,64 @@ namespace ReOsuStoryboardPlayer.Utils
                         {
                             var client = new WebClient();
 
-                            client.DownloadFile(new Uri(download_url), DOWNLOAD_ZIP);
+                            Log.User($"Downloading {download_url}");
 
-                            if (!File.Exists(DOWNLOAD_ZIP))
-                            {
-                                Log.Error($"Can't download update zip file.");
-                                return;
-                            }
+                            int prev_progress = -1;
+                            client.DownloadProgressChanged += (o,e)=> {
+                                if (prev_progress == e.ProgressPercentage)
+                                    return;
+                                prev_progress = e.ProgressPercentage;
+                                Log.User($"Downloading... {e.ProgressPercentage}%");
+                            };
 
-                            using (ZipArchive archive = ZipFile.Open(DOWNLOAD_ZIP, ZipArchiveMode.Read))
-                            {
-                                if (!Directory.Exists(TEMP_DIR_NAME))
-                                    Directory.CreateDirectory(TEMP_DIR_NAME);
-                                else
+                            client.DownloadFileCompleted += (o, e) => {
+
+                                if (!File.Exists(DOWNLOAD_ZIP))
                                 {
-                                    //clean
-                                    foreach (var file in Directory.EnumerateFiles(TEMP_DIR_NAME))
-                                        if (Directory.Exists(file))
-                                            Directory.Delete(file);
-                                        else
-                                            File.Delete(file);
+                                    Log.Error($"Can't download update zip file.");
+                                    return;
                                 }
 
-                                archive.ExtractToDirectory(TEMP_DIR_NAME);
-                            }
+                                using (ZipArchive archive = ZipFile.Open(DOWNLOAD_ZIP, ZipArchiveMode.Read))
+                                {
+                                    if (!Directory.Exists(TEMP_DIR_NAME))
+                                        Directory.CreateDirectory(TEMP_DIR_NAME);
+                                    else
+                                    {
+                                        //clean
+                                        foreach (var file in Directory.EnumerateFiles(TEMP_DIR_NAME))
+                                            if (Directory.Exists(file))
+                                                Directory.Delete(file);
+                                            else
+                                                File.Delete(file);
+                                    }
 
-                            var exe_file_path = Directory.EnumerateFiles(TEMP_DIR_NAME, EXE_NAME,SearchOption.AllDirectories).FirstOrDefault();
-                            var exe_path = Path.GetDirectoryName(exe_file_path);
+                                    archive.ExtractToDirectory(TEMP_DIR_NAME);
+                                }
 
-                            if (!File.Exists(exe_file_path))
-                            {
-                                Log.Error($"Can't find the exe file \"{EXE_NAME}\" as program updater，please redownload or manually copy files/directories of folder \"{TEMP_DIR_NAME}\" to current program folder");
-                                return;
-                            }
+                                var exe_file_path = Directory.EnumerateFiles(TEMP_DIR_NAME, EXE_NAME, SearchOption.AllDirectories).FirstOrDefault();
+                                var exe_path = Path.GetDirectoryName(exe_file_path);
 
-                            var updater_exe_file = Path.Combine(exe_path, UPDATE_EXE_NAME);
-                            File.Copy(exe_file_path, updater_exe_file, true);
+                                if (!File.Exists(exe_file_path))
+                                {
+                                    Log.Error($"Can't find the exe file \"{EXE_NAME}\" as program updater，please redownload or manually copy files/directories of folder \"{TEMP_DIR_NAME}\" to current program folder");
+                                    return;
+                                }
 
-                            if (File.Exists(DOWNLOAD_ZIP))
-                                File.Delete(DOWNLOAD_ZIP);
-                            
-                            var current_path = AppDomain.CurrentDomain.BaseDirectory;
+                                var updater_exe_file = Path.Combine(exe_path, UPDATE_EXE_NAME);
+                                File.Copy(exe_file_path, updater_exe_file, true);
 
-                            Process.Start(new ProcessStartInfo(updater_exe_file, $"\"{Process.GetCurrentProcess().Id}\" -program_update \"{current_path}\" -disable_update_check"));
+                                if (File.Exists(DOWNLOAD_ZIP))
+                                    File.Delete(DOWNLOAD_ZIP);
 
-                            MainProgram.Exit();
+                                var current_path = AppDomain.CurrentDomain.BaseDirectory;
+
+                                Process.Start(new ProcessStartInfo(updater_exe_file, $"\"{Process.GetCurrentProcess().Id}\" -program_update \"{current_path}\" -disable_update_check"));
+
+                                MainProgram.Exit();
+                            };
+
+                            client.DownloadFileAsync(new Uri(download_url), DOWNLOAD_ZIP);
                         }
                     });
                 }
@@ -140,7 +153,7 @@ namespace ReOsuStoryboardPlayer.Utils
                 Log.Error($"Update check failed:{e.Message} , you can go to https://github.com/MikiraSora/ReOsuStoryboardPlayer/releases/latest and check manually");
             }
         }
-    
+
         internal static void CleanTemp()
         {
             try

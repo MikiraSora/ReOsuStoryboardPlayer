@@ -23,7 +23,7 @@ namespace ReOsuStoryboardPlayer
             set
             {
                 _mini_mode = value;
-                Log.AbleLog = !value;
+                Setting.AllowLog = !value;
             }
         }
         
