@@ -3,6 +3,8 @@
 ![](https://img.shields.io/github/v/release/MikiraSora/ReOsuStoryboardPlayer?label=ReOsuStoryboardPlayer)
 <br>
 ![](https://img.shields.io/nuget/v/ReOsuStoryboardPlayer.Core?label=ReOsuStoryboardPlayer.Core)
+<br>
+![](https://img.shields.io/github/license/MikiraSora/ReOsuStoryboardPlayer)
 
 #### 前言:
 本软件基于本人魔改的另一个fork过来的2D渲染框架OpenGLF(SimpleRenderFramework),期初是为用于测试框架的物件动作动画系统的测试项目，现以独立。
@@ -18,6 +20,7 @@
 * 已实现SB转视频(支持高fps高分辨率的)
 * 已实现实用的Debugger工具(至少不会对着屙屎那个界面脑内debug了)
 * **核心逻辑独立成项目**，可方便移植到任何地方实现SB逻辑
+* 提供Example项目
 
 #### 已知问题
 * 部分Sb铺面不能完全支持(可能有执行逻辑的bug)
@@ -26,11 +29,10 @@
 
 #### 计划(咕)
 * Profile工具
-* 实现帮助文档
 * .Net Framework -> .Net Core
 * ReStoryboardPlayer on Brosewer with Blazor
 
-#### 系统要求
+#### 系统环境要求
 * .net framework 4.7.1
 
 #### 截图:
