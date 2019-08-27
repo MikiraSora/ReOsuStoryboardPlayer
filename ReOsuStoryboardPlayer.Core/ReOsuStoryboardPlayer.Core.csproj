@@ -3,11 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
-    <Version>1.5.0</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>1.5.7</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Company></Company>
     <Authors>MikiraSora</Authors>
+    <PackageProjectUrl>https://github.com/MikiraSora/ReOsuStoryboardPlayer/tree/master/ReOsuStoryboardPlayer.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MikiraSora/ReOsuStoryboardPlayer</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>SBCoreKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
