@@ -1,5 +1,9 @@
 ### 恶俗SB播放器
 ---
+![](https://img.shields.io/github/v/release/MikiraSora/ReOsuStoryboardPlayer?label=ReOsuStoryboardPlayer)
+<br>
+![](https://img.shields.io/nuget/v/ReOsuStoryboardPlayer.Core?label=ReOsuStoryboardPlayer.Core)
+
 #### 前言:
 本软件基于本人魔改的另一个fork过来的2D渲染框架OpenGLF(SimpleRenderFramework),期初是为用于测试框架的物件动作动画系统的测试项目，现以独立。
 
