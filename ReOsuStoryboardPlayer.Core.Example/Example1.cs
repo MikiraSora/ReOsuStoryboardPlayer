@@ -42,10 +42,6 @@ namespace ReOsuStoryboardPlayer.Core.Example
 
             #region Get storyboard objects and create updater for controling objects in timeline.
 
-            //use optimzer
-            StoryboardOptimzerManager.AddOptimzer<RuntimeOptimzer>(); // or StoryboardOptimzerManager.AddOptimzer(new RuntimeOptimzer());
-            StoryboardOptimzerManager.AddOptimzer<ParserStaticOptimzer>();
-
             //get storyboard objects from .osb file
             var osb_object_list = GetStoryboardObjectsFromFile(beatmap_info.osb_file_path);
             osb_object_list.Sort((a, b) => (int)(a.FileLine - b.FileLine));
@@ -56,6 +52,12 @@ namespace ReOsuStoryboardPlayer.Core.Example
 
             //combine .osu objects and .osb objects
             var storyboard_objects = CombineStoryboardObjects(osb_object_list, osu_object_list);
+
+            //add optimzer and use
+            StoryboardOptimzerManager.AddOptimzer<RuntimeOptimzer>(); // or StoryboardOptimzerManager.AddOptimzer(new RuntimeOptimzer());
+            StoryboardOptimzerManager.AddOptimzer<ParserStaticOptimzer>();
+
+            StoryboardOptimzerManager.Optimze(4, storyboard_objects);
 
             //create updater
             var updater = new StoryboardUpdater(storyboard_objects);
