@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("ReOsuStoryboardPlayer")]
+[assembly: AssemblyTitle("ReOsuStoryboardPlayer.Core.Example")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ReOsuStoryboardPlayer")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("ReOsuStoryboardPlayer.Core.Example")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,17 +20,17 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("5116d93a-a7d9-4312-b052-fbc2fe5d0444")]
+[assembly: Guid("1575efb3-32c9-41e5-a6c3-6f17b42a3837")]
 
-// 程序集的版本信息由下列四个值组成:
+// 程序集的版本信息由下列四个值组成: 
 //
 //      主版本
 //      次版本
 //      生成号
 //      修订号
 //
-// 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
-// 方法是按如下所示使用“*”: :
+//可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
+//通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.4.3.0")]
-[assembly: AssemblyFileVersion("2.4.3.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

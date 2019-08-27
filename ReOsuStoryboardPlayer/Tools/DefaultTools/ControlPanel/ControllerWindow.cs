@@ -1,6 +1,7 @@
 ﻿using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Parser;
 using ReOsuStoryboardPlayer.Player;
+using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.Windows.Forms;
 
@@ -52,7 +53,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ControlPanel
 
         private DateTime prev_playback_display = DateTime.Now;
         private float prev_playspeed_display = float.MinValue;
-        private BeatmapFolderInfo prev_info_display = null;
+        private BeatmapFolderInfoEx prev_info_display = null;
 
         public void UpdateInfo()
         {

@@ -121,7 +121,7 @@
     <Compile Include="OutputEncoding\Kernel\EncodingKernel.cs" />
     <Compile Include="OutputEncoding\Player\EncodingProcessPlayer.cs" />
     <Compile Include="BeatmapParser\HitObjectHelpers.cs" />
-    <Compile Include="Parser\BeatmapFolderInfo.cs" />
+    <Compile Include="Parser\BeatmapFolderInfoEx.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />
     <Compile Include="Player\LoopPlayer.cs" />
     <Compile Include="ProgramCommandParser\ArgParser.cs" />

@@ -4,6 +4,7 @@ using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Parser;
 using ReOsuStoryboardPlayer.Player;
+using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.AutoTriggerContoller
         {
         }
 
-        public void Load(BeatmapFolderInfo info)
+        public void Load(BeatmapFolderInfoEx info)
         {
             try
             {

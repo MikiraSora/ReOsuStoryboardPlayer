@@ -26,5 +26,7 @@
         public static bool ShowProfileSuggest { get; set; } = false;
 
         public static bool DebugMode { get; set; } = false;
+
+        public static bool AllowLog { get; set; } = true;
     }
 }

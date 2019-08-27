@@ -4,12 +4,13 @@ using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Parser;
 using ReOsuStoryboardPlayer.Player;
 using System;
+using ReOsuStoryBoardPlayer.Parser;
 
 namespace ReOsuStoryboardPlayer.Utils
 {
     public static class StoryboardPlayerHelper
     {
-        public static void PlayStoryboard(BeatmapFolderInfo info)
+        public static void PlayStoryboard(BeatmapFolderInfoEx info)
         {
             //init audio
             if (!(MusicPlayerManager.ActivityPlayer is MusicPlayer player))

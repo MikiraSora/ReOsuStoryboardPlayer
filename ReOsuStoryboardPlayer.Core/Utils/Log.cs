@@ -9,14 +9,6 @@ namespace ReOsuStoryboardPlayer.Core.Utils
     {
         private static long _currentTime = 0;
 
-        private static bool _ableLog = true;
-
-        public static bool AbleLog
-        {
-            get => _ableLog;
-            set => _ableLog=value;
-        }
-
         public static bool AbleDebugLog { get; set; } = false;
 
         private static ConsoleColor[] colors =
@@ -39,7 +31,6 @@ namespace ReOsuStoryboardPlayer.Core.Utils
         static Log()
         {
             _currentTime=Environment.TickCount;
-            AbleLog=true;
         }
 
         private static string _getTimeStr()
@@ -79,7 +70,7 @@ namespace ReOsuStoryboardPlayer.Core.Utils
 
         private static void _log(string caller, string message, LogLevel level)
         {
-            if (!AbleLog)
+            if (!Setting.AllowLog)
                 return;
 
             string output = _buildLogMessage(caller, message, level);

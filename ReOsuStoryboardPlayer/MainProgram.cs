@@ -19,6 +19,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using ReOsuStoryboardPlayer.Utils;
 using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
+using ReOsuStoryBoardPlayer.Parser;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -63,7 +64,7 @@ namespace ReOsuStoryboardPlayer
 
             if (Directory.Exists(beatmap_folder))
             {
-                var info = BeatmapFolderInfo.Parse(beatmap_folder, args);
+                var info = BeatmapFolderInfoEx.Parse(beatmap_folder, args);
                 var instance = StoryboardInstance.Load(info);
 
                 window.LoadStoryboardInstance(instance);
@@ -245,7 +246,7 @@ namespace ReOsuStoryboardPlayer
         {
             try
             {
-                var info = BeatmapFolderInfo.Parse(beatmap_folder, null);
+                var info = BeatmapFolderInfoEx.Parse(beatmap_folder, null);
                 var input_file = parse_osb ? info.osb_file_path : info.osu_file_path;
                 output_path=string.IsNullOrWhiteSpace(output_path) ? input_file+".parse_output" : output_path;
 

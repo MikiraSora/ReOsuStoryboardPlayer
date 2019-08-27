@@ -3,6 +3,7 @@ using ReOsuStoryboardPlayer.Core.Kernel;
 using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Graphics;
 using ReOsuStoryboardPlayer.Parser;
+using ReOsuStoryBoardPlayer.Parser;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,14 +17,14 @@ namespace ReOsuStoryboardPlayer.Kernel
     public class StoryboardInstance
     {
         public StoryboardUpdater Updater { get; private set; }
-        public BeatmapFolderInfo Info { get; private set; }
+        public BeatmapFolderInfoEx Info { get; private set; }
         public StoryboardResource Resource { get; set; }
 
         private StoryboardInstance()
         {
         }
 
-        public static StoryboardInstance Load(BeatmapFolderInfo info)
+        public static StoryboardInstance Load(BeatmapFolderInfoEx info)
         {
             StoryboardInstance instance = new StoryboardInstance();
 
@@ -35,17 +36,17 @@ namespace ReOsuStoryboardPlayer.Kernel
 
                 //get objs from osu file
                 List<StoryboardObject> parse_osu_Storyboard_objs = string.IsNullOrWhiteSpace(info.osu_file_path) ? new List<StoryboardObject>() : StoryboardParserHelper.GetStoryboardObjects(info.osu_file_path);
-                AdjustZ(parse_osu_Storyboard_objs, 0);
+                AdjustZ(parse_osu_Storyboard_objs);
 
                 if ((!string.IsNullOrWhiteSpace(info.osb_file_path))&&File.Exists(info.osb_file_path))
                 {
                     parse_osb_Storyboard_objs=StoryboardParserHelper.GetStoryboardObjects(info.osb_file_path);
-                    AdjustZ(parse_osb_Storyboard_objs, 0);
+                    AdjustZ(parse_osb_Storyboard_objs);
                 }
 
                 temp_objs_list=CombineStoryboardObjects(parse_osb_Storyboard_objs, parse_osu_Storyboard_objs);
 
-                void AdjustZ(List<StoryboardObject> list, int base_z)
+                void AdjustZ(List<StoryboardObject> list)
                 {
                     list.Sort((a, b) => (int)(a.FileLine-b.FileLine));
                 }

@@ -4,6 +4,7 @@ using ReOsuStoryboardPlayer.Parser;
 using ReOsuStoryboardPlayer.Player;
 using ReOsuStoryboardPlayer.ProgramCommandParser;
 using ReOsuStoryboardPlayer.Utils;
+using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.IO;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.CLIController
                         var folder_path = cmd.FreeArgs.FirstOrDefault();
                         if ((!string.IsNullOrWhiteSpace(folder_path))&&Directory.Exists(folder_path))
                         {
-                            var info = BeatmapFolderInfo.Parse(folder_path, null);
+                            var info = BeatmapFolderInfoEx.Parse(folder_path,null);
                             StoryboardPlayerHelper.PlayStoryboard(info);
                         }
                         break;
