@@ -5,7 +5,7 @@
     <LangVersion>7.3</LangVersion>
     <Version>1.5.7</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Company></Company>
     <Authors>MikiraSora</Authors>
     <PackageProjectUrl>https://github.com/MikiraSora/ReOsuStoryboardPlayer/tree/master/ReOsuStoryboardPlayer.Core</PackageProjectUrl>
@@ -14,6 +14,10 @@
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>SBCoreKey.pfx</AssemblyOriginatorKeyFile>
+    <Copyright />
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>(NOT storyboard code generator)This library implements the ability to execute osu!storyboard code and provides a set of tools to easily implement and optimize osu!storyboard code. Anyone can use this library to directly complete the logic implementation of osu!storyboard and easily porting.</Description>
+    <PackageTags>osu!;osu;storyboard;osb;</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,5 +28,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
