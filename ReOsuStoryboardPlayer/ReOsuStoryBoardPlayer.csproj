@@ -90,6 +90,9 @@
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="SharpGL, Version=2.4.1.2, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGL.2.4.1.2\lib\net40-client\SharpGL.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -110,8 +113,10 @@
     <Compile Include="Graphics\PostProcesses\Shaders\ClipShader.cs" />
     <Compile Include="Graphics\PostProcesses\Shaders\FinalShader.cs" />
     <Compile Include="Graphics\PostProcesses\Shaders\PostProcessShader.cs" />
+    <Compile Include="Graphics\RenderKernel.cs" />
     <Compile Include="Graphics\StoryboardResource.cs" />
     <Compile Include="Kernel\StoryboardInstance.cs" />
+    <Compile Include="Kernel\UpdateKernel.cs" />
     <Compile Include="OutputEncoding\DefaultEncodingWriter.cs" />
     <Compile Include="OutputEncoding\EncodingWriterFatory.cs" />
     <Compile Include="OutputEncoding\EncoderOption.cs" />

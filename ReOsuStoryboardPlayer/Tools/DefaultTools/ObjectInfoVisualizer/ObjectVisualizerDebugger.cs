@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Kernel;
+using ReOsuStoryBoardPlayer.Graphics;
 using System;
 
 namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
@@ -96,14 +97,14 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
             Vector2 obj_pos = new Vector2(obj.Postion.X, obj.Postion.Y);
 
             float radio = (float)StoryboardWindow.CurrentWindow.Width/(float)StoryboardWindow.CurrentWindow.Height;
-            float view_width = StoryboardWindow.SB_HEIGHT*radio;
+            float view_width = RenderKernel.SB_HEIGHT*radio;
 
             Vector2 mouse_scale = new Vector2(view_width/StoryboardWindow.CurrentWindow.Width,
-                StoryboardWindow.SB_HEIGHT/StoryboardWindow.CurrentWindow.Height);
+                RenderKernel.SB_HEIGHT/StoryboardWindow.CurrentWindow.Height);
 
             var mouse_point = new Vector2(x, y)*mouse_scale;
 
-            mouse_point.X-=(view_width-StoryboardWindow.SB_WIDTH)/2.0f;
+            mouse_point.X-=(view_width- RenderKernel.SB_WIDTH)/2.0f;
 
             Vector3[] points = new Vector3[4];
 

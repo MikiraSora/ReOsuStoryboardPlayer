@@ -8,6 +8,7 @@ using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using ReOsuStoryBoardPlayer.Graphics;
 
 namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 {
@@ -48,7 +49,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
             {
                 //init capturer post process
                 capturer=new CaptureRenderPostProcess();
-                StoryboardWindow.CurrentWindow.PostProcessesManager.AddPostProcess(capturer);
+                RenderKernel.PostProcessesManager.AddPostProcess(capturer);
             }
 
             if (time_control==null)

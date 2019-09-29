@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
+using ReOsuStoryBoardPlayer.Graphics;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -14,8 +15,8 @@ namespace ReOsuStoryboardPlayer
 
         private int _currentPostBaseIndex = 0;
 
-        public static Matrix4 Projection => StoryboardWindow.ProjectionMatrix;
-        public static Matrix4 View => StoryboardWindow.CameraViewMatrix;
+        public static Matrix4 Projection => RenderKernel.ProjectionMatrix;
+        public static Matrix4 View => RenderKernel.CameraViewMatrix;
 
         public int CurrentPostCount { get; private set; } = 0;
 
@@ -209,8 +210,8 @@ namespace ReOsuStoryboardPlayer
             model.Row1.X=sina*scaley;
             model.Row1.Y=cosa*scaley;
 
-            model.Row2.X=position.X-StoryboardWindow.SB_WIDTH/2f;
-            model.Row2.Y=-position.Y+StoryboardWindow.SB_HEIGHT/2f;
+            model.Row2.X=position.X- RenderKernel.SB_WIDTH/2f;
+            model.Row2.Y=-position.Y+ RenderKernel.SB_HEIGHT/2f;
 
             unsafe
             {

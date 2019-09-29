@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using ReOsuStoryboardPlayer.Graphics.PostProcesses.Shaders;
+using ReOsuStoryBoardPlayer.Graphics;
 
 namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 {
@@ -17,7 +18,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
             int tex = PrevFrameBuffer?.ColorTexture??0;
             GL.BindTexture(TextureTarget.Texture2D, tex);
             _shader.Begin();
-            _shader.PassUniform("view_width", StoryboardWindow.CurrentWindow.ViewWidth);
+            _shader.PassUniform("view_width", RenderKernel.ViewWidth);
         }
     }
 }

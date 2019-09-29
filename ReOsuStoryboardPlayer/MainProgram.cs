@@ -20,6 +20,9 @@ using System.Runtime.InteropServices;
 using ReOsuStoryboardPlayer.Utils;
 using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
 using ReOsuStoryBoardPlayer.Parser;
+using System.Windows.Forms;
+using ReOsuStoryBoardPlayer.Graphics;
+using ReOsuStoryBoardPlayer.Kernel;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -113,7 +116,16 @@ namespace ReOsuStoryboardPlayer
 
             MusicPlayerManager.ActivityPlayer?.Play();
 
-            window.Run();
+            //window.Run();
+
+            window.Visible = true;
+            window.RefreshResize();
+
+            while (true)
+            {
+                Application.DoEvents();
+                window.SwapBuffers();
+            }
         }
 
         #region ProgramCommands

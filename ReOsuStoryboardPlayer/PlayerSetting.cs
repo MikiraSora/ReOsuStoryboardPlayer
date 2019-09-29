@@ -128,7 +128,7 @@ namespace ReOsuStoryboardPlayer
         /// </summary>
         private const string config_file = @"./player_config.ini";
 
-        internal static void Init()
+        public static void Init()
         {
             try
             {

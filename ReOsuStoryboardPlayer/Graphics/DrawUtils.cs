@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
+using ReOsuStoryBoardPlayer.Graphics;
 using System;
 
 namespace ReOsuStoryboardPlayer.Graphics
@@ -95,7 +96,7 @@ void main(){
         public static void DrawTexture(Texture texture, Vector position, Vector norAnchor, Vector scale, int angle, int width, int height, Vec4 color)
         {
             texture_shader.Begin();
-            var VP = StoryboardWindow.ProjectionMatrix*StoryboardWindow.CameraViewMatrix;
+            var VP = RenderKernel.ProjectionMatrix* RenderKernel.CameraViewMatrix;
 
             Matrix4 model =
                 Matrix4.Identity*

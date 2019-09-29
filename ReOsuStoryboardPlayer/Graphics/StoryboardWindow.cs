@@ -19,6 +19,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
+using ReOsuStoryBoardPlayer.Graphics;
+using ReOsuStoryBoardPlayer.Kernel;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -26,32 +28,15 @@ namespace ReOsuStoryboardPlayer
     {
         #region Field&Property
 
+        int prev_playing_time;
+        DateTime prev_encoding_time = DateTime.Now;
+
+        private static double title_update_timer = 0;
+        private static Stopwatch _title_update_stopwatch = new Stopwatch();
+
         private const string TITLE = "Esu!StoryboardPlayer ({0}x{1}) OpenGL:{2}.{3} Update: {4}ms Render: {5}ms Other: {6}ms FPS: {7:F2} Objects: {8} {9}";
 
         public static StoryboardWindow CurrentWindow { get; set; }
-        public float ViewWidth { get; private set; }
-        public float ViewHeight { get; private set; }
-
-        public StoryboardInstance Instance { get; private set; }
-
-        private bool ready = false;
-        
-        private ClipPostProcess _clipPostProcess;
-
-        public PostProcessesManager PostProcessesManager { get; private set; } = new PostProcessesManager();
-
-        public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
-
-        private const double SYNC_THRESHOLD_MIN = 17;// 1/60fps
-
-        private double _timestamp = 0;
-        private Stopwatch _timestamp_stopwatch = new Stopwatch();
-
-        private const float THOUSANDTH = 1.0f/1000.0f;
-        private Stopwatch _title_update_stopwatch = new Stopwatch();
-        private Stopwatch _update_stopwatch = new Stopwatch();
-        private Stopwatch _render_stopwatch = new Stopwatch();
-        private double title_update_timer = 0;
 
         private int WindowedWidth, WindowedHeight;
 
@@ -59,39 +44,24 @@ namespace ReOsuStoryboardPlayer
 
         public bool IsBorderless => WindowBorder==WindowBorder.Hidden;
 
-        public static Matrix4 CameraViewMatrix { get; set; } = Matrix4.Identity;
-
-        public static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
-
         #endregion Field&Property
 
         public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryboardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
-            InitGraphics();
-            DrawUtils.Init();
-            PostProcessesManager.Init();
-            VSync=VSyncMode.Off;
-            CurrentWindow=this;
+            VSync = VSyncMode.Off;
+            CurrentWindow = this;
+            RenderKernel.Init();
 
             ApplyBorderless(PlayerSetting.EnableBorderless);
             SwitchFullscreen(PlayerSetting.EnableFullScreen);
-
-            _clipPostProcess=new ClipPostProcess();
         }
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            GL.Viewport(0, 0, Width, Height);
-            ApplyWindowRenderSize();
-        }
 
-        private void InitGraphics()
-        {
-            GL.ClearColor(Color.Black);
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            RenderKernel.ApplyWindowRenderSize(Width,Height);
         }
 
         public void ApplyBorderless(bool is_borderless)
@@ -116,161 +86,49 @@ namespace ReOsuStoryboardPlayer
                 WindowState=WindowState.Fullscreen;
                 Width=DisplayDevice.Default.Width;
                 Height=DisplayDevice.Default.Height;
-                ApplyWindowRenderSize();
+                RenderKernel.ApplyWindowRenderSize(Width, Height);
             }
             else
             {
                 WindowState=WindowState.Normal;
                 Width=WindowedWidth;
                 Height=WindowedHeight;
-                ApplyWindowRenderSize();
+                RenderKernel.ApplyWindowRenderSize(Width, Height);
             }
         }
 
-        public void ApplyWindowRenderSize()
+        public void RefreshResize()
         {
-            //裁剪View
-            float radio = (float)Width/Height;
-
-            ViewHeight=SB_HEIGHT;
-            ViewWidth=SB_HEIGHT*radio;
-
-            ProjectionMatrix=Matrix4.Identity*Matrix4.CreateOrthographic(ViewWidth, ViewHeight, -1, 1);
-            CameraViewMatrix=Matrix4.Identity;
-
-            if (PlayerSetting.FrameHeight != Height ||
-                PlayerSetting.FrameWidth != Width)
-                PostProcessesManager.Resize(PlayerSetting.FrameWidth, PlayerSetting.FrameHeight);
-            else
-                PostProcessesManager.Resize(Width, Height);
-            SetupClipPostProcesses();
+            RenderKernel.ApplyWindowRenderSize(Width, Height);
         }
 
-        private void SetupClipPostProcesses()
-        {
-            if (Instance.Info.IsWidescreenStoryboard==false)
-            {
-                PostProcessesManager.AddPostProcess(_clipPostProcess);
-            }
-            else
-            {
-                PostProcessesManager.RemovePostProcess(_clipPostProcess);
-            }
-        }
-
-        /// <summary>
-        /// 将SB实例加载到Window上，后者将会自动调用instance.Update()并渲染
-        /// </summary>
-        /// <param name="instance"></param>
         public void LoadStoryboardInstance(StoryboardInstance instance)
         {
-            ready=false;
-
-            if (this.Instance!=null)
-                Clean();
-
-            this.Instance=instance;
-            StoryboardInstanceManager.ApplyInstance(instance);
-            SetupClipPostProcesses();
-
-            using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
-            {
-                var resource = StoryboardResource.BuildDefaultResource(instance.Updater.StoryboardObjectList, instance.Info.folder_path);
-                instance.Resource=resource;
-            }
-
-            _timestamp=0;
-
-            ready=true;
-        }
-
-        /// <summary>
-        /// 清理资源
-        /// </summary>
-        private void Clean()
-        {
-            Instance.Resource.Dispose();
-        }
-
-        private double GetSyncTime()
-        {
-            var audioTime = MusicPlayerManager.ActivityPlayer.CurrentTime;
-            var playbackRate = MusicPlayerManager.ActivityPlayer.PlaybackSpeed;
-
-            double step = _timestamp_stopwatch.ElapsedMilliseconds*playbackRate;
-            _timestamp_stopwatch.Restart();
-
-            if (MusicPlayerManager.ActivityPlayer.IsPlaying&&PlayerSetting.EnableTimestamp)
-            {
-                double nextTime = _timestamp+step;
-
-                double diffAbs = Math.Abs(nextTime-audioTime)*playbackRate;
-                if (diffAbs>SYNC_THRESHOLD_MIN*playbackRate)//不同步
-                {
-                    if (audioTime>_timestamp)//音频快
-                    {
-                        nextTime+=diffAbs*0.6;//SB快速接近音频
-                    }
-                    else//SB快
-                    {
-                        nextTime=_timestamp;//SB不动
-                    }
-                }
-
-                return _timestamp=nextTime;
-            }
-            else
-            {
-                return _timestamp=MusicPlayerManager.ActivityPlayer.CurrentTime;
-            }
+            UpdateKernel.LoadStoryboardInstance(instance);
+            RenderKernel.LoadStoryboardInstance(instance);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
-            _update_stopwatch.Restart();
+            UpdateKernel.Update();
 
-            ExecutorSync.ClearTask();
-            var time = GetSyncTime();
+            UpdateKernel.FrameRateLimit();
 
-            if (!ready)
-                return;
-
-            Instance.Updater.Update((float)time);
-            ToolManager.FrameUpdate();
-
-            _update_stopwatch.Stop();
+            UpdateTitle();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
 
-            _render_stopwatch.Restart();
-
-            if (ready)
-            {
-                ToolManager.TrigBeforeRender();
-                PostProcessesManager.Begin();
-                {
-                    PostDrawStoryboard();
-                    PostProcessesManager.Process();
-                }
-                PostProcessesManager.End();
-                ToolManager.TrigAfterRender();
-            }
+            RenderKernel.Draw();
 
             SwapBuffers();
-
-            _render_stopwatch.Stop();
-            FrameRateLimit();
         }
 
-        int prev_playing_time;
-        DateTime prev_encoding_time=DateTime.Now;
-
-        private void FrameRateLimit()
+        private void UpdateTitle()
         {
             long total_time = _title_update_stopwatch.ElapsedMilliseconds;
             _title_update_stopwatch.Restart();
@@ -303,101 +161,26 @@ namespace ReOsuStoryboardPlayer
                 Title=string.Format(TITLE, Width, Height,
                     GL.GetInteger(GetPName.MajorVersion),
                     GL.GetInteger(GetPName.MinorVersion),
-                    _update_stopwatch.ElapsedMilliseconds,
-                    _render_stopwatch.ElapsedMilliseconds,
-                    (total_time-_update_stopwatch.ElapsedMilliseconds-_render_stopwatch.ElapsedMilliseconds)
-                    , RenderFrequency, Instance?.Updater.UpdatingStoryboardObjects?.Count??0, title_encoding_part);
+                    UpdateKernel.UpdateCostTime,
+                    RenderKernel.RenderCostTime,
+                    (total_time- UpdateKernel.UpdateCostTime - RenderKernel.RenderCostTime)
+                    , RenderFrequency, UpdateKernel.Instance?.Updater.UpdatingStoryboardObjects?.Count??0, title_encoding_part);
                 title_update_timer=0;
             }
 
-            title_update_timer+=total_time*THOUSANDTH;
-
-            if (PlayerSetting.EnableHighPrecisionFPSLimit)
-            {
-                if (Math.Abs(TargetUpdateFrequency-PlayerSetting.MaxFPS)>10e-5)
-                {
-                    TargetUpdateFrequency=PlayerSetting.MaxFPS;
-                    TargetRenderFrequency=PlayerSetting.MaxFPS;
-                }
-            }
-            else
-            {
-                float time = (_update_stopwatch.ElapsedMilliseconds+_render_stopwatch.ElapsedMilliseconds)*THOUSANDTH;
-                if (PlayerSetting.MaxFPS!=0)
-                {
-                    float period = 1.0f/PlayerSetting.MaxFPS;
-                    if (period>time)
-                    {
-                        int sleep = (int)((period-time)*1000);
-                        sleep=Math.Max(0, sleep-1);
-                        Thread.Sleep(sleep);
-                    }
-                }
-            }
+            title_update_timer+=total_time* UpdateKernel.THOUSANDTH;
         }
 
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
 
-            Clean();
+            RenderKernel.Clean();
 
             MainProgram.Exit();
         }
 
         #region Storyboard Rendering
-
-        private void PostDrawStoryboard()
-        {
-            if (Instance.Updater.UpdatingStoryboardObjects.Count==0)
-                return;
-
-            DrawStoryboardObjects(Instance.Updater.UpdatingStoryboardObjects);
-
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-        }
-
-        private void DrawStoryboardObjects(List<StoryboardObject> draw_list)
-        {
-            SpriteInstanceGroup group = Instance.Resource.GetSprite(draw_list.First().ImageFilePath);
-
-            bool additive_trigger;
-            ChangeAdditiveStatus(draw_list.First().IsAdditive);
-
-            foreach (var obj in draw_list)
-            {
-                if (!obj.IsVisible)
-                    continue;
-#if DEBUG
-                if (!obj.DebugShow)
-                    continue;//skip
-#endif
-                var obj_group = Instance.Resource.GetSprite(obj);
-
-                if (group!=obj_group||additive_trigger!=obj.IsAdditive)
-                {
-                    group?.FlushDraw();
-
-                    //应该是现在设置Blend否则Group自动渲染来不及钦定
-                    ChangeAdditiveStatus(obj.IsAdditive);
-
-                    group=obj_group;
-                }
-
-                group?.PostRenderCommand(obj.Postion, obj.Z, obj.Rotate, obj.Scale, obj.OriginOffset, obj.Color, obj.IsVerticalFlip, obj.IsHorizonFlip);
-            }
-
-            //ChangeAdditiveStatus(false);
-
-            if (group?.CurrentPostCount!=0)
-                group?.FlushDraw();
-
-            void ChangeAdditiveStatus(bool is_additive_blend)
-            {
-                additive_trigger=is_additive_blend;
-                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, additive_trigger ? BlendingFactorDest.One : BlendingFactorDest.OneMinusSrcAlpha);
-            }
-        }
 
         #endregion Storyboard Rendering
 
