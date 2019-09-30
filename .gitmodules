@@ -1,3 +1,6 @@
 [submodule "SaarFFmpeg"]
 	path = SaarFFmpeg
 	url = https://github.com/MikiraSora/SaarFFmpeg/
+[submodule "OpenTkControl"]
+	path = OpenTkControl
+	url = https://github.com/MikiraSora/OpenTkControl
