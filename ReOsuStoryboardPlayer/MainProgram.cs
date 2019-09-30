@@ -116,8 +116,9 @@ namespace ReOsuStoryboardPlayer
 
             MusicPlayerManager.ActivityPlayer?.Play();
 
-            //window.Run();
+            window.Run();
 
+            /* 不曾设想的操作.jpg
             window.Visible = true;
             window.RefreshResize();
 
@@ -129,6 +130,7 @@ namespace ReOsuStoryboardPlayer
                 UpdateKernel.FrameRateLimit();
                 Application.DoEvents();
             }
+            */
         }
 
         #region ProgramCommands

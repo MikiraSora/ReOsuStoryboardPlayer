@@ -1,4 +1,5 @@
-﻿using ReOsuStoryBoardPlayer.Graphics;
+﻿using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.Collections.Generic;
@@ -95,6 +96,8 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
 
         public MainWindow()
         {
+            Log.AbleDebugLog = true;
+
             InitializeComponent();
 
             DataContext = this;
@@ -102,9 +105,16 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            /*
+            if (MyStoryboardPlayer.MusicPlayer == null)
+                return;
+
             var val = e.NewValue;
 
-            //todo
+            var time = MyStoryboardPlayer.MusicPlayer.Length * val / 100;
+
+            MyStoryboardPlayer.MusicPlayer.Jump((float)time, true);
+            */
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -121,6 +131,11 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
         {
             using (var dialog = new FolderBrowserDialog())
             {
+#if DEBUG
+                //懒得翻
+                dialog.SelectedPath = @"G:\SBTest";
+#endif
+
                 dialog.ShowNewFolderButton = false;
                 dialog.Description = "选择一个含有SB的文件夹";
 
@@ -166,6 +181,8 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
             var span = TimeSpan.FromMilliseconds(current_time);
 
             CurrentPlayPosition = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
+
+            PlayProgress.Value = current_time / MyStoryboardPlayer.MusicPlayer.Length*100;
         }
     }
 }

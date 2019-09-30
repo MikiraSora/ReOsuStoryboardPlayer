@@ -22,6 +22,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
         public void Init()
         {
             _finalProcess = new FinalPostProcess();
+            _postProcesses.Clear();
             AddPostProcess(_finalProcess, int.MaxValue);
         }
 
