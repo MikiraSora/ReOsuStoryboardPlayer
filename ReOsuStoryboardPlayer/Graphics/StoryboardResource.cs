@@ -99,7 +99,7 @@ namespace ReOsuStoryboardPlayer.Graphics
 
                 if (!_load_tex(file_path, out var tex))
                 {
-                    file_path = Path.Combine(PlayerSetting.UserSkinPath, fix_image);
+                    file_path = Path.Combine(PlayerSetting.UserSkinPath??string.Empty, fix_image);
 
                     if (!_load_tex(file_path, out tex))
                     {

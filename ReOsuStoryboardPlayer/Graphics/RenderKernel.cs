@@ -38,6 +38,22 @@ namespace ReOsuStoryBoardPlayer.Graphics
             _clipPostProcess = new ClipPostProcess();
         }
 
+        public static void NewContextReInit()
+        {
+            Init();
+
+            try
+            {
+                //rebuild resource beacuse they use textures.
+                Clean();
+                BuildResource(Instance);
+            }
+            catch
+            {
+
+            }
+        }
+
         private static void InitGraphics()
         {
             GL.ClearColor(Color.Black);
@@ -57,6 +73,8 @@ namespace ReOsuStoryBoardPlayer.Graphics
 
         public static void ApplyWindowRenderSize(int width,int height)
         {
+            Log.Debug($"Width={Width} Height={Height}");
+
             //裁剪View
             Width = width;
             Height = height;
@@ -79,7 +97,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
 
         private static void SetupClipPostProcesses()
         {
-            if (Instance.Info.IsWidescreenStoryboard == false)
+            if (!(Instance?.Info?.IsWidescreenStoryboard??false))
             {
                 PostProcessesManager.AddPostProcess(_clipPostProcess);
             }
@@ -95,6 +113,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
         public static void Clean()
         {
             Instance.Resource.Dispose();
+            Instance.Resource = null;
         }
 
         /// <summary>
@@ -112,13 +131,28 @@ namespace ReOsuStoryBoardPlayer.Graphics
             StoryboardInstanceManager.ApplyInstance(instance);
             SetupClipPostProcesses();
 
+            BuildResource(instance);
+
+            ready = true;
+        }
+
+        private static void BuildResource(StoryboardInstance instance)
+        {
+            if (instance.Resource!=null)
+            {
+                try
+                {
+                    instance.Resource.Dispose();
+                    instance.Resource = null;
+                }
+                catch{}
+            }
+
             using (StopwatchRun.Count("Loaded image resouces and sprite instances."))
             {
                 var resource = StoryboardResource.BuildDefaultResource(instance.Updater.StoryboardObjectList, instance.Info.folder_path);
                 instance.Resource = resource;
             }
-
-            ready = true;
         }
 
         public static void Draw()

@@ -123,8 +123,11 @@ namespace ReOsuStoryboardPlayer
 
             while (true)
             {
-                Application.DoEvents();
+                UpdateKernel.Update();
+                RenderKernel.Draw();
                 window.SwapBuffers();
+                UpdateKernel.FrameRateLimit();
+                Application.DoEvents();
             }
         }
 

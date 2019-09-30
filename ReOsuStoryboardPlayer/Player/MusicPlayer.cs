@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace ReOsuStoryboardPlayer.Player
 {
-    public class MusicPlayer : PlayerBase, ISoundStopEventReceiver
+    public class MusicPlayer : PlayerBase, ISoundStopEventReceiver , IDisposable
     {
         private static ISoundEngine engine;
 
@@ -39,6 +39,8 @@ namespace ReOsuStoryboardPlayer.Player
 
         public void Load(string audio_file)
         {
+            Dispose();
+
             sound=engine.Play2D(audio_file, false, true, StreamMode.AutoDetect, false);
             sound.setSoundStopEventReceiver(this);
 
@@ -52,7 +54,9 @@ namespace ReOsuStoryboardPlayer.Player
 
         public override void Jump(float time, bool pause)
         {
-            time=Math.Max(0, Math.Min(time, Length));
+            CheckIfDisposed();
+
+            time =Math.Max(0, Math.Min(time, Length));
 
             Pause();
             sound.PlayPosition=(uint)time;
@@ -66,6 +70,8 @@ namespace ReOsuStoryboardPlayer.Player
 
         public override void Play()
         {
+            CheckIfDisposed();
+
             if (sound.Paused)
             {
                 sound.Paused=false;
@@ -75,6 +81,8 @@ namespace ReOsuStoryboardPlayer.Player
 
         private long GetTime()
         {
+            CheckIfDisposed();
+
             var playback = sound.PlayPosition;
 
             if (prev_mp3_time!=playback&&!sound.Paused)
@@ -87,11 +95,15 @@ namespace ReOsuStoryboardPlayer.Player
 
         public override void Stop()
         {
+            CheckIfDisposed();
+
             Jump(0, true);
         }
 
         public override void Pause()
         {
+            CheckIfDisposed();
+
             if (!sound.Paused)
             {
                 sound.Paused=true;
@@ -108,6 +120,17 @@ namespace ReOsuStoryboardPlayer.Player
                 Load(loaded_path);
                 Jump(0, true);
             }
+        }
+
+        private void CheckIfDisposed()
+        {
+            Debug.Assert(sound != null, "sound is null,maybe this object has been disposed.");
+        }
+
+        public void Dispose()
+        {
+            sound?.Dispose();
+            sound = null;
         }
     }
 }

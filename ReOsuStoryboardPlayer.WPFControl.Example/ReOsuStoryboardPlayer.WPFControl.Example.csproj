@@ -4,18 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{585A9E6B-A055-46C9-9055-3A46E9DC2760}</ProjectGuid>
-    <OutputType>library</OutputType>
-    <RootNamespace>ReOsuStoryboardPlayer.WPFControl</RootNamespace>
-    <AssemblyName>ReOsuStoryboardPlayer.WPFControl</AssemblyName>
+    <ProjectGuid>{D79FD110-B60F-4327-83B2-E489F9E44C1C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ReOsuStoryboardPlayer.WPFControl.Example</RootNamespace>
+    <AssemblyName>ReOsuStoryboardPlayer.WPFControl.Example</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -47,6 +50,24 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -62,9 +83,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="StoryboardPlayer.xaml.cs">
-      <DependentUpon>StoryboardPlayer.xaml</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,24 +93,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenTkControl\OpenTkControl\OpenTkControl.csproj">
-      <Project>{06f9fd53-c287-4275-8b98-4b891ea3abdd}</Project>
-      <Name>OpenTkControl</Name>
-    </ProjectReference>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ReOsuStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj">
       <Project>{31711b28-3825-4eb4-a6e7-959b699eb3ab}</Project>
       <Name>ReOsuStoryboardPlayer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReOsuStoryboardPlayer.WPFControl\ReOsuStoryboardPlayer.WPFControl.csproj">
+      <Project>{585a9e6b-a055-46c9-9055-3a46e9dc2760}</Project>
+      <Name>ReOsuStoryboardPlayer.WPFControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReOsuStoryboardPlayer\ReOsuStoryboardPlayer.csproj">
       <Project>{5116d93a-a7d9-4312-b052-fbc2fe5d0444}</Project>
       <Name>ReOsuStoryboardPlayer</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="StoryboardPlayer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
