@@ -33,7 +33,6 @@ namespace ReOsuStoryboardPlayer.WPFControl
         {
             InitializeComponent();
 
-            //为啥不触发捏
             MyGLControl.SizeChanged += MyGLControl_SizeChanged;
         }
 
@@ -59,28 +58,14 @@ namespace ReOsuStoryboardPlayer.WPFControl
             RenderKernel.Draw();
             StoryboardUpdated?.Invoke();
 
-            //?
-            UpdateKernel.FrameRateLimit();
+            //UpdateKernel.FrameRateLimit();
         }
 
         private void MyGLControl_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                /*
-                RenderKernel.ApplyWindowRenderSize((int)MyGLControl.Width, (int)MyGLControl.Height);
-                RenderKernel.Init();
-                */
-                Init();
-            }
-            catch
-            {
+            if (inited)
+                return;
 
-            }
-        }
-
-        private void Init()
-        {
             MyGLControl.GlRender += MyGLControl_GlRender;
 
             MusicPlayer = new MusicPlayer();
