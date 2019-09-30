@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryboardPlayer.Core.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryboardPlayer.WPFControl", "ReOsuStoryboardPlayer.WPFControl\ReOsuStoryboardPlayer.WPFControl.csproj", "{B84BE0EC-3DA6-41F5-83C0-2E82DC67DAF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTkControl", "H:\OpenTkControl\OpenTkControl\OpenTkControl.csproj", "{06F9FD53-C287-4275-8B98-4B891EA3ABDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,18 @@ Global
 		{B84BE0EC-3DA6-41F5-83C0-2E82DC67DAF2}.Release|x64.Build.0 = Release|Any CPU
 		{B84BE0EC-3DA6-41F5-83C0-2E82DC67DAF2}.Release|x86.ActiveCfg = Release|Any CPU
 		{B84BE0EC-3DA6-41F5-83C0-2E82DC67DAF2}.Release|x86.Build.0 = Release|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x64.Build.0 = Debug|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x86.Build.0 = Debug|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x64.ActiveCfg = Release|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x64.Build.0 = Release|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x86.ActiveCfg = Release|Any CPU
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +137,7 @@ Global
 		{AB4CABA1-06E4-4A32-8A15-1FBE20ED5BC6} = {D68C1572-D840-4344-B890-3D565B6B4DE6}
 		{FC40FB12-469A-45A5-9D10-DAF471C817C0} = {D68C1572-D840-4344-B890-3D565B6B4DE6}
 		{F0EDCCEC-4B64-4CE8-801F-1377E3384DC4} = {FC40FB12-469A-45A5-9D10-DAF471C817C0}
+		{06F9FD53-C287-4275-8B98-4B891EA3ABDD} = {D68C1572-D840-4344-B890-3D565B6B4DE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF763B3D-CD0D-43F0-A8E4-E56C4520F279}

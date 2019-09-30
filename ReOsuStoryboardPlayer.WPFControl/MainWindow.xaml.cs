@@ -28,21 +28,6 @@ namespace ReOsuStoryboardPlayer.WPFControl
         public MainWindow()
         {
             InitializeComponent();
-
-            MyGLControl.OpenGLDraw += MyGLControl_OpenGLDraw;
-            MyGLControl.OpenGLInitialized += MyGLControl_OpenGLInitialized; ;
-        }
-
-        private void MyGLControl_OpenGLInitialized(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
-        {
-            RenderKernel.Init(args.OpenGL);
-            RenderKernel.ApplyWindowRenderSize((int)MyGLControl.Width, (int)MyGLControl.Height);
-        }
-
-        private void MyGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
-        {
-            UpdateKernel.Update();
-            RenderKernel.Draw();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -69,8 +54,19 @@ namespace ReOsuStoryboardPlayer.WPFControl
         private void LoadStoryboardInstance(StoryboardInstance instance)
         {
             RenderKernel.LoadStoryboardInstance(instance);
-
             UpdateKernel.LoadStoryboardInstance(instance);
+            RenderKernel.ApplyWindowRenderSize((int)MyGLControl.Width, (int)MyGLControl.Height);
+        }
+
+        private void UiOpenTkControl_GlRender(object sender, OpenTkControl.OpenTkControlBase.GlRenderEventArgs e)
+        {
+            UpdateKernel.Update();
+            RenderKernel.Draw();
+        }
+
+        private void UiOpenTkControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            RenderKernel.Init();
         }
     }
 }

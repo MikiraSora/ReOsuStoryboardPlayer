@@ -29,20 +29,17 @@ namespace ReOsuStoryBoardPlayer.Graphics
 
         public static PostProcessesManager PostProcessesManager { get; private set; } = new PostProcessesManager();
 
-        public static void Init(OpenGL gl = null)
+        public static void Init()
         {
-            InitGraphics(gl);
+            InitGraphics();
             DrawUtils.Init();
             PostProcessesManager.Init();
 
             _clipPostProcess = new ClipPostProcess();
         }
 
-        private static void InitGraphics(OpenGL gl=null)
+        private static void InitGraphics()
         {
-            var c = Color.Black;
-            gl.ClearColor(c.R / 255.0f, c.G / 255.0f, c.B / 255.0f, c.A / 255.0f);
-
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);

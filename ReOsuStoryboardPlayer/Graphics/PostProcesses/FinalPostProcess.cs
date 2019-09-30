@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using ReOsuStoryboardPlayer.Graphics.PostProcesses.Shaders;
+using ReOsuStoryBoardPlayer.Graphics;
 
 namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 {
@@ -22,7 +23,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
         protected override void OnPreRender()
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            GL.Viewport(0, 0, StoryboardWindow.CurrentWindow.Width, StoryboardWindow.CurrentWindow.Height);
+            GL.Viewport(0, 0, RenderKernel.Width, RenderKernel.Height);
         }
 
         protected override void OnPostRender()

@@ -59,13 +59,16 @@ namespace ReOsuStoryboardPlayer
                 _InitBuffer(s_vaos[i], s_vbos[i]);
             }
 
-            StoryboardWindow.CurrentWindow.Closing+=(s, e) =>
-          {
-              GL.DeleteBuffer(s_vbo_vertexBase);
-              GL.DeleteBuffer(s_vbo_texPosBase);
-              GL.DeleteBuffers(BUFFER_COUNT, s_vbos);
-              GL.DeleteVertexArrays(BUFFER_COUNT, s_vaos);
-          };
+            if (StoryboardWindow.CurrentWindow != null)
+            {
+                StoryboardWindow.CurrentWindow.Closing += (s, e) =>
+                {
+                    GL.DeleteBuffer(s_vbo_vertexBase);
+                    GL.DeleteBuffer(s_vbo_texPosBase);
+                    GL.DeleteBuffers(BUFFER_COUNT, s_vbos);
+                    GL.DeleteVertexArrays(BUFFER_COUNT, s_vaos);
+                };
+            }
         }
 
         internal SpriteInstanceGroup(uint capacity, string image_path, Texture texture)
