@@ -42,18 +42,18 @@ namespace ReOsuStoryboardPlayer.WPFControl
             if (!inited)
                 return;
 
-            RenderKernel.ApplyWindowRenderSize((int)MyGLControl.Width, (int)MyGLControl.Height);
+            var width = (int)MyGLControl.ActualWidth;
+            var height = (int)MyGLControl.ActualHeight;
+            ExecutorSync.PostTask(() =>RenderKernel.ApplyWindowRenderSize(width,height));
         }
 
         private void MyGLControl_GlRender(object sender, OpenTkControl.OpenTkControlBase.GlRenderEventArgs e)
         {
-            /*
             if (e.NewContext)
+            {
                 RenderKernel.Init();
-                */
-
-            if (UpdateKernel.Instance == null || RenderKernel.Instance == null)
-                return;
+                RenderKernel.ApplyWindowRenderSize((int)MyGLControl.ActualWidth, (int)MyGLControl.ActualHeight);
+            }
 
             UpdateKernel.Update();
             RenderKernel.Draw();
@@ -67,8 +67,10 @@ namespace ReOsuStoryboardPlayer.WPFControl
         {
             try
             {
-                RenderKernel.Init();
+                /*
                 RenderKernel.ApplyWindowRenderSize((int)MyGLControl.Width, (int)MyGLControl.Height);
+                RenderKernel.Init();
+                */
                 Init();
             }
             catch
@@ -87,17 +89,22 @@ namespace ReOsuStoryboardPlayer.WPFControl
             inited = true;
         }
 
-        public void SwitchStoryboard(BeatmapFolderInfoEx info, bool play_after_load = false)
+        public Task SwitchStoryboard(BeatmapFolderInfoEx info, bool play_after_load = false)
         {
-            var instance = StoryboardInstance.Load(info);
-
-            LoadStoryboardInstance(instance);
-            InitAudio(info);
-
-            if (play_after_load)
+            return ExecutorSync.PostTask(() =>
             {
-                MusicPlayerManager.ActivityPlayer?.Play();
-            }
+                var instance = StoryboardInstance.Load(info);
+
+                LoadStoryboardInstance(instance);
+                InitAudio(info);
+
+                RenderKernel.ApplyWindowRenderSize((int)this.ActualWidth, (int)this.ActualHeight);
+
+                if (play_after_load)
+                {
+                    MusicPlayerManager.ActivityPlayer?.Play();
+                }
+            });
         }
 
         private void LoadStoryboardInstance(StoryboardInstance instance)

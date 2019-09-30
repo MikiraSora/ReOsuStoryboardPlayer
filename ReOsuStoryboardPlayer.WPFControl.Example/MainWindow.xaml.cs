@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryBoardPlayer.Graphics;
+using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.Collections.Generic;
@@ -127,7 +128,7 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
             ControlPanelVisibility = Visibility.Visible;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             using (var dialog = new FolderBrowserDialog())
             {
@@ -146,17 +147,17 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
                 {
                     var info = BeatmapFolderInfoEx.Parse(path, null);
 
-                    RenderKernel.ApplyWindowRenderSize((int)MyStoryboardPlayer.ActualWidth, (int)MyStoryboardPlayer.ActualHeight);
-
-                    CurrentPlayingText = $"{info.folder_path}";
-
-                    MyStoryboardPlayer.SwitchStoryboard(info,true);
+                    await MyStoryboardPlayer.SwitchStoryboard(info, true);
 
                     var current_time = MyStoryboardPlayer.MusicPlayer.Length;
 
                     var span = TimeSpan.FromMilliseconds(current_time);
 
-                    PlaybackLength = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
+                    //Dispatcher.Invoke(() =>
+                    //{
+                        CurrentPlayingText = $"{info.folder_path}";
+                        PlaybackLength = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
+                    //});
                 }
             }
         }
@@ -176,13 +177,18 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
 
         private void MyStoryboardPlayer_StoryboardUpdated()
         {
+            if (UpdateKernel.Instance == null || RenderKernel.Instance == null)
+                return;
+
             var current_time = MyStoryboardPlayer.MusicPlayer.CurrentTime;
 
             var span = TimeSpan.FromMilliseconds(current_time);
 
-            CurrentPlayPosition = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
-
-            PlayProgress.Value = current_time / MyStoryboardPlayer.MusicPlayer.Length*100;
+            Dispatcher.Invoke(() =>
+            {
+                CurrentPlayPosition = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
+                PlayProgress.Value = current_time / MyStoryboardPlayer.MusicPlayer.Length * 100;
+            });
         }
     }
 }

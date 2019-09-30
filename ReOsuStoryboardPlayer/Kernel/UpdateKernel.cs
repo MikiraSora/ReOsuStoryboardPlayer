@@ -66,15 +66,16 @@ namespace ReOsuStoryBoardPlayer.Kernel
 
         public static void Update()
         {
-            if (Instance==null)
+            ExecutorSync.ClearTask();
+
+            if (Instance == null)
                 return;
 
             _update_stopwatch.Restart();
 
-            ExecutorSync.ClearTask();
             var time = GetSyncTime();
-
             Instance.Updater.Update((float)time);
+
             ToolManager.FrameUpdate();
 
             _update_stopwatch.Stop();

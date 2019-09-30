@@ -11,8 +11,8 @@
     mc:Ignorable="d">
     <Grid>
         <Grid>
-            <opentkcontrol:UiOpenTkControl Name="MyGLControl" Loaded="MyGLControl_Loaded">
-            </opentkcontrol:UiOpenTkControl>
+            <opentkcontrol:ThreadOpenTkControl Name="MyGLControl" Loaded="MyGLControl_Loaded">
+            </opentkcontrol:ThreadOpenTkControl>
         </Grid>
     </Grid>
 </UserControl>
