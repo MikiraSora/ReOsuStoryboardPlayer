@@ -12,7 +12,10 @@
         /// </summary>
         public static int ParallelUpdateObjectsLimitCount { get; set; } = 100;
 
-        public static bool EnableSplitMoveScaleCommand { get; set; } = true;
+        /// <summary>
+        /// 将Scale和Move命令分别拆成VectalScale和MoveX/MoveY命令
+        /// </summary>
+        public static bool EnableSplitMoveScaleCommand { get; set; } = false;
 
         public static bool EnableLoopCommandUnrolling { get; set; } = false;
 

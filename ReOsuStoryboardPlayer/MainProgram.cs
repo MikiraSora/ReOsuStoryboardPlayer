@@ -137,7 +137,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder= @"G:\SBTest\829646 Camellia - Quaoar";
+            beatmap_folder= @"G:\SBTest\365163 Hana - MAJICK";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);
@@ -218,8 +218,8 @@ namespace ReOsuStoryboardPlayer
                 if (args.Switches.Any(k => k=="mini"))
                     PlayerSetting.MiniMode=true;
 
-                if (args.Switches.Any(k => k=="disable_split"))
-                    PlayerSetting.EnableSplitMoveScaleCommand=false;
+                if (args.Switches.Any(k => k=="enable_split"))
+                    PlayerSetting.EnableSplitMoveScaleCommand=true;
 
                 if (args.Switches.Any(k => k=="fun_reverse_easing"))
                     PlayerSetting.FunReverseEasing=true;
