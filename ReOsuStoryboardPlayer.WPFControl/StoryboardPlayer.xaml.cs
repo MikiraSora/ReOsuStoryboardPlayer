@@ -43,7 +43,7 @@ namespace ReOsuStoryboardPlayer.WPFControl
 
             var width = (int)MyGLControl.ActualWidth;
             var height = (int)MyGLControl.ActualHeight;
-            ExecutorSync.PostTask(() =>RenderKernel.ApplyWindowRenderSize(width,height));
+            ExecutorSync.PostTask(() => Resize());
         }
 
         private void MyGLControl_GlRender(object sender, OpenTkControl.OpenTkControlBase.GlRenderEventArgs e)
@@ -51,7 +51,7 @@ namespace ReOsuStoryboardPlayer.WPFControl
             if (e.NewContext)
             {
                 RenderKernel.Init();
-                RenderKernel.ApplyWindowRenderSize((int)MyGLControl.ActualWidth, (int)MyGLControl.ActualHeight);
+                Resize();
             }
 
             UpdateKernel.Update();
@@ -83,7 +83,7 @@ namespace ReOsuStoryboardPlayer.WPFControl
                 LoadStoryboardInstance(instance);
                 InitAudio(info);
 
-                RenderKernel.ApplyWindowRenderSize((int)this.ActualWidth, (int)this.ActualHeight);
+                Resize();
 
                 if (play_after_load)
                 {
@@ -104,5 +104,16 @@ namespace ReOsuStoryboardPlayer.WPFControl
         }
 
         public MusicPlayer MusicPlayer { get; private set; }
+
+        private void Resize()
+        {
+            var width = (int)this.ActualWidth;
+            var height = (int)this.ActualHeight;
+            /*
+            PlayerSetting.FrameWidth = width;
+            PlayerSetting.FrameHeight = height;
+            */
+            RenderKernel.ApplyWindowRenderSize(width, height);
+        }
     }
 }
