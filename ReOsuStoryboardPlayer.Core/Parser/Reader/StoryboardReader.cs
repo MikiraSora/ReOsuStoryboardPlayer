@@ -8,6 +8,7 @@ using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -142,13 +143,15 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 
             foreach (var line in lines)
             {
+                base_line++;
+
                 var data_arr = line.Split(',');
 
                 var is_sub_cmd = data_arr.First().StartsWith("  ")||data_arr.First().StartsWith("__");
 
                 foreach (var cmd in CommandParserIntance.Parse(data_arr))
                 {
-                    cmd.RelativeLine=base_line++;
+                    cmd.RelativeLine= base_line;
 
                     if (is_sub_cmd)
                     {
@@ -188,14 +191,14 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
                 var file_line = i+base_line;
                 var line = lines[i];
                 var data_arr = line.Split(',');
-                var is_sub_cmds = data_arr.First().StartsWith("  ")||data_arr.First().StartsWith("__");
+                var is_sub_cmds = data_arr.First().StartsWith("  ") || data_arr.First().StartsWith("__");
 
-                var temp_list = CommandParserIntance.Parse(data_arr);
+                var temp_list = CommandParserIntance.Parse(data_arr).ToArray();
 
                 foreach (var c in temp_list)
-                    c.RelativeLine=file_line;
+                    c.RelativeLine = file_line;
 
-                result_list.Add((file_line, temp_list.ToArray(), is_sub_cmds));
+                result_list.Add((file_line, temp_list, is_sub_cmds));
             });
 
             var result = result_list.SelectMany(p => p.cmds.Select(cmd => (p.index, cmd, p.is_sub))).OrderBy(z => z.index);
