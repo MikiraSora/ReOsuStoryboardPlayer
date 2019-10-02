@@ -109,10 +109,20 @@ namespace ReOsuStoryboardPlayer.WPFControl
         {
             var width = (int)this.ActualWidth;
             var height = (int)this.ActualHeight;
-            /*
-            PlayerSetting.FrameWidth = width;
+            
             PlayerSetting.FrameHeight = height;
-            */
+
+            if (UpdateKernel.Instance?.Info?.IsWidescreenStoryboard??false)
+            {
+                PlayerSetting.FrameWidth = (int)(RenderKernel.SB_WIDE_WIDTH / RenderKernel.SB_HEIGHT * height);
+            }
+            else
+            {
+                PlayerSetting.FrameWidth = (int)(RenderKernel.SB_WIDTH / RenderKernel.SB_HEIGHT * height);
+            }
+
+            PlayerSetting.FrameWidth = width;
+
             RenderKernel.ApplyWindowRenderSize(width, height);
         }
     }

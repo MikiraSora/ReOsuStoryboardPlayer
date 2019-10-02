@@ -61,7 +61,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
 
-        public const float SB_WIDTH = 640f, SB_HEIGHT = 480f;
+        public const float SB_WIDTH = 640f, SB_WIDE_WIDTH = SB_WIDTH + 2 * 107, SB_HEIGHT = 480f;
 
         public static float ViewWidth { get; private set; }
         public static float ViewHeight { get; private set; }
