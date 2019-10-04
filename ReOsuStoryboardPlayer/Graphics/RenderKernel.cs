@@ -27,6 +27,8 @@ namespace ReOsuStoryBoardPlayer.Graphics
         private static Stopwatch _render_stopwatch = new Stopwatch();
         private static bool ready;
 
+        public static int DefaultFrameBuffer { get; set; } = 0;
+
         public static PostProcessesManager PostProcessesManager { get; private set; } = new PostProcessesManager();
 
         public static void Init()

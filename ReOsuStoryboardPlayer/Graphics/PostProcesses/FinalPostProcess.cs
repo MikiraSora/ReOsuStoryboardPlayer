@@ -22,7 +22,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 
         protected override void OnPreRender()
         {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, RenderKernel.DefaultFrameBuffer);
             GL.Viewport(0, 0, RenderKernel.Width, RenderKernel.Height);
         }
 

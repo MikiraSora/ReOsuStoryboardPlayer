@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryBoardPlayer.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +86,7 @@ namespace ReOsuStoryboardPlayer.Graphics.PostProcesses
 
         public void End()
         {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, RenderKernel.DefaultFrameBuffer);
         }
 
         public void Process()
