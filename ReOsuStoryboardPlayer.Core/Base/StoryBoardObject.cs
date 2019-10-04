@@ -14,7 +14,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 {
     public class StoryboardObject : IStoryboardSerializable, IEquatable<StoryboardObject>
     {
-        public Dictionary<Event, CommandTimeline> CommandMap = new Dictionary<Event, CommandTimeline>();
+        public SortedDictionary<Event, CommandTimeline> CommandMap = new SortedDictionary<Event, CommandTimeline>();
 
         //表示此物件拥有的Trigger集合，Key为GroupID
         public Dictionary<int, HashSet<TriggerCommand>> Triggers = new Dictionary<int, HashSet<TriggerCommand>>();
@@ -204,7 +204,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
             ExecutedCommands.ForEach(c => c.IsExecuted=false);
             ExecutedCommands.Clear();
 #endif
-
             foreach (var pair in CommandMap)
             {
                 var timeline = pair.Value;

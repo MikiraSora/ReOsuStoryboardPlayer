@@ -1,4 +1,5 @@
-﻿using ReOsuStoryboardPlayer.Kernel;
+﻿using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Player;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
@@ -34,6 +35,15 @@ namespace ReOsuStoryboardPlayer.WPFControl
             InitializeComponent();
 
             MyGLControl.SizeChanged += MyGLControl_SizeChanged;
+            MyGLControl.ExceptionOccurred += MyGLControl_ExceptionOccurred;
+        }
+
+        private void MyGLControl_ExceptionOccurred(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                Log.Error($"OpenTKControlBase throw errors : {ex.Message} \n {ex.StackTrace}");
+            }
         }
 
         private void MyGLControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -53,6 +63,9 @@ namespace ReOsuStoryboardPlayer.WPFControl
                 RenderKernel.Init();
                 Resize();
             }
+
+            if (MyGLControl.IsUsingNVDXInterop)
+                RenderKernel.DefaultFrameBuffer = MyGLControl.NVDXInteropFramebuffer;
 
             UpdateKernel.Update();
             RenderKernel.Draw();

@@ -137,7 +137,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder= @"G:\SBTest\144171 Nekomata Master - Far east nightbird (kors k Remix)";
+            beatmap_folder= @"G:\SBTest\46216 Watarirouka Hashiritai7 - Valentine Kiss";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);
