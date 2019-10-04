@@ -26,18 +26,20 @@
                 <RowDefinition Height="auto">
                 </RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Background="#CC000000" Orientation="Horizontal">
+            <Grid Background="#CC000000">
                 <Label
                     Padding="10,15,0,15"
                     Content="{Binding CurrentPlayingText}"
                     Foreground="White">
                 </Label>
                 <Label
-                    Padding="10,15,0,15"
-                    Content="{Binding ElementName=MyStoryboardPlayer, Path=FPS}"
+                    Padding="10,15,10,15"
+                    HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Left"
+                    Content="喵喵"
                     Foreground="White">
                 </Label>
-            </StackPanel>
+            </Grid>
 
             <Grid
                 Grid.Row="1"
