@@ -137,6 +137,7 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
                 dialog.SelectedPath = @"G:\SBTest";
 #endif
 
+                dialog.SelectedPath = System.IO.Path.GetFullPath(@".");
                 dialog.ShowNewFolderButton = false;
                 dialog.Description = "选择一个含有SB的文件夹";
 

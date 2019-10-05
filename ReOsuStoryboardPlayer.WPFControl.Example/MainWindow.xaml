@@ -36,7 +36,7 @@
                     Padding="10,15,10,15"
                     HorizontalAlignment="Right"
                     HorizontalContentAlignment="Left"
-                    Content="喵喵"
+                    Content="{Binding ElementName=MyStoryboardPlayer, Path=IsPerformanceRendering}"
                     Foreground="White">
                 </Label>
             </Grid>

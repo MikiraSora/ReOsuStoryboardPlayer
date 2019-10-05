@@ -30,12 +30,24 @@ namespace ReOsuStoryboardPlayer.WPFControl
 
         public event Action StoryboardUpdated;
 
+        public bool IsPerformanceRendering
+        {
+            get { return (bool)GetValue(IsPerformanceRenderingProperty); }
+            set { SetValue(IsPerformanceRenderingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsPerformanceRendering.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsPerformanceRenderingProperty =
+            DependencyProperty.Register("IsPerformanceRendering", typeof(bool), typeof(StoryboardPlayer), new PropertyMetadata(false));
+
         public StoryboardPlayer()
         {
             InitializeComponent();
 
             MyGLControl.SizeChanged += MyGLControl_SizeChanged;
             MyGLControl.ExceptionOccurred += MyGLControl_ExceptionOccurred;
+
+            MyGLControl.PropertyChanged += (s,b) => Dispatcher.Invoke(() => IsPerformanceRendering = MyGLControl.IsUsingNVDXInterop);
         }
 
         private void MyGLControl_ExceptionOccurred(object sender, UnhandledExceptionEventArgs e)
