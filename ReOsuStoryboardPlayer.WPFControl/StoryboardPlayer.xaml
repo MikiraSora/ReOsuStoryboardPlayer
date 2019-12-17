@@ -9,10 +9,5 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <Grid>
-            <opentkcontrol:ThreadOpenTkControl Name="MyGLControl" Loaded="MyGLControl_Loaded">
-            </opentkcontrol:ThreadOpenTkControl>
-        </Grid>
-    </Grid>
+    <opentkcontrol:ThreadOpenTkControl Name="MyGLControl" Loaded="MyGLControl_Loaded" />
 </UserControl>

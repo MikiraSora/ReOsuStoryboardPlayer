@@ -9,10 +9,11 @@
     Title="Oh, My Storyboard Player"
     Width="960"
     Height="720"
+    Loaded="Window_Loaded"
     mc:Ignorable="d">
     <Grid>
         <Grid Background="#00FFFFFF" MouseDown="Grid_MouseLeftButtonDown_1">
-            <wpfcontrol:StoryboardPlayer Name="MyStoryboardPlayer" StoryboardUpdated="MyStoryboardPlayer_StoryboardUpdated">
+            <wpfcontrol:StoryboardPlayer IsPerformanceRendering="True" Name="MyStoryboardPlayer" StoryboardUpdated="MyStoryboardPlayer_StoryboardUpdated">
 
             </wpfcontrol:StoryboardPlayer>
         </Grid>

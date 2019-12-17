@@ -12,12 +12,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using ReOsuStoryboardPlayer.Player;
+using Path = System.IO.Path;
 
 namespace ReOsuStoryboardPlayer.WPFControl.Example
 {
@@ -74,7 +76,7 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
         public static readonly DependencyProperty VolumeProperty =
             DependencyProperty.Register("Volume", typeof(double), typeof(MainWindow), new PropertyMetadata(1.0d, (e, o) =>
             {
-                var player = ((MainWindow)e).MyStoryboardPlayer.MusicPlayer;
+                var player = ((MainWindow)e).MyStoryboardPlayer.SourcePlayer;
                 var s = (double)o.NewValue;
                 player.Volume = (float)s;
             }));
@@ -88,7 +90,7 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
         public static readonly DependencyProperty PlaybackSpeedProperty =
             DependencyProperty.Register("PlaybackSpeed", typeof(double), typeof(MainWindow), new PropertyMetadata(1.0d, (e, o) =>
             {
-                var player = ((MainWindow)e).MyStoryboardPlayer.MusicPlayer;
+                var player = ((MainWindow)e).MyStoryboardPlayer.SourcePlayer;
                 var s = (double)o.NewValue;
                 player.PlaybackSpeed = (float)s;
             }));
@@ -130,50 +132,51 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new FolderBrowserDialog())
-            {
+            var dialog = new OpenFileDialog();
 #if DEBUG
-                //懒得翻
-                dialog.SelectedPath = @"G:\SBTest";
+            //懒得翻
+            //dialog.InitialDirectory = @"G:\SBTest";
 #endif
+            //dialog.InitialDirectory = System.IO.Path.GetFullPath(@".");
+            dialog.Title = "选择一个SB文件";
+            dialog.Filter = "支持的文件(*.osu;*.osb)|*.osu;*.osb|All files (*.*)|*.*";
+            var result = dialog.ShowDialog();
+            var path = dialog.FileName;
 
-                dialog.SelectedPath = System.IO.Path.GetFullPath(@".");
-                dialog.ShowNewFolderButton = false;
-                dialog.Description = "选择一个含有SB的文件夹";
+            if (result == true && File.Exists(path))
+            {
+                MyStoryboardPlayer.InitializePlayer += OnMyStoryboardPlayerOnInitializePlayer;
+                await MyStoryboardPlayer.SwitchStoryboard(path, true);
 
-                var result = dialog.ShowDialog();
-                var path = dialog.SelectedPath;
+                var current_time = MyStoryboardPlayer.SourcePlayer.Length;
 
-                if ((result == System.Windows.Forms.DialogResult.OK || result == System.Windows.Forms.DialogResult.Yes) && Directory.Exists(path))
-                {
-                    var info = BeatmapFolderInfoEx.Parse(path, null);
+                var span = TimeSpan.FromMilliseconds(current_time);
 
-                    await MyStoryboardPlayer.SwitchStoryboard(info, true);
-
-                    var current_time = MyStoryboardPlayer.MusicPlayer.Length;
-
-                    var span = TimeSpan.FromMilliseconds(current_time);
-
-                    //Dispatcher.Invoke(() =>
-                    //{
-                        CurrentPlayingText = $"{info.folder_path}";
-                        PlaybackLength = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
-                    //});
-                }
+                //Dispatcher.Invoke(() =>
+                //{
+                CurrentPlayingText = Path.GetDirectoryName(path);
+                PlaybackLength = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
+                //});
             }
+        }
+
+        private void OnMyStoryboardPlayerOnInitializePlayer(PlayerBase player, string audioPath)
+        {
+            ((MusicPlayer)player).Load(audioPath);
+            MyStoryboardPlayer.InitializePlayer -= OnMyStoryboardPlayerOnInitializePlayer;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (MyStoryboardPlayer.MusicPlayer.IsPlaying)
-                MyStoryboardPlayer.MusicPlayer.Pause();
+            if (MyStoryboardPlayer.SourcePlayer.IsPlaying)
+                MyStoryboardPlayer.SourcePlayer.Pause();
             else
-                MyStoryboardPlayer.MusicPlayer.Play();
+                MyStoryboardPlayer.SourcePlayer.Play();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            MyStoryboardPlayer.MusicPlayer.Stop();
+            MyStoryboardPlayer.SourcePlayer.Stop();
         }
 
         private void MyStoryboardPlayer_StoryboardUpdated()
@@ -181,15 +184,20 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
             if (UpdateKernel.Instance == null || RenderKernel.Instance == null)
                 return;
 
-            var current_time = MyStoryboardPlayer.MusicPlayer.CurrentTime;
+            var current_time = MyStoryboardPlayer.SourcePlayer.CurrentTime;
 
             var span = TimeSpan.FromMilliseconds(current_time);
 
             Dispatcher.Invoke(() =>
             {
                 CurrentPlayPosition = $"{span.TotalMinutes:F0}:{span.Seconds:F0}";
-                PlayProgress.Value = current_time / MyStoryboardPlayer.MusicPlayer.Length * 100;
+                PlayProgress.Value = current_time / MyStoryboardPlayer.SourcePlayer.Length * 100;
             });
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MyStoryboardPlayer.SetPlayer(new MusicPlayer());
         }
     }
 }

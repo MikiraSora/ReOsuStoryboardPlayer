@@ -6,6 +6,7 @@ using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ReOsuStoryboardPlayer.ProgramCommandParser;
+using Path = System.IO.Path;
 
 namespace ReOsuStoryboardPlayer.WPFControl
 {
@@ -26,19 +29,31 @@ namespace ReOsuStoryboardPlayer.WPFControl
     /// </summary>
     public partial class StoryboardPlayer : UserControl
     {
-        private bool inited;
+        private bool _isInit;
 
+        public PlayerBase SourcePlayer { get; private set; }
+
+        public event Action<PlayerBase, string> InitializePlayer;
         public event Action StoryboardUpdated;
 
         public bool IsPerformanceRendering
         {
-            get { return (bool)GetValue(IsPerformanceRenderingProperty); }
-            set { SetValue(IsPerformanceRenderingProperty, value); }
+            get => (bool)GetValue(IsPerformanceRenderingProperty);
+            set => SetValue(IsPerformanceRenderingProperty, value);
+        }
+
+        public bool AutoUpdateViewSize
+        {
+            get => (bool)GetValue(AutoUpdateViewSizeProperty);
+            set => SetValue(AutoUpdateViewSizeProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for IsPerformanceRendering.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsPerformanceRenderingProperty =
             DependencyProperty.Register("IsPerformanceRendering", typeof(bool), typeof(StoryboardPlayer), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty AutoUpdateViewSizeProperty =
+            DependencyProperty.Register("AutoUpdateViewSize", typeof(bool), typeof(StoryboardPlayer), new PropertyMetadata(false));
 
         public StoryboardPlayer()
         {
@@ -47,7 +62,44 @@ namespace ReOsuStoryboardPlayer.WPFControl
             MyGLControl.SizeChanged += MyGLControl_SizeChanged;
             MyGLControl.ExceptionOccurred += MyGLControl_ExceptionOccurred;
 
-            MyGLControl.PropertyChanged += (s,b) => Dispatcher.Invoke(() => IsPerformanceRendering = MyGLControl.IsUsingNVDXInterop);
+            MyGLControl.PropertyChanged += (s, b) => Dispatcher?.Invoke(() => IsPerformanceRendering = MyGLControl.IsUsingNVDXInterop);
+        }
+
+        public void SetPlayer(PlayerBase player)
+        {
+            SourcePlayer = player;
+            MusicPlayerManager.ApplyPlayer(SourcePlayer);
+        }
+
+        public Task SwitchStoryboard(string path, bool playAfterLoad = false)
+        {
+            if (SourcePlayer == null) throw new Exception("SourcePlayer was not set");
+            return ExecutorSync.PostTask(() =>
+            {
+                var fi = new FileInfo(path);
+                var ext = fi.Extension;
+                var folder = Path.GetDirectoryName(path);
+                Parameters args = null;
+                if (string.Equals(ext, ".osu", StringComparison.OrdinalIgnoreCase))
+                {
+                    var folderInfo = BeatmapFolderInfo.Parse(folder);
+                    args = new Parameters();
+                    args.Args.Add("diff", folderInfo.DifficultFiles.FirstOrDefault(k => k.Value == fi.FullName).Key);
+                }
+
+                var info = BeatmapFolderInfoEx.Parse(folder, args);
+                var instance = StoryboardInstance.Load(info);
+
+                LoadStoryboardInstance(instance);
+                InitializePlayer?.Invoke(SourcePlayer, info.audio_file_path);
+
+                Resize();
+
+                if (playAfterLoad)
+                {
+                    MusicPlayerManager.ActivityPlayer?.Play();
+                }
+            });
         }
 
         private void MyGLControl_ExceptionOccurred(object sender, UnhandledExceptionEventArgs e)
@@ -60,11 +112,9 @@ namespace ReOsuStoryboardPlayer.WPFControl
 
         private void MyGLControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (!inited)
+            if (!_isInit || !AutoUpdateViewSize)
                 return;
 
-            var width = (int)MyGLControl.ActualWidth;
-            var height = (int)MyGLControl.ActualHeight;
             ExecutorSync.PostTask(() => Resize());
         }
 
@@ -88,33 +138,12 @@ namespace ReOsuStoryboardPlayer.WPFControl
 
         private void MyGLControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (inited)
+            if (_isInit)
                 return;
 
             MyGLControl.GlRender += MyGLControl_GlRender;
 
-            MusicPlayer = new MusicPlayer();
-            MusicPlayerManager.ApplyPlayer(MusicPlayer);
-
-            inited = true;
-        }
-
-        public Task SwitchStoryboard(BeatmapFolderInfoEx info, bool play_after_load = false)
-        {
-            return ExecutorSync.PostTask(() =>
-            {
-                var instance = StoryboardInstance.Load(info);
-
-                LoadStoryboardInstance(instance);
-                InitAudio(info);
-
-                Resize();
-
-                if (play_after_load)
-                {
-                    MusicPlayerManager.ActivityPlayer?.Play();
-                }
-            });
+            _isInit = true;
         }
 
         private void LoadStoryboardInstance(StoryboardInstance instance)
@@ -123,21 +152,14 @@ namespace ReOsuStoryboardPlayer.WPFControl
             UpdateKernel.LoadStoryboardInstance(instance);
         }
 
-        private void InitAudio(BeatmapFolderInfoEx info)
-        {
-            MusicPlayer.Load(info.audio_file_path);
-        }
-
-        public MusicPlayer MusicPlayer { get; private set; }
-
         private void Resize()
         {
-            var width = (int)this.ActualWidth;
-            var height = (int)this.ActualHeight;
-            
+            var width = (int)MyGLControl.ActualWidth;
+            var height = (int)MyGLControl.ActualHeight;
+
             PlayerSetting.FrameHeight = height;
 
-            if (UpdateKernel.Instance?.Info?.IsWidescreenStoryboard??false)
+            if (UpdateKernel.Instance?.Info?.IsWidescreenStoryboard ?? false)
             {
                 PlayerSetting.FrameWidth = (int)(RenderKernel.SB_WIDE_WIDTH / RenderKernel.SB_HEIGHT * height);
             }
