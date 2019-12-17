@@ -35,6 +35,7 @@ namespace ReOsuStoryboardPlayer.WPFControl
 
         public event Action<PlayerBase, string> InitializePlayer;
         public event Action StoryboardUpdated;
+        public event EventHandler<UnhandledExceptionEventArgs> ExceptionOccurred;
 
         public bool IsPerformanceRendering
         {
@@ -60,8 +61,7 @@ namespace ReOsuStoryboardPlayer.WPFControl
             InitializeComponent();
 
             MyGLControl.SizeChanged += MyGLControl_SizeChanged;
-            MyGLControl.ExceptionOccurred += MyGLControl_ExceptionOccurred;
-
+            MyGLControl.ExceptionOccurred += (sender, args) => ExceptionOccurred?.Invoke(sender, args);
             MyGLControl.PropertyChanged += (s, b) => Dispatcher?.Invoke(() => IsPerformanceRendering = MyGLControl.IsUsingNVDXInterop);
         }
 
@@ -100,14 +100,6 @@ namespace ReOsuStoryboardPlayer.WPFControl
                     MusicPlayerManager.ActivityPlayer?.Play();
                 }
             });
-        }
-
-        private void MyGLControl_ExceptionOccurred(object sender, UnhandledExceptionEventArgs e)
-        {
-            if (e.ExceptionObject is Exception ex)
-            {
-                Log.Error($"OpenTKControlBase throw errors : {ex.Message} \n {ex.StackTrace}");
-            }
         }
 
         private void MyGLControl_SizeChanged(object sender, SizeChangedEventArgs e)
