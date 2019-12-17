@@ -6,76 +6,78 @@
     xmlns:local="clr-namespace:ReOsuStoryboardPlayer.WPFControl.Example"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpfcontrol="clr-namespace:ReOsuStoryboardPlayer.WPFControl;assembly=ReOsuStoryboardPlayer.WPFControl"
-    Title="Oh, My Storyboard Player"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    Title="Oh, My Storyboard Player" Closing="MainWindow_OnClosing"
     Width="960"
     Height="720"
     Loaded="Window_Loaded"
     mc:Ignorable="d">
+    <Window.Resources>
+        <local:RatioConverter x:Key="RatioConverter" />
+    </Window.Resources>
     <Grid>
         <Grid Background="#00FFFFFF" MouseDown="Grid_MouseLeftButtonDown_1">
-            <wpfcontrol:StoryboardPlayer IsPerformanceRendering="True" Name="MyStoryboardPlayer" StoryboardUpdated="MyStoryboardPlayer_StoryboardUpdated">
-
+            <wpfcontrol:StoryboardPlayer
+                Name="MyStoryboardPlayer"
+                AutoUpdateViewSize="True"
+                IsPerformanceRendering="True"
+                StoryboardUpdated="MyStoryboardPlayer_StoryboardUpdated">
+                <wpfcontrol:StoryboardPlayer.Height>
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" Converter="{StaticResource RatioConverter}">
+                        <Binding.ConverterParameter>
+                            <system:Double>0.5625</system:Double>
+                        </Binding.ConverterParameter>
+                    </Binding>
+                </wpfcontrol:StoryboardPlayer.Height>
             </wpfcontrol:StoryboardPlayer>
         </Grid>
 
         <Grid Background="#10000000" Visibility="{Binding ControlPanelVisibility}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto">
-                </RowDefinition>
-                <RowDefinition>
-                </RowDefinition>
-                <RowDefinition Height="auto">
-                </RowDefinition>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid Background="#CC000000">
                 <Label
                     Padding="10,15,0,15"
                     Content="{Binding CurrentPlayingText}"
-                    Foreground="White">
-                </Label>
+                    Foreground="White" />
                 <Label
                     Padding="10,15,10,15"
                     HorizontalAlignment="Right"
                     HorizontalContentAlignment="Left"
                     Content="{Binding ElementName=MyStoryboardPlayer, Path=IsPerformanceRendering}"
-                    Foreground="White">
-                </Label>
+                    Foreground="White" />
             </Grid>
 
             <Grid
                 Grid.Row="1"
                 Background="#00FFFFFF"
-                MouseDown="Grid_MouseLeftButtonDown">
-            </Grid>
+                MouseDown="Grid_MouseLeftButtonDown" />
 
             <Grid Grid.Row="2" Background="#CC000000">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto">
-                    </RowDefinition>
-                    <RowDefinition Height="Auto">
-                    </RowDefinition>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel Margin="10">
                     <Grid>
                         <Label
                             Content="{Binding CurrentPlayPosition}"
                             FontSize="15"
-                            Foreground="White">
-                        </Label>
+                            Foreground="White" />
                         <Label
                             HorizontalAlignment="Right"
                             Content="{Binding PlaybackLength}"
                             FontSize="15"
-                            Foreground="White">
-
-                        </Label>
+                            Foreground="White" />
                     </Grid>
                     <Slider
                         Name="PlayProgress"
                         Maximum="100"
                         Minimum="0"
-                        ValueChanged="Slider_ValueChanged">
-                    </Slider>
+                        ValueChanged="Slider_ValueChanged" />
                 </StackPanel>
 
                 <StackPanel
@@ -84,18 +86,12 @@
                     Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="Button">
-                            <Setter Property="MinWidth" Value="100">
-                            </Setter>
-                            <Setter Property="Margin" Value="5,0,5,0">
-                            </Setter>
-                            <Setter Property="Padding" Value="10,5,10,5">
-                            </Setter>
-                            <Setter Property="FontSize" Value="15">
-                            </Setter>
-                            <Setter Property="Background" Value="Transparent">
-                            </Setter>
-                            <Setter Property="Foreground" Value="White">
-                            </Setter>
+                            <Setter Property="MinWidth" Value="100" />
+                            <Setter Property="Margin" Value="5,0,5,0" />
+                            <Setter Property="Padding" Value="10,5,10,5" />
+                            <Setter Property="FontSize" Value="15" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="White" />
                         </Style>
                     </StackPanel.Resources>
                     <Button Click="Button_Click">
@@ -128,8 +124,7 @@
                         Maximum="1"
                         Minimum="0"
                         TickFrequency="0.1"
-                        Value="{Binding Volume}">
-                    </Slider>
+                        Value="{Binding Volume}" />
                     <Label FontSize="15" Foreground="White">
                         Speed:
                     </Label>
@@ -140,8 +135,7 @@
                         Maximum="2"
                         Minimum="0.5"
                         TickFrequency="0.25"
-                        Value="{Binding PlaybackSpeed}">
-                    </Slider>
+                        Value="{Binding PlaybackSpeed}" />
                 </StackPanel>
             </Grid>
         </Grid>

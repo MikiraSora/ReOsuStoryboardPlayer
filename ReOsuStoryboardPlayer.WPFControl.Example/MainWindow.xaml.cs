@@ -4,6 +4,7 @@ using ReOsuStoryBoardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Parser;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -162,7 +163,7 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
 
         private void OnMyStoryboardPlayerOnInitializePlayer(PlayerBase player, string audioPath)
         {
-            ((MusicPlayer)player).Load(audioPath);
+            ((NAudioMusicPlayer)player).Load(audioPath);
             MyStoryboardPlayer.InitializePlayer -= OnMyStoryboardPlayerOnInitializePlayer;
         }
 
@@ -197,7 +198,12 @@ namespace ReOsuStoryboardPlayer.WPFControl.Example
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MyStoryboardPlayer.SetPlayer(new MusicPlayer());
+            MyStoryboardPlayer.SetPlayer(new NAudioMusicPlayer());
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            ((NAudioMusicPlayer)MyStoryboardPlayer.SourcePlayer).Dispose();
         }
     }
 }

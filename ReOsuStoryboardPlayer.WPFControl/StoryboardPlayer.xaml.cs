@@ -51,7 +51,19 @@ namespace ReOsuStoryboardPlayer.WPFControl
 
         // Using a DependencyProperty as the backing store for IsPerformanceRendering.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsPerformanceRenderingProperty =
-            DependencyProperty.Register("IsPerformanceRendering", typeof(bool), typeof(StoryboardPlayer), new PropertyMetadata(false));
+            DependencyProperty.Register("IsPerformanceRendering", typeof(bool), typeof(StoryboardPlayer),
+                new PropertyMetadata(false, Callback));
+
+        private static void Callback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is StoryboardPlayer sbp)
+            {
+                if (sbp.MyGLControl.IsUsingNVDXInterop != sbp.IsPerformanceRendering)
+                    sbp.MyGLControl.IsUsingNVDXInterop = sbp.IsPerformanceRendering;
+                if (sbp.MyGLControl.PerferPerfomance != sbp.IsPerformanceRendering)
+                    sbp.MyGLControl.PerferPerfomance = sbp.IsPerformanceRendering;
+            }
+        }
 
         public static readonly DependencyProperty AutoUpdateViewSizeProperty =
             DependencyProperty.Register("AutoUpdateViewSize", typeof(bool), typeof(StoryboardPlayer), new PropertyMetadata(false));
@@ -63,6 +75,8 @@ namespace ReOsuStoryboardPlayer.WPFControl
             MyGLControl.SizeChanged += MyGLControl_SizeChanged;
             MyGLControl.ExceptionOccurred += (sender, args) => ExceptionOccurred?.Invoke(sender, args);
             MyGLControl.PropertyChanged += (s, b) => Dispatcher?.Invoke(() => IsPerformanceRendering = MyGLControl.IsUsingNVDXInterop);
+            MyGLControl.IsUsingNVDXInterop = IsPerformanceRendering;
+            MyGLControl.PerferPerfomance = IsPerformanceRendering;
         }
 
         public void SetPlayer(PlayerBase player)
