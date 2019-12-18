@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
-    <Version>1.5.10</Version>
+    <Version>1.5.11</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Company></Company>
@@ -18,6 +18,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>(NOT storyboard code generator)This library implements the ability to execute osu!storyboard code and provides a set of tools to easily implement and optimize osu!storyboard code. Anyone can use this library to directly complete the logic implementation of osu!storyboard and easily porting.</Description>
     <PackageTags>osu!;osu;storyboard;osb;</PackageTags>
+    <AssemblyVersion>1.5.11.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
