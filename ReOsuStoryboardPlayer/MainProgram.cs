@@ -137,7 +137,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder= @"E:\osu!\Songs\357161 Yumi Arai - Hikouki Gumo (el poco maro DnB EDIT)";
+            beatmap_folder= @"G:\SBTest\548679 DJ NAGAI feat a_ru - Benibotan";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);
