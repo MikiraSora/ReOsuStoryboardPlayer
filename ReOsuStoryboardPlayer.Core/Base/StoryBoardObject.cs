@@ -371,22 +371,38 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public virtual bool Equals(StoryboardObject other)
         {
-            return other.ImageFilePath==ImageFilePath
-                &&other.FromOsbFile==FromOsbFile
-                &&other.FrameStartTime==FrameStartTime
-                &&other.FrameEndTime==FrameEndTime
-                &&other.layout==layout
-                &&other.Z==Z
-                &&other.Postion==Postion
-                &&other.Scale==Scale
-                &&other.Color==Color
-                &&other.Rotate==Rotate
-                &&other.OriginOffset==OriginOffset
-                &&other.IsAdditive==IsAdditive
-                &&other.IsHorizonFlip==IsHorizonFlip
-                &&other.IsVerticalFlip==IsVerticalFlip
-                &&other.FileLine==FileLine
-                &&other.CommandMap.Values.SelectMany(l => l).All(x => CommandMap.Values.SelectMany(l => l).Any(y => y.Equals(x)));
+            if (!(other.ImageFilePath == ImageFilePath
+                && other.FromOsbFile == FromOsbFile
+                && other.FrameStartTime == FrameStartTime
+                && other.FrameEndTime == FrameEndTime
+                && other.layout == layout
+                && other.Z == Z
+                && other.Postion == Postion
+                && other.Scale == Scale
+                && other.Color == Color
+                && other.Rotate == Rotate
+                && other.OriginOffset == OriginOffset
+                && other.IsAdditive == IsAdditive
+                && other.IsHorizonFlip == IsHorizonFlip
+                && other.IsVerticalFlip == IsVerticalFlip
+                && other.FileLine == FileLine))
+                return false;
+
+            //var r = other.CommandMap.Values.SelectMany(l => l).All(x => CommandMap.Values.SelectMany(l => l).Any(y => y.Equals(x)));
+
+            var a_commands = other.CommandMap.Values.SelectMany(l => l).ToList();
+            var b_commands = CommandMap.Values.SelectMany(l => l).ToList();
+
+            while (a_commands.Count!=0)
+            {
+                var cmd = a_commands.FirstOrDefault();
+                a_commands.Remove(cmd);
+
+                if (!b_commands.Remove(cmd))
+                    return false;
+            }
+
+            return (a_commands.Count + b_commands.Count) == 0;
         }
 
         #endregion Serialization

@@ -58,12 +58,12 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         private float CalculateNormalizeValue(float time)
         {
-            if (time<=StartTime)
+            if (time <= StartTime)
                 return 0;
-            else if (time>=EndTime)
+            else if (time >= EndTime)
                 return 1;
             else
-                return (float)Interpolation.ApplyEasing(Easing, (time-StartTime)/(EndTime-StartTime));
+                return (float)Interpolation.ApplyEasing(Easing, (time - StartTime) / (EndTime - StartTime));
         }
 
         public override void Execute(StoryboardObject @object, float time)
@@ -78,9 +78,11 @@ namespace ReOsuStoryboardPlayer.Core.Commands
         public override bool Equals(Command command)
         {
             return base.Equals(command)
-                &&command is ValueCommand<VALUE_TYPE> v
-                &&EqualityComparer.Equals(v.StartValue, StartValue)
-                &&EqualityComparer.Equals(v.EndValue, EndValue);
+                && command is ValueCommand<VALUE_TYPE> v
+                //&&EqualityComparer.Equals(v.StartValue, StartValue)
+                //&&EqualityComparer.Equals(v.EndValue, EndValue);
+                && v.StartValue.ToString().Equals(StartValue.ToString()) //Avoid Nan
+                && v.EndValue.ToString().Equals(EndValue.ToString());
         }
     }
 }
