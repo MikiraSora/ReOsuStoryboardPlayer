@@ -102,6 +102,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                         for (int i = 0; timeline.Overlay&&i<timeline.Count-1; i++)
                         {
                             var cmd = timeline[i];
+
                             /*
                              *(cmd)      : |--------------------------|
                              *(next_cmd) :             |--------------|       <--- Killed , biatch
@@ -109,11 +110,6 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                             for (int t = i+1; timeline.Overlay&&t<timeline.Count; t++)
                             {
                                 var next_cmd = timeline[t];
-
-                                if (next_cmd.RelativeLine == 170726)
-                                {
-
-                                }
 
                                 if (next_cmd.StartTime>cmd.EndTime)
                                     break;
