@@ -61,4 +61,4 @@ Oldvervion:
 
 #### 个人吐槽
 **强烈呼吁Storyboard脚本检查进入osu!Rank图标准!!!!** <br>
-**Strongly urge Storyboard script check to enter osu! Rank graph standard**
+**Strongly urge osu! Ranking Criteria contains Storyboard script checking**
