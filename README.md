@@ -57,4 +57,8 @@ Oldvervion:
 
 
 #### Special Thanks
-****麻花****(43size),Damnae，鹅苗，外服大师 ,[kj415j45](https://github.com/kj415j45)，****[毛毛](https://github.com/KedamaOvO)****,peppy，量子玫瑰 and all of 恶俗麻婆****2857****吹比黄图群
+****超级牛逼无敌炫酷爆炸麻花****(43size),Damnae，鹅苗，外服大师 ,[kj415j45](https://github.com/kj415j45)，****[毛毛](https://github.com/KedamaOvO)****,peppy，量子玫瑰 and all of 恶俗麻婆****2857****吹比黄图群
+
+#### 个人吐槽
+**强烈呼吁Storyboard脚本检查进入osu!Rank图标准!!!!** <br>
+**Strongly urge Storyboard script check to enter osu! Rank graph standard**
