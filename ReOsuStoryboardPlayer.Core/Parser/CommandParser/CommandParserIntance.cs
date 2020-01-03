@@ -70,19 +70,8 @@ namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
 
             foreach (var cmd in result)
             {
-                AdjustCommand(cmd);
                 yield return cmd;
             }
-        }
-
-        private static void AdjustCommand(Command cmd)
-        {
-            //skip non-ValueCommand
-            if (!(cmd is ValueCommand))
-                return;
-
-            //fix for \357161 -> L30921..
-            cmd.StartTime = Math.Min(cmd.StartTime, cmd.EndTime);
         }
     }
 

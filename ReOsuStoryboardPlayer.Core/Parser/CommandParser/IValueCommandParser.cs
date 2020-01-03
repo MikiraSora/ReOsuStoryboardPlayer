@@ -25,6 +25,14 @@ namespace ReOsuStoryboardPlayer.Core.Parser.CommandParser
             command.StartValue=StartValue;
             command.EndValue=EndValue;
 
+            /*
+            //????? fix for \357161 -> L30921..
+            //????? discard for \511637 -> L81497..
+            //爽了难免
+            if (command.StartTime > command.EndTime)
+                command.StartTime = command.EndTime;
+            */
+
             return command;
         }
 
