@@ -37,6 +37,8 @@
 * .net framework 4.7.1
 
 #### 截图:
+![](https://puu.sh/FHdvD/6faa1025c8.png)
+![](https://puu.sh/FHdEA/d6ca395899.png)
 ![](https://puu.sh/xku6E/3671305f79.jpg)
 ![](https://puu.sh/xkueL/72e434a5e7.png)
 ![](https://puu.sh/xkupr/51c48cc25a.png)
