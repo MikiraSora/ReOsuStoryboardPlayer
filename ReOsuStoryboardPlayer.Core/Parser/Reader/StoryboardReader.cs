@@ -88,7 +88,7 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Reader
 
             if (!(obj is StoryboardBackgroundObject))
             {
-                obj.layout=(Layout)Enum.Parse(typeof(Layout), data_arr[1]);
+                obj.layer=(Layer)Enum.Parse(typeof(Layer), data_arr[1]);
 
                 obj.OriginOffset=AnchorConvert.Convert((Anchor)Enum.Parse(typeof(Anchor), data_arr[2]));
 

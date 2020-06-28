@@ -1,10 +1,11 @@
 ﻿namespace ReOsuStoryboardPlayer.Core.Base
 {
-    public enum Layout
+    public enum Layer
     {
         Background,
         Fail,
         Pass,
-        Foreground
+        Foreground,
+        Overlay
     }
 }

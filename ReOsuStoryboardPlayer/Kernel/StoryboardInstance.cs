@@ -55,10 +55,11 @@ namespace ReOsuStoryboardPlayer.Kernel
                 {
                     List<StoryboardObject> result = new List<StoryboardObject>();
 
-                    Add(Layout.Background);
-                    Add(Layout.Fail);
-                    Add(Layout.Pass);
-                    Add(Layout.Foreground);
+                    Add(Layer.Background);
+                    Add(Layer.Fail);
+                    Add(Layer.Pass);
+                    Add(Layer.Foreground);
+                    Add(Layer.Overlay);
 
                     int z = 0;
                     foreach (var obj in result)
@@ -68,10 +69,10 @@ namespace ReOsuStoryboardPlayer.Kernel
 
                     return result;
 
-                    void Add(Layout layout)
+                    void Add(Layer layout)
                     {
-                        result.AddRange(osu_list.Where(x => x.layout==layout));//先加osu
-                        result.AddRange(osb_list.Where(x => x.layout==layout).Select(x =>
+                        result.AddRange(osu_list.Where(x => x.layer==layout));//先加osu
+                        result.AddRange(osb_list.Where(x => x.layer==layout).Select(x =>
                         {
                             x.FromOsbFile=true;
                             return x;

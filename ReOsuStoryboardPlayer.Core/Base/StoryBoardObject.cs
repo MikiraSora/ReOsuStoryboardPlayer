@@ -33,7 +33,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public int FrameStartTime = int.MinValue, FrameEndTime;
 
-        public Layout layout;
+        public Layer layer;
 
         public int Z = -1;
 
@@ -265,7 +265,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
         public long FileLine;
 
-        public override string ToString() => $"line {(FromOsbFile ? "osb" : "osu")}:{FileLine} ({layout.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
+        public override string ToString() => $"line {(FromOsbFile ? "osb" : "osu")}:{FileLine} ({layer.ToString()} {Z}): {ImageFilePath} : {FrameStartTime}~{FrameEndTime}";
 
         #region Serialization
 
@@ -297,7 +297,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             FromOsbFile.OnSerialize(stream);
             FrameStartTime.OnSerialize(stream);
             FrameEndTime.OnSerialize(stream);
-            ((byte)layout).OnSerialize(stream);
+            ((byte)layer).OnSerialize(stream);
             Z.OnSerialize(stream);
 
             Postion.OnSerialize(stream, cache_table);
@@ -329,7 +329,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             FromOsbFile.OnDeserialize(stream);
             FrameStartTime.OnDeserialize(stream);
             FrameEndTime.OnDeserialize(stream);
-            layout=(Layout)stream.ReadByte();
+            layer=(Layer)stream.ReadByte();
             Z.OnDeserialize(stream);
 
             Postion.OnDeserialize(stream, cache_table);
@@ -375,7 +375,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
                 && other.FromOsbFile == FromOsbFile
                 && other.FrameStartTime == FrameStartTime
                 && other.FrameEndTime == FrameEndTime
-                && other.layout == layout
+                && other.layer == layer
                 && other.Z == Z
                 && other.Postion == Postion
                 && other.Scale == Scale
