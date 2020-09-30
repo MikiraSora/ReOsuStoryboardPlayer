@@ -8,7 +8,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands
 
         public override void Execute(StoryboardObject @object, float time)
         {
-            if (StartTime==EndTime||(StartTime<time&&time<EndTime))
+            if (StartTime==EndTime || (StartTime<=time&&time<=EndTime))
                 ApplyValue(@object, true);
             else
                 ApplyValue(@object, false);

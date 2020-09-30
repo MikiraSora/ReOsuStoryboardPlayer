@@ -208,17 +208,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\storybrew\common\common.csproj">
-      <Project>{f0edccec-4b64-4ce8-801f-1377e3384dc4}</Project>
-      <Name>common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ReOsuStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj">
       <Project>{31711b28-3825-4eb4-a6e7-959b699eb3ab}</Project>
       <Name>ReOsuStoryboardPlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
-      <Project>{AB4CABA1-06E4-4A32-8A15-1FBE20ED5BC6}</Project>
+      <Project>{0c548e15-78d1-4a52-8ecb-456f631ecfae}</Project>
       <Name>SaarFFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\storybrew\common\common.csproj">
+      <Project>{f0edccec-4b64-4ce8-801f-1377e3384dc4}</Project>
+      <Name>common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

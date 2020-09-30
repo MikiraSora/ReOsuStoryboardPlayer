@@ -63,7 +63,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
                         {
                             var prev_imgae = pictureBox1.Image;
                             pictureBox1.Image=img;
-                            prev_imgae.Dispose();
+                            prev_imgae?.Dispose();
                         }
                     }
                     catch
