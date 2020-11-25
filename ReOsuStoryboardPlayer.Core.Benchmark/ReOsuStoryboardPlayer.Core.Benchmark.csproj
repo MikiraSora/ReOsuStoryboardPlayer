@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp3.0;net472</TargetFrameworks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReOsuStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="OsbFiles\Camellia vs Akira Complex - Reality Distortion %28rrtyui%29.osb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="OsbFiles\fripSide - Hesitation Snow %28Kawayi Rika%29 [Normal].osu">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="OsbFiles\Hatsuki Yura - Fuuga %28Lan wings%29.osb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="OsbFiles\IOSYS feat. 3L - Miracle-Hinacle %28_lolipop%29.osb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="OsbFiles\NOMA - LOUDER MACHINE %28Skystar%29.osb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

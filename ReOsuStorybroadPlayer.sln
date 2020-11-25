@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "brewlib", "storybrew\brewli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tiny", "storybrew\tiny\tiny.csproj", "{520E33D3-E022-4581-ACD8-BED838BC817E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryboardPlayer.Core.Benchmark", "ReOsuStoryboardPlayer.Core.Benchmark\ReOsuStoryboardPlayer.Core.Benchmark.csproj", "{6F503A35-76E6-49D9-B5AC-8699B4B81A77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
@@ -240,6 +242,24 @@ Global
 		{520E33D3-E022-4581-ACD8-BED838BC817E}.Release|x64.Build.0 = Release|Any CPU
 		{520E33D3-E022-4581-ACD8-BED838BC817E}.Release|x86.ActiveCfg = Release|Any CPU
 		{520E33D3-E022-4581-ACD8-BED838BC817E}.Release|x86.Build.0 = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Build|Any CPU.ActiveCfg = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Build|Any CPU.Build.0 = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Build|x64.ActiveCfg = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Build|x64.Build.0 = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Build|x86.ActiveCfg = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Build|x86.Build.0 = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Debug|x64.Build.0 = Debug|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Debug|x86.Build.0 = Debug|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Release|x64.ActiveCfg = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Release|x64.Build.0 = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F503A35-76E6-49D9-B5AC-8699B4B81A77}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
