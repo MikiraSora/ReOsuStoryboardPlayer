@@ -87,8 +87,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\irrKlang.NET4.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTK.3.0.0\lib\net20\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.3.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.3.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -207,10 +207,6 @@
     <ProjectReference Include="..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj">
       <Project>{0c548e15-78d1-4a52-8ecb-456f631ecfae}</Project>
       <Name>SaarFFmpeg</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\storybrew\common\common.csproj">
-      <Project>{f0edccec-4b64-4ce8-801f-1377e3384dc4}</Project>
-      <Name>common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
