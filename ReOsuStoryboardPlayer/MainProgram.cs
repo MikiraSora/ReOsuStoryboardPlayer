@@ -40,18 +40,22 @@ namespace ReOsuStoryboardPlayer
         {
             Environment.CurrentDirectory=System.AppDomain.CurrentDomain.BaseDirectory;
 
+            //hook Ctrl-C action for console window.
             SetConsoleCtrlHandler(type => {
                 Exit();
                 return true;
             },false);
 
+            //apply settings from file
             PlayerSetting.Init();
 
+            //apply settings from commandline
             var args = ParseProgramCommands(argv, out var beatmap_folder);
 
+            //apply features and settings from diff envs
             EnvironmentHelper.SetupEnvironment();
 
-            //Update check
+            //Update check and notify
             if (PlayerSetting.EnableUpdateCheck)
                 ProgramUpdater.UpdateCheck();
 
@@ -116,10 +120,10 @@ namespace ReOsuStoryboardPlayer
 
             MusicPlayerManager.ActivityPlayer?.Play();
 
-            window.Run();
+            //window.Run();
 
-            /* 不曾设想的操作.jpg
-            window.Visible = true;
+            //* 不曾设想的操作.jpg
+            window.IsVisible = true;
             window.RefreshResize();
 
             while (true)
@@ -128,16 +132,16 @@ namespace ReOsuStoryboardPlayer
                 RenderKernel.Draw();
                 window.SwapBuffers();
                 UpdateKernel.FrameRateLimit();
-                Application.DoEvents();
+                //Application.DoEvents();
             }
-            */
+            //*/
         }
 
         #region ProgramCommands
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder= @"E:\94790 Hatsuki Yura - Fuuga";
+            beatmap_folder= @"94790 Hatsuki Yura - Fuuga";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);
