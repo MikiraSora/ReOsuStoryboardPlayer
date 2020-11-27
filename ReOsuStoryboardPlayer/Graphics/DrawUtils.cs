@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using ReOsuStoryBoardPlayer.Graphics;
 using System;

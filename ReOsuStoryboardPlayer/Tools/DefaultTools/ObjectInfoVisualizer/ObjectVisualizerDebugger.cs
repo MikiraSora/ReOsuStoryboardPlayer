@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using OpenTK.Mathematics;
 using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryBoardPlayer.Graphics;
@@ -52,7 +53,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.ObjectInfoVisualizer
             select_object.Color.W=(byte)Math.Max(0,Math.Min(255, 127.5*Math.Cos(time*0.005)+127.5));
         }
 
-        private void OnMouseClick(int x, int y, MouseInput input)
+        private void OnMouseClick(float x, float y, MouseInput input)
         {
             switch (input)
             {

@@ -1,11 +1,12 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using ReOsuStoryBoardPlayer.Graphics;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Half = OpenTK.Half;
+using Half = OpenTK.Mathematics.Half;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -33,7 +34,7 @@ namespace ReOsuStoryboardPlayer
 
         private SpriteInstanceGroup()
         {
-            StoryboardWindow.CurrentWindow.Resize+=(s, e) => _window_resized=true;
+            StoryboardWindow.CurrentWindow.Resize+= _ => _window_resized=true;
         }
 
         public string ImagePath { get; }
@@ -61,7 +62,7 @@ namespace ReOsuStoryboardPlayer
 
             if (StoryboardWindow.CurrentWindow != null)
             {
-                StoryboardWindow.CurrentWindow.Closing += (s, e) =>
+                StoryboardWindow.CurrentWindow.Closing += _ =>
                 {
                     GL.DeleteBuffer(s_vbo_vertexBase);
                     GL.DeleteBuffer(s_vbo_texPosBase);

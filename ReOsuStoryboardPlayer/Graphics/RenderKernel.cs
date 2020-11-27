@@ -14,6 +14,7 @@ using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Tools;
 using ReOsuStoryboardPlayer.Core.Base;
 using System.Diagnostics;
+using OpenTK.Mathematics;
 
 namespace ReOsuStoryBoardPlayer.Graphics
 {

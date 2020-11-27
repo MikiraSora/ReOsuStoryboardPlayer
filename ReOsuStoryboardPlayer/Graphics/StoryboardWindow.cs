@@ -21,6 +21,11 @@ using System.Threading;
 using ReOsuStoryBoardPlayer.OutputEncoding.Graphics.PostProcess;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
+using OpenTK.Windowing.Desktop;
+using OpenTK.Windowing.Common;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Windows.Forms;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -44,12 +49,15 @@ namespace ReOsuStoryboardPlayer
 
         public bool IsBorderless => WindowBorder==WindowBorder.Hidden;
 
+        public int Width => Size.X;
+        public int Height => Size.Y;
+
         #endregion Field&Property
 
-        public StoryboardWindow(int width = 640, int height = 480) : base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryboardPlayer"
-            , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
+        public StoryboardWindow(int width = 640, int height = 480) : base(GameWindowSettings.Default,NativeWindowSettings.Default) /*base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryboardPlayer"
+            , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)*/
         {
-            VSync = VSyncMode.Off;
+            //VSync = VSyncMode.Off;
             CurrentWindow = this;
             RenderKernel.Init();
 
@@ -57,11 +65,11 @@ namespace ReOsuStoryboardPlayer
             SwitchFullscreen(PlayerSetting.EnableFullScreen);
         }
 
-        protected override void OnResize(EventArgs e)
+        protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
 
-            RenderKernel.ApplyWindowRenderSize(Width,Height);
+            RenderKernel.ApplyWindowRenderSize(e.Width,e.Height);
         }
 
         public void ApplyBorderless(bool is_borderless)
@@ -84,15 +92,13 @@ namespace ReOsuStoryboardPlayer
                 WindowedWidth=Width;
                 WindowedHeight=Height;
                 WindowState=WindowState.Fullscreen;
-                Width=DisplayDevice.Default.Width;
-                Height=DisplayDevice.Default.Height;
+                //todo Size = new Vector2i(DisplayDevice.Default.Width,DisplayDevice.Default.Height);
                 RenderKernel.ApplyWindowRenderSize(Width, Height);
             }
             else
             {
                 WindowState=WindowState.Normal;
-                Width=WindowedWidth;
-                Height=WindowedHeight;
+                Size = new Vector2i(WindowedWidth, WindowedHeight);
                 RenderKernel.ApplyWindowRenderSize(Width, Height);
             }
         }
@@ -171,9 +177,9 @@ namespace ReOsuStoryboardPlayer
             title_update_timer+=total_time* UpdateKernel.THOUSANDTH;
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnClosed()
         {
-            base.OnClosed(e);
+            base.OnClosed();
 
             RenderKernel.Clean();
 
@@ -187,14 +193,14 @@ namespace ReOsuStoryboardPlayer
         #region Input Process
 
         //解决窗口失去/获得焦点时鼠标xjb移动
-        protected override void OnFocusedChanged(EventArgs e) { }
+        protected override void OnFocusedChanged(FocusedChangedEventArgs e) { }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             ToolManager.TrigKeyPress(e.Key);
         }
 
-        private int downX, downY;
+        private float downX, downY;
         private bool mouseDown = false;
         
         protected override void OnMouseDown(MouseButtonEventArgs e)
@@ -204,12 +210,12 @@ namespace ReOsuStoryboardPlayer
             //如果是无边窗就当作拖曳窗口操作
             if (WindowBorder==WindowBorder.Hidden)
             {
-                downX=e.X;
-                downY=e.Y;
+                downX= MousePosition.X;
+                downY= MousePosition.Y;
             }
             else
             {
-                ToolManager.TrigClick(e.X, e.Y, e.Mouse.RightButton==ButtonState.Pressed ? MouseInput.Right : MouseInput.Left);
+                ToolManager.TrigClick(MousePosition.X, MousePosition.Y, e.Button == MouseButton.Right && e.Action  == InputAction.Press ? MouseInput.Right : MouseInput.Left);
             }
 
             mouseDown=true;
@@ -232,8 +238,8 @@ namespace ReOsuStoryboardPlayer
         {
             base.OnMouseMove(e);
 
-            if (mouseDown&&WindowBorder==WindowBorder.Hidden)
-                Location=new Point(e.X+Location.X-downX, e.Y+Location.Y-downY);
+            if (mouseDown && WindowBorder == WindowBorder.Hidden)
+                Location = new Vector2i((int)(MousePosition.X + Location.X - downX), (int)(MousePosition.Y + Location.Y - downY));
             else
                 ToolManager.TrigMove(e.X, e.Y);
         }

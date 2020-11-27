@@ -1,4 +1,5 @@
-﻿using ReOsuStoryboardPlayer.Core.Utils;
+﻿using OpenTK.Mathematics;
+using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Kernel;
 using ReOsuStoryboardPlayer.Parser;
 using ReOsuStoryboardPlayer.Player;
@@ -121,8 +122,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.CLIController
                         var d = rstr.Split(size_split);
                         var nw = d[0].ToInt();
                         var nh = d[1].ToInt();
-                        StoryboardWindow.CurrentWindow.Width=nw;
-                        StoryboardWindow.CurrentWindow.Height=nh;
+                        StoryboardWindow.CurrentWindow.Size = new Vector2i(nw, nh);
                         break;
 
                     /*

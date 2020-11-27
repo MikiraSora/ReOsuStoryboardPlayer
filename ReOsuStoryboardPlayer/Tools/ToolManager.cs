@@ -1,4 +1,6 @@
 ﻿using OpenTK.Input;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -81,11 +83,11 @@ namespace ReOsuStoryboardPlayer.Tools
 
         #region Event
 
-        public static event Action<int, int, MouseInput> MouseClick;
+        public static event Action<float, float, MouseInput> MouseClick;
 
-        public static event Action<int, int> MouseMove;
+        public static event Action<float, float> MouseMove;
 
-        public static event Action<Key> KeyboardPress;
+        public static event Action<Keys> KeyboardPress;
 
         public static event Action<MouseWheelEventArgs> MouseWheel;
 
@@ -93,9 +95,9 @@ namespace ReOsuStoryboardPlayer.Tools
 
         public static event Action AfterRender;
 
-        internal static void TrigClick(int x, int y, MouseInput input) => MouseClick?.Invoke(x, y, input);
+        internal static void TrigClick(float x, float y, MouseInput input) => MouseClick?.Invoke(x, y, input);
 
-        internal static void TrigMove(int x, int y) => MouseMove?.Invoke(x, y);
+        internal static void TrigMove(float x, float y) => MouseMove?.Invoke(x, y);
 
         internal static void TrigMouseWheel(MouseWheelEventArgs e) => MouseWheel?.Invoke(e);
 
@@ -103,7 +105,7 @@ namespace ReOsuStoryboardPlayer.Tools
 
         internal static void TrigAfterRender() => AfterRender?.Invoke();
 
-        internal static void TrigKeyPress(Key key) => KeyboardPress?.Invoke(key);
+        internal static void TrigKeyPress(Keys key) => KeyboardPress?.Invoke(key);
 
         #endregion Event
     }

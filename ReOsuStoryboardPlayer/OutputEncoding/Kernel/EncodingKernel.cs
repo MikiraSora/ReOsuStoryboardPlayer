@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using ReOsuStoryBoardPlayer.Graphics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
 {
@@ -35,9 +36,9 @@ namespace ReOsuStoryboardPlayer.OutputEncoding.Kernel
             this.Option=option;
         }
 
-        private void OnKeyPress(OpenTK.Input.Key obj)
+        private void OnKeyPress(Keys obj)
         {
-            if (obj==OpenTK.Input.Key.E)
+            if (obj==Keys.E)
                 Abort();
         }
 

@@ -1,4 +1,6 @@
 ﻿using OpenTK.Input;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using ReOsuStoryboardPlayer.Player;
 using System;
 
@@ -14,37 +16,37 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.InputController
 
         private void ToolManager_MouseWheel(MouseWheelEventArgs e)
         {
-            var time = -e.DeltaPrecise * 125;
+            var time = -e.OffsetY * 125;
 
             if (MusicPlayerManager.ActivityPlayer is MusicPlayer player)
                 player.Jump(player.CurrentTime + time, true);
         }
 
-        private void DebuggerManager_KeyBoardPress(Key e)
+        private void DebuggerManager_KeyBoardPress(Keys e)
         {
             switch (e)
             {
-                case Key.F:
+                case Keys.F:
                     StoryboardWindow.CurrentWindow.SwitchFullscreen();
                     break;
 
-                case Key.B:
+                case Keys.B:
                     StoryboardWindow.CurrentWindow.ApplyBorderless(!StoryboardWindow.CurrentWindow.IsBorderless);
                     break;
 
-                case Key.Escape:
+                case Keys.Escape:
                     MainProgram.Exit();
                     break;
 
-                case Key.Left:
+                case Keys.Left:
                     FastJump(-2000);
                     break;
 
-                case Key.Right:
+                case Keys.Right:
                     FastJump(2000);
                     break;
 
-                case Key.Space:
+                case Keys.Space:
                     if (MusicPlayerManager.ActivityPlayer.IsPlaying)
                         MusicPlayerManager.ActivityPlayer.Pause();
                     else

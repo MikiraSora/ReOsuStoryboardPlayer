@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using ReOsuStoryboardPlayer.Core.PrimitiveValue;
 using ReOsuStoryboardPlayer.Core.Utils;
 using System;
@@ -123,7 +124,7 @@ namespace ReOsuStoryboardPlayer
             GL.Uniform2(l, val);
         }
 
-        public void PassUniform(string name, OpenTK.Matrix4 matrix4)
+        public void PassUniform(string name, Matrix4 matrix4)
         {
             int l = GetUniformLocation(name);
             GL.UniformMatrix4(l, false, ref matrix4);
