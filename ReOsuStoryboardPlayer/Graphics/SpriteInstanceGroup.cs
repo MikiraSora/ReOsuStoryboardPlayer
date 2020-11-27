@@ -233,8 +233,11 @@ namespace ReOsuStoryboardPlayer
                     Half* hp = (Half*)(ptr+8);
                     hp[0]=horizon_flip ? HalfNegativeOne : HalfOne;
                     hp[1]=vertical_flip ? HalfNegativeOne : HalfOne;
-                    
-                    Unsafe.CopyBlock(ptr+12, &model.Row0.X, 2*3*sizeof(float));
+
+                    var copyLen = 2 * 3 * sizeof(float);
+                    var basePtr = (byte*)&model.Row0.X;
+                    for (int i = 0; i < copyLen; i++)
+                        ptr[i + 12] = *(basePtr + i);
                 }
             }
 
