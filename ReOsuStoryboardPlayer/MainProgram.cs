@@ -140,11 +140,6 @@ namespace ReOsuStoryboardPlayer
             //*/
         }
 
-        private static void OnOpenGLDebugProc(OpenTK.Graphics.OpenGL.DebugSource source, OpenTK.Graphics.OpenGL.DebugType type, int id, OpenTK.Graphics.OpenGL.DebugSeverity severity, int length, IntPtr message, IntPtr userParam)
-        {
-            Log.User($"{source} {type} : {Marshal.PtrToStringAuto(message)}");
-        }
-
         #region ProgramCommands
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)

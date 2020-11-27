@@ -48,6 +48,7 @@ namespace ReOsuStoryboardPlayer.Player
 
             currentOut?.Stop();
 
+            audioFileReader.Seek(0, System.IO.SeekOrigin.Begin);
             var provider = new OffsetSampleProvider(audioFileReader)
             {
                 SkipOver = TimeSpan.FromMilliseconds(time)
