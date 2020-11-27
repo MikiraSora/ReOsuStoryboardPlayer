@@ -54,7 +54,22 @@ namespace ReOsuStoryboardPlayer
 
         #endregion Field&Property
 
-        public StoryboardWindow(int width = 640, int height = 480) : base(GameWindowSettings.Default,NativeWindowSettings.Default) /*base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryboardPlayer"
+        private static NativeWindowSettings StoryboardWindowSettings = new NativeWindowSettings 
+        {
+            API = ContextAPI.OpenGL ,
+            APIVersion = new Version(3,3),
+            Flags = ContextFlags.ForwardCompatible,
+            Location =new Vector2i(800,600),
+            Profile = ContextProfile.Compatability,
+            Title = "Esu!StoryboardPlayer",
+            IsEventDriven = true
+        };
+
+        public StoryboardWindow(int width = 640, int height = 480) : 
+            //opentk >= 4.0.0 NOT WORK
+            base(GameWindowSettings.Default, NativeWindowSettings.Default/*StoryboardWindowSettings*/) 
+            //opentk < 4.0.0 WORK
+            /*base(width, height, new GraphicsMode(ColorFormat.Empty, 32), "Esu!StoryboardPlayer"
             , GameWindowFlags.FixedWindow, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)*/
         {
             //VSync = VSyncMode.Off;

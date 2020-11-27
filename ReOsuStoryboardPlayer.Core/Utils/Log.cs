@@ -59,11 +59,12 @@ namespace ReOsuStoryboardPlayer.Core.Utils
             return string.Format("[{0}]{1}:{2}\n", _getTimeStr(), level.ToString(), message);
         }
 
-        private static void _renderColor(ref string message, LogLevel level)
+        private static void _renderColor(string message, LogLevel level)
         {
             int index = (int)level;
             Console.ForegroundColor=colors[(index)*2+0];
             Console.BackgroundColor=colors[(index)*2+1];
+            System.Diagnostics.Debug.Print(message);
             Console.WriteLine(message);
             Console.ResetColor();
         }
@@ -75,7 +76,7 @@ namespace ReOsuStoryboardPlayer.Core.Utils
 
             string output = _buildLogMessage(caller, message, level);
 
-            _renderColor(ref output, level);
+            _renderColor(output, level);
         }
 
         public static void User(string message, [CallerMemberName]string caller = "<Unknown Method>")
