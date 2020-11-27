@@ -14,7 +14,6 @@ using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Tools;
 using ReOsuStoryboardPlayer.Core.Base;
 using System.Diagnostics;
-using SharpGL;
 
 namespace ReOsuStoryBoardPlayer.Graphics
 {
@@ -60,7 +59,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
         {
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
 
         public const float SB_WIDTH = 640f, SB_WIDE_WIDTH = SB_WIDTH + 2 * 107, SB_HEIGHT = 480f;
@@ -183,7 +182,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
 
             DrawStoryboardObjects(Instance.Updater.UpdatingStoryboardObjects);
 
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
 
         private static void DrawStoryboardObjects(List<StoryboardObject> draw_list)
@@ -224,7 +223,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
             void ChangeAdditiveStatus(bool is_additive_blend)
             {
                 additive_trigger = is_additive_blend;
-                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, additive_trigger ? BlendingFactorDest.One : BlendingFactorDest.OneMinusSrcAlpha);
+                GL.BlendFunc(BlendingFactor.SrcAlpha, additive_trigger ? BlendingFactor.One : BlendingFactor.OneMinusSrcAlpha);
             }
         }
 

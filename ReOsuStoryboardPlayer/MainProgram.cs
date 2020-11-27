@@ -137,7 +137,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder= @"E:\1124097 Feryquitous - (S).0ngs_---_compilation.[TQR-f3]";
+            beatmap_folder= @"E:\94790 Hatsuki Yura - Fuuga";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);

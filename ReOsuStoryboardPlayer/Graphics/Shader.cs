@@ -67,20 +67,9 @@ namespace ReOsuStoryboardPlayer
                 int total = 0;
 
                 GL.GetProgram(program, GetProgramParameterName.ActiveUniforms, out total);
+
                 for (int i = 0; i<total; i++)
-                {
-                    int size = 16;
-                    int name_len = 16;
-
-                    ActiveUniformType type = ActiveUniformType.Sampler2D;
-                    StringBuilder name = new StringBuilder();
-
-                    GL.GetActiveUniform(program, i, 16, out name_len, out size, out type, name);
-
-                    name=null;
-                    size=0;
-                    name_len=0;
-                }
+                    GL.GetActiveUniform(program, i, 16, out _, out _, out _,out var _);
             }
         }
 
