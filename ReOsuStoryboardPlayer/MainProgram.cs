@@ -23,6 +23,8 @@ using ReOsuStoryBoardPlayer.Parser;
 using System.Windows.Forms;
 using ReOsuStoryBoardPlayer.Graphics;
 using ReOsuStoryBoardPlayer.Kernel;
+using OpenTK.Windowing.Desktop;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace ReOsuStoryboardPlayer
 {
@@ -38,6 +40,7 @@ namespace ReOsuStoryboardPlayer
 
         public static void Main(string[] argv)
         {
+            //Test();
             Environment.CurrentDirectory=System.AppDomain.CurrentDomain.BaseDirectory;
 
             //hook Ctrl-C action for console window.
@@ -120,9 +123,9 @@ namespace ReOsuStoryboardPlayer
 
             MusicPlayerManager.ActivityPlayer?.Play();
 
-            window.Run();
+            //window.Run();
 
-            /* 不曾设想的操作.jpg
+            //*/ 不曾设想的操作.jpg
             window.IsVisible = true;
             window.RefreshResize();
 
@@ -134,7 +137,12 @@ namespace ReOsuStoryboardPlayer
                 UpdateKernel.FrameRateLimit();
                 Application.DoEvents();
             }
-            /*/
+            //*/
+        }
+
+        private static void OnOpenGLDebugProc(OpenTK.Graphics.OpenGL.DebugSource source, OpenTK.Graphics.OpenGL.DebugType type, int id, OpenTK.Graphics.OpenGL.DebugSeverity severity, int length, IntPtr message, IntPtr userParam)
+        {
+            Log.User($"{source} {type} : {Marshal.PtrToStringAuto(message)}");
         }
 
         #region ProgramCommands

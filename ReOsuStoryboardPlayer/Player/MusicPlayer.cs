@@ -1,67 +1,61 @@
-﻿using IrrKlang;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using ReOsuStoryboardPlayer.Core.Utils;
 using System;
 using System.Diagnostics;
 
 namespace ReOsuStoryboardPlayer.Player
 {
-    public class MusicPlayer : PlayerBase, ISoundStopEventReceiver
+    public class MusicPlayer : PlayerBase, IDisposable
     {
-        private static ISoundEngine engine;
+        private AudioFileReader audioFileReader;
 
-        private ISound sound;
+        private WaveOutEvent currentOut;
 
-        private string loaded_path;
-
-        public override uint Length { get => sound.PlayLength; }
+        public override uint Length { get => (uint)audioFileReader.TotalTime.TotalMilliseconds; }
 
         public override float CurrentTime { get => (uint)GetTime(); }
 
-        public override float PlaybackSpeed { get => sound.PlaybackSpeed; set => sound.PlaybackSpeed=value; }
+        public override float PlaybackSpeed { get => 1; set { } }
 
-        public override bool IsPlaying { get => !sound.Paused; }
+        public override bool IsPlaying { get => currentOut?.PlaybackState == PlaybackState.Playing; }
 
-        public override float Volume { get => sound.Volume; set => sound.Volume=value; }
+        public override float Volume { get => currentOut.Volume; set => currentOut.Volume = value; }
 
-        public Stopwatch offset_watch = new Stopwatch();
-
-        private uint prev_mp3_time = 0;
-
-        /// <summary>
-        /// 表示播放器播放完当前音频文件，bool返回值表示是否默认自动重新加载
-        /// </summary>
-        public event Func<bool> FinishedPlay;
-
-        static MusicPlayer()
-        {
-            engine=new ISoundEngine();
-        }
+        private float baseOffset = 0;
 
         public void Load(string audio_file)
         {
-            if (!(sound?.Paused??true))
-                sound.Paused = true;
+            //release resource before loading new one.
+            Dispose();
 
-            sound =engine.Play2D(audio_file, false, true, StreamMode.AutoDetect, false);
-            sound.setSoundStopEventReceiver(this);
-
-            sound.Volume=Volume;
-            sound.PlaybackSpeed=PlaybackSpeed;
-
-            loaded_path=audio_file;
-
-            Stop();
+            try
+            {
+                currentOut = new WaveOutEvent();
+                audioFileReader = new AudioFileReader(audio_file);
+                currentOut?.Init(audioFileReader);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Load audio file ({audio_file}) failed : {e.Message}");
+                Dispose();
+            }
         }
 
         public override void Jump(float time, bool pause)
         {
-            time =Math.Max(0, Math.Min(time, Length));
+            time = Math.Max(0, Math.Min(time, Length));
 
-            Pause();
-            sound.PlayPosition=(uint)time;
-            offset_watch.Reset();
+            currentOut?.Stop();
 
-            prev_mp3_time=(uint)(time-sound.PlayPosition);
+            var provider = new OffsetSampleProvider(audioFileReader)
+            {
+                SkipOver = TimeSpan.FromMilliseconds(time)
+            };
+
+            baseOffset = time;
+
+            currentOut?.Init(provider);
 
             if (!pause)
                 Play();
@@ -69,48 +63,40 @@ namespace ReOsuStoryboardPlayer.Player
 
         public override void Play()
         {
-            if (sound.Paused)
-            {
-                sound.Paused=false;
-                offset_watch.Start();
-            }
+            currentOut?.Play();
         }
 
         private long GetTime()
         {
-            var playback = sound.PlayPosition;
+            var time = (currentOut is null ? 0 : (currentOut.GetPosition() * 1000.0 / currentOut.OutputWaveFormat.BitsPerSample / currentOut.OutputWaveFormat.Channels * 8 / currentOut.OutputWaveFormat.SampleRate)) + baseOffset;
 
-            if (prev_mp3_time!=playback&&!sound.Paused)
-                offset_watch.Restart();
-
-            prev_mp3_time=playback;
-
-            return (long)(prev_mp3_time+offset_watch.ElapsedMilliseconds*PlaybackSpeed);
+            return (long)(time);
         }
 
         public override void Stop()
         {
+            CleanCurrentOut();
             Jump(0, true);
         }
 
         public override void Pause()
         {
-            if (!sound.Paused)
-            {
-                sound.Paused=true;
-                offset_watch.Stop();
-            }
+            currentOut?.Pause();
         }
 
-        public void OnSoundStopped(ISound sound, StopEventCause reason, object userData)
+        private void CleanCurrentOut()
         {
-            Log.Debug($"MusicPlayer is stop,reason :{reason.ToString()}");
+            currentOut?.Stop();
+            currentOut?.Dispose();
+            currentOut = null;
+        }
 
-            if (FinishedPlay?.Invoke()??true)
-            {
-                Load(loaded_path);
-                Jump(0, true);
-            }
+        public void Dispose()
+        {
+            CleanCurrentOut();
+
+            audioFileReader?.Dispose();
+            audioFileReader = null;
         }
     }
 }
