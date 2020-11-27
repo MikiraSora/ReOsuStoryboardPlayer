@@ -106,7 +106,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeatmapParser\EditorBeatmap.cs" />
     <Compile Include="EnvironmentHelper.cs" />
     <Compile Include="Graphics\PostProcesses\ClipPostProcess.cs" />
     <Compile Include="Graphics\PostProcesses\PostProcessFrameBuffer.cs" />
@@ -128,7 +127,6 @@
     <Compile Include="OutputEncoding\Graphics\PostProcess\VectialFlipShader.cs" />
     <Compile Include="OutputEncoding\Kernel\EncodingKernel.cs" />
     <Compile Include="OutputEncoding\Player\EncodingProcessPlayer.cs" />
-    <Compile Include="BeatmapParser\HitObjectHelpers.cs" />
     <Compile Include="Parser\BeatmapFolderInfoEx.cs" />
     <Compile Include="Parser\StoryboardParserHelper.cs" />
     <Compile Include="Player\LoopPlayer.cs" />

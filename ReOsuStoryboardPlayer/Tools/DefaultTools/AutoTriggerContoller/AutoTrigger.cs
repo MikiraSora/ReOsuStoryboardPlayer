@@ -1,5 +1,4 @@
-﻿using ReOsuStoryboardPlayer.BeatmapParser;
-using ReOsuStoryboardPlayer.Core.Base;
+﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Commands.Group.Trigger;
 using ReOsuStoryboardPlayer.Core.Utils;
 using ReOsuStoryboardPlayer.Parser;
@@ -31,7 +30,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.AutoTriggerContoller
         {
             try
             {
-                HitSoundInfos=HitSoundInfosHelpers.Parse(info.osu_file_path);
+                HitSoundInfos = new LinkedList<HitSoundInfo>(); //todo HitSoundInfosHelpers.Parse(info.osu_file_path);
             }
             catch (Exception e)
             {
