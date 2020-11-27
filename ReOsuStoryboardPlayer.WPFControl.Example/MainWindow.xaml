@@ -20,7 +20,6 @@
             <wpfcontrol:StoryboardPlayer
                 Name="MyStoryboardPlayer"
                 AutoUpdateViewSize="True"
-                IsPerformanceRendering="True"
                 StoryboardUpdated="MyStoryboardPlayer_StoryboardUpdated">
                 <wpfcontrol:StoryboardPlayer.Height>
                     <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" Converter="{StaticResource RatioConverter}">
@@ -42,12 +41,6 @@
                 <Label
                     Padding="10,15,0,15"
                     Content="{Binding CurrentPlayingText}"
-                    Foreground="White" />
-                <Label
-                    Padding="10,15,10,15"
-                    HorizontalAlignment="Right"
-                    HorizontalContentAlignment="Left"
-                    Content="{Binding ElementName=MyStoryboardPlayer, Path=IsPerformanceRendering}"
                     Foreground="White" />
             </Grid>
 

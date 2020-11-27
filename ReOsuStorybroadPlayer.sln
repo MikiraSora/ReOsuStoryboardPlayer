@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReOsuStoryboardPlayer.Core.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaarFFmpeg", "Dependencies\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj", "{E399AA80-F5DE-42D3-996F-4ADE4192BA0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTkControl", "Dependencies\OpenTkControl\OpenTkControl\OpenTkControl.csproj", "{06F9FD53-C287-4275-8B98-4B891EA3ABDD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Build|Any CPU = Build|Any CPU
@@ -180,31 +178,12 @@ Global
 		{E399AA80-F5DE-42D3-996F-4ADE4192BA0F}.Release|x64.Build.0 = Release|Any CPU
 		{E399AA80-F5DE-42D3-996F-4ADE4192BA0F}.Release|x86.ActiveCfg = Release|Any CPU
 		{E399AA80-F5DE-42D3-996F-4ADE4192BA0F}.Release|x86.Build.0 = Release|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Build|Any CPU.ActiveCfg = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Build|Any CPU.Build.0 = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Build|x64.ActiveCfg = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Build|x64.Build.0 = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Build|x86.ActiveCfg = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Build|x86.Build.0 = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x64.Build.0 = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Debug|x86.Build.0 = Debug|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x64.ActiveCfg = Release|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x64.Build.0 = Release|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x86.ActiveCfg = Release|Any CPU
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E399AA80-F5DE-42D3-996F-4ADE4192BA0F} = {D68C1572-D840-4344-B890-3D565B6B4DE6}
-		{06F9FD53-C287-4275-8B98-4B891EA3ABDD} = {D68C1572-D840-4344-B890-3D565B6B4DE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF763B3D-CD0D-43F0-A8E4-E56C4520F279}

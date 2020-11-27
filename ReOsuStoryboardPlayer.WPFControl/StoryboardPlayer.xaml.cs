@@ -21,6 +21,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ReOsuStoryboardPlayer.ProgramCommandParser;
 using Path = System.IO.Path;
+using OpenTK.Wpf;
+using OpenTK.Windowing.Common;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace ReOsuStoryboardPlayer.WPFControl
 {
@@ -30,6 +35,7 @@ namespace ReOsuStoryboardPlayer.WPFControl
     public partial class StoryboardPlayer : UserControl
     {
         private bool _isInit;
+        private GLWpfControlSettings settings;
 
         public PlayerBase SourcePlayer { get; private set; }
 
@@ -37,32 +43,10 @@ namespace ReOsuStoryboardPlayer.WPFControl
         public event Action StoryboardUpdated;
         public event EventHandler<UnhandledExceptionEventArgs> ExceptionOccurred;
 
-        public bool IsPerformanceRendering
-        {
-            get => (bool)GetValue(IsPerformanceRenderingProperty);
-            set => SetValue(IsPerformanceRenderingProperty, value);
-        }
-
         public bool AutoUpdateViewSize
         {
             get => (bool)GetValue(AutoUpdateViewSizeProperty);
             set => SetValue(AutoUpdateViewSizeProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for IsPerformanceRendering.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsPerformanceRenderingProperty =
-            DependencyProperty.Register("IsPerformanceRendering", typeof(bool), typeof(StoryboardPlayer),
-                new PropertyMetadata(false, Callback));
-
-        private static void Callback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is StoryboardPlayer sbp)
-            {
-                if (sbp.MyGLControl.IsUsingNVDXInterop != sbp.IsPerformanceRendering)
-                    sbp.MyGLControl.IsUsingNVDXInterop = sbp.IsPerformanceRendering;
-                if (sbp.MyGLControl.PerferPerfomance != sbp.IsPerformanceRendering)
-                    sbp.MyGLControl.PerferPerfomance = sbp.IsPerformanceRendering;
-            }
         }
 
         public static readonly DependencyProperty AutoUpdateViewSizeProperty =
@@ -72,11 +56,16 @@ namespace ReOsuStoryboardPlayer.WPFControl
         {
             InitializeComponent();
 
+            settings = new GLWpfControlSettings();
+
             MyGLControl.SizeChanged += MyGLControl_SizeChanged;
-            MyGLControl.ExceptionOccurred += (sender, args) => ExceptionOccurred?.Invoke(sender, args);
-            MyGLControl.PropertyChanged += (s, b) => Dispatcher?.Invoke(() => IsPerformanceRendering = MyGLControl.IsUsingNVDXInterop);
-            MyGLControl.IsUsingNVDXInterop = IsPerformanceRendering;
-            MyGLControl.PerferPerfomance = IsPerformanceRendering;
+            MyGLControl.Ready += MyGLControl_Ready;
+            MyGLControl.Start(settings);
+        }
+
+        private void MyGLControl_Ready()
+        {
+            RenderKernel.Init();
         }
 
         public void SetPlayer(PlayerBase player)
@@ -124,30 +113,13 @@ namespace ReOsuStoryboardPlayer.WPFControl
             ExecutorSync.PostTask(() => Resize());
         }
 
-        private void MyGLControl_GlRender(object sender, OpenTkControl.OpenTkControlBase.GlRenderEventArgs e)
-        {
-            if (e.NewContext)
-            {
-                RenderKernel.Init();
-                Resize();
-            }
-
-            if (MyGLControl.IsUsingNVDXInterop)
-                RenderKernel.DefaultFrameBuffer = MyGLControl.NVDXInteropFramebuffer;
-
-            UpdateKernel.Update();
-            RenderKernel.Draw();
-            StoryboardUpdated?.Invoke();
-
-            //UpdateKernel.FrameRateLimit();
-        }
-
         private void MyGLControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (_isInit)
                 return;
 
-            MyGLControl.GlRender += MyGLControl_GlRender;
+            Resize();
+            MyGLControl.Render += MyGLControl_Render;
 
             _isInit = true;
         }
@@ -177,6 +149,14 @@ namespace ReOsuStoryboardPlayer.WPFControl
             PlayerSetting.FrameWidth = width;
 
             RenderKernel.ApplyWindowRenderSize(width, height);
+        }
+
+        private void MyGLControl_Render(TimeSpan obj)
+        {
+            RenderKernel.DefaultFrameBuffer = MyGLControl.Framebuffer;
+            UpdateKernel.Update();
+            RenderKernel.Draw();
+            StoryboardUpdated?.Invoke();
         }
     }
 }

@@ -15,6 +15,7 @@ using ReOsuStoryboardPlayer.Tools;
 using ReOsuStoryboardPlayer.Core.Base;
 using System.Diagnostics;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace ReOsuStoryBoardPlayer.Graphics
 {
@@ -75,7 +76,7 @@ namespace ReOsuStoryBoardPlayer.Graphics
 
         public static void ApplyWindowRenderSize(int width,int height)
         {
-            Log.Debug($"Width={Width} Height={Height}");
+            Log.Debug($"Width {Width} -> {width}  , Height {Height} -> {height}");
 
             //裁剪View
             Width = width;
@@ -166,8 +167,8 @@ namespace ReOsuStoryBoardPlayer.Graphics
                 ToolManager.TrigBeforeRender();
                 PostProcessesManager.Begin();
                 {
-                    PostDrawStoryboard();
-                    PostProcessesManager.Process();
+                   PostDrawStoryboard();
+                   PostProcessesManager.Process();
                 }
                 PostProcessesManager.End();
                 ToolManager.TrigAfterRender();
