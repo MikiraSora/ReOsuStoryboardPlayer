@@ -123,9 +123,9 @@ namespace ReOsuStoryboardPlayer
 
             MusicPlayerManager.ActivityPlayer?.Play();
 
-            //window.Run();
+            window.Run();
 
-            //*/ 不曾设想的操作.jpg
+            /*/ 不曾设想的操作.jpg
             window.IsVisible = true;
             window.RefreshResize();
 
@@ -137,7 +137,7 @@ namespace ReOsuStoryboardPlayer
                 UpdateKernel.FrameRateLimit();
                 Application.DoEvents();
             }
-            //*/
+            /*/
         }
 
         #region ProgramCommands
@@ -333,8 +333,11 @@ namespace ReOsuStoryboardPlayer
             {
                 Log.Warn("Can't clean resource and others before exit :"+e.Message);
             }
-
-            Environment.Exit(0);
+            finally
+            {
+                Log.User("Bye~");
+                Environment.Exit(0);
+            }
         }
     }
 }

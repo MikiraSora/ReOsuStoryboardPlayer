@@ -195,6 +195,7 @@ namespace ReOsuStoryboardPlayer
         protected override void OnClosed()
         {
             base.OnClosed();
+            Log.User("OnClosed() was called.");
 
             RenderKernel.Clean();
 
