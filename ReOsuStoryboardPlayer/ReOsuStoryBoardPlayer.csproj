@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj" />
     <ProjectReference Include="..\ReOsuStoryboardPlayer.Core\ReOsuStoryboardPlayer.Core.csproj" />
-    <ProjectReference Include="..\SaarFFmpeg\SaarFFmpeg\SaarFFmpeg.csproj" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
