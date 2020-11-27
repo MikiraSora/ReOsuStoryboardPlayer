@@ -9,28 +9,31 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ReOsuStoryboardPlayer.Tools.DefaultTools.CLIController
 {
     public class CLIControllerDebugger : ToolBase
     {
-        private Thread thread;
         private CommandParser parser = new CommandParser(new ParamParserV2('-', '\"', '\''));
         private static char[] size_split = new[] { 'x', '*' };
+        private CancellationTokenSource cancellationTokenSource;
 
         public override void Init()
         {
-            thread=new Thread(ConsoleReader);
-            thread.Name="CLIControllerDebugger Console Reader";
-            thread.Start();
+            cancellationTokenSource = new CancellationTokenSource();
+            Task.Run(()=> ConsoleReader(cancellationTokenSource.Token));
         }
 
-        private void ConsoleReader()
+        private void ConsoleReader(CancellationToken cancellationToken)
         {
             while (true)
             {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
                 var line = Console.ReadLine();
-
+                if (cancellationToken.IsCancellationRequested)
+                    break;
                 ExecuteCommand(line);
             }
         }
@@ -177,17 +180,7 @@ namespace ReOsuStoryboardPlayer.Tools.DefaultTools.CLIController
 
         public override void Term()
         {
-            if (thread!=null)
-            {
-                try
-                {
-                    thread.Abort();
-                }
-                catch (Exception e)
-                {
-                    Log.Warn($"Can't stop console reader thread :{e.Message}");
-                }
-            }
+            cancellationTokenSource?.Cancel();
         }
 
         public override void Update()
