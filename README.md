@@ -30,7 +30,6 @@
 
 #### 计划(咕)
 * Profile工具
-* .Net Framework -> .Net Core
 * ReStoryboardPlayer on Brosewer with Blazor
 
 #### 系统环境要求
