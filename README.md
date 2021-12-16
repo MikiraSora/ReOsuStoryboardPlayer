@@ -33,7 +33,7 @@
 * ReStoryboardPlayer on Brosewer with Blazor
 
 #### 系统环境要求
-* .net5
+* [.net5](https://dotnet.microsoft.com/en-us/download/dotnet/5.0)
 
 #### 截图:
 ![](https://puu.sh/FHdvD/6faa1025c8.png)
