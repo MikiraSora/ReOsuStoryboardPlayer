@@ -86,7 +86,7 @@ namespace ReOsuStoryboardPlayer.OutputEncoding
 
             if (audio_decoder!=null)
             {
-                audio_encoder=new AudioEncoder(audio_decoder.ID, audio_decoder.OutFormat);
+                audio_encoder=new AudioEncoder(audio_decoder.ID, audio_decoder.OutFormat, BitRate._192Kbps);
                 writer.AddEncoder(audio_encoder);
             }
 
