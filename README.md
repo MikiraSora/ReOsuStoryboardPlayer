@@ -13,10 +13,8 @@
 直接将osu铺面文件夹托给exe程序文件即可.或者使用[命令行](https://github.com/MikiraSora/OsuStoryBoardPlayer/wiki/Program-command-options).
 
 #### 进展:
-* 能够执行遵守基本法的SB以及大部分超级牛逼炫酷无敌的SB
-* 正在完善LoopComand和其他命令的执行逻辑.
+* 能够完美正确播放绝大多数SB
 * 优化内存占用和渲染逻辑.
-* TriggerCommand绝大部分实现
 * 已实现SB转视频(支持高fps高分辨率的)
 * 已实现实用的Debugger工具(至少不会对着屙屎那个界面脑内debug了)
 * **核心逻辑独立成项目**，可方便移植到任何地方实现SB逻辑
@@ -24,10 +22,10 @@
 * 提供Example项目
 
 #### 已知问题
-* 部分Sb铺面不能完全支持(可能有执行逻辑的bug，或者是sb作者写错代码)
+* 部分Sb铺面可能不能完全支持(可能有执行逻辑的bug，或者是sb作者写错代码)
 * 部分老爷机不能支持部分铺面的执行(~~Vulkan在做了.gugugu~~)
 * TriggerCommand可能执行有误(**但因为屙屎目前实现细节和以前不同**,比如TriggerGroup,所以可能有所差异)
-
+* 
 #### 计划(咕)
 * Profile工具
 * ReStoryboardPlayer on Brosewer with Blazor
