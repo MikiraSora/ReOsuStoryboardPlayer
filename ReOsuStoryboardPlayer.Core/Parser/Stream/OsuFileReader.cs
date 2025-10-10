@@ -13,12 +13,11 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Stream
 
         public OsuFileReader(System.IO.Stream base_stream)
         {
-            reader=new StreamReader(base_stream);
+            reader = new StreamReader(base_stream);
         }
 
-        public OsuFileReader(string file_path)
+        public OsuFileReader(string file_path) : this(new MemoryStream(File.ReadAllBytes(file_path)))
         {
-            reader=new StreamReader(file_path);
         }
 
         ~OsuFileReader()
@@ -29,13 +28,13 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Stream
         public bool JumpSectionContent(Section section)
         {
             reader.BaseStream.Seek(0, SeekOrigin.Begin);
-            FileLine=0;
+            FileLine = 0;
 
             while (!reader.EndOfStream)
             {
                 var line = ReadLine();
 
-                if (line.Length>2&&line[0]=='['&&line[line.Length-1]==']'&&IsSection(line.Substring(1, line.Length-2), section))
+                if (line.Length > 2 && line[0] == '[' && line[line.Length - 1] == ']' && IsSection(line.Substring(1, line.Length - 2), section))
                 {
                     return true;
                 }
@@ -52,10 +51,10 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Stream
 
         private static bool IsSection(string name, Section section)
         {
-            if (Enum.TryParse(name, out Section s)&&s==section)
+            if (Enum.TryParse(name, out Section s) && s == section)
                 return true;
 
-            if (int.TryParse(name, out var si)&&(Section)si==section)
+            if (int.TryParse(name, out var si) && (Section)si == section)
                 return true;
 
             return false;
