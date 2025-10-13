@@ -149,7 +149,7 @@ namespace ReOsuStoryboardPlayer.Core.Kernel
         private float prev_time = int.MinValue;
 
         /// <summary>
-        /// 更新物件，因为是增量更新维护，所以current_time递减或变小时，必须先Flush()后Update().
+        /// 更新物件
         /// </summary>
         /// <param name="current_time"></param>
         public void Update(float current_time)
