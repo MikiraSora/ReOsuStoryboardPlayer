@@ -18,13 +18,13 @@ namespace ReOsuStoryboardPlayer.Core.Utils
     {
         private static readonly Regex regex = new Regex(@"\[(.*)\]\.osu", RegexOptions.IgnoreCase);
 
-        public string osb_file_path { get; protected set; }
+        public string osb_file_path { get; set; }
 
-        public string folder_path { get; protected set; }
+        public string folder_path { get; set; }
 
-        public OsuFileReader reader { get; protected set; }
+        public OsuFileReader reader { get; set; }
 
-        public bool IsWidescreenStoryboard { get; protected set; }
+        public bool IsWidescreenStoryboard { get; set; }
 
         public Dictionary<string, string> DifficultFiles { get; protected set; } = new Dictionary<string, string>();
 
