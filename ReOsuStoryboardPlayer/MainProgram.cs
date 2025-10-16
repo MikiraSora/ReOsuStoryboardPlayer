@@ -144,7 +144,7 @@ namespace ReOsuStoryboardPlayer
 
         private static Parameters ParseProgramCommands(string[] argv, out string beatmap_folder)
         {
-            beatmap_folder= @"94790 Hatsuki Yura - Fuuga";
+            beatmap_folder= @"D:\2412232 Will Stetson - Of Our Time";
 
             var sb = new ArgParser(new ParamParserV2('-', '\"'));
             var args = sb.Parse(argv);

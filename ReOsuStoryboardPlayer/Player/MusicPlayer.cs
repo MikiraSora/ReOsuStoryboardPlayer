@@ -1,6 +1,8 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Vorbis;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using ReOsuStoryboardPlayer.Core.Utils;
+using ReOsuStoryboardPlayer.Utils;
 using System;
 using System.Diagnostics;
 
@@ -8,7 +10,7 @@ namespace ReOsuStoryboardPlayer.Player
 {
     public class MusicPlayer : PlayerBase, IDisposable
     {
-        private AudioFileReader audioFileReader;
+        private WaveStream audioFileReader;
 
         private WaveOutEvent currentOut;
 
@@ -32,7 +34,10 @@ namespace ReOsuStoryboardPlayer.Player
             try
             {
                 currentOut = new WaveOutEvent();
-                audioFileReader = new AudioFileReader(audio_file);
+                if (audio_file.EndsWith(".ogg"))
+                    audioFileReader = new VorbisWaveReader(audio_file);
+                else
+                    audioFileReader = new AudioFileReader(audio_file);
                 currentOut?.Init(audioFileReader);
             }
             catch (Exception e)
@@ -49,7 +54,7 @@ namespace ReOsuStoryboardPlayer.Player
             currentOut?.Stop();
 
             audioFileReader.Seek(0, System.IO.SeekOrigin.Begin);
-            var provider = new OffsetSampleProvider(audioFileReader)
+            var provider = new OffsetSampleProvider(audioFileReader.ToSampleProvider())
             {
                 SkipOver = TimeSpan.FromMilliseconds(time)
             };
