@@ -222,7 +222,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
         }
 
 #if DEBUG
-        internal List<Command> ExecutedCommands = new List<Command>();
+        public List<Command> ExecutedCommands = new List<Command>();
 
         public bool DebugShow = true;
 
@@ -235,7 +235,6 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
             command.IsExecuted=is_exec;
         }
-
 #endif
 
         /// <summary>
