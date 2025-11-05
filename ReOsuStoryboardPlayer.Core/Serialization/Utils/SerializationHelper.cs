@@ -1,5 +1,6 @@
 ﻿using ReOsuStoryboardPlayer.Core.Utils;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -8,7 +9,7 @@ namespace ReOsuStoryboardPlayer.Core.Serialization
 {
     public static class SerializationHelper
     {
-        public static void AutoSerializeByCustomAttributes<T>(T obj, SerializationInfo info, StreamingContext context, bool save)
+        public static void AutoSerializeByCustomAttributes<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T>(T obj, SerializationInfo info, StreamingContext context, bool save)
         {
             var type = typeof(T);
 

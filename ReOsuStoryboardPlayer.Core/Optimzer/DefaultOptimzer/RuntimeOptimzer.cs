@@ -119,7 +119,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
         /// <param name="effect_count"></param>
         public void TrimInitalEffect(IEnumerable<StoryboardObject> Storyboard_objects, ref int effect_count)
         {
-            var events = Enum.GetValues(typeof(Event));
+            var events = Enum.GetValues<Event>();
 
 
             var t = 0;
