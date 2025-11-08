@@ -37,31 +37,31 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
                     ref HitSound),
                 ref CustomSampleSet);
 
-            if (HitSound!=HitObjectSoundType.None
-                &&fix_trim_expr.StartsWith(SampleSet.ToString())
-                &&!fix_trim_expr.Substring(SampleSet.ToString().Length).Contains(SampleSetAdditions.ToString()))
+            if (HitSound != HitObjectSoundType.None
+                && fix_trim_expr.StartsWith(SampleSet.ToString())
+                && !fix_trim_expr.Substring(SampleSet.ToString().Length).Contains(SampleSetAdditions.ToString()))
             {
-                SampleSetAdditions=SampleSet;
-                SampleSet=SampleSetType.All;
+                SampleSetAdditions = SampleSet;
+                SampleSet = SampleSetType.All;
             }
 
             //check.
-            var check_func = ((HitObjectSoundType[])Enum.GetValues(typeof(HitObjectSoundType)))
-                .Where(x => HitSound.HasFlag(x)&&(x!=HitObjectSoundType.All&&x!=HitObjectSoundType.None));
+            var check_func = Enum.GetValues<HitObjectSoundType>()
+                .Where(x => HitSound.HasFlag(x) && (x != HitObjectSoundType.All && x != HitObjectSoundType.None));
 
             var hitsound_count = check_func.Where(x => description.Contains(x.ToString())).Count();
 
-            if (HitSound!=HitObjectSoundType.All&&hitsound_count!=0)
+            if (HitSound != HitObjectSoundType.All && hitsound_count != 0)
             {
-                Debug.Assert(HitSound!=HitObjectSoundType.None&&(String.IsNullOrWhiteSpace(fix_trim_expr)||check_func.All(x => description.Contains(x.ToString()))), "parse HitSoundTriggerCondition::HitSound wrong!");
+                Debug.Assert(HitSound != HitObjectSoundType.None && (String.IsNullOrWhiteSpace(fix_trim_expr) || check_func.All(x => description.Contains(x.ToString()))), "parse HitSoundTriggerCondition::HitSound wrong!");
             }
 
-            Debug.Assert(SampleSet==SampleSetType.All||SampleSet!=SampleSetType.None||description.Contains(SampleSet.ToString()), "parse HitSoundTriggerCondition::SampleSet wrong!");
-            Debug.Assert(SampleSetAdditions==SampleSetType.All||SampleSetAdditions!=SampleSetType.None||description.Contains(SampleSetAdditions.ToString()), "parse HitSoundTriggerCondition::SampleSetAdditions wrong!");
-            Debug.Assert(CustomSampleSet==CustomSampleSetType.Default||description.Contains(CustomSampleSet.ToString())||description.Contains(((int)CustomSampleSet).ToString()), "parse HitSoundTriggerCondition::CustomSampleSet wrong!");
+            Debug.Assert(SampleSet == SampleSetType.All || SampleSet != SampleSetType.None || description.Contains(SampleSet.ToString()), "parse HitSoundTriggerCondition::SampleSet wrong!");
+            Debug.Assert(SampleSetAdditions == SampleSetType.All || SampleSetAdditions != SampleSetType.None || description.Contains(SampleSetAdditions.ToString()), "parse HitSoundTriggerCondition::SampleSetAdditions wrong!");
+            Debug.Assert(CustomSampleSet == CustomSampleSetType.Default || description.Contains(CustomSampleSet.ToString()) || description.Contains(((int)CustomSampleSet).ToString()), "parse HitSoundTriggerCondition::CustomSampleSet wrong!");
         }
 
-        public string Parse<T>(string str, ref T v) where T : Enum
+        public string Parse<T>(string str, ref T v) where T : struct, Enum
         {
             Debug.Assert(typeof(T).IsEnum, $"Dont use Parse() for non-enum type parsing.");
 
@@ -71,13 +71,13 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
             string int_val = Regex.Match(str, @"\d*").Groups[0].Value;
 
             int iv = 0;
-            bool is_value = (!string.IsNullOrWhiteSpace(int_val))&&int.TryParse(int_val, out iv);
+            bool is_value = (!string.IsNullOrWhiteSpace(int_val)) && int.TryParse(int_val, out iv);
 
-            var t = ((T[])Enum.GetValues(typeof(T))).FirstOrDefault(x => is_value ? (iv==Convert.ToInt32(x)) : str.StartsWith(x.ToString()));
+            var t = Enum.GetValues<T>().FirstOrDefault(x => is_value ? (iv == Convert.ToInt32(x)) : str.StartsWith(x.ToString()));
 
             var match = !t.Equals(default(T));
 
-            v=match ? t : v;
+            v = match ? t : v;
 
             return str.Substring(match ? (is_value ? iv.ToString().Length : v.ToString().Length) : 0);
         }
@@ -86,24 +86,24 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
         public bool CheckCondition(HitSoundInfo hitSoundInfo)
         {
-            if (SampleSet!=SampleSetType.All&&
-                hitSoundInfo.SampleSet!=SampleSet&&SampleSet!=hitSoundInfo.SampleSetAdditions)
+            if (SampleSet != SampleSetType.All &&
+                hitSoundInfo.SampleSet != SampleSet && SampleSet != hitSoundInfo.SampleSetAdditions)
                 return false;
 
-            if (SampleSetAdditions!=SampleSetType.All&&hitSoundInfo.SampleSetAdditions!=SampleSetAdditions)
+            if (SampleSetAdditions != SampleSetType.All && hitSoundInfo.SampleSetAdditions != SampleSetAdditions)
                 return false;
 
             //storybrew可能塞了个HitSound为None的玩意
-            if (hitSoundInfo.SoundType==HitObjectSoundType.None||!ContainFlagEnum(HitSound, hitSoundInfo.SoundType))
+            if (hitSoundInfo.SoundType == HitObjectSoundType.None || !ContainFlagEnum(HitSound, hitSoundInfo.SoundType))
                 return false;
 
-            if (CustomSampleSet!=CustomSampleSetType.Default&&hitSoundInfo.CustomSampleSet!=CustomSampleSet)
+            if (CustomSampleSet != CustomSampleSetType.Default && hitSoundInfo.CustomSampleSet != CustomSampleSet)
                 return false;
 
             return true;
 
-            bool ContainFlagEnum<T>(T source, T compare_with) where T : Enum =>
-                Enum.GetValues(typeof(T)).Cast<T>().Any(val => source.HasFlag(val)&&compare_with.HasFlag(val)&&Convert.ToInt32(val)!=0);
+            bool ContainFlagEnum<T>(T source, T compare_with) where T : struct, Enum =>
+                Enum.GetValues<T>().Any(val => source.HasFlag(val) && compare_with.HasFlag(val) && Convert.ToInt32(val) != 0);
         }
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable _)
@@ -119,19 +119,19 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group.Trigger.TriggerCondition
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable _)
         {
-            HitSound=(HitObjectSoundType)stream.ReadByte();
-            SampleSet=(SampleSetType)stream.ReadByte();
-            SampleSetAdditions=(SampleSetType)stream.ReadByte();
-            CustomSampleSet=(CustomSampleSetType)stream.ReadInt32();
+            HitSound = (HitObjectSoundType)stream.ReadByte();
+            SampleSet = (SampleSetType)stream.ReadByte();
+            SampleSetAdditions = (SampleSetType)stream.ReadByte();
+            CustomSampleSet = (CustomSampleSetType)stream.ReadInt32();
         }
 
         public override bool Equals(TriggerConditionBase other)
         {
             return other is HitSoundTriggerCondition sound_cond
-                &&sound_cond.CustomSampleSet==CustomSampleSet
-                &&sound_cond.SampleSet==SampleSet
-                &&sound_cond.SampleSetAdditions==SampleSetAdditions
-                &&sound_cond.HitSound==HitSound;
+                && sound_cond.CustomSampleSet == CustomSampleSet
+                && sound_cond.SampleSet == SampleSet
+                && sound_cond.SampleSetAdditions == SampleSetAdditions
+                && sound_cond.HitSound == HitSound;
         }
     }
 }

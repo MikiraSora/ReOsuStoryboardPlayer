@@ -1,46 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.3</LangVersion>
-    <Version>1.5.14</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Company></Company>
-    <Authors>MikiraSora</Authors>
-    <PackageProjectUrl>https://github.com/MikiraSora/ReOsuStoryboardPlayer/tree/master/ReOsuStoryboardPlayer.Core</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MikiraSora/ReOsuStoryboardPlayer</RepositoryUrl>
-    <RepositoryType></RepositoryType>
-    <SignAssembly>false</SignAssembly>
-    <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>SBCoreKey.pfx</AssemblyOriginatorKeyFile>
-    <Copyright />
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Description>(NOT storyboard code generator)This library implements the ability to execute osu!storyboard code and provides a set of tools to easily implement and optimize osu!storyboard code. Anyone can use this library to directly complete the logic implementation of osu!storyboard and easily porting.</Description>
-    <PackageTags>osu!;osu;storyboard;osb;</PackageTags>
-    <AssemblyVersion>1.5.13.0</AssemblyVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net9.0</TargetFrameworks>
+		<Version>1.5.14</Version>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Company></Company>
+		<Authors>MikiraSora</Authors>
+		<PackageProjectUrl>https://github.com/MikiraSora/ReOsuStoryboardPlayer/tree/master/ReOsuStoryboardPlayer.Core</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/MikiraSora/ReOsuStoryboardPlayer</RepositoryUrl>
+		<RepositoryType></RepositoryType>
+		<SignAssembly>false</SignAssembly>
+		<DelaySign>false</DelaySign>
+		<AssemblyOriginatorKeyFile>SBCoreKey.pfx</AssemblyOriginatorKeyFile>
+		<Copyright />
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<Description>(NOT storyboard code generator)This library implements the ability to execute osu!storyboard code and provides a set of tools to easily implement and optimize osu!storyboard code. Anyone can use this library to directly complete the logic implementation of osu!storyboard and easily porting.</Description>
+		<PackageTags>osu!;osu;storyboard;osb;</PackageTags>
+		<AssemblyVersion>1.5.13.0</AssemblyVersion>
+		<IsAotCompatible>true</IsAotCompatible>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>bin\Debug\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<OutputPath>bin\Debug\</OutputPath>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.10" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.10" />
+	</ItemGroup>
 
 </Project>

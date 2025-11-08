@@ -4,7 +4,7 @@ using System;
 namespace ReOsuStoryboardPlayer.Core.Parser.Rubbish
 {
     //我他妈撸这个玩意干嘛?
-    public class EnumParser<T>
+    public class EnumParser<T> where T : struct, Enum
     {
         private static EnumParser<T> _instance;
 
@@ -12,12 +12,12 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Rubbish
         {
             get
             {
-                if (_instance==null)
+                if (_instance == null)
                 {
                     if (!typeof(T).IsEnum)
                         throw new InvalidOperationException($"{typeof(T).Name} isn't enum");
 
-                    _instance=new EnumParser<T>();
+                    _instance = new EnumParser<T>();
                 }
 
                 return _instance;
@@ -34,8 +34,8 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Rubbish
 
             public EnumWrapper(T val, int iv)
             {
-                this.val=val;
-                this.iv=iv;
+                this.val = val;
+                this.iv = iv;
             }
 
             public int CompareTo(EnumWrapper other) => val.ToString().CompareTo(other.val.ToString());
@@ -43,15 +43,15 @@ namespace ReOsuStoryboardPlayer.Core.Parser.Rubbish
 
         public EnumParser()
         {
-            map=new CharPatternCollectionBase<EnumWrapper>(e => e.ToString(), default, new EnumWrapper[0]);
+            map = new CharPatternCollectionBase<EnumWrapper>(e => e.ToString(), default, new EnumWrapper[0]);
 
-            foreach (T val in Enum.GetValues(typeof(T)))
+            foreach (T val in Enum.GetValues<T>())
             {
                 int iv = CalculateEnumValue(val);
                 EnumWrapper enumWrapper = new EnumWrapper(val, iv);
 
-                map[iv.ToString()]=enumWrapper;
-                map[val.ToString()]=enumWrapper;
+                map[iv.ToString()] = enumWrapper;
+                map[val.ToString()] = enumWrapper;
             }
         }
 
