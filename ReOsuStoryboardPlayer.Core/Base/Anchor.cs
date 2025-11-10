@@ -2,7 +2,7 @@
 {
     public enum Anchor
     {
-        TopLeft = 6,
+        TopLeft = 0,
         TopCentre = 5,
         TopRight = 3,
         CentreLeft = 2,
