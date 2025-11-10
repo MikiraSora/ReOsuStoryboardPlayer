@@ -1,10 +1,12 @@
 ﻿using ReOsuStoryboardPlayer.Core.Base;
 using ReOsuStoryboardPlayer.Core.Serialization;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace ReOsuStoryboardPlayer.Core.Commands
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors|DynamicallyAccessedMemberTypes.PublicFields)]
     public abstract class Command : IComparable<Command>, IStoryboardSerializable, IEquatable<Command>
     {
 #if DEBUG

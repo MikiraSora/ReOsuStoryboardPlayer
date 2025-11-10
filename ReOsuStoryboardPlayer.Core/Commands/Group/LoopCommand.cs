@@ -49,7 +49,7 @@ namespace ReOsuStoryboardPlayer.Core.Commands.Group
                     foreach (var cmd in timeline)
                     {
                         var type = cmd.GetType();
-                        var new_cmd = (Command)type.Assembly.CreateInstance(type.FullName);
+                        var new_cmd = (Command)System.Activator.CreateInstance(type);
 
                         if (cmd is ValueCommand value_cmd)
                         {

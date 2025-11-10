@@ -4,6 +4,7 @@ using ReOsuStoryboardPlayer.Core.Parser.Stream;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -41,7 +42,7 @@ namespace ReOsuStoryboardPlayer.Core.Utils
         /// <param name="folder_path"></param>
         /// <param name="explicitly_osu_diff_name">指定的难度名</param>
         /// <returns></returns>
-        public static T Parse<T>(string folder_path) where T : BeatmapFolderInfo
+        public static T Parse<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T>(string folder_path) where T : BeatmapFolderInfo
         {
             if (!Directory.Exists(folder_path))
                 throw new Exception($"\"{folder_path}\" not a folder!");

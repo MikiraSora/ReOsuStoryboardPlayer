@@ -1,16 +1,16 @@
-﻿using ReOsuStoryboardPlayer.Core.Serialization;
-using System;
+﻿using System;
 using System.IO;
+using CommunityToolkit.HighPerformance.Buffers;
+using ReOsuStoryboardPlayer.Core.Serialization;
 
 namespace ReOsuStoryboardPlayer.Core.Base
 {
     public class StoryboardAnimation : StoryboardObject
     {
+        public string FrameBaseImagePath, FrameFileExtension;
         public int FrameCount;
 
         public float FrameDelay;
-
-        public string FrameBaseImagePath, FrameFileExtension;
 
         public LoopType LoopType;
 
@@ -20,18 +20,18 @@ namespace ReOsuStoryboardPlayer.Core.Base
         {
             base.Update(current_time);
 
-            float current_frame_index = (current_time-FrameStartTime)/FrameDelay;
+            var current_frame_index = (current_time - FrameStartTime) / FrameDelay;
 
-            current_frame_index=(int)(LoopType==LoopType.LoopForever ? (current_frame_index%FrameCount) : Math.Min(current_frame_index, FrameCount-1));
+            current_frame_index = (int) (LoopType == LoopType.LoopForever
+                ? current_frame_index % FrameCount
+                : Math.Min(current_frame_index, FrameCount - 1));
 
-            int result = Math.Max(0, (int)current_frame_index);
+            var result = Math.Max(0, (int) current_frame_index);
 
-            if (prev_frame_index!=result)
-            {
-                ImageFilePath=FrameBaseImagePath+result+FrameFileExtension;
-            }
+            if (prev_frame_index != result)
+                ImageFilePath = StringPool.Shared.GetOrAdd(FrameBaseImagePath + result + FrameFileExtension);
 
-            prev_frame_index=result;
+            prev_frame_index = result;
         }
 
         public override void OnSerialize(BinaryWriter stream, StringCacheTable cache)
@@ -42,7 +42,7 @@ namespace ReOsuStoryboardPlayer.Core.Base
             FrameDelay.OnSerialize(stream);
             FrameBaseImagePath.OnSerialize(stream);
             FrameFileExtension.OnSerialize(stream);
-            ((byte)LoopType).OnSerialize(stream);
+            ((byte) LoopType).OnSerialize(stream);
         }
 
         public override void OnDeserialize(BinaryReader stream, StringCacheTable cache)
@@ -51,14 +51,14 @@ namespace ReOsuStoryboardPlayer.Core.Base
 
             FrameCount.OnDeserialize(stream);
             FrameDelay.OnDeserialize(stream);
-            FrameBaseImagePath=stream.ReadString();
-            FrameFileExtension=stream.ReadString();
-            LoopType=(LoopType)stream.ReadByte();
+            FrameBaseImagePath = StringPool.Shared.GetOrAdd(stream.ReadString());
+            FrameFileExtension = StringPool.Shared.GetOrAdd(stream.ReadString());
+            LoopType = (LoopType) stream.ReadByte();
         }
 
         public override bool Equals(StoryboardObject other)
         {
-            return base.Equals(other)&&other is StoryboardAnimation;
+            return base.Equals(other) && other is StoryboardAnimation;
         }
     }
 }

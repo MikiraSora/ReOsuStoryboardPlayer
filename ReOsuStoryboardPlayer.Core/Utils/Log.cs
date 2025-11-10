@@ -51,13 +51,13 @@ namespace ReOsuStoryboardPlayer.Core.Utils
         {
             if (AbleDebugLog)
             {
-                var result = new StackTrace().GetFrames().LastOrDefault(x => x.GetMethod().Name == caller);
+                var result = new StackTrace().GetFrames()?.LastOrDefault(x => x.GetMethod().Name == caller);
 
                 if (result != null)
                 {
                     var method = result.GetMethod();
                     return string.Format("[{0}]{2}.{1}():\n>>{3}\n", _getTimeStr(),
-                        $"{method.DeclaringType.Name}.{method.Name}", level.ToString(), message);
+                        $"{method?.DeclaringType?.Name}.{method?.Name}", level.ToString(), message);
                 }
             }
 

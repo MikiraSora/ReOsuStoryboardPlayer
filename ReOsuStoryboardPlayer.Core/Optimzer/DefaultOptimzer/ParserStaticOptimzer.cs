@@ -55,7 +55,7 @@ namespace ReOsuStoryboardPlayer.Core.Optimzer.DefaultOptimzer
                                 &&(end_value_prop.GetValue(cmd)==start_value_prop.GetValue(next_cmd)))
                             {
                                 //combine
-                                var new_cmd = (ValueCommand)type.Assembly.CreateInstance(type.FullName);
+                                var new_cmd = (ValueCommand)System.Activator.CreateInstance(type);
 
                                 new_cmd.EndTime=next_cmd.EndTime;
                                 new_cmd.StartTime=cmd.StartTime;
