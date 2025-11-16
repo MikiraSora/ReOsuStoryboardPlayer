@@ -26,7 +26,7 @@ namespace ReOsuStoryboardPlayer.Core.Utils
         public void Dispose()
         {
             stopwatch.Stop();
-            Log.User($"[StopwatchRun] {stopwatch.ElapsedMilliseconds}ms: {callback()}");
+            Log.User($"[StopwatchRun] {stopwatch.Elapsed.TotalMilliseconds}ms: {callback()}");
             ObjectPool<Stopwatch>.Instance.PutObject(stopwatch);
         }
 
